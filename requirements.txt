@@ -4,3 +4,4 @@ scipy>=1.10
 plotly>=5.18
 reflex>=0.6
 reflex-components-lucide>=0.9
+lseg-data>=2.1.1,<3

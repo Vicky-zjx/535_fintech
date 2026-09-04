@@ -60,7 +60,6 @@ warnings.filterwarnings("ignore", category=FutureWarning, module="lseg.data")
 
 APP_DIR = Path(__file__).resolve().parent
 CACHE_FILE = APP_DIR / "option_pipeline_data.pkl"
-SYNTHETIC_CACHE_FILE = APP_DIR / "option_pipeline_data.synthetic.pkl"
 ticker_stock = "UUUU.K"
 ticker_root = "UUUU"
 weeks_back = 12
@@ -76,28 +75,23 @@ def load_or_fetch_pipeline_data(
     batch_size: int = 25,
 ) -> dict:
     """
-    Cache-first loader. Only talks to LSEG if the pickle is missing AND
-    lseg.data is importable. Otherwise falls back to the synthetic panel.
+    Cache-first loader. Only talks to LSEG when the real pickle is missing.
+    The synthetic panel is a last-resort local fallback, never the preferred
+    dataset when a real pull is available.
     """
-    # A cache beside the app always wins. The supplied synthetic cache is
-    # also recognized so a fresh clone does not attempt an unnecessary pull.
-    for cache_path in (Path(CACHE_FILE), SYNTHETIC_CACHE_FILE):
-        if not cache_path.exists():
-            continue
+    cache_path = Path(CACHE_FILE)
+    if cache_path.exists():
         print(f"Loading cached dataset from {cache_path}...")
         try:
             with cache_path.open("rb") as f:
                 payload = pickle.load(f)
         except Exception as exc:
-            # A pickle made with an incompatible pandas build is still a
-            # present cache: fall back to the local demo instead of pulling.
-            print(f"Could not read {cache_path}: {exc}. Using demo data.")
-            return synthesize_demo_payload(ticker_root=ticker_root, ticker_stock=ticker_stock)
-        if not has_option_field(payload.get("options"), "MID_PRICE"):
-            print(f"Cached frame {cache_path} has no MID_PRICE; using updated demo data.")
-            return synthesize_demo_payload(ticker_root=ticker_root, ticker_stock=ticker_stock)
-        payload.setdefault("synthetic", cache_path == SYNTHETIC_CACHE_FILE)
-        return payload
+            print(f"Could not read {cache_path}: {exc}. A fresh LSEG pull will be attempted.")
+        else:
+            if has_option_field(payload.get("options"), "MID_PRICE"):
+                payload.setdefault("synthetic", False)
+                return payload
+            print(f"Cached frame {cache_path} has no MID_PRICE. A fresh LSEG pull will be attempted.")
 
     try:
         import lseg.data as ld
