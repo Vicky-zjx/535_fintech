@@ -332,6 +332,30 @@ def paired_quote_rows(
     return paired
 
 
+def best_coverage_asof(
+    wide: pd.DataFrame | None,
+    cp: str | None = None,
+):
+    """Return the latest date with the largest real mid-or-trade coverage."""
+    sl = select_asof_rows(wide, cp=cp)
+    if sl.empty or "date" not in sl.columns:
+        return None
+    if not {"MID_PRICE", "TRDPRC_1"}.issubset(sl.columns):
+        return None
+    mid = pd.to_numeric(sl["MID_PRICE"], errors="coerce")
+    trade = pd.to_numeric(sl["TRDPRC_1"], errors="coerce")
+    has_either = (
+        (mid.notna() & np.isfinite(mid))
+        | (trade.notna() & np.isfinite(trade))
+    )
+    coverage = has_either.groupby(sl["date"]).sum()
+    coverage = coverage[coverage.index.notna()]
+    if coverage.empty:
+        return None
+    max_count = coverage.max()
+    return coverage[coverage == max_count].index.max()
+
+
 def surface_grid(points: pd.DataFrame, value_col: str, n_strike: int = 40, n_dte: int = 30):
     """
     Interpolate a sparse cloud onto a regular grid for a Plotly Surface.

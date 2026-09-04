@@ -27,6 +27,7 @@ import reflex as rx
 try:
     from options_surface_lab.option_surface_utils import (
         attach_underlying,
+        best_coverage_asof,
         flatten_lseg_options,
         has_option_field,
         pivot_trade_mid,
@@ -44,6 +45,7 @@ except ModuleNotFoundError:
     # Also support running this file directly from the repository root.
     from option_surface_utils import (
         attach_underlying,
+        best_coverage_asof,
         flatten_lseg_options,
         has_option_field,
         pivot_trade_mid,
@@ -261,7 +263,8 @@ class State(rx.State):
 
         dates = sorted({d.strftime("%Y-%m-%d") for d in wide["date"]}) if len(wide) else []
         self.asof_options = dates
-        self.asof = dates[-1] if dates else ""
+        best_asof = best_coverage_asof(wide)
+        self.asof = best_asof.strftime("%Y-%m-%d") if best_asof is not None else ""
 
         self.fig_stock = candlestick_figure(payload["stock"], self.ticker)
         self._rebuild_option_figs()

@@ -176,5 +176,6 @@ loaded from the same environment.
 The app checks for `option_pipeline_data.pkl` beside the app before attempting
 an LSEG pull. If that cache is not available (or cannot be read with the
 current pandas version), it uses the included sparse synthetic UUUU-like panel
-so the page and all assignment visuals still render. For a no-Reflex static
-check, run `python build_preview.py` and open `options_surface_preview.html`.
+as a local fallback. The static builder intentionally requires the real cache
+and refuses to create a synthetic GitHub Pages page. Run `python build_preview.py`
+and open `options_surface_preview.html` after the real cache is available.

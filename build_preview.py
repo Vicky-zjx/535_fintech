@@ -14,6 +14,7 @@ from option_surface_plots import (
 )
 from option_surface_utils import (
     attach_underlying,
+    best_coverage_asof,
     flatten_lseg_options,
     load_payload,
     select_asof_rows,
@@ -25,14 +26,19 @@ from option_surface_utils import (
 def main() -> Path:
     base_dir = Path(__file__).resolve().parent
     primary_cache = base_dir / "option_pipeline_data.pkl"
-    fallback_cache = base_dir / "option_pipeline_data.synthetic.pkl"
-    payload = load_payload(str(primary_cache if primary_cache.exists() else fallback_cache))
+    if not primary_cache.exists():
+        raise FileNotFoundError(
+            f"Real LSEG cache not found at {primary_cache}; refusing to build a synthetic page."
+        )
+    payload = load_payload(str(primary_cache))
+    if payload.get("synthetic"):
+        raise RuntimeError("Refusing to build index.html from a synthetic payload.")
     tidy = flatten_lseg_options(payload["options"])
     tidy = attach_underlying(tidy, payload["stock"])
     wide = select_asof_rows(pivot_trade_mid(tidy))
     ticker = payload.get("ticker", "UUUU")
 
-    asof = wide["date"].max() if len(wide) else None
+    asof = best_coverage_asof(wide)
     asof_rows = select_asof_rows(wide, asof=asof)
     stats = summarize_sparsity(asof_rows)
 
