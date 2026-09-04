@@ -1,0 +1,10 @@
+*.db
+*.py[cod]
+.states
+assets/external/
+__pycache__/
+.web
+.venv/
+.idea/
+reflex.lock/
+.DS_Store
