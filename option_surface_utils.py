@@ -356,6 +356,23 @@ def best_coverage_asof(
     return coverage[coverage == max_count].index.max()
 
 
+def available_cp_values(
+    wide: pd.DataFrame | None,
+    asof=None,
+) -> list[str]:
+    """Return call/put sides that have real contract rows for the selection."""
+    sl = select_asof_rows(wide, asof=asof)
+    if sl.empty or "cp" not in sl.columns:
+        return []
+    return sorted(
+        {
+            value
+            for value in sl["cp"].astype("string").str.upper().dropna().tolist()
+            if value in {"C", "P"}
+        }
+    )
+
+
 def surface_grid(points: pd.DataFrame, value_col: str, n_strike: int = 40, n_dte: int = 30):
     """
     Interpolate a sparse cloud onto a regular grid for a Plotly Surface.

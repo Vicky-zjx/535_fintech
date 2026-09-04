@@ -14,6 +14,7 @@ from option_surface_plots import (
 )
 from option_surface_utils import (
     attach_underlying,
+    available_cp_values,
     best_coverage_asof,
     flatten_lseg_options,
     load_payload,
@@ -42,11 +43,15 @@ def main() -> Path:
     asof_rows = select_asof_rows(wide, asof=asof)
     stats = summarize_sparsity(asof_rows)
 
-    fig_px = price_surface_figure(wide, asof, cp="C", ticker=ticker)
-    fig_px_p = price_surface_figure(wide, asof, cp="P", ticker=ticker)
+    available_sides = available_cp_values(wide, asof=asof)
+    display_cp = available_sides[0] if available_sides else "C"
+    surface_figures = [
+        price_surface_figure(wide, asof, cp=side, ticker=ticker)
+        for side in available_sides
+    ]
     fig_cmp = mid_vs_trade_figure(asof_rows, ticker=ticker)
-    fig_hm_s = coverage_heatmap(wide, asof, cp="C", field="MID_PRICE")
-    fig_hm_t = coverage_heatmap(wide, asof, cp="C", field="TRDPRC_1")
+    fig_hm_s = coverage_heatmap(wide, asof, cp=display_cp, field="MID_PRICE")
+    fig_hm_t = coverage_heatmap(wide, asof, cp=display_cp, field="TRDPRC_1")
     fig_cs = candlestick_figure(payload["stock"], ticker)
 
     out = Path(__file__).resolve().parent / "options_surface_preview.html"
@@ -93,7 +98,7 @@ def main() -> Path:
         "<style>body{margin:0;background:#0d1117;}</style></head><body>",
         banner,
     ]
-    for fig in (fig_cs, fig_px, fig_px_p, fig_cmp, fig_hm_s, fig_hm_t):
+    for fig in (fig_cs, *surface_figures, fig_cmp, fig_hm_s, fig_hm_t):
         parts.append(fig.to_html(full_html=False, include_plotlyjs="cdn"))
     parts.append("</body></html>")
     html = "\n".join(parts)

@@ -76,6 +76,10 @@ If you feed `TRDPRC_1` into a surface and then read prices off the holes, you ar
 
 The occupancy heatmaps underneath are the honest picture. Dark cells never had a number.
 
+The available call/put side is data-dependent. If LSEG returned only calls (or
+only puts) for the selected date, the app hides the empty side instead of
+showing a misleading `No quotes on this date / filter` panel.
+
 ## Files in this lab
 
 When you build this, make sure it has the following file structure. * can be 

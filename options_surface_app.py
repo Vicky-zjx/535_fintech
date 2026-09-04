@@ -27,6 +27,7 @@ import reflex as rx
 try:
     from options_surface_lab.option_surface_utils import (
         attach_underlying,
+        available_cp_values,
         best_coverage_asof,
         flatten_lseg_options,
         has_option_field,
@@ -45,6 +46,7 @@ except ModuleNotFoundError:
     # Also support running this file directly from the repository root.
     from option_surface_utils import (
         attach_underlying,
+        available_cp_values,
         best_coverage_asof,
         flatten_lseg_options,
         has_option_field,
@@ -232,6 +234,7 @@ class State(rx.State):
     data_note: str = ""
     asof: str = ""
     asof_options: list[str] = []
+    cp_options: list[str] = ["C"]
     cp: str = "C"
     show_trade: bool = True
     show_mid: bool = True
@@ -265,17 +268,20 @@ class State(rx.State):
         self.asof_options = dates
         best_asof = best_coverage_asof(wide)
         self.asof = best_asof.strftime("%Y-%m-%d") if best_asof is not None else ""
+        self._sync_cp_options()
 
         self.fig_stock = candlestick_figure(payload["stock"], self.ticker)
         self._rebuild_option_figs()
         self.status_msg = f"Loaded {self.option_count} series"
 
     def set_cp(self, value: str):
-        self.cp = value
+        if value in self.cp_options:
+            self.cp = value
         self._rebuild_option_figs()
 
     def set_asof(self, value: str):
         self.asof = value
+        self._sync_cp_options()
         self._rebuild_option_figs()
 
     def toggle_trade(self, value: bool):
@@ -290,6 +296,12 @@ class State(rx.State):
         self.show_sheet = value
         self._rebuild_option_figs()
 
+    def _sync_cp_options(self):
+        available = available_cp_values(self._wide, asof=self.asof)
+        self.cp_options = available or ["C"]
+        if self.cp not in self.cp_options:
+            self.cp = self.cp_options[0]
+
     def _rebuild_option_figs(self):
         wide = self._wide
         if wide is None or wide.empty or not self.asof:
@@ -303,6 +315,7 @@ class State(rx.State):
 
         asof = self.asof
         sl = select_asof_rows(wide, asof=asof)
+        self._sync_cp_options()
         stats = summarize_sparsity(sl)
         self.n_quotes = stats["n_quotes"]
         self.n_mid_only = stats["n_mid_only"]
@@ -393,9 +406,9 @@ def index() -> rx.Component:
                     on_change=State.set_asof,
                     size="2",
                 ),
-                rx.text("Right", color="#8b949e", size="2"),
+                rx.text("Side", color="#8b949e", size="2"),
                 rx.select(
-                    ["C", "P"],
+                    State.cp_options,
                     value=State.cp,
                     on_change=State.set_cp,
                     size="2",
