@@ -8,10 +8,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 try:
-    from .option_surface_utils import surface_grid
+    from .option_surface_utils import paired_quote_rows, select_asof_rows, summarize_sparsity, surface_grid
 except ImportError:
     # Keep standalone execution from the repository root working too.
-    from option_surface_utils import surface_grid
+    from option_surface_utils import paired_quote_rows, select_asof_rows, summarize_sparsity, surface_grid
 
 
 DARK = dict(
@@ -70,13 +70,7 @@ def candlestick_figure(df_stock: pd.DataFrame, ticker: str) -> go.Figure:
 
 
 def _slice_wide(wide: pd.DataFrame, asof, cp: str) -> pd.DataFrame:
-    sl = wide.copy()
-    if asof is not None and len(sl):
-        asof_ts = pd.Timestamp(asof).normalize()
-        sl = sl[sl["date"] == asof_ts]
-    if cp in {"C", "P"}:
-        sl = sl[sl["cp"] == cp]
-    return sl
+    return select_asof_rows(wide, asof=asof, cp=cp)
 
 
 def price_surface_figure(
@@ -243,11 +237,15 @@ def price_surface_figure(
     return fig
 
 
-def mid_vs_trade_figure(wide: pd.DataFrame, asof=None, ticker: str = "UUUU") -> go.Figure:
-    sl = wide.copy()
-    if asof is not None and len(sl):
-        sl = sl[sl["date"] == pd.Timestamp(asof).normalize()]
-    both = sl.dropna(subset=["TRDPRC_1", "MID_PRICE"])
+def mid_vs_trade_figure(
+    wide: pd.DataFrame,
+    asof=None,
+    ticker: str = "UUUU",
+    cp: str | None = None,
+) -> go.Figure:
+    sl = select_asof_rows(wide, asof=asof, cp=cp)
+    both = paired_quote_rows(sl)
+    stats = summarize_sparsity(sl)
     fig = make_subplots(
         rows=1,
         cols=2,
@@ -302,9 +300,9 @@ def mid_vs_trade_figure(wide: pd.DataFrame, asof=None, ticker: str = "UUUU") -> 
         fig.update_xaxes(range=[lo - pad, hi + pad], row=1, col=1)
         fig.update_yaxes(range=[lo - pad, hi + pad], row=1, col=1)
 
-    n_mid_only = int((sl["has_mid"] & ~sl["has_trade"]).sum())
-    n_both = int((sl["has_mid"] & sl["has_trade"]).sum())
-    n_trade_only = int((sl["has_trade"] & ~sl["has_mid"]).sum())
+    n_mid_only = stats["n_mid_only"]
+    n_both = stats["n_both"]
+    n_trade_only = stats["n_trade_only"]
     ymax = max(n_mid_only, n_both, n_trade_only, 1)
     fig.add_trace(
         go.Bar(

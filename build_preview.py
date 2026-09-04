@@ -16,6 +16,7 @@ from option_surface_utils import (
     attach_underlying,
     flatten_lseg_options,
     load_payload,
+    select_asof_rows,
     summarize_sparsity,
     pivot_trade_mid,
 )
@@ -28,15 +29,16 @@ def main() -> Path:
     payload = load_payload(str(primary_cache if primary_cache.exists() else fallback_cache))
     tidy = flatten_lseg_options(payload["options"])
     tidy = attach_underlying(tidy, payload["stock"])
-    wide = pivot_trade_mid(tidy)
+    wide = select_asof_rows(pivot_trade_mid(tidy))
     ticker = payload.get("ticker", "UUUU")
 
     asof = wide["date"].max() if len(wide) else None
-    stats = summarize_sparsity(wide[wide["date"] == asof] if asof is not None else wide)
+    asof_rows = select_asof_rows(wide, asof=asof)
+    stats = summarize_sparsity(asof_rows)
 
     fig_px = price_surface_figure(wide, asof, cp="C", ticker=ticker)
     fig_px_p = price_surface_figure(wide, asof, cp="P", ticker=ticker)
-    fig_cmp = mid_vs_trade_figure(wide, asof, ticker=ticker)
+    fig_cmp = mid_vs_trade_figure(asof_rows, ticker=ticker)
     fig_hm_s = coverage_heatmap(wide, asof, cp="C", field="MID_PRICE")
     fig_hm_t = coverage_heatmap(wide, asof, cp="C", field="TRDPRC_1")
     fig_cs = candlestick_figure(payload["stock"], ticker)

@@ -276,6 +276,62 @@ def pivot_trade_settle(tidy: pd.DataFrame) -> pd.DataFrame:
     return pivot_trade_mid(tidy)
 
 
+def select_asof_rows(
+    wide: pd.DataFrame | None,
+    asof=None,
+    cp: str | None = None,
+) -> pd.DataFrame:
+    """Select one normalized as-of date and optional call/put filter.
+
+    Every consumer of the surface data uses this helper so date dtype,
+    timezone, and call/put matching cannot diverge between metrics and plots.
+    """
+    if wide is None:
+        return pd.DataFrame()
+    sl = wide.copy()
+    if "date" in sl.columns:
+        parsed_dates = pd.to_datetime(sl["date"], errors="coerce", format="mixed")
+        if isinstance(parsed_dates.dtype, pd.DatetimeTZDtype):
+            parsed_dates = parsed_dates.dt.tz_localize(None)
+        sl["date"] = parsed_dates.dt.normalize()
+
+    if asof is not None:
+        target = pd.to_datetime([asof], errors="coerce", format="mixed")[0]
+        if pd.isna(target):
+            return sl.iloc[0:0].copy()
+        target = pd.Timestamp(target)
+        if target.tzinfo is not None:
+            target = target.tz_localize(None)
+        target = target.normalize()
+        if "date" not in sl.columns:
+            return sl.iloc[0:0].copy()
+        sl = sl.loc[sl["date"].eq(target)].copy()
+
+    wanted_cp = str(cp or "").strip().upper()
+    if wanted_cp not in {"", "B", "ALL"} and "cp" in sl.columns:
+        sl = sl.loc[sl["cp"].astype("string").str.upper().eq(wanted_cp)].copy()
+    return sl
+
+
+def paired_quote_rows(
+    wide: pd.DataFrame | None,
+    asof=None,
+    cp: str | None = None,
+) -> pd.DataFrame:
+    """Return only real rows containing both finite mid and trade values."""
+    sl = select_asof_rows(wide, asof=asof, cp=cp)
+    required = {"MID_PRICE", "TRDPRC_1"}
+    if not required.issubset(sl.columns):
+        return sl.iloc[0:0].copy()
+    mid = pd.to_numeric(sl["MID_PRICE"], errors="coerce")
+    trade = pd.to_numeric(sl["TRDPRC_1"], errors="coerce")
+    valid = mid.notna() & trade.notna() & np.isfinite(mid) & np.isfinite(trade)
+    paired = sl.loc[valid].copy()
+    paired["MID_PRICE"] = mid.loc[valid]
+    paired["TRDPRC_1"] = trade.loc[valid]
+    return paired
+
+
 def surface_grid(points: pd.DataFrame, value_col: str, n_strike: int = 40, n_dte: int = 30):
     """
     Interpolate a sparse cloud onto a regular grid for a Plotly Surface.
@@ -304,8 +360,9 @@ def surface_grid(points: pd.DataFrame, value_col: str, n_strike: int = 40, n_dte
     return {"x": xi, "y": yi, "z": ZZ}
 
 
-def summarize_sparsity(wide: pd.DataFrame) -> dict:
+def summarize_sparsity(wide: pd.DataFrame, asof=None, cp: str | None = None) -> dict:
     """Classroom-facing counts that make the mid ≠ last-trade point."""
+    wide = select_asof_rows(wide, asof=asof, cp=cp)
     if wide is None or wide.empty:
         return {
             "n_quotes": 0,
@@ -319,11 +376,17 @@ def summarize_sparsity(wide: pd.DataFrame) -> dict:
             "n_series": 0,
         }
     n = len(wide)
-    both = wide["has_trade"] & wide["has_mid"]
-    mid_only = wide["has_mid"] & ~wide["has_trade"]
-    trade_only = wide["has_trade"] & ~wide["has_mid"]
-    diffs = wide.loc[both, "abs_diff"].dropna()
-    rel = wide.loc[both, "rel_diff"].dropna()
+    mid = pd.to_numeric(wide["MID_PRICE"], errors="coerce")
+    trade = pd.to_numeric(wide["TRDPRC_1"], errors="coerce")
+    has_mid = mid.notna() & np.isfinite(mid)
+    has_trade = trade.notna() & np.isfinite(trade)
+    both = has_trade & has_mid
+    mid_only = has_mid & ~has_trade
+    trade_only = has_trade & ~has_mid
+    abs_diff = (mid - trade).abs()
+    rel_diff = abs_diff / mid.replace(0, np.nan)
+    diffs = abs_diff.loc[both].dropna()
+    rel = rel_diff.loc[both].dropna()
     return {
         "n_quotes": int(n),
         "n_trade_only": int(trade_only.sum()),

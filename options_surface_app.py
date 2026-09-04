@@ -30,6 +30,7 @@ try:
         flatten_lseg_options,
         has_option_field,
         pivot_trade_mid,
+        select_asof_rows,
         summarize_sparsity,
         synthesize_demo_payload,
     )
@@ -46,6 +47,7 @@ except ModuleNotFoundError:
         flatten_lseg_options,
         has_option_field,
         pivot_trade_mid,
+        select_asof_rows,
         summarize_sparsity,
         synthesize_demo_payload,
     )
@@ -212,7 +214,7 @@ def load_or_fetch_pipeline_data(
 def _prepare(payload: dict) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
     tidy = flatten_lseg_options(payload["options"])
     tidy = attach_underlying(tidy, payload["stock"])
-    wide = pivot_trade_mid(tidy)
+    wide = select_asof_rows(pivot_trade_mid(tidy))
     return tidy, wide, payload
 
 
@@ -297,7 +299,7 @@ class State(rx.State):
             return
 
         asof = self.asof
-        sl = wide[wide["date"] == pd.Timestamp(asof)]
+        sl = select_asof_rows(wide, asof=asof)
         stats = summarize_sparsity(sl)
         self.n_quotes = stats["n_quotes"]
         self.n_mid_only = stats["n_mid_only"]
@@ -320,7 +322,7 @@ class State(rx.State):
             show_interpolated=self.show_sheet,
             ticker=self.ticker,
         )
-        self.fig_compare = mid_vs_trade_figure(wide, asof, ticker=self.ticker)
+        self.fig_compare = mid_vs_trade_figure(sl, ticker=self.ticker)
         self.fig_heat_mid = coverage_heatmap(wide, asof, cp=self.cp, field="MID_PRICE")
         self.fig_heat_trade = coverage_heatmap(wide, asof, cp=self.cp, field="TRDPRC_1")
 
