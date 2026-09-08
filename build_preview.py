@@ -80,7 +80,6 @@ def main() -> Path:
     available_sides = available_cp_values(wide, asof=asof)
     if not available_sides:
         raise RuntimeError("The selected real-data date has no usable call or put observations.")
-    display_cp = available_sides[0]
     side_labels = {"C": "Calls", "P": "Puts"}
     available_side_names = [side_labels[side] for side in available_sides]
 
@@ -92,8 +91,14 @@ def main() -> Path:
     # Metrics, scatter, and availability all receive the exact same as-of slice.
     fig_compare = mid_vs_trade_figure(wide, asof=asof, ticker=ticker)
     fig_availability = data_availability_figure(wide, asof=asof, ticker=ticker)
-    fig_heat_mid = coverage_heatmap(wide, asof, cp=display_cp, field="MID_PRICE")
-    fig_heat_trade = coverage_heatmap(wide, asof, cp=display_cp, field="TRDPRC_1")
+    heatmap_figures = [
+        (
+            side,
+            coverage_heatmap(wide, asof, cp=side, field="MID_PRICE"),
+            coverage_heatmap(wide, asof, cp=side, field="TRDPRC_1"),
+        )
+        for side in available_sides
+    ]
 
     asof_txt = str(pd.Timestamp(asof).date())
     fetched_at = payload.get("fetched_at")
@@ -101,6 +106,7 @@ def main() -> Path:
         f'<span>Fetched {escape(str(fetched_at))}</span>' if fetched_at else ""
     )
     side_note = " + ".join(available_side_names)
+    coverage_side_note = " and ".join(available_side_names)
 
     median_abs = stats["median_abs_diff"]
     median_abs_txt = "n/a" if median_abs is None else f"${median_abs:.3f}"
@@ -115,8 +121,18 @@ def main() -> Path:
     )
     compare_html = _plot_html(fig_compare, div_id="mark-vs-trade")
     availability_html = _plot_html(fig_availability, div_id="data-availability")
-    heat_mid_html = _plot_html(fig_heat_mid, div_id="mid-price-coverage")
-    heat_trade_html = _plot_html(fig_heat_trade, div_id="trade-print-coverage")
+    heatmap_html = "\n".join(
+        f"""
+      <div class="coverage-group">
+        <div class="coverage-side-label">{escape(side_labels[side])} coverage</div>
+        <div class="heatmap-grid">
+          <div class="chart-frame">{_plot_html(mid_fig, div_id=f"mid-price-coverage-{side.lower()}")}</div>
+          <div class="chart-frame">{_plot_html(trade_fig, div_id=f"trade-print-coverage-{side.lower()}")}</div>
+        </div>
+      </div>
+        """
+        for side, mid_fig, trade_fig in heatmap_figures
+    )
 
     calls_only_note = ""
     if available_sides == ["C"]:
@@ -306,6 +322,15 @@ def main() -> Path:
     .data-boundary strong {{ color: var(--mid); }}
     .interpolation-note {{ margin: 0 0 16px; border-left: 3px solid #71879b; }}
     .interpolation-note strong {{ color: #cbd7e1; }}
+    .coverage-group + .coverage-group {{ margin-top: 28px; }}
+    .coverage-side-label {{
+      margin-top: 20px;
+      color: #cbd7e1;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }}
     .heatmap-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }}
     .interpretation-list {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }}
     .interpretation-item {{
@@ -425,11 +450,8 @@ def main() -> Path:
         </div>
       </div>
       <div class="chart-frame">{availability_html}</div>
-      <div class="heatmap-grid">
-        <div class="chart-frame">{heat_mid_html}</div>
-        <div class="chart-frame">{heat_trade_html}</div>
-      </div>
-      <p class="data-boundary">Coverage maps show {escape(side_labels[display_cp])} because that is the real option side available for this selected date.</p>
+      {heatmap_html}
+      <p class="data-boundary">Coverage maps show {escape(coverage_side_note)} from the same {asof_txt} real-data slice. Every empty cell remains missing.</p>
     </section>
 
     <section aria-labelledby="interpretation-heading">

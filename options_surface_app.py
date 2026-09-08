@@ -154,12 +154,15 @@ def load_or_fetch_pipeline_data(
         month_num = d.month
         call_code = chr(ord("A") + month_num - 1)
         put_code = chr(ord("M") + month_num - 1)
+        # The expired-contract suffix always uses the A-L expiration-month
+        # code, even when the option code before the date is the M-X put code.
+        expiry_suffix_code = call_code
         for strike in strikes:
             strike_str = f"{int(round(strike * 100)):05d}"
             call_base = f"{ticker_root.upper()}{call_code}{day_str}{year_str}{strike_str}.U"
-            candidate_rics.append(f"{call_base}^{call_code}{year_str}")
+            candidate_rics.append(f"{call_base}^{expiry_suffix_code}{year_str}")
             put_base = f"{ticker_root.upper()}{put_code}{day_str}{year_str}{strike_str}.U"
-            candidate_rics.append(f"{put_base}^{put_code}{year_str}")
+            candidate_rics.append(f"{put_base}^{expiry_suffix_code}{year_str}")
 
     batches = [candidate_rics[i : i + batch_size] for i in range(0, len(candidate_rics), batch_size)]
     history_frames = []
