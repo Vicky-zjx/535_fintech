@@ -39,6 +39,7 @@ try:
     from options_surface_lab.option_surface_plots import (
         candlestick_figure,
         coverage_heatmap,
+        data_availability_figure,
         price_surface_figure,
         mid_vs_trade_figure,
     )
@@ -58,6 +59,7 @@ except ModuleNotFoundError:
     from option_surface_plots import (
         candlestick_figure,
         coverage_heatmap,
+        data_availability_figure,
         price_surface_figure,
         mid_vs_trade_figure,
     )
@@ -243,6 +245,7 @@ class State(rx.State):
     fig_stock: go.Figure = go.Figure()
     fig_surface: go.Figure = go.Figure()
     fig_compare: go.Figure = go.Figure()
+    fig_availability: go.Figure = go.Figure()
     fig_heat_mid: go.Figure = go.Figure()
     fig_heat_trade: go.Figure = go.Figure()
 
@@ -309,6 +312,7 @@ class State(rx.State):
             empty.update_layout(template="plotly_dark", paper_bgcolor="#0d1117")
             self.fig_surface = empty
             self.fig_compare = empty
+            self.fig_availability = empty
             self.fig_heat_mid = empty
             self.fig_heat_trade = empty
             return
@@ -338,17 +342,18 @@ class State(rx.State):
             show_interpolated=self.show_sheet,
             ticker=self.ticker,
         )
-        self.fig_compare = mid_vs_trade_figure(sl, ticker=self.ticker)
+        self.fig_compare = mid_vs_trade_figure(wide, asof=asof, ticker=self.ticker)
+        self.fig_availability = data_availability_figure(wide, asof=asof, ticker=self.ticker)
         self.fig_heat_mid = coverage_heatmap(wide, asof, cp=self.cp, field="MID_PRICE")
         self.fig_heat_trade = coverage_heatmap(wide, asof, cp=self.cp, field="TRDPRC_1")
 
 
 def _metric(label: str, value) -> rx.Component:
     return rx.card(
-        rx.text(label, size="2", color="#8b949e"),
-        rx.text(value, size="6", color="#00ffcc", weight="bold"),
-        bg="#161b22",
-        border="1px solid #30363d",
+        rx.text(label, size="2", color="#8a9caf"),
+        rx.text(value, size="6", color="#74d6f4", weight="bold"),
+        bg="#101c2a",
+        border="1px solid #223346",
         padding="1rem",
     )
 
@@ -358,9 +363,9 @@ def index() -> rx.Component:
         rx.vstack(
             rx.hstack(
                 rx.heading(
-                    "OPTIONS SURFACE LAB",
+                    "OPTION MARKET OBSERVATORY",
                     size="8",
-                    color="#00ffcc",
+                    color="#e8eff6",
                     style={"letter_spacing": "2px"},
                 ),
                 rx.spacer(),
@@ -369,7 +374,12 @@ def index() -> rx.Component:
                 align="center",
                 padding_y="1rem",
             ),
-            rx.text(State.data_note, color="#8b949e", size="2"),
+            rx.text(
+                "Mapping where the option market exists — and where it does not.",
+                color="#bcc9d6",
+                size="4",
+            ),
+            rx.text(State.data_note, color="#8a9caf", size="2"),
             rx.hstack(
                 _metric("Underlying", State.ticker),
                 _metric("Option series", State.option_count),
@@ -399,14 +409,14 @@ def index() -> rx.Component:
                 padding="1rem",
             ),
             rx.hstack(
-                rx.text("As-of date", color="#8b949e", size="2"),
+                rx.text("As-of date", color="#8a9caf", size="2"),
                 rx.select(
                     State.asof_options,
                     value=State.asof,
                     on_change=State.set_asof,
                     size="2",
                 ),
-                rx.text("Side", color="#8b949e", size="2"),
+                rx.text("Side", color="#8a9caf", size="2"),
                 rx.select(
                     State.cp_options,
                     value=State.cp,
@@ -414,21 +424,20 @@ def index() -> rx.Component:
                     size="2",
                 ),
                 rx.switch(checked=State.show_mid, on_change=State.toggle_mid),
-                rx.text("MID_PRICE", color="#00ffcc", size="2"),
+                rx.text("MID_PRICE", color="#74d6f4", size="2"),
                 rx.switch(checked=State.show_trade, on_change=State.toggle_trade),
-                rx.text("TRDPRC_1", color="#ff0055", size="2"),
+                rx.text("TRDPRC_1", color="#ff7b68", size="2"),
                 rx.switch(checked=State.show_sheet, on_change=State.toggle_sheet),
-                rx.text("Interpolated sheet", color="#8b949e", size="2"),
+                rx.text("Interpolated visualization", color="#8a9caf", size="2"),
                 spacing="3",
                 align="center",
                 wrap="wrap",
                 width="100%",
             ),
             rx.text(
-                "Cyan dots = closing MID_PRICE. Magenta diamonds = last trade. "
-                "The translucent sheet is linearly interpolated and will happily "
-                "invent prices in strikes that never printed. Turn it off.",
-                color="#8b949e",
+                "Ice-blue dots = closing MID_PRICE. Coral diamonds = last trade. "
+                "Interpolated visualization — not an executable market price.",
+                color="#8a9caf",
                 size="2",
             ),
             rx.box(
@@ -478,6 +487,17 @@ def index() -> rx.Component:
                 border_radius="8px",
                 padding="1rem",
             ),
+            rx.box(
+                rx.plotly(
+                    data=State.fig_availability,
+                    style={"width": "100%", "height": "390px"},
+                ),
+                width="100%",
+                bg="#101c2a",
+                border="1px solid #223346",
+                border_radius="8px",
+                padding="1rem",
+            ),
             rx.hstack(
                 rx.box(
                     rx.plotly(
@@ -516,4 +536,4 @@ def index() -> rx.Component:
 
 
 app = rx.App()
-app.add_page(index)
+app.add_page(index, title="Option Market Observatory")

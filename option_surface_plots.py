@@ -5,7 +5,6 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 try:
     from .option_surface_utils import paired_quote_rows, select_asof_rows, summarize_sparsity, surface_grid
@@ -14,11 +13,24 @@ except ImportError:
     from option_surface_utils import paired_quote_rows, select_asof_rows, summarize_sparsity, surface_grid
 
 
+BG = "#0A131F"
+PANEL = "#101C2A"
+PLOT = "#0D1825"
+BORDER = "#223346"
+GRID = "#26394C"
+TEXT = "#E8EFF6"
+MUTED = "#8A9CAF"
+MID = "#74D6F4"
+TRADE = "#FF7B68"
+MISSING = "#3B4959"
+PUT = "#B8A9D9"
+
+
 DARK = dict(
     template="plotly_dark",
-    paper_bgcolor="#0d1117",
-    plot_bgcolor="#161b22",
-    font=dict(color="#e6edf3", family="monospace"),
+    paper_bgcolor=PANEL,
+    plot_bgcolor=PLOT,
+    font=dict(color=TEXT, family="Inter, ui-sans-serif, system-ui, sans-serif"),
 )
 
 
@@ -31,38 +43,46 @@ def candlestick_figure(df_stock: pd.DataFrame, ticker: str) -> go.Figure:
                 high=df_stock["HIGH_1"],
                 low=df_stock["LOW_1"],
                 close=df_stock["TRDPRC_1"],
-                increasing_line_color="#00ffcc",
-                increasing_fillcolor="#00ffcc",
-                decreasing_line_color="#ff0055",
-                decreasing_fillcolor="#ff0055",
+                increasing_line_color=MID,
+                increasing_fillcolor=MID,
+                decreasing_line_color=TRADE,
+                decreasing_fillcolor=TRADE,
                 name=ticker,
             )
         ]
     )
     fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="#0d1117",
-        plot_bgcolor="#161b22",
-        font=dict(color="#e6edf3", family="Inter, system-ui, sans-serif", size=12),
+        **DARK,
         title=dict(
-            text=f"{ticker}  ·  underlying OHLC",
-            font=dict(size=16),
-            x=0.02,
+            text=f"{ticker} · DAILY OHLC",
+            font=dict(size=15, color=TEXT),
+            x=0.0,
             xanchor="left",
         ),
-        xaxis=dict(gridcolor="#30363d", rangeslider=dict(visible=False)),
-        yaxis=dict(gridcolor="#30363d", title="Price ($)"),
-        margin=dict(l=48, r=24, t=56, b=40),
+        xaxis=dict(
+            gridcolor=GRID,
+            linecolor=BORDER,
+            zeroline=False,
+            rangeslider=dict(visible=False),
+        ),
+        yaxis=dict(
+            gridcolor=GRID,
+            linecolor=BORDER,
+            zeroline=False,
+            title="Underlying price ($)",
+        ),
+        margin=dict(l=54, r=24, t=62, b=42),
         height=420,
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=BORDER, font=dict(color=TEXT)),
         annotations=[
             dict(
-                text="Close field is TRDPRC_1 (last trade) — not a closing mid",
+                text="Cached LSEG history · the close uses TRDPRC_1, not an option midpoint",
                 xref="paper",
                 yref="paper",
                 x=0.0,
-                y=1.02,
+                y=1.04,
                 showarrow=False,
-                font=dict(size=11, color="#8b949e"),
+                font=dict(size=11, color=MUTED),
             )
         ],
     )
@@ -89,8 +109,8 @@ def price_surface_figure(
         fig.update_layout(
             **DARK,
             title=dict(
-                text="No quotes on this date / filter",
-                font=dict(size=16, family="Inter, system-ui, sans-serif"),
+                text="No real observations are available for this selection",
+                font=dict(size=16),
             ),
             height=620,
         )
@@ -104,37 +124,17 @@ def price_surface_figure(
 
     def _axis(title: str) -> dict:
         return dict(
-            title=dict(text=title, font=dict(size=12, family="Inter, system-ui, sans-serif")),
-            backgroundcolor="#161b22",
-            gridcolor="#30363d",
+            title=dict(text=title, font=dict(size=12)),
+            backgroundcolor=PLOT,
+            gridcolor=GRID,
+            linecolor=BORDER,
             showbackground=True,
             zeroline=False,
-            tickfont=dict(size=10, family="Inter, system-ui, sans-serif"),
+            tickfont=dict(size=10, color=MUTED),
         )
 
     if show_mid and sl["MID_PRICE"].notna().any():
         s = sl.dropna(subset=["MID_PRICE"])
-        fig.add_trace(
-            go.Scatter3d(
-                x=s["strike"],
-                y=s["dte"],
-                z=s["MID_PRICE"],
-                mode="markers",
-                name="MID_PRICE",
-                marker=dict(
-                    size=4,
-                    color="#00ffcc",
-                    opacity=0.85,
-                    symbol="circle",
-                    line=dict(width=0),
-                ),
-                hovertemplate=(
-                    "<b>MID_PRICE</b> $%{z:.3f}<br>K=%{x:.2f}<br>DTE=%{y}"
-                    "<br>%{customdata[0]}<extra></extra>"
-                ),
-                customdata=np.stack([s["ric"].astype(str), s["cp"].astype(str)], axis=1),
-            )
-        )
         if show_interpolated:
             grid = surface_grid(s, "MID_PRICE")
             if grid is not None:
@@ -143,11 +143,24 @@ def price_surface_figure(
                         x=grid["x"],
                         y=grid["y"],
                         z=grid["z"],
-                        name="Interpolated sheet",
-                        colorscale=[[0, "#0d3d38"], [0.5, "#1a7a6e"], [1, "#00ffcc"]],
+                        name="Interpolated visualization",
+                        colorscale=[
+                            [0.0, "#7890A4"],
+                            [1.0, "#7890A4"],
+                        ],
                         opacity=0.28,
                         showscale=False,
+                        showlegend=True,
+                        legendrank=30,
                         hoverinfo="skip",
+                        connectgaps=False,
+                        lighting=dict(
+                            ambient=1.0,
+                            diffuse=0.0,
+                            roughness=1.0,
+                            specular=0.0,
+                            fresnel=0.0,
+                        ),
                         contours=dict(
                             x=dict(show=False),
                             y=dict(show=False),
@@ -155,6 +168,28 @@ def price_surface_figure(
                         ),
                     )
                 )
+        fig.add_trace(
+            go.Scatter3d(
+                x=s["strike"],
+                y=s["dte"],
+                z=s["MID_PRICE"],
+                mode="markers",
+                name="MID_PRICE · closing midpoint",
+                legendrank=10,
+                marker=dict(
+                    size=5,
+                    color=MID,
+                    opacity=0.96,
+                    symbol="circle",
+                    line=dict(width=0.7, color="#C5F2FF"),
+                ),
+                hovertemplate=(
+                    "<b>MID_PRICE</b> $%{z:.3f}<br>K=%{x:.2f}<br>DTE=%{y}"
+                    "<br>%{customdata[0]}<extra></extra>"
+                ),
+                customdata=np.stack([s["ric"].astype(str), s["cp"].astype(str)], axis=1),
+            )
+        )
 
     if show_trade and sl["TRDPRC_1"].notna().any():
         t = sl.dropna(subset=["TRDPRC_1"])
@@ -164,13 +199,14 @@ def price_surface_figure(
                 y=t["dte"],
                 z=t["TRDPRC_1"],
                 mode="markers",
-                name="TRDPRC_1",
+                name="TRDPRC_1 · last print",
+                legendrank=20,
                 marker=dict(
-                    size=6,
-                    color="#ff0055",
+                    size=6.5,
+                    color=TRADE,
                     opacity=1.0,
                     symbol="diamond",
-                    line=dict(width=0.5, color="#ff6b9d"),
+                    line=dict(width=0.8, color="#FFD0C8"),
                 ),
                 hovertemplate=(
                     "<b>TRDPRC_1</b> $%{z:.3f}<br>K=%{x:.2f}<br>DTE=%{y}"
@@ -181,14 +217,11 @@ def price_surface_figure(
         )
 
     fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="#0d1117",
-        plot_bgcolor="#161b22",
-        font=dict(color="#e6edf3", family="Inter, system-ui, sans-serif", size=12),
+        **DARK,
         title=dict(
-            text=f"{ticker}  {cp_label}  ·  {asof_txt}{spot_txt}",
-            font=dict(size=16, color="#e6edf3", family="Inter, system-ui, sans-serif"),
-            x=0.02,
+            text=f"{ticker} {cp_label} · {asof_txt}{spot_txt}",
+            font=dict(size=16, color=TEXT),
+            x=0.0,
             xanchor="left",
             y=0.98,
             yanchor="top",
@@ -198,39 +231,40 @@ def price_surface_figure(
             # near-dated in front: reverse DTE so 0 sits toward the viewer
             yaxis={**_axis("Days to expiry"), "autorange": "reversed"},
             zaxis=_axis("Option price ($)"),
-            bgcolor="#0d1117",
+            bgcolor=PANEL,
             aspectmode="manual",
             aspectratio=dict(x=1.15, y=1.0, z=0.7),
             camera=dict(
-                eye=dict(x=1.55, y=-1.45, z=0.85),
+                eye=dict(x=1.15, y=-1.05, z=0.7),
                 center=dict(x=0, y=0, z=-0.05),
             ),
         ),
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=1.0,
+            y=0.995,
             x=1.0,
             xanchor="right",
-            bgcolor="rgba(13,17,23,0.7)",
-            bordercolor="#30363d",
+            bgcolor=PANEL,
+            bordercolor=BORDER,
             borderwidth=1,
             font=dict(size=11),
             itemsizing="constant",
         ),
         height=640,
-        margin=dict(l=10, r=10, t=56, b=10),
+        margin=dict(l=10, r=10, t=82, b=10),
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=BORDER, font=dict(color=TEXT)),
         annotations=[
             dict(
-                text="Cyan = closing MID_PRICE &nbsp;·&nbsp; Magenta = last trade (TRDPRC_1) &nbsp;·&nbsp; Sheet is interpolated, not a market",
+                text="Interpolated visualization — not an executable market price",
                 xref="paper",
                 yref="paper",
                 x=0.0,
-                y=1.0,
+                y=1.01,
                 xanchor="left",
                 yanchor="bottom",
                 showarrow=False,
-                font=dict(size=11, color="#8b949e", family="Inter, system-ui, sans-serif"),
+                font=dict(size=11, color=MUTED),
             )
         ],
     )
@@ -245,43 +279,44 @@ def mid_vs_trade_figure(
 ) -> go.Figure:
     sl = select_asof_rows(wide, asof=asof, cp=cp)
     both = paired_quote_rows(sl)
-    stats = summarize_sparsity(sl)
-    fig = make_subplots(
-        rows=1,
-        cols=2,
-        subplot_titles=("MID_PRICE vs TRDPRC_1", "Who actually printed?"),
-        horizontal_spacing=0.12,
-        vertical_spacing=0.08,
-    )
+    fig = go.Figure()
 
     if len(both):
-        color = both["cp"].map({"C": "#00ffcc", "P": "#d2a8ff"})
-        fig.add_trace(
-            go.Scatter(
-                x=both["TRDPRC_1"],
-                y=both["MID_PRICE"],
-                mode="markers",
-                marker=dict(size=7, color=color, opacity=0.85),
-                customdata=np.stack(
-                    [
-                        both["ric"].astype(str),
-                        both["strike"],
-                        both["dte"],
-                        both["cp"],
-                    ],
-                    axis=1,
-                ),
-                hovertemplate=(
-                    "trade $%{x:.3f}  mid $%{y:.3f}"
-                    "<br>%{customdata[3]} K=%{customdata[1]} DTE=%{customdata[2]}"
-                    "<br>%{customdata[0]}<extra></extra>"
-                ),
-                name="Paired quotes",
-                showlegend=False,
-            ),
-            row=1,
-            col=1,
-        )
+        sides = [side for side in ("C", "P") if (both["cp"] == side).any()]
+        grouped = sides if len(sides) > 1 else [sides[0] if sides else None]
+        for side in grouped:
+            points = both if side is None else both.loc[both["cp"].eq(side)]
+            label = {"C": "Calls", "P": "Puts"}.get(side, "Paired observations")
+            fig.add_trace(
+                go.Scatter(
+                    x=points["TRDPRC_1"],
+                    y=points["MID_PRICE"],
+                    mode="markers",
+                    marker=dict(
+                        size=8,
+                        color=MID if side != "P" else PUT,
+                        opacity=0.9,
+                        symbol="circle" if side != "P" else "diamond",
+                        line=dict(color=TRADE, width=1.0),
+                    ),
+                    customdata=np.stack(
+                        [
+                            points["ric"].astype(str),
+                            points["strike"],
+                            points["dte"],
+                            points["cp"],
+                        ],
+                        axis=1,
+                    ),
+                    hovertemplate=(
+                        "<b>TRDPRC_1</b> $%{x:.3f}<br><b>MID_PRICE</b> $%{y:.3f}"
+                        "<br>%{customdata[3]} · K=%{customdata[1]:.2f} · DTE=%{customdata[2]}"
+                        "<br>%{customdata[0]}<extra></extra>"
+                    ),
+                    name=label,
+                    showlegend=len(sides) > 1,
+                )
+            )
         lo = float(min(both["TRDPRC_1"].min(), both["MID_PRICE"].min()))
         hi = float(max(both["TRDPRC_1"].max(), both["MID_PRICE"].max()))
         pad = (hi - lo) * 0.06 if hi > lo else 0.05
@@ -290,102 +325,188 @@ def mid_vs_trade_figure(
                 x=[lo - pad, hi + pad],
                 y=[lo - pad, hi + pad],
                 mode="lines",
-                line=dict(color="#8b949e", dash="dash", width=1),
-                name="y = x",
+                line=dict(color=MUTED, dash="dash", width=1.25),
+                name="Parity · y = x",
                 showlegend=True,
-            ),
-            row=1,
-            col=1,
+                hoverinfo="skip",
+            )
         )
-        fig.update_xaxes(range=[lo - pad, hi + pad], row=1, col=1)
-        fig.update_yaxes(range=[lo - pad, hi + pad], row=1, col=1)
+        fig.update_xaxes(range=[lo - pad, hi + pad])
+        fig.update_yaxes(range=[lo - pad, hi + pad])
+    else:
+        fig.add_annotation(
+            text="No contracts contain both real MID_PRICE and TRDPRC_1 values in this slice.",
+            x=0.5,
+            y=0.5,
+            xref="paper",
+            yref="paper",
+            showarrow=False,
+            font=dict(color=MUTED, size=13),
+        )
 
-    n_mid_only = stats["n_mid_only"]
-    n_both = stats["n_both"]
-    n_trade_only = stats["n_trade_only"]
-    ymax = max(n_mid_only, n_both, n_trade_only, 1)
-    fig.add_trace(
-        go.Bar(
-            x=["Mid only", "Both", "Print only"],
-            y=[n_mid_only, n_both, n_trade_only],
-            marker_color=["#00ffcc", "#58a6ff", "#ff0055"],
-            showlegend=False,
-            text=[n_mid_only, n_both, n_trade_only],
-            textposition="inside",
-            textfont=dict(color="#0d1117", size=12),
-            cliponaxis=False,
-        ),
-        row=1,
-        col=2,
-    )
-    fig.update_yaxes(range=[0, ymax * 1.18], row=1, col=2)
-
-    fig.update_xaxes(
-        title_text="TRDPRC_1 ($)",
-        row=1,
-        col=1,
-        gridcolor="#30363d",
-        zeroline=False,
-        title_font=dict(size=12),
-        tickfont=dict(size=11),
-    )
-    fig.update_yaxes(
-        title_text="MID_PRICE ($)",
-        row=1,
-        col=1,
-        gridcolor="#30363d",
-        zeroline=False,
-        title_font=dict(size=12),
-        tickfont=dict(size=11),
-    )
-    fig.update_xaxes(title_text=None, row=1, col=2, tickfont=dict(size=11))
-    fig.update_yaxes(
-        title_text="Series count",
-        row=1,
-        col=2,
-        gridcolor="#30363d",
-        title_font=dict(size=12),
-        tickfont=dict(size=11),
-    )
+    selected_date = pd.Timestamp(asof).date() if asof is not None else None
+    if selected_date is None and len(sl) and "date" in sl.columns:
+        dates = sl["date"].dropna()
+        selected_date = pd.Timestamp(dates.iloc[0]).date() if len(dates) else None
+    asof_txt = str(selected_date) if selected_date is not None else "all dates"
     fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="#0d1117",
-        plot_bgcolor="#161b22",
-        font=dict(color="#e6edf3", family="Inter, system-ui, sans-serif", size=12),
+        **DARK,
         title=dict(
-            text=f"{ticker}  ·  last trade is not the closing mid",
-            font=dict(size=16, family="Inter, system-ui, sans-serif"),
-            x=0.02,
+            text="MARK VS TRADE",
+            font=dict(size=15, color=TEXT),
+            x=0.0,
             xanchor="left",
             y=0.98,
             yanchor="top",
         ),
-        height=460,
-        margin=dict(l=56, r=24, t=72, b=52),
+        xaxis=dict(
+            title="TRDPRC_1 · last actual print ($)",
+            gridcolor=GRID,
+            linecolor=BORDER,
+            zeroline=False,
+        ),
+        yaxis=dict(
+            title="MID_PRICE · closing midpoint ($)",
+            gridcolor=GRID,
+            linecolor=BORDER,
+            zeroline=False,
+        ),
+        height=500,
+        margin=dict(l=68, r=24, t=80, b=62),
         legend=dict(
             orientation="h",
-            yanchor="top",
-            y=-0.18,
-            x=0.0,
-            xanchor="left",
+            yanchor="bottom",
+            y=1.0,
+            x=1.0,
+            xanchor="right",
             font=dict(size=11),
-            bgcolor="rgba(0,0,0,0)",
+            bgcolor=PANEL,
+            bordercolor=BORDER,
+            borderwidth=1,
         ),
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=BORDER, font=dict(color=TEXT)),
         annotations=[
             dict(
-            text="Off-diagonal = closing mid ≠ print &nbsp;·&nbsp; Cyan calls, purple puts &nbsp;·&nbsp; Bars: listed series that day",
+                text=(
+                    "How far is the closing midpoint from the last actual print? "
+                    f"· {ticker} · {asof_txt} · {len(both)} paired contracts"
+                ),
                 xref="paper",
                 yref="paper",
                 x=0.0,
-                y=1.02,
+                y=1.035,
                 xanchor="left",
                 yanchor="bottom",
                 showarrow=False,
-                font=dict(size=11, color="#8b949e", family="Inter, system-ui, sans-serif"),
+                font=dict(size=11, color=MUTED),
             )
         ],
     )
-    fig.update_annotations(font=dict(size=13, family="Inter, system-ui, sans-serif", color="#e6edf3"))
+    return fig
+
+
+def data_availability_figure(
+    wide: pd.DataFrame,
+    asof=None,
+    ticker: str = "UUUU",
+    cp: str | None = None,
+) -> go.Figure:
+    """Show mutually exclusive real-data states without treating missing as zero."""
+    sl = select_asof_rows(wide, asof=asof, cp=cp)
+    stats = summarize_sparsity(sl)
+    labels = [
+        "<b>QUOTE ONLY</b><br>MID_PRICE available · no trade",
+        "<b>QUOTE + TRADE</b><br>Both fields available",
+        "<b>TRADE ONLY</b><br>TRDPRC_1 available · no midpoint",
+    ]
+    counts = [stats["n_mid_only"], stats["n_both"], stats["n_trade_only"]]
+    descriptions = [
+        "Closing midpoint exists; no trade print was reported",
+        "Both real fields exist for the same contract and date",
+        "Trade print exists; closing midpoint is unavailable",
+    ]
+    total = max(stats["n_quotes"], 1)
+    fig = go.Figure()
+    fig.add_trace(
+        go.Bar(
+            x=[total, total, total],
+            y=labels,
+            orientation="h",
+            marker=dict(color=MISSING, opacity=0.28),
+            width=0.55,
+            hoverinfo="skip",
+            showlegend=False,
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=counts,
+            y=labels,
+            orientation="h",
+            marker=dict(
+                color=[MID, "#B7CBD8", TRADE],
+                line=dict(color=["#BDEFFF", "#E8EFF6", "#FFD0C8"], width=0.8),
+            ),
+            width=0.55,
+            text=[f"<b>{count}</b> contracts" for count in counts],
+            textposition="outside",
+            textfont=dict(color=TEXT, size=13),
+            customdata=np.array(descriptions)[:, None],
+            hovertemplate="%{customdata[0]}<br><b>%{x} contracts</b><extra></extra>",
+            showlegend=False,
+            cliponaxis=False,
+        )
+    )
+
+    selected_date = pd.Timestamp(asof).date() if asof is not None else None
+    if selected_date is None and len(sl) and "date" in sl.columns:
+        dates = sl["date"].dropna()
+        selected_date = pd.Timestamp(dates.iloc[0]).date() if len(dates) else None
+    asof_txt = str(selected_date) if selected_date is not None else "all dates"
+    fig.update_layout(
+        **DARK,
+        title=dict(
+            text=f"REAL FIELD AVAILABILITY · {ticker} · {asof_txt}",
+            font=dict(size=15, color=TEXT),
+            x=0.0,
+            xanchor="left",
+        ),
+        barmode="overlay",
+        bargap=0.4,
+        xaxis=dict(
+            title="Contracts in the selected date slice",
+            range=[0, total * 1.18],
+            gridcolor=GRID,
+            linecolor=BORDER,
+            zeroline=False,
+            tickfont=dict(color=MUTED),
+        ),
+        yaxis=dict(
+            autorange="reversed",
+            gridcolor="rgba(0,0,0,0)",
+            tickfont=dict(color=TEXT, size=12),
+            automargin=True,
+        ),
+        height=390,
+        margin=dict(l=250, r=82, t=84, b=54),
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=BORDER, font=dict(color=TEXT)),
+        annotations=[
+            dict(
+                text=(
+                    "Three mutually exclusive market states · gray tracks show the selected "
+                    "series universe, never zero-valued prices"
+                ),
+                xref="paper",
+                yref="paper",
+                x=0.0,
+                y=1.04,
+                xanchor="left",
+                yanchor="bottom",
+                showarrow=False,
+                font=dict(size=11, color=MUTED),
+            )
+        ],
+    )
     return fig
 
 
@@ -394,9 +515,8 @@ def coverage_heatmap(wide: pd.DataFrame, asof, cp: str = "C", field: str = "MID_
     sl = _slice_wide(wide, asof, cp)
     if sl.empty:
         return go.Figure().update_layout(
-            template="plotly_dark",
-            paper_bgcolor="#0d1117",
-            title=dict(text="No data", font=dict(size=16, family="Inter, system-ui, sans-serif")),
+            **DARK,
+            title=dict(text="No real observations are available", font=dict(size=15)),
             height=380,
         )
 
@@ -414,60 +534,68 @@ def coverage_heatmap(wide: pd.DataFrame, asof, cp: str = "C", field: str = "MID_
     pivot = pivot.reindex(order, axis=0)
     pivot = pivot.reindex(sorted(pivot.columns), axis=1)
 
-    accent = "#00ffcc" if field == "MID_PRICE" else "#ff0055"
+    accent = MID if field == "MID_PRICE" else TRADE
     fig = go.Figure(
         data=go.Heatmap(
             z=pivot.values,
             x=[f"{c:.2f}" for c in pivot.columns],
             y=list(pivot.index),
-            colorscale=[[0, "#161b22"], [1, accent]],
+            colorscale=[
+                [0.0, MISSING],
+                [0.4999, MISSING],
+                [0.5, accent],
+                [1.0, accent],
+            ],
             zmin=0,
             zmax=1,
             showscale=False,
-            xgap=2,
-            ygap=2,
-            hovertemplate="K=%{x}  expiry=%{y}  observed=%{z}<extra></extra>",
+            xgap=3,
+            ygap=3,
+            hovertemplate=(
+                f"<b>{field}</b><br>K=%{{x}} · expiry=%{{y}}"
+                "<br>observed=%{z}<extra></extra>"
+            ),
         )
     )
     fig.update_layout(
-        template="plotly_dark",
-        paper_bgcolor="#0d1117",
-        plot_bgcolor="#161b22",
-        font=dict(color="#e6edf3", family="Inter, system-ui, sans-serif", size=12),
+        **DARK,
         title=dict(
-            text=f"{field} occupancy",
-            font=dict(size=16, family="Inter, system-ui, sans-serif"),
-            x=0.02,
+            text=f"{field} COVERAGE",
+            font=dict(size=15, color=TEXT),
+            x=0.0,
             xanchor="left",
             y=0.98,
             yanchor="top",
         ),
         xaxis=dict(
             title="Strike ($)",
-            gridcolor="#30363d",
+            gridcolor=GRID,
+            linecolor=BORDER,
             tickangle=-45,
-            tickfont=dict(size=10),
+            tickfont=dict(size=10, color=MUTED),
             title_font=dict(size=12),
         ),
         yaxis=dict(
             title="Expiry",
-            gridcolor="#30363d",
-            tickfont=dict(size=11),
+            gridcolor=GRID,
+            linecolor=BORDER,
+            tickfont=dict(size=11, color=MUTED),
             title_font=dict(size=12),
         ),
         height=380,
-        margin=dict(l=72, r=16, t=56, b=56),
+        margin=dict(l=76, r=18, t=76, b=58),
+        hoverlabel=dict(bgcolor=PANEL, bordercolor=BORDER, font=dict(color=TEXT)),
         annotations=[
             dict(
-                text="Lit cell = a number exists &nbsp;·&nbsp; Dark cell = no quote that day",
+                text="Bright cell = a real observation · muted cell = unavailable, not zero",
                 xref="paper",
                 yref="paper",
                 x=0.0,
-                y=1.02,
+                y=1.04,
                 xanchor="left",
                 yanchor="bottom",
                 showarrow=False,
-                font=dict(size=11, color="#8b949e", family="Inter, system-ui, sans-serif"),
+                font=dict(size=11, color=MUTED),
             )
         ],
     )
