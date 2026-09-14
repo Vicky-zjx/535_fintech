@@ -2,12 +2,19 @@
 
 from dataclasses import replace
 from datetime import date
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest.mock import patch
 
 from .accounting import Account, midpoint
 from .config import Config
 from .engine import run_backtest
 from .ric import option_ric
+from .universe import available_contracts, observed_contracts
+from .fetch_lseg import fetch
 
 
 def stock(day, price, time="11:00"):
@@ -70,6 +77,94 @@ class BacktestTests(unittest.TestCase):
         r=self.run_book([stock('2026-07-06',100)],options,end='2026-07-10')
         self.assertEqual(r['metrics']['calls_sold'],0)
         self.assertIsNone(r['decisions'][0]['selected_strike'])
+        self.assertEqual(r['decisions'][0]['observed_strikes'],[])
+
+    def test_irregular_observed_strikes_not_rounded_to_grid(self):
+        # Explicit test fixtures, not claims about AAPL's real listing history.
+        # Target 108.15; observed 108.20 must not be skipped for a made-up 108.50.
+        options=[call('2026-07-06','2026-07-10',107.75),
+                 call('2026-07-06','2026-07-10',108.20),
+                 call('2026-07-06','2026-07-10',110)]
+        r=self.run_book([stock('2026-07-06',103),stock('2026-07-10',104,'16:00')],
+                        options,end='2026-07-10')
+        d=r['decisions'][0]
+        self.assertEqual(d['selected_strike'],108.20)
+        self.assertEqual(d['observed_strikes'],[107.75,108.20,110])
+        self.assertEqual(d['eligible_strikes'],[108.20,110])
+
+    def test_exact_target_is_eligible(self):
+        r=self.run_book([stock('2026-07-06',100),stock('2026-07-10',104,'16:00')],
+                        [call('2026-07-06','2026-07-10',105)],end='2026-07-10')
+        self.assertEqual(r['decisions'][0]['selected_strike'],105)
+
+    def test_constructible_ric_and_all_null_row_are_not_listing_evidence(self):
+        options=[call('2026-07-06','2026-07-10',105,None,None,None),
+                 call('2026-07-06','2026-07-10',110),
+                 call('2026-07-06','2026-07-17',106)]
+        r=self.run_book([stock('2026-07-06',100),stock('2026-07-10',104,'16:00')],
+                        options,end='2026-07-10')
+        self.assertEqual(r['decisions'][0]['observed_strikes'],[110])
+        self.assertEqual(r['decisions'][0]['selected_strike'],110)
+        self.assertNotIn(options[0]['ric'],{r['ric'] for r in observed_contracts(options)})
+
+    def test_first_evidence_uses_timestamp_not_string_order_or_listing_inference(self):
+        early=call('2026-07-06','2026-07-10',105,trade=None,time='10:00')
+        early['timestamp']='2026-07-06T14:00:00+00:00'  # 10:00 New York
+        later=call('2026-07-06','2026-07-10',105,time='12:00')
+        future=call('2026-07-06','2026-07-10',106,time='12:00')
+        contracts=observed_contracts([later,future,early])
+        found=available_contracts(contracts,'2026-07-10','2026-07-06T11:00:00-04:00')
+        self.assertEqual([r['strike'] for r in found],[105])
+        self.assertEqual(found[0]['first_observed_at'],early['timestamp'])
+        self.assertIsNone(found[0]['evidence']['print'])
+
+    def test_same_ric_cannot_change_strike_identity(self):
+        first=call('2026-07-06','2026-07-10',105)
+        second={**first,'timestamp':'2026-07-06T12:00:00-04:00','strike':106}
+        with self.assertRaisesRegex(ValueError,'Inconsistent contract identity'):
+            self.run_book([stock('2026-07-06',100)],[first,second],end='2026-07-10')
+
+    def test_default_cash_allows_reg_t_permitted_debit(self):
+        r=self.run_book([stock('2026-07-06',312.5201),stock('2026-07-10',315,'16:00')],
+                        [call('2026-07-06','2026-07-10',330)],
+                        initial_cash=Config().initial_cash,end='2026-07-10')
+        self.assertEqual(r['config']['initial_cash'],30000)
+        buy=next(x for x in r['ledger'] if x['phase']=='after_buy')
+        self.assertAlmostEqual(buy['cash'],-1252.01)
+        self.assertGreater(buy['available_funds'],0)
+        self.assertGreater(buy['excess'],0)
+        self.assertEqual(r['metrics']['calls_sold'],1)
+
+    def test_refresh_requests_only_exact_observed_contracts(self):
+        # Mock source is a unit-test fixture only; no network or published data.
+        config=replace(self.config,end='2026-07-10')
+        options=[call('2026-07-06','2026-07-10',108.15,None,None,None),
+                 call('2026-07-06','2026-07-10',108.20),
+                 call('2026-07-06','2026-07-10',110)]
+        expected={r['ric'] for r in options[1:]}|{'AAPL.O'}
+        seed=dict(metadata=dict(config.to_dict(),source='LSEG',synthetic=False,
+                                timestamp_label='endPeriod',requested_target_otm=.05),
+                  stock=[stock('2026-07-06',103)],options=options)
+        def reply(**kwargs):
+            ric=kwargs['universe']
+            self.assertIn(ric,expected)
+            raw=dict(summaryTimestampLabel='startPeriod',
+                     headers=[{'name':f} for f in ['DATE_TIME','BID','ASK','TRDPRC_1']],
+                     data=[['2026-07-06T14:00:00Z',1,3,103 if ric=='AAPL.O' else 2]])
+            return SimpleNamespace(get_data=lambda:SimpleNamespace(is_success=True,data=SimpleNamespace(raw=raw)))
+        with tempfile.TemporaryDirectory() as tmp:
+            source=Path(tmp)/'seed.json'; output=Path(tmp)/'refresh.json'
+            source.write_text(json.dumps(seed))
+            with patch('lseg.data.open_session'), patch('lseg.data.close_session'), \
+                 patch('lseg.data.content.historical_pricing.summaries.Definition',side_effect=reply) as api:
+                fetch(output,source,config)
+            self.assertEqual({c.kwargs['universe'] for c in api.call_args_list},expected)
+            result=json.loads(output.read_text())
+            self.assertNotIn('candidate_grid',result['metadata'])
+            self.assertEqual(result['metadata']['week_searches'][0]['chosen_strike'],108.20)
+            self.assertEqual(json.loads(source.read_text()),seed)
+            with self.assertRaisesRegex(ValueError,'already exists'):
+                fetch(output,source,config)
 
     def test_known_missing_nearest_strike_does_not_jump_to_further_quote(self):
         options=[call('2026-07-06','2026-07-10',105,time='10:00'),

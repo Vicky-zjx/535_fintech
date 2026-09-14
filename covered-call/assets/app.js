@@ -30,12 +30,28 @@
     if(!rows.length)return '<div class="empty">No records for this selection.</div>';
     return `<table><thead><tr>${columns.map(col=>`<th scope="col" class="${col[3]||""}">${esc(col[1])}</th>`).join("")}</tr></thead><tbody>${rows.map(row=>`<tr>${columns.map(col=>`<td class="${col[3]||""}">${col[2]?col[2](row[col[0]],row):esc(row[col[0]])}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
   }
+  const strikes = values => values?.length ? esc(values.map(price).join(', ')) : 'None observed';
+  const decisionCols=[['timestamp','Entry timestamp',x=>esc(stamp(x))],['outcome','Outcome'],
+    ['spot','Stock print',x=>esc(price(x)),'num'],['target','5% target',x=>esc(price(x)),'num'],
+    ['observed_strikes','Observed strikes by entry',strikes,'note'],
+    ['eligible_strikes','Observed strikes ≥ target',strikes,'note'],
+    ['selected_strike','Selected strike',x=>esc(price(x)),'num'],['expiry','Expiry'],
+    ['selected_first_observed_at','First evidence for selected RIC',x=>esc(stamp(x))],
+    ['ric','Selected RIC'],['reason','Decision / skip reason',null,'note']];
 
   if ($("data-provenance")) {
     $("data-provenance").textContent=JSON.stringify({source:b.metadata.source,fetched_at:b.metadata.fetched_at,stock_bars:b.metadata.stock_bars,option_bars:b.metadata.option_bars,cache_sha256:b.metadata.cache_sha256,bar_minutes:c.bar_minutes,timestamp_normalization:b.metadata.timestamp_normalization,ric_day_convention:b.metadata.ric_day_convention},null,2);
     $("connection-status").textContent="Data connection required";
     $("connection-detail").textContent=location.hostname.endsWith("github.io") ? "GitHub Pages displays the cached backtest. A live LSEG pull runs locally with your own logged-in Workspace session." : "The published result is already available from book.js. Use the separate local Python utility below to fetch a new real dataset.";
     $("download-book").onclick=()=>download("covered-call-result.json",JSON.stringify(b,null,2),"application/json");
+    $("universe-limit").textContent=b.universe.limitation;
+    $("universe-acquisition").textContent=b.universe.acquisition_limitation;
+    $("universe-count").textContent=`${b.universe.contract_count} distinct observed contracts in the retained LSEG cache. Each Monday uses only that Friday’s contracts with evidence available by entry.`;
+    $("universe-weekly").innerHTML=table(b.decisions,decisionCols);
+    $("universe-contracts").innerHTML=table(b.universe.contracts,[['ric','Observed RIC'],['expiry','Expiry'],['strike','Actual strike',x=>esc(price(x)),'num'],['first_observed_at','First observed bar end',x=>esc(stamp(x))]]);
+    $("download-universe").onclick=()=>download('observed-option-universe.json',JSON.stringify(b.universe,null,2),'application/json');
+    const probe=b.universe.discovery_probe;
+    $("discovery-result").textContent=probe ? `LSEG Search probe ${probe.queried_at}: ${probe.opra_rows} OPRA call records; returned expiries: ${Object.entries(probe.opra_expiry_counts).map(([day,n])=>`${day} (${n})`).join(', ')}. This is not a historical chain snapshot and is not used to establish earlier Monday eligibility.` : 'No complete historical point-in-time chain is attached. The backtest uses only its documented observed cache.';
     return;
   }
 
@@ -66,7 +82,7 @@
   function renderBlotter(){const f=$("action-filter").value;const rows=blotter.filter(r=>f==='ALL'||r.action===f);$("blotter-table").innerHTML=table(rows,blotterCols);$("blotter-count").textContent=`${rows.length} of ${blotter.length} booked events`;}
   $("action-filter").onchange=renderBlotter;renderBlotter();
   $("skips-summary").textContent=`Weekly decisions · ${m.skipped_weeks} skipped weeks`;
-  $("decisions-table").innerHTML=table(b.decisions,[['timestamp','Entry timestamp',x=>esc(stamp(x))],['outcome','Outcome'],['spot','Stock print',x=>esc(price(x)),'num'],['target','5% target',x=>esc(price(x)),'num'],['selected_strike','Selected strike',x=>esc(price(x)),'num'],['expiry','Expiry'],['reason','Decision / skip reason',null,'note']]);
+  $("decisions-table").innerHTML=table(b.decisions,decisionCols);
 
   const ledgerCols=[['timestamp','Timestamp',x=>esc(stamp(x))],['phase','State'],
     ['cash','Cash',x=>esc(money(x)),'num'],['shares','Shares',null,'num'],['stock_mark','Stock mark',x=>esc(price(x)),'num'],

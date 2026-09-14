@@ -10,6 +10,7 @@ from .accounting import finite
 def validate_bars(stock, options, config):
     for name, rows, extra in (("stock", stock, ["print"]), ("option", options, ["strike", "expiry", "bid", "ask", "print", "cp"])):
         seen = set()
+        identities = {}
         for row in rows:
             required = {"timestamp", "ric", "bar_minutes", *extra}
             if not required <= row.keys():
@@ -32,6 +33,9 @@ def validate_bars(stock, options, config):
                 if row["cp"] != "C" or row["strike"] <= 0:
                     raise ValueError("Only standard positive-strike calls are supported")
                 pd.Timestamp(row["expiry"])
+                identity = (row['strike'], row['expiry'], row['cp'])
+                if identities.setdefault(row['ric'], identity) != identity:
+                    raise ValueError(f"Inconsistent contract identity for {row['ric']}")
     return stock, options
 
 

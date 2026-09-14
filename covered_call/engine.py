@@ -9,6 +9,7 @@ import pandas as pd
 from .accounting import Account, finite, midpoint
 from .config import Config
 from .ingest import validate_bars
+from .universe import available_contracts, observed_contracts
 
 
 def local_timestamp(day, time, config):
@@ -17,6 +18,7 @@ def local_timestamp(day, time, config):
 
 def run_backtest(stock, options, config=Config()):
     validate_bars(stock, options, config)
+    contracts = observed_contracts(options)
     stock_at = {pd.Timestamp(r["timestamp"]): r for r in stock}
     options_at = defaultdict(list)
     for row in options:
@@ -34,13 +36,11 @@ def run_backtest(stock, options, config=Config()):
     account = Account(config.initial_cash)
     blotter, ledger, decisions = [], [], []
     stock_mark = stock_source = None
-    quote_marks, listed = {}, {}
+    quote_marks = {}
     for row in sorted(options, key=lambda r: r['timestamp']):
         ts = pd.Timestamp(row['timestamp'])
         if ts >= start:
             continue
-        if any(finite(row.get(k)) for k in ('bid', 'ask', 'print')):
-            listed.setdefault(row['ric'], row)
         mid = midpoint(row)
         if mid is not None:
             quote_marks[row['ric']] = (mid, ts)
@@ -79,10 +79,6 @@ def run_backtest(stock, options, config=Config()):
         current_options = {}
         for row in options_at.get(ts, []):
             current_options[row["ric"]] = row
-            # First source observation is evidence of availability at this time;
-            # contracts seen only later never enter Monday's candidate universe.
-            if any(finite(row.get(k)) for k in ("bid", "ask", "print")):
-                listed.setdefault(row["ric"], row)
             mid = midpoint(row)
             if mid is not None:
                 quote_marks[row["ric"]] = (mid, ts)
@@ -105,7 +101,11 @@ def run_backtest(stock, options, config=Config()):
 
         if local.weekday() == 0 and local.strftime("%H:%M") == config.entry_time:
             expiry = (local.date() + timedelta(days=4)).isoformat()
-            decision = dict(timestamp=ts.isoformat(), expiry=expiry, outcome="skipped", reason="", spot=None, target=None, selected_strike=None, ric=None)
+            observed = available_contracts(contracts, expiry, ts)
+            decision = dict(timestamp=ts.isoformat(), expiry=expiry, outcome="skipped", reason="", spot=None, target=None,
+                            selected_strike=None, ric=None,
+                            observed_strikes=sorted({r['strike'] for r in observed}),
+                            eligible_strikes=[], selected_first_observed_at=None, selected_evidence=None)
             decisions.append(decision)
             if account.call:
                 decision["reason"] = "An existing call is still open; a second short call is forbidden."
@@ -113,6 +113,8 @@ def run_backtest(stock, options, config=Config()):
                 decision["reason"] = "No stock print at the exact Monday bar end (holiday or missing data); no later fill."
             else:
                 decision.update(spot=stock_mark, target=stock_mark * (1+config.target_otm))
+                candidates = available_contracts(observed, expiry, ts, decision['target'])
+                decision['eligible_strikes'] = sorted({r['strike'] for r in candidates})
                 if account.shares == 0:
                     proposed_available = account.cash - 0.5 * 100 * stock_mark
                     if proposed_available < -1e-8:
@@ -121,25 +123,24 @@ def run_backtest(stock, options, config=Config()):
                         continue
                     book(ts, "BUY", config.stock_ric, 100, stock_mark, -100*stock_mark,
                          "Flat on Monday -> buy exactly 100 shares at the observed stock print; Reg T checked before booking.")
-                candidates = [row for row in listed.values()
-                              if row["expiry"] == expiry and row["strike"] >= decision["target"] - 1e-10]
-                candidates.sort(key=lambda r: (r["strike"], r["ric"]))
                 if not candidates:
-                    decision["reason"] = "No listed call at or above the 5% target is evidenced by data available at entry within the documented candidate search. Shares are retained."
+                    decision["reason"] = "No observed same-Friday call at or above the target has quote/print evidence by entry. Coverage is incomplete; this does not mean no such listed strike exists. Shares are retained."
                 else:
                     chosen = candidates[0]
-                    decision.update(selected_strike=chosen["strike"], ric=chosen["ric"])
+                    decision.update(selected_strike=chosen["strike"], ric=chosen["ric"],
+                                    selected_first_observed_at=chosen['first_observed_at'],
+                                    selected_evidence=chosen['evidence'])
                     row = current_options.get(chosen["ric"])
                     mid = midpoint(row)
                     if mid is None:
-                        decision["reason"] = "Selected listed strike has missing, negative, or crossed BID/ASK at entry; skip option without substituting another strike or a future quote."
+                        decision["reason"] = "Selected observed strike has missing, negative, or crossed BID/ASK at entry; skip option without substituting another strike or a future quote."
                     elif account.valuation(stock_mark, None)["available_funds"] < -1e-8:
                         decision["reason"] = "Reg T rejected call entry: available funds are negative."
                     else:
                         book(ts, "SELL", chosen["ric"], 1, mid, 100*mid,
-                             f"5% OTM target {decision['target']:.4f} -> next observed listed strike {chosen['strike']:.2f}; simulated limit fill at same-bar (BID+ASK)/2.",
+                             f"5% OTM target {decision['target']:.4f} -> smallest qualifying observed strike {chosen['strike']:.2f}; simulated limit fill at same-bar (BID+ASK)/2.",
                              chosen["strike"], expiry, limit=mid, bid=row["bid"], ask=row["ask"])
-                        decision.update(outcome="filled", reason="Selected next listed strike; valid same-bar midpoint; covered and Reg T admissible.")
+                        decision.update(outcome="filled", reason="Smallest qualifying observed strike; valid same-bar midpoint; covered and Reg T admissible.")
             snapshot(ts, "entry_decision")
         else:
             snapshot(ts, "bar_close")

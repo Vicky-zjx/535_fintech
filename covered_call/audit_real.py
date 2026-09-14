@@ -45,6 +45,31 @@ def audit_real(cache, book_path):
 
     stock={(r['ric'],pd.Timestamp(r['timestamp'])):r for r in data['stock']}
     options={(r['ric'],pd.Timestamp(r['timestamp'])):r for r in data['options']}
+    # Independently reconstruct membership from actual raw-verified prices, not
+    # from the production universe helper or any constructible identifier.
+    first={}
+    for r in sorted(data['options'],key=lambda row:pd.Timestamp(row['timestamp'])):
+        if any(r.get(f) is not None and math.isfinite(r[f]) for f in ['bid','ask','print']):
+            first.setdefault(r['ric'],r)
+    assert set(first)=={r['ric'] for r in book['universe']['contracts']}
+    assert book['universe']['complete_historical_chain'] is False
+    for contract in book['universe']['contracts']:
+        row=first[contract['ric']]
+        assert contract['strike']==row['strike'] and contract['expiry']==row['expiry']
+        assert pd.Timestamp(contract['first_observed_at'])==pd.Timestamp(row['timestamp'])
+        assert contract['evidence']=={f:row.get(f) for f in ['source_timestamp','bid','ask','print']}
+    for decision in book['decisions']:
+        if 'expiry' not in decision:
+            continue
+        known=sorted({r['strike'] for r in first.values() if r['expiry']==decision['expiry']
+                      and pd.Timestamp(r['timestamp'])<=pd.Timestamp(decision['timestamp'])})
+        assert decision['observed_strikes']==known
+        target=decision['target']
+        eligible=[k for k in known if target is not None and k>=target-1e-10]
+        assert decision['eligible_strikes']==eligible
+        if decision['selected_strike'] is not None:
+            assert decision['selected_strike']==min(eligible)
+            assert pd.Timestamp(decision['selected_first_observed_at'])==pd.Timestamp(first[decision['ric']]['timestamp'])
     cash=book['config']['initial_cash']; shares=0; call=None
     for e in book['blotter']:
         ts=pd.Timestamp(e['timestamp'])
@@ -96,6 +121,7 @@ def audit_real(cache, book_path):
     assert math.isclose(independent_r2,book['validation']['fit']['r2'],abs_tol=1e-10)
     print(json.dumps(dict(passed=True,source_rows_verified=len(data['stock'])+len(data['options']),
                           booked_events_verified=len(book['blotter']),regression_pairs_verified=len(points),
+                          observed_contracts_verified=len(first),weekly_candidate_sets_verified=len(book['decisions']),
                           independently_computed_r2=float(independent_r2),ending_cash=cash,
                           ending_nav=cash+shares*final_stock),indent=2))
 

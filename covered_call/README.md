@@ -32,7 +32,7 @@ bundle and baked `book.js`; the grader does not need Python or an LSEG session.
 Monday 11:00 America/New_York, July 6–September 11, 2026, hourly bars, 5% OTM.
 
 Buy 100 shares if flat, subject to the prospective Reg T check. Choose the
-lowest observed listed strike at or above 1.05 times the current stock print,
+smallest actually observed strike at or above 1.05 times the Monday stock print,
 expiring the same Friday. If the selected contract has no valid same-bar
 BID/ASK, skip the option leg, keeping any already-purchased stock. Do not
 substitute a higher strike with a quote. Sell one call at the midpoint, hold
@@ -58,7 +58,7 @@ is an explicitly timestamped stale mark for valuation, never for an entry fill.
 
 ```bash
 # LSEG Workspace must be logged in. Pick a new filename to preserve old pulls.
-.venv/bin/python -m covered_call.fetch_lseg --output covered_call/data/aapl_hourly_new.json
+.venv/bin/python -m covered_call.fetch_lseg --universe-cache covered_call/data/aapl_hourly_verified.json --output covered_call/data/aapl_hourly_new.json
 .venv/bin/python -m covered_call.build --cache covered_call/data/aapl_hourly_new.json
 ```
 
@@ -74,12 +74,35 @@ bar supplies the expiry stock mark; the 16:00–17:00 bar is excluded. Source
 timestamps remain in the normalized records. Exchange/manual corrections are
 requested; split-adjustment factors are not applied by the client.
 
-AAPL candidate RICs use a deterministic $0.50 grid from the first grid strike
-at or above the 5% target up to $10 higher, plus ±$2.50 around the rounded
-Monday stock price for near-ATM validation. Each is requested for the preceding
-week through expiry. Eligibility requires an observed quote or print no later
-than entry. Future rows cannot establish Monday listing eligibility. This is a
-bounded observed universe, not an exhaustive historical chain master.
+The fetcher requires an explicit real `--universe-cache` and requests its exact
+observed RIC/strike/expiry pairs, never a generated sequence of strikes. Refreshing
+this source does not expand its coverage. To expand coverage, supply a broader
+verified historical source; a current chain cannot establish a past listing.
+Requests preserve source evidence and exclude all-null contracts from membership.
+
+`universe.py` derives the observed contract set directly from LSEG BID, ASK, or
+TRDPRC_1 observations. At each Monday entry, restrict it to that Friday's calls
+whose first observed bar was available by entry, then select the minimum actual
+strike >= 1.05 times spot. Do not round the target or assume an intermediate
+strike exists. A price on only one side establishes observation, but a fill still
+requires valid same-bar BID and ASK. Future rows cannot establish past eligibility.
+Weekly observed/qualifying strikes, selected RIC, and first evidence are baked
+into the result JSON and shown on the Data page and weekly decisions table.
+
+**Historical coverage is incomplete.** The original real cache was acquired by
+testing $0.50 increments within narrow target/ATM bands. Those probes were not a
+listing grid, and only real returned observations count. Off-grid or out-of-band
+listed contracts may be absent. The original cache and raw replies are unchanged
+for auditability; the refresh utility no longer constructs that grid. The chosen
+strike is the minimum in the observed set, not a guaranteed global minimum over
+all listed strikes. Missing evidence means unknown, not unlisted; selection and
+validation remain subject to the original sampling limitation.
+
+The separate `data/chain_discovery_probe.json` records a live LSEG Search request
+for AAPL calls expiring July 6–September 11, 2026. It returned 79 OPRA records,
+all expiring September 11; it did not reconstruct earlier expiries. Those current
+search records are not substituted for historical Monday evidence. See
+[LSEG's expired-option discovery discussion](https://developers.lseg.com/en/article-catalog/article/building-a-custom-option-ric-search-web-application-with-refinit).
 
 The assignment screenshot says the day is unpadded. Paired real tests found:
 
@@ -98,7 +121,8 @@ A–L on both sides of the RIC; the already-verified A–L suffix for puts is re
 |---|---|
 | `config.py` | One source of order time, cash, dates and rule settings |
 | `ric.py` | Tested reusable RIC constructor |
-| `fetch_lseg.py` | Bounded real requests; raw reply caching and provenance |
+| `universe.py` | Exact observed contracts, first evidence and point-in-time eligibility |
+| `fetch_lseg.py` | Refresh observed contracts only; raw reply caching and provenance |
 | `ingest.py` | Validate source, timestamps, interval and duplicate rows |
 | `accounting.py` | Position invariants, booked cash flows and Reg T formulas |
 | `engine.py` | Chronological strategy loop, decisions, ledger and regression |

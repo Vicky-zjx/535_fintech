@@ -4,3 +4,5 @@
 /* Reserve the Plotly layout height so plots cannot overlap the next paragraph. */
 .chart{height:472px;min-height:0}
 @media(max-width:599px){.chart{height:407px}}
+/* Wrap long provenance fields instead of extending the mobile page. */
+.provenance{white-space:pre-wrap;overflow-wrap:anywhere}

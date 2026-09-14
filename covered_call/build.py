@@ -12,6 +12,7 @@ import plotly
 from .config import Config
 from .engine import run_backtest
 from .ingest import load_real
+from .universe import observed_contracts, universe_provenance
 
 
 def build(cache: Path, output: Path, config=Config()):
@@ -23,14 +24,21 @@ def build(cache: Path, output: Path, config=Config()):
         raise ValueError(f"Cannot publish a completed backtest: {result['status']}. Inspect missing expiry data first.")
     m=result['metrics']; v=result['validation']
     md=data['metadata']
+    universe = universe_provenance(data, cache)
+    universe['contracts'] = observed_contracts(data['options'])
+    universe['contract_count'] = len(universe['contracts'])
+    probe_path = cache.parent / 'chain_discovery_probe.json'
+    if probe_path.exists():
+        probe = json.loads(probe_path.read_text())
+        universe['discovery_probe'] = {k: v for k, v in probe.items() if k != 'rows'}
+    result['universe'] = universe
     result['metadata']=dict(source='LSEG',synthetic=False,fetched_at=md['fetched_at'],
                             built_at=datetime.now(timezone.utc).isoformat(),
                             cache_sha256=hashlib.sha256(cache.read_bytes()).hexdigest(),
                             stock_bars=len(data['stock']),option_bars=len(data['options']),
-                            option_contracts=len({r['ric'] for r in data['options']}),
+                            option_contracts=universe['contract_count'],
                             timestamp_normalization=md['timestamp_normalization'],
-                            ric_day_convention=md['ric_day_convention'],
-                            candidate_grid=md['candidate_grid'])
+                            ric_day_convention=md['ric_day_convention'])
     first_buy=next((r for r in result['blotter'] if r['action']=='BUY'),None)
     debit=max(0,-min(r['cash'] for r in result['ledger']))
     result['analysis']=[
@@ -57,10 +65,12 @@ def build(cache: Path, output: Path, config=Config()):
             f"ENTRY_TIME = {config.entry_time} America/New_York. A source bar labeled 10:00 becomes available at 11:00. "
             "A missed Monday is not rescheduled to Tuesday. Expiry uses the stock print in the hourly bar ending Friday 16:00.")),
         dict(title='Candidate universe and no look-ahead',text=(
-            "For each week, test a $0.50 strike grid from the rounded-up 5% target through $10 above it, "
-            "plus an ATM band of ±$2.50 for validation. A candidate is eligible only after LSEG has returned "
-            "a quote or print timestamped at or before entry. Choose the lowest eligible strike ≥ target; "
-            "if its current bid/ask is missing, skip instead of reaching for another strike. This is a documented observed universe, not a claim to recover an entire historical listing master.")),
+            "For the same Friday expiry, use exact RIC/strike pairs with a real LSEG quote or print available "
+            "at or before Monday entry. Choose the smallest observed strike ≥ 1.05 × Monday spot. "
+            "Do not round to a strike grid, invent intermediate strikes, or use later observations as listing evidence. "
+            "If the selected contract has no valid current BID/ASK, skip without selecting a higher strike. "
+            "The weekly decision log exposes the observed set, qualifying set, and chosen contract’s first evidence.")),
+        dict(title='Historical universe coverage',text=universe['limitation']+' '+universe['acquisition_limitation']),
         dict(title='Simulated fills and sparse marks',text=(
             "The fill is the observed bar’s closing BID/ASK midpoint; the stock fill is that bar’s TRDPRC_1. "
             "These are simulated executions from real historical bars, not claims of actual orders. "

@@ -1,11 +1,10 @@
-"""Bounded real LSEG pull. Raw replies retained; never touches Assignment 1.1."""
+"""Refresh exact observed LSEG contracts; no invented strike grid or synthetic fallback."""
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
-import math
 from pathlib import Path
 import time
 
@@ -14,7 +13,8 @@ import pandas as pd
 from .accounting import finite
 from .config import Config
 from .engine import local_timestamp
-from .ric import option_ric
+from .ingest import load_real
+from .universe import observed_contracts, universe_provenance, available_contracts
 
 FIELDS = ['TRDPRC_1', 'BID', 'ASK', 'NUM_MOVES', 'ACVOL_UNS']
 
@@ -53,7 +53,17 @@ def parse_reply(raw, ric, config, contract=None):
     return sorted(result, key=lambda r: r['timestamp'])
 
 
-def fetch(output: Path, config=Config()):
+def fetch(output: Path, universe_cache: Path, config=Config()):
+    if output.exists():
+        raise ValueError('Output already exists; choose a new filename to preserve real data.')
+    # Membership comes from real historical observations in an explicit source.
+    # Constructing a parseable RIC cannot create a candidate or a listed strike.
+    seed = load_real(universe_cache, config)
+    contracts = observed_contracts(seed['options'])
+    if not contracts:
+        raise ValueError('No observed contracts in the supplied real universe cache.')
+    provenance = universe_provenance(seed, universe_cache)
+
     import lseg.data as ld
     from lseg.data.content import historical_pricing as hp
 
@@ -116,30 +126,23 @@ def fetch(output: Path, config=Config()):
                 print(f'{monday.date()}: no exact entry stock print',flush=True)
                 continue
             spot = s['print']; target=spot*(1+config.target_otm)
-            first = math.ceil((target-1e-10)*2)/2
-            center = round(spot*2)/2
-            # $0.50 candidate grid: validate every intermediate target strike in order.
-            # A small ATM band is for the separate regression, not strike selection.
-            atm = [center+i/2 for i in range(-5,6)]
-            target_band = [first+i/2 for i in range(21)]
-            strikes = sorted(set(atm+target_band))
+            week_contracts = [r for r in contracts if r['expiry'] == expiry.isoformat()]
             begin = local_timestamp(monday.date()-timedelta(days=7),'09:00',config).tz_convert('UTC').isoformat()
             finish = local_timestamp(expiry,'17:00',config).tz_convert('UTC').isoformat()
-            def one(strike):
-                ric = option_ric(config.stock_ric,expiry,strike,pad_day=True)
-                return get(ric,begin,finish,dict(strike=strike,expiry=expiry.isoformat()))
+            def one(contract):
+                return get(contract['ric'], begin, finish,
+                           dict(strike=contract['strike'], expiry=contract['expiry']))
             with ThreadPoolExecutor(max_workers=3) as pool:
-                frames=list(pool.map(one,strikes))
+                frames=list(pool.map(one,week_contracts))
             week_rows=[row for frame in frames for row in frame]
             options.extend(week_rows)
-            known={row['ric']:row['strike'] for row in week_rows
-                   if pd.Timestamp(row['timestamp']) <= ts and
-                   any(finite(row.get(f)) for f in ['bid','ask','print'])}
-            found=sorted(k for k in known.values() if k>=target-1e-10)
+            known = available_contracts(observed_contracts(week_rows), str(expiry), ts)
+            found = available_contracts(known, str(expiry), ts, target)
             week_searches.append(dict(monday=str(monday.date()),expiry=str(expiry),spot=spot,target=target,
-                                     tested_strikes=strikes,entry_known_strikes=sorted(set(known.values())),
-                                     chosen_strike=found[0] if found else None,observations=len(week_rows)))
-            print(f'{monday.date()}: spot={spot:.4f} target={target:.4f} selected={found[0] if found else None}; {len(week_rows)} real rows',flush=True)
+                                     requested_observed_rics=[r['ric'] for r in week_contracts],
+                                     entry_known_strikes=sorted({r['strike'] for r in known}),
+                                     chosen_strike=found[0]['strike'] if found else None,observations=len(week_rows)))
+            print(f'{monday.date()}: {len(week_contracts)} observed contracts requested; {len(week_rows)} real rows',flush=True)
     finally:
         ld.close_session()
     data=dict(metadata=dict(source='LSEG',synthetic=False,ticker=config.ticker,stock_ric=config.stock_ric,
@@ -149,7 +152,7 @@ def fetch(output: Path, config=Config()):
                            adjustments=['exchangeCorrection','manualCorrection'],sessions='normal',
                            start=config.start,end=config.end,entry_time=config.entry_time,
                            requested_target_otm=config.target_otm,
-                           candidate_grid=0.5,week_searches=week_searches,requests=logs,
+                           candidate_universe=provenance,week_searches=week_searches,requests=logs,
                            ric_day_convention='AAPL provider uses two-digit days; confirmed with paired real tests on 2026-08-07 and 2026-09-04. Assignment constructor defaults to the screenshot non-padded form.',
                            ric_probe=[{'unpadded':'AAPLH72632500.U^H26','result':'90001 universe not found','padded':'AAPLH072632500.U^H26','bid':0.27,'ask':0.29,'print':0.28,'source_bar_start':'2026-08-03T14:00:00Z'},
                                       {'unpadded':'AAPLI42633500.U^I26','result':'90001 universe not found','padded':'AAPLI042633500.U^I26','bid':0.05,'ask':0.07,'print':0.06,'source_bar_start':'2026-08-31T14:00:00Z'}]),
@@ -163,8 +166,10 @@ def fetch(output: Path, config=Config()):
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--universe-cache', type=Path, required=True,
+                        help='Real LSEG cache supplying exact observed RIC/strike/expiry pairs; no inferred intermediate strikes.')
     parser.add_argument('--output',type=Path,default=Path('covered_call/data/aapl_hourly_verified.json'))
     args=parser.parse_args()
     if args.output.exists():
         raise SystemExit('Output already exists. Choose a new --output path to preserve the real cache.')
-    fetch(args.output)
+    fetch(args.output, args.universe_cache)
