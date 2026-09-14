@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="AAPL covered calls: a reproducible 5% OTM backtest with real LSEG hourly quotes, an auditable blotter, and a Reg T ledger.">
+  <title>Covered Call Backtest · FINTECH 535</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/plotly.min.js"></script>
+  <script defer src="book.js"></script>
+  <script defer src="assets/app.js"></script>
+</head>
+<body>
+  <header class="topbar"><a href="../">FINTECH <strong>535</strong></a><nav aria-label="Course navigation"><a href="../">Option Surface Lab</a><a href="data.html">Data &amp; reproducibility ↗</a></nav></header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">ALGORITHMIC TRADING II / COVERED CALLS</p>
+      <div class="hero-row"><div><h1>Keep the shares.<br>Write the upside.</h1><p class="lead">AAPL covered-call backtest</p><p class="sublead">A 5% OTM target, one contract at a time. Follow every trade from the quote to the account.</p></div><div class="strategy-glyph" aria-hidden="true"><span>100</span><small>SHARES</small><b>+</b><span>−1</span><small>CALL</small></div></div>
+      <div class="statusline"><span id="source-badge" class="badge">Loading cached result</span><span id="period">—</span><span id="entry-summary">—</span></div>
+    </section>
+    <div id="failure" class="notice error" hidden></div>
+    <noscript><p class="notice">Enable JavaScript to display the baked backtest, ledger, and interactive charts. No server or data connection is required.</p></noscript>
+    <section id="rules">
+      <div class="section-title"><span class="index">01 / THE RULE</span><h2>Room to rise. Less premium.</h2></div>
+      <div class="rule-grid"><article><h3>Choose the strike</h3><div class="formula">K = min { listed K ≥ 1.05 × S }</div><p>At the Monday order time, buy 100 shares only if flat. Then select the smallest listed strike at or above the 5% target, expiring that Friday. Existing shares are retained.</p></article><article><h3>Book the trade</h3><p>Sell exactly one covered call at a simulated limit fill of <strong>(BID + ASK) / 2</strong>. Both quotes must be valid in the same completed hourly bar as the stock print. Missing or crossed quotes mean no option fill.</p></article><article><h3>Wait through expiry</h3><p>If Friday’s closing-bar stock print is ≤ K, the call expires at zero and shares remain. If S &gt; K, deliver the 100 shares at K and become flat. <strong>No rolls, buy-to-close, early exits, or early assignment.</strong></p></article></div>
+      <p class="caption">The farther-OTM strike leaves more upside before assignment, in exchange for less premium and less downside cushion. It does not reduce the underlying stock’s downside risk.</p>
+    </section>
+    <section id="results">
+      <div class="section-title"><span class="index">02 / THE RESULT</span><h2>One account. Reconciled.</h2><button id="download-book" class="secondary">Download result JSON ↓</button></div>
+      <div id="metrics" class="metrics"></div><div id="secondary-metrics" class="metric-strip"></div>
+      <p id="result-note" class="caption"></p>
+      <div id="audit-note" class="notice"></div>
+    </section>
+    <section id="nav">
+      <div class="section-title"><span class="index">03 / NAV &amp; REG T</span><h2>Follow the book.</h2></div>
+      <p class="caption">Hover for exact values in USD. Click a point to inspect its account state. The curves use the last ledger state at each timestamp; every booked event remains in the ledger below.</p>
+      <div id="nav-chart" class="chart" aria-label="Interactive NAV, initial margin, maintenance margin, available funds, and excess"></div>
+      <div class="formula-strip"><span>NAV = cash + stock MV + short-call MV</span><span>Initial = 50% × LMV</span><span>Maintenance = 25% × LMV</span><span>Available = NAV − initial</span><span>Excess = NAV − maintenance</span></div>
+      <p class="caption">The covered call adds $0 to the stock’s initial requirement in the assignment’s simplified Reg T model. Entry is rejected if prospective available funds are negative. Subsequent margin breaches are flagged; the no-early-exit rule precludes an invented liquidation.</p>
+    </section>
+    <section id="blotter">
+      <div class="section-title"><span class="index">04 / TRADE BLOTTER</span><h2>Only booked events.</h2><button id="download-blotter" class="secondary">Blotter CSV ↓</button></div>
+      <div class="table-tools"><label>Action <select id="action-filter"><option value="ALL">All actions</option><option>BUY</option><option>SELL</option><option>EXPIRE</option><option>ASSIGN</option></select></label><span id="blotter-count"></span></div>
+      <div id="blotter-table" class="table-wrap" tabindex="0" role="region" aria-label="Booked trades, scroll horizontally for complete fields"></div>
+      <details class="skips"><summary id="skips-summary">Weekly decisions and skipped trades</summary><p class="caption">Rejected and unfilled decisions stay outside the blotter. A stock purchase can remain booked even when the option leg is skipped.</p><div id="decisions-table" class="table-wrap" tabindex="0"></div></details>
+    </section>
+    <section id="ledger">
+      <div class="section-title"><span class="index">05 / ACCOUNT STATE</span><h2>Where the cash went.</h2><button id="download-ledger" class="secondary">Ledger CSV ↓</button></div>
+      <div class="inspector"><div class="inspector-head"><label for="state-slider">Inspect ledger state</label><span id="state-time"></span></div><input id="state-slider" type="range" min="0" max="0" value="0"><div id="state-values" class="state-values"></div><p id="state-marks" class="caption"></p></div>
+      <div class="table-tools"><label>States <select id="ledger-filter"><option value="all">All states</option><option value="events">After booked events</option><option value="stale">Stale marks</option><option value="breaches">Margin breaches</option></select></label><div class="pagination"><button id="ledger-prev" aria-label="Previous ledger page">←</button><span id="ledger-page"></span><button id="ledger-next" aria-label="Next ledger page">→</button></div></div>
+      <div id="ledger-table" class="table-wrap" tabindex="0" role="region" aria-label="Account ledger, scroll horizontally for all accounting fields"></div>
+      <p class="caption">Cash changes only on BUY, SELL, EXPIRE, or ASSIGN. Quotes change marks and NAV, not cash. A missing mark carries the last valid observed mark forward for valuation only, with its original timestamp and a stale flag; it never creates an entry fill.</p>
+    </section>
+    <section id="validation">
+      <div class="section-title"><span class="index">06 / FILL VALIDATION</span><h2>Midpoint meets the tape.</h2></div>
+      <div id="fit-stats" class="fit-stats"></div>
+      <p class="caption">X = (BID + ASK) / 2. Y = actual TRDPRC_1. Calls within 5% of the contemporaneous stock print; all three option fields must exist in the same hourly bar. This sample validates the fill assumption independently of the strategy’s 5% OTM strike selection.</p>
+      <div id="scatter-chart" class="chart" aria-label="Real option midpoint against trade print, with fitted line and R squared"></div>
+      <p id="fit-note" class="notice"></p>
+    </section>
+    <section id="analysis">
+      <div class="section-title"><span class="index">07 / THE TAKEAWAYS</span><h2>What the history says.</h2></div>
+      <div id="analysis-cards" class="analysis-grid"></div>
+    </section>
+    <section id="methodology">
+      <div class="section-title"><span class="index">08 / DATA &amp; METHOD</span><h2>The assumptions are part of the result.</h2></div>
+      <div id="method-notes" class="method-grid"></div>
+      <p class="caption">References: <a href="https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing">LSEG historical pricing</a> · <a href="https://community.developers.lseg.com/discussion/132464/end-period-doesnt-work">LSEG bar timestamp labels</a> · <a href="https://www.finra.org/rules-guidance/key-topics/margin-accounts">FINRA margin overview</a>. Account formulas follow the instructor’s simplified specification.</p>
+      <a class="text-link" href="data.html">View data provenance and reproduce this run →</a>
+    </section>
+  </main>
+  <footer><span>FINTECH 535 · Covered Call Backtest</span><span>Real historical observations · simulated executions</span><a href="../">Assignment 1.1 ↗</a></footer>
+</body>
+</html>

@@ -183,3 +183,14 @@ current pandas version), it uses the included sparse synthetic UUUU-like panel
 as a local fallback. The static builder intentionally requires the real cache
 and refuses to create a synthetic GitHub Pages page. Run `python build_preview.py`
 and open `options_surface_preview.html` after the real cache is available.
+
+## Covered Call Backtest — new assignment
+
+The AAPL **5% OTM covered-call backtest** is published separately at
+[Covered Call Backtest](https://vicky-zjx.github.io/535_fintech/covered-call/).
+The original Option Surface Lab above remains at the site root.
+
+The new page includes real LSEG hourly BID/ASK data, simulated midpoint fills,
+an event blotter, a reconciled Reg T ledger, interactive NAV/margin charts,
+and midpoint-versus-print regression. See [covered_call/README.md](covered_call/README.md)
+for the strategy, documented assumptions, source provenance, and reproduction commands.
