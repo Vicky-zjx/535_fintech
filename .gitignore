@@ -8,3 +8,8 @@ __pycache__/
 .idea/
 reflex.lock/
 .DS_Store
+
+# PMCC: licensed provider snapshots and contract manifests stay local.
+pmcc_backtest/local_data/
+pmcc_backtest/.local_*/
+pmcc_backtest/__pycache__/

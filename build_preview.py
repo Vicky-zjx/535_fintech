@@ -144,6 +144,7 @@ def main() -> Path:
     html = f"""<!doctype html>
 <html lang="en">
 <head>
+  <script defer src="course-nav.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A real-data study of UUUU option price availability, marks, and trade prints.">
@@ -362,6 +363,7 @@ def main() -> Path:
   </style>
 </head>
 <body>
+  <nav data-course-nav aria-label="Course navigation"><a href="./">Option Surface Lab</a><a href="covered-call/">Covered call</a><a href="covered-call/data.html">Data &amp; method</a><a href="pmcc/">PMCC</a></nav>
   <header class="hero">
     <div class="shell">
       <div class="hero-topline">

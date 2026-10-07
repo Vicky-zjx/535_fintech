@@ -1,5 +1,19 @@
 # MENG FinTech · Algorithmic Trading II
 
+## Course website
+
+- [Option Surface Lab](https://vicky-zjx.github.io/535_fintech/)
+- [Earlier AAPL covered call](https://vicky-zjx.github.io/535_fintech/covered-call/)
+- [PMCC study and historical-data audit](https://vicky-zjx.github.io/535_fintech/pmcc/) — a separate $50,000-account implementation; see [reproduction instructions](pmcc_backtest/README.md).
+
+The PMCC page now runs six real-LSEG-input accounts over July 6–September 30, 2026,
+using a historically evidenced candidate subset and explicitly source-supported
+standard-contract assumptions (not per-contract supplier certification).
+Three missing held-option BID observations leave PMCC/covered-call daily NAV and
+full-sample drawdown incomplete; fully liquidated terminal cash/P&L reconcile.
+Contract sources, exclusions and data gaps are published. The earlier assignment
+data and results remain unchanged.
+
 # Assignment 1.1 — Option Surface Lab
 
 | Field | Value |

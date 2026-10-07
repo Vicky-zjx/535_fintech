@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "status": "blocked",
+  "ready": false,
+  "empirical_backtest_complete": false,
+  "audit_completed_at": "2026-10-07T02:19:44.227748+00:00",
+  "target_window": {
+    "start": "2025-10-01",
+    "end": "2026-09-30"
+  },
+  "actual_backtest_window": null,
+  "long_selection_mode": "75%-of-spot strike proxy",
+  "long_mode_reason": "Proxy mode predeclared before P&L. Old cache had no Greeks; a later one-contract probe returned short-call DELTA, not a validated long-universe delta panel. No mode switching within a run.",
+  "window_decision": "No valid common window selected. Target dates remain locked; no P&L computed or favorable subperiod selected.",
+  "blocking_issues": [
+    "Target-period expired AAPL option search returned zero records; the existing cache covers only 56 observed short-call identifiers across nine July\u2013September expiries, not a year-long historical chain.",
+    "Expired-contract reference snapshot fields were empty. Historical LOT_SIZE, CONTR_SIZE, EXPIR_DATE, LAST_TRDAY and STRIKE_PRC were explicitly rejected (90006) for the observed AAPLG102631000.U^G26 contract.",
+    "Verified historical multipliers, standard deliverables and last-trading dates are still required for the expired short calls; current live long-call Standard/100-lot metadata does not validate those expired contracts."
+  ],
+  "timing_limitations": [
+    "Daily responses identify DATE/endPeriod only. Exact quote synchronization and EOD publication times are unknown; no observed 16:00 quote or fill timestamp is available. The proposed next-session 09:00 availability checkpoint remains an assumption without provider evidence."
+  ],
+  "stock": {
+    "rows": 252,
+    "start": "2025-09-30",
+    "end": "2026-09-30",
+    "bid_ask_pairs": 252,
+    "delta_rows": 0
+  },
+  "long_probe": {
+    "ric": "AAPLI172723000.U",
+    "rows": 66,
+    "start": "2026-06-29",
+    "end": "2026-09-30",
+    "bid_ask_pairs": 66,
+    "delta_rows": 0
+  },
+  "expired_probe": {
+    "ric": "AAPLG102631000.U^G26",
+    "rows": 6,
+    "start": "2026-07-02",
+    "end": "2026-07-10",
+    "bid_ask_pairs": 6,
+    "delta_rows": 6
+  },
+  "dividends": {
+    "records": 4,
+    "ex_dates": [
+      "2025-11-10",
+      "2026-02-09",
+      "2026-05-11",
+      "2026-08-10"
+    ]
+  },
+  "expired_search_records": 0,
+  "live_search_records": 1758,
+  "old_cache": {
+    "sha256": "60224ee31e21b682644b6691dea94ad4204504b7908c254b8da100c63ecd5b05",
+    "stock_rows": 343,
+    "option_rows": 3710,
+    "contracts": 56,
+    "expiries": [
+      "2026-07-10",
+      "2026-07-17",
+      "2026-07-24",
+      "2026-07-31",
+      "2026-08-07",
+      "2026-08-14",
+      "2026-08-21",
+      "2026-08-28",
+      "2026-09-04"
+    ],
+    "overlap": "2026-07-06 through 2026-09-11; historical assignment only, not a comparable new result"
+  },
+  "exact_terms_error": {
+    "error": "No data to return, please check errors: ERROR: No successful response.\n(TSCC.QS.UserRequestError.90006, The universe does not support the following fields: [LOT_SIZE, CONTR_SIZE, EXPIR_DATE, LAST_TRDAY, STRIKE_PRC])",
+    "ric": "AAPLG102631000.U^G26",
+    "fields": [
+      "LOT_SIZE",
+      "CONTR_SIZE",
+      "EXPIR_DATE",
+      "LAST_TRDAY",
+      "STRIKE_PRC"
+    ]
+  },
+  "private_probe_hashes": [
+    {
+      "file": "AAPLI172723000.U.json",
+      "sha256": "788b4a15e122361183543c05865c04875f4bfc5517b4918c5f145bcefa298fab"
+    },
+    {
+      "file": "AAPLJ162622500.U.json",
+      "sha256": "c4618ec3e314ea7b3a638d62efd638fc5ea2d892a1d86bbc047a31a0eb7b03a8"
+    },
+    {
+      "file": "dividends.json",
+      "sha256": "056b895cb320acaa09983a9cb0a2e260315273de3844270511726327d9507b81"
+    },
+    {
+      "file": "expired_daily.json",
+      "sha256": "bffae3c4493bb6f47fa1ac7bdff1f64ed1990670005475d3f2213b324f7be965"
+    },
+    {
+      "file": "expired_terms_history.json",
+      "sha256": "514fa0182a6cead16b974985880d1bf68d3bcd75424d75b82bb7a419b460b6ce"
+    },
+    {
+      "file": "long_metadata.json",
+      "sha256": "621cb3aabb52953f34afcd0795cb93d674d120d0124213c2eea145b72b576264"
+    },
+    {
+      "file": "quote_metadata.json",
+      "sha256": "ce48707c143f051cf6cfb46343e88667c4f185f08fce11819d6a9736536a9619"
+    },
+    {
+      "file": "search_expired.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "file": "search_long.json",
+      "sha256": "3d9b4ba9e6f54c3f6b5452d9ff09b2d3d06bb42dcff9750d2d11c5e5b9fb269d"
+    },
+    {
+      "file": "search_metadata.json",
+      "sha256": "98e09f514f9028a2e700f02244390b1cd00913deaf8a54b4d67e9d659cf63726"
+    },
+    {
+      "file": "stock_daily.json",
+      "sha256": "0927d494e7a8dfa1f42338585235bcd29b056402c7e34ed31884c6a5f329580f"
+    }
+  ],
+  "sources": [
+    "https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing",
+    "https://community.developers.lseg.com/discussion/comment/110304",
+    "https://community.developers.lseg.com/discussion/82292/query-corporate-action-calendar"
+  ],
+  "missing_data_request": {
+    "underlying": "AAPL.O",
+    "observations_from": "2025-09-30",
+    "observations_through": "2026-09-30",
+    "contract_fields": [
+      "historically listed identifiers and first-known dates",
+      "expiry",
+      "actual last trading date",
+      "Friday-series identity",
+      "strike",
+      "multiplier",
+      "standard deliverable",
+      "historical terms source"
+    ],
+    "price_fields": [
+      "date-level closing BID/ASK and their consistency definition",
+      "TRDPRC_1",
+      "signal-time availability evidence"
+    ],
+    "long_eligibility": "365\u2013550 DTE at signal, actually observed strikes; proxy <=75% of prior-session stock price",
+    "route": "An authorized historical security-master/chain export (e.g. licensed LSEG Tick History) plus quotes for exact identifiers; no new account or entitlement was assumed."
+  }
+}

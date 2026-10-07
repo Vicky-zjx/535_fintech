@@ -1,0 +1,332 @@
+{
+  "assumption_contracts": 204,
+  "availability_policy": "previous_session_by_next_09_assumed",
+  "blocking_issues": [],
+  "candidate_universe": "Observed subset: 56 exact expired-call RICs from the prior real cache plus eligible ordinary OPRA long-call IDs from current LSEG discovery, admitted only with historical price evidence by each signal. No complete historical chain or globally minimal listed strike is claimed; long discovery has survivor bias.",
+  "contracts": 204,
+  "corporate_action_review": {
+    "apple_split_history": "Apple public FAQ lists its last split in August 2020, before this sample.",
+    "limitation": "No detected conflicting corporate-action evidence; absence is not a vendor guarantee of every historical deliverable.",
+    "provider_error": null,
+    "provider_events": [],
+    "provider_query_period": [
+      "2025-09-30",
+      "2026-09-30"
+    ],
+    "sources": [
+      "https://investor.apple.com/faq./default.aspx",
+      "https://infomemo.theocc.com/infomemos?number=47369",
+      "https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications",
+      "https://www.optionseducation.org/referencelibrary/faq/splits-mergers-spinoffs-bankruptcies"
+    ],
+    "status": "research screening, not a complete OCC memo search",
+    "unresolved_adjustment_event": false
+  },
+  "dividend_assignment_enabled": true,
+  "dividends": 4,
+  "eligible_long_signal_dates": [
+    "2026-07-06",
+    "2026-07-13",
+    "2026-07-20",
+    "2026-07-27",
+    "2026-08-03",
+    "2026-08-10",
+    "2026-08-17",
+    "2026-08-24",
+    "2026-08-31",
+    "2026-09-08",
+    "2026-09-14",
+    "2026-09-21",
+    "2026-09-28"
+  ],
+  "excluded_contracts": [
+    {
+      "id": "2AAPLA2128D00247000.FO",
+      "reason": "NONSTANDARD_ROOT_VENUE_OR_UNSUPPORTED_ENCODING",
+      "scope": "contract identity/terms screening"
+    },
+    {
+      "id": "2AAPLF1727D00192000.FO",
+      "reason": "NONSTANDARD_ROOT_VENUE_OR_UNSUPPORTED_ENCODING",
+      "scope": "contract identity/terms screening"
+    },
+    {
+      "id": "2AAPLI1727D00247000.FO",
+      "reason": "NONSTANDARD_ROOT_VENUE_OR_UNSUPPORTED_ENCODING",
+      "scope": "contract identity/terms screening"
+    },
+    {
+      "id": "2AAPLL1727D00192000.FO",
+      "reason": "NONSTANDARD_ROOT_VENUE_OR_UNSUPPORTED_ENCODING",
+      "scope": "contract identity/terms screening"
+    },
+    {
+      "id": "2AAPLL1727D00254000.FO",
+      "reason": "NONSTANDARD_ROOT_VENUE_OR_UNSUPPORTED_ENCODING",
+      "scope": "contract identity/terms screening"
+    },
+    {
+      "id": "AAPLF172700500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172701000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172701500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172702000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172702500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172703000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172703500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172704000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172704500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172705000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172705500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172706000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172706500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172707000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172707500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172708000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172708500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172709000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172709500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172710000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172710500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172711000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172711500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172712000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172712500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172713000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172713500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172714000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172714500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172715000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172715500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172716000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172716500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172717000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172717500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172718000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172718500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172719000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172719500.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172720000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172721000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172722000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172723000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172724000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    },
+    {
+      "id": "AAPLF172725000.U",
+      "reason": "OUTSIDE_PREDECLARED_LONG_DTE_WINDOW",
+      "scope": "data-acquisition filter, not a claim of invalid listing"
+    }
+  ],
+  "individually_verified_contracts": 0,
+  "long_mode_note": "75%-of-spot proxy predeclared before P&L; subsequently returned historical DELTA is used for exposure only, not a mode switch.",
+  "option_observations": 10822,
+  "quote_basis": "Real same-date daily closing BID/ASK; MID_PRICE cross-check; exact simultaneous quote times unknown.",
+  "quote_precision": "daily",
+  "ready": true,
+  "request_errors": [],
+  "standard_assumption_policy": "source-supported standard AAPL contract assumption; not per-contract vendor historical verification",
+  "stock_observations": 66,
+  "valid_option_marks": 10753,
+  "window_lock": {
+    "config": {
+      "assignment_itm": 0.01,
+      "borrow_rate": 0.03,
+      "cash_interest": 0.0,
+      "end": "2026-09-30",
+      "initial_equity": 50000.0,
+      "long_delta_max": 0.9,
+      "long_delta_min": 0.7,
+      "long_delta_target": 0.8,
+      "long_dte_max": 550,
+      "long_dte_min": 365,
+      "long_dte_target": 450,
+      "long_mode": "75%-of-spot strike proxy",
+      "long_proxy": 0.75,
+      "option_commission": 0.65,
+      "replace_dte": 90,
+      "short_otm": 0.05,
+      "signal_time": "09:00",
+      "start": "2026-07-06",
+      "stock_ric": "AAPL.O",
+      "stock_slippage_bps": 1.0,
+      "timezone": "America/New_York"
+    },
+    "locked_at": "2026-10-07T02:42:02.835128+00:00",
+    "reason": "Window locked before P&L: the existing observed expired-short universe begins July 2026; a 12-month weekly-chain study is unsupported. Start July 6 preserves the previous assignment overlap; end September 30 retains the requested endpoint and all missing late-September short opportunities. No date is chosen from subsequent strategy returns."
+  },
+  "window_selection_reason": "Window locked before P&L: the existing observed expired-short universe begins July 2026; a 12-month weekly-chain study is unsupported. Start July 6 preserves the previous assignment overlap; end September 30 retains the requested endpoint and all missing late-September short opportunities. No date is chosen from subsequent strategy returns."
+}

@@ -1,0 +1,6 @@
+# Tested environment. Offline build/engine need pandas, numpy, exchange-calendars;
+# licensed extraction additionally needs lseg-data. No notebook or Node build.
+numpy==2.5.2
+pandas==2.3.3
+exchange-calendars==4.13.2
+lseg-data==2.1.1

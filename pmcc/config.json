@@ -1,0 +1,23 @@
+{
+  "assignment_itm": 0.01,
+  "borrow_rate": 0.03,
+  "cash_interest": 0.0,
+  "end": "2026-09-30",
+  "initial_equity": 50000.0,
+  "long_delta_max": 0.9,
+  "long_delta_min": 0.7,
+  "long_delta_target": 0.8,
+  "long_dte_max": 550,
+  "long_dte_min": 365,
+  "long_dte_target": 450,
+  "long_mode": "75%-of-spot strike proxy",
+  "long_proxy": 0.75,
+  "option_commission": 0.65,
+  "replace_dte": 90,
+  "short_otm": 0.05,
+  "signal_time": "09:00",
+  "start": "2026-07-06",
+  "stock_ric": "AAPL.O",
+  "stock_slippage_bps": 1.0,
+  "timezone": "America/New_York"
+}
