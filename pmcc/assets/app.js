@@ -24,6 +24,9 @@
   if(book.config.long_mode!=='75%-of-spot strike proxy') $('long-rule').textContent='365–550 signal DTE; expiry nearest 450 then earlier. Historical delta target 0.80, eligible 0.70–0.90; ties lower strike, then identifier. Replace at weekly decision when remaining DTE ≤90.';
   const runs=()=>book.runs.filter(r=>r.fill_model===$('model').value);
   const selected=()=>runs().find(r=>r.strategy===$('account').value);
+  const terminalMessage='Terminal liquidation: positions converted to cash; delta exposure becomes zero.';
+  const isLiquidated=(r,row)=>Boolean(row&&r.metrics.terminal_resolved&&row.date===book.config.end&&
+    !row.unresolved&&row.n_long===0&&row.n_short===0&&row.stock_shares===0&&row.delta_dollar===0);
   if(book.runs.every(r=>r.metrics.valuation_path_complete))$('drawdown-view').value='drawdown';
   function renderDrawdown(){
     const field=$('drawdown-view').value,observed=field==='observed_drawdown';
@@ -38,9 +41,39 @@
   function chart(id,field,title,format){
     const rows=runs();
     if(!rows.length){$(id).innerHTML='<div class="empty-plot"><strong>Not run</strong><span>Verified historical inputs are required.<br>No zero-return curve is substituted.</span></div>';return;}
-    const traces=rows.map(r=>({name:names[r.strategy],x:r.ledger.map(x=>x.date),y:r.ledger.map(x=>x[field]),customdata:r.ledger.map(x=>pct(x.delta_to_nav)),type:'scatter',mode:'lines',connectgaps:false,line:{color:colors[r.strategy],width:2},hovertemplate:'%{x}<br>%{y:'+format+'}'+(field==='delta_dollar'?'<br>Exposure / NAV: %{customdata}':'')+'<extra>%{fullData.name}</extra>'}));
+    const exposure=field==='delta_dollar';
+    const traces=rows.map(r=>({name:names[r.strategy],x:r.ledger.map(x=>x.date),y:r.ledger.map(x=>x[field]),
+      customdata:r.ledger.map(x=>[pct(x.delta_to_nav),isLiquidated(r,x)?'Post-liquidation · cash only':'Daily close valuation']),
+      type:'scatter',mode:'lines',connectgaps:false,line:{color:colors[r.strategy],width:2},
+      hovertemplate:'%{x}<br>%{y:'+format+'}'+(exposure?'<br>Exposure / NAV: %{customdata[0]}<br>%{customdata[1]}':'')+'<extra>%{fullData.name}</extra>'}));
+    // Annotate an observed, fully closed endpoint; never manufacture a terminal zero.
+    const annotations=exposure&&rows.every(r=>isLiquidated(r,r.ledger.at(-1)))?[{
+      x:book.config.end,y:0,xref:'x',yref:'y',text:book.config.end+'<br>'+terminalMessage.replace(': ',':<br>').replace('; ',';<br>'),
+      showarrow:true,arrowhead:2,arrowcolor:'#607269',ax:-108,ay:-96,align:'left',
+      font:{size:10,color:'#304a40'},bgcolor:'rgba(255,255,255,0.95)',borderpad:5
+    }]:[];
     if(typeof Plotly==='undefined'){$(id).textContent='Chart library unavailable; download the ledger CSV for exact values.';return;}
-    Plotly.react(id,traces,{paper_bgcolor:'white',plot_bgcolor:'white',margin:{l:66,r:18,t:18,b:60},font:{family:'system-ui',color:'#182c38',size:11},yaxis:{title:{text:title},tickformat:format,gridcolor:'#e7ecea'},xaxis:{gridcolor:'#eef1ee'},legend:{orientation:'h',y:-.22},hovermode:'x unified'},{responsive:true,displaylogo:false});
+    Plotly.react(id,traces,{paper_bgcolor:'white',plot_bgcolor:'white',margin:{l:66,r:18,t:18,b:60},font:{family:'system-ui',color:'#182c38',size:11},yaxis:{title:{text:title},tickformat:exposure?',.0f':format,gridcolor:'#e7ecea'},xaxis:{gridcolor:'#eef1ee'},legend:{orientation:'h',y:-.22},hovermode:'x unified',annotations},{responsive:true,displaylogo:false});
+  }
+  function renderInitialCapital(){
+    const rows=Object.keys(names).map(s=>runs().find(r=>r.strategy===s));
+    if(!rows.some(Boolean)){$('capital-chart').textContent='Not run: initial long-position costs are unavailable.';return;}
+    if(typeof Plotly==='undefined'){$('capital-chart').textContent='Chart library unavailable; initial_capital_outlay is in the result JSON.';return;}
+    // Distinct categorical positions keep the identical stock costs as separate bars.
+    const values=rows.map(r=>r?.metrics.initial_capital_outlay??null);
+    const available=values.filter(Number.isFinite);
+    Plotly.react('capital-chart',[{
+      type:'bar',x:Object.keys(names),y:values,marker:{color:Object.values(colors)},
+      customdata:Object.values(names),text:values.map(usd),textposition:'outside',cliponaxis:false,
+      hovertemplate:'%{customdata}<br>Initial long-position cost: %{y:$,.2f}<br>Includes long-leg entry costs; before short premiums.<extra></extra>'
+    }],{
+      paper_bgcolor:'white',plot_bgcolor:'white',margin:{l:66,r:18,t:30,b:64},
+      font:{family:'system-ui',color:'#182c38',size:11},showlegend:false,bargap:.4,
+      xaxis:{type:'category',categoryorder:'array',categoryarray:Object.keys(names),tickvals:Object.keys(names),
+        ticktext:['PMCC','Cash-funded<br>covered call','100-share<br>buy and hold'],fixedrange:true},
+      yaxis:{title:{text:'Initial cost · USD'},tickformat:',.0f',gridcolor:'#e7ecea',rangemode:'tozero',
+        range:available.length?[0,Math.max(...available)*1.18||1]:undefined}
+    },{responsive:true,displaylogo:false});
   }
   function renderTrades(){
     const r=selected(),query=$('search').value.toLowerCase();
@@ -66,14 +99,15 @@
     const r=runs().find(r=>r.strategy==='pmcc'),m=r?.metrics??{};
     const ddNote=m.max_drawdown!=null?'Complete research window; all daily NAVs available':m.valuation_gap_sessions?
       `Unavailable: ${m.valuation_gap_sessions} missing NAV date(s): ${(m.valuation_gap_dates??[]).join(', ')}`:'Unavailable: unresolved exposure or incomplete path';
-    const cards=[['PMCC net P&L',usd(m.net_pnl),'After costs, not gross premiums'],['Account return',pct(m.account_return),'Same $50,000 denominator'],['Full-sample MDD',pct(m.max_drawdown),ddNote],['Initial capital outlay',usd(m.initial_capital_outlay),'Long paid in full, including entry fee']];
+    const fullMdd=x=>x==null?'N/A':pct(x);
+    const cards=[['PMCC net P&L',usd(m.net_pnl),'After costs, not gross premiums'],['Account return',pct(m.account_return),'Same $50,000 denominator'],['Full-sample MDD',fullMdd(m.max_drawdown),ddNote],['Initial capital outlay',usd(m.initial_capital_outlay),'Long paid in full, including entry fee']];
     $('metrics').innerHTML=cards.map(([label,value,note])=>`<div class="metric"><div class="metric-label">${label}</div><div class="metric-value">${value}</div><div class="metric-note">${blocked?'Unavailable: empirical run blocked':note}</div></div>`).join('');
     $('metrics-note').textContent=blocked?'Both fill scenarios are implemented, but neither has a publishable empirical result. Blank values are not zero.':'Displayed model: '+$('model').selectedOptions[0].text+'. '+(m.terminal_resolved?'Endpoint return reconciles after liquidation. ':'Endpoint unresolved. ')+(m.valuation_gap_sessions?`${m.valuation_gap_sessions} PMCC NAV gaps; full-sample MDD is withheld. `:'No PMCC NAV gaps; full-sample MDD is available. ')+'No headline annualized return or Sharpe ratio is reported.';
     const comparisons=Object.keys(names).map(s=>{const x=runs().find(v=>v.strategy===s);return {name:names[s],status:x?.status??'not run',...x?.metrics};});
-    table('comparison',comparisons,[['name','Account'],['ending_nav','Ending NAV',usd],['net_pnl','Net P&L',usd],['account_return','Account return',pct],['max_drawdown','Full-sample MDD',pct],['max_observed_drawdown','Observed-NAV max DD*',pct]]);
+    table('comparison',comparisons,[['name','Account'],['ending_nav','Ending NAV',usd],['net_pnl','Net P&L',usd],['account_return','Account return',pct],['max_drawdown','Full-sample MDD',fullMdd],['max_observed_drawdown','Observed-NAV max DD*',pct]]);
     table('comparison-extra',comparisons,[['name','Account'],['status','Path status'],['terminal_resolved','Terminal closed'],['valuation_gap_sessions','NAV gaps'],['entry_capital_saved','Entry cash saved vs 100 shares',usd],['transaction_costs','All modeled costs',usd],['gross_premiums','Gross premiums',usd],['short_calls','Short calls'],['expiry_assignments','Expiry assignments'],['early_assignments','Dividend assignments'],['skipped_weeks','Skipped weeks'],['long_only_sessions','Long-only EOD states'],['valid_daily_returns','Valid daily returns']]);
-    chart('nav-chart','nav','USD',',.2f');renderDrawdown();chart('capital-chart','capital_deployed_cost','Capital deployed at cost · USD',',.2f');
-    chart('exposure-chart','delta_dollar','Delta × 100 × stock · USD',',.2f');
+    chart('nav-chart','nav','USD',',.2f');renderDrawdown();renderInitialCapital();
+    chart('exposure-chart','delta_dollar','Delta-dollar · USD',',.2f');
     const attrs=Object.keys(names).map(s=>{const x=runs().find(v=>v.strategy===s);return{name:names[s],...x?.attribution};});
     table('attribution',attrs,[['name','Account'],['long_realized','Long realized',usd],['long_unrealized','Long unrealized',usd],['short_realized','Short realized',usd],['short_unrealized','Short unrealized',usd],['stock_realized','Stock realized',usd],['stock_unrealized','Stock unrealized',usd],['dividends','Dividends',usd],['option_commissions','Option fees (subtract)',usd],['stock_slippage','Stock slippage (subtract)',usd],['borrow_cost','Borrow (subtract)',usd]]);
     renderTrades();

@@ -27,6 +27,44 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   }
   await page.reload({waitUntil:'networkidle'});
   const book=await page.evaluate(()=>window.PMCC_BOOK);
+  const terminalMessage='Terminal liquidation: positions converted to cash; delta exposure becomes zero.';
+  async function checkCapitalAndExposure(model){
+    const runs=['pmcc','covered_call','buy_hold'].map(s=>book.runs.find(r=>r.strategy===s&&r.fill_model===model));
+    await page.waitForFunction(cost=>document.getElementById('capital-chart').data[0].y[0]===cost,runs[0].metrics.initial_capital_outlay);
+    const capital=await page.locator('#capital-chart').evaluate(el=>({traces:el.data,layout:el.layout}));
+    assert.equal(capital.traces.length,1);assert.equal(capital.traces[0].type,'bar');
+    assert.deepEqual(capital.traces[0].x,['pmcc','covered_call','buy_hold']);
+    assert.deepEqual(capital.traces[0].y,runs.map(r=>r.metrics.initial_capital_outlay));
+    assert.equal(capital.traces[0].y[1],capital.traces[0].y[2]);
+    const bars=await page.locator('#capital-chart .barlayer .point path').evaluateAll(ps=>ps.map(p=>p.getBoundingClientRect().x));
+    assert.equal(bars.length,3);assert.equal(new Set(bars).size,3,'Equal stock costs must not overlap');
+    for(const r of runs){
+      const entry=r.blotter.find(e=>e.action==='BUY'&&e.leg===(r.strategy==='pmcc'?'LONG_CALL':'STOCK'));
+      assert.ok(Math.abs(r.metrics.initial_capital_outlay+entry.cash_delta)<1e-8,'Outlay includes long-entry costs only');
+    }
+    assert.match(await page.locator('#capital h3').first().innerText(),/Initial long-position cost/);
+    assert.match(await page.locator('#capital-note').innerText(),/entry fee or stock slippage/);
+    assert.match(await page.locator('#capital-note').innerText(),/Not account NAV or net profit/);
+    const exposure=await page.locator('#exposure-chart').evaluate(el=>({traces:el.data,annotations:el.layout.annotations}));
+    assert.equal(exposure.traces.length,3);
+    for(const [i,r] of runs.entries()){
+      const t=exposure.traces[i];
+      assert.deepEqual(t.x,r.ledger.map(x=>x.date));assert.deepEqual(t.y,r.ledger.map(x=>x.delta_dollar));
+      assert.equal(t.connectgaps,false);assert.equal(t.x.at(-1),'2026-09-30');assert.equal(t.y.at(-1),0);
+      assert.match(t.customdata.at(-1)[1],/Post-liquidation/);
+    }
+    assert.equal(exposure.annotations.length,1);assert.equal(exposure.annotations[0].x,'2026-09-30');
+    assert.equal(exposure.annotations[0].y,0);
+    assert.equal(exposure.annotations[0].text.replace(/<br>/g,' '),'2026-09-30 '+terminalMessage);
+    assert.match(await page.locator('#exposure-note').innerText(),/historical DELTA from the corresponding date/);
+    assert.match(await page.locator('#exposure-note').innerText(),/not cash balance or P&L/);
+    await page.locator('#exposure-chart').scrollIntoViewIfNeeded();
+    await page.locator('#exposure-chart').evaluate(el=>Plotly.Fx.hover(el,[{curveNumber:0,pointNumber:el.data[0].x.length-1}]));
+    await page.waitForFunction(()=>document.querySelector('#exposure-chart .hoverlayer').textContent.includes('Post-liquidation'));
+    assert.match(await page.locator('#exposure-chart .hoverlayer').textContent(),/Post-liquidation/);
+    await page.locator('#exposure-chart').evaluate(el=>Plotly.Fx.unhover(el));
+  }
+  await checkCapitalAndExposure('midpoint');
   assert.equal(await page.locator('#analysis .narrative').count(),1);
   assert.ok((await page.locator('#analysis p').innerText()).split(/\s+/).length<=100);
   assert.equal(await page.locator('#method-details').getAttribute('open'),null);
@@ -47,6 +85,10 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   const plotted=await page.locator('#nav-chart').evaluate(el=>el.data);
   assert.equal(plotted.length,3);assert.equal(plotted[0].y.filter(y=>y==null).length,1);
   assert.equal(plotted[0].connectgaps,false);assert.equal(plotted[2].y.filter(y=>y==null).length,0);
+  assert.equal(plotted[0].y[plotted[0].x.indexOf('2026-07-23')],null);
+  assert.equal(book.runs[0].metrics.max_drawdown,null);
+  assert.match(await page.locator('#metrics .metric').nth(2).innerText(),/Full-sample MDD\s+N\/A/);
+  assert.match(await page.locator('#comparison tbody tr').first().innerText(),/-6\.87%/);
   assert.match(await page.locator('#metrics').innerText(),/1,841\.60/);
   assert.match(await page.locator('#metrics').innerText(),/1 missing NAV date\(s\): 2026-07-23/);
   assert.match(await page.locator('#dd-note').innerText(),/LOWER BOUND/);
@@ -64,6 +106,7 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   assert.match(await page.locator('#assignment-example').textContent(),/No assignment occurred/);
   assert.match(await page.locator('#weekly').innerText(),/2026-09-08/);
   await page.selectOption('#model','quoted_side');
+  await checkCapitalAndExposure('quoted_side');
   assert.match(await page.locator('#metrics').innerText(),/1,437\.60/);
   await page.fill('#search','AAPLI172723000.U');assert.equal(await page.locator('#trades tbody tr').count(),2);
   await page.fill('#search','NO_SUCH_CONTRACT');assert.match(await page.locator('#trades').innerText(),/No events match/);
@@ -82,8 +125,14 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   await page.locator('#contract-details > summary').click();
   assert.ok(await page.locator('#contract-table').isVisible());
   await page.locator('#contract-details > summary').click();
+  assert.deepEqual(await page.evaluate(()=>window.PMCC_BOOK),book,'Rendering must not mutate published results');
   await page.screenshot({path:path.join(output,'pmcc-desktop.png'),fullPage:true});
   await page.locator('#results').screenshot({path:path.join(output,'pmcc-results.png')});
+  await page.locator('#capital').screenshot({path:path.join(output,'pmcc-capital-desktop.png')});
+  // UI-only unresolved endpoint fixture: no false liquidation annotation or hover label.
+  await page.evaluate(()=>{for(const r of window.PMCC_BOOK.runs)r.metrics.terminal_resolved=false;document.getElementById('model').dispatchEvent(new Event('change'));});
+  assert.equal(await page.locator('#exposure-chart').evaluate(el=>el.layout.annotations.length),0);
+  assert.doesNotMatch(await page.locator('#exposure-chart').evaluate(el=>el.data[0].customdata.at(-1)[1]),/Post-liquidation/);
   // UI-only complete-state fixture: verify the card note is not hardcoded.
   await page.evaluate(()=>{for(const r of window.PMCC_BOOK.runs){r.metrics.max_drawdown=-.05;r.metrics.valuation_path_complete=true;r.metrics.valuation_gap_sessions=0;r.metrics.valuation_gap_dates=[];}document.getElementById('model').dispatchEvent(new Event('change'));});
   assert.match(await page.locator('#metrics').innerText(),/Complete research window/);
@@ -92,7 +141,9 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   await page.setViewportSize({width:390,height:844});await page.reload({waitUntil:'networkidle'});
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'mobile page should not overflow');
   await page.screenshot({path:path.join(output,'pmcc-mobile.png'),fullPage:true});
+  await checkCapitalAndExposure('midpoint');
+  await page.locator('#capital').screenshot({path:path.join(output,'pmcc-capital-mobile.png')});
   assert.deepEqual(errors,[],'browser exceptions');
-  console.log(JSON.stringify({base,routes:5,navigationLinks:20,downloads:10,weeklyOpportunities:13,realScenarios:6,contracts:306,valuationGapsPreserved:1,oldResultPreserved:true,browserErrors:errors,screenshots:output},null,2));
+  console.log(JSON.stringify({base,routes:5,navigationLinks:20,downloads:10,weeklyOpportunities:13,realScenarios:6,contracts:306,valuationGapsPreserved:1,initialCostBars:3,capitalModelsChecked:2,terminalZeroPreserved:true,postLiquidationHover:true,oldResultPreserved:true,browserErrors:errors,screenshots:output},null,2));
   await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
