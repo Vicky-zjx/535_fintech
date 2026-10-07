@@ -61,6 +61,9 @@ class Account:
                multiplier=contract['multiplier'] if contract else None,
                source_timestamp=q.get('source_timestamp') if q else None,
                source_precision=q.get('precision','daily') if q else None,
+               source_event_timestamp=q.get('event_timestamp') if q else None,
+               source_quote_method=q.get('method','daily_bbo' if contract else 'daily_stock_print') if q else None,
+               source_snapshot_sha256=q.get('raw_sha256',q.get('source_snapshot_sha256')) if q else None,
                source_date=q.get('date') if q else None,
                signal_spot=signal.get('signal_spot') if signal else None,
                execution_spot=self.m.stock(day),actual_fill_timestamp=None)
@@ -81,7 +84,7 @@ class Account:
             self.halted=True
 
     def open_long(self,c,day,decision):
-        q=self.m.quote(c['id'],day); p=fill(q,'BUY',self.model)
+        q=self.m.execution_quote(c['id'],day); p=fill(q,'BUY',self.model)
         fee=self.cfg.option_commission
         if p is None or p<=0:
             return 'LONG_EXECUTION_QUOTE_MISSING_OR_INVALID'
@@ -101,7 +104,7 @@ class Account:
             return True
         if self.short or self.shares<0:
             raise AssertionError('Resolve short-call/assigned-stock obligations before a discretionary long close')
-        c=self.long; q=self.m.quote(c['id'],day); p=fill(q,'SELL',self.model)
+        c=self.long; q=self.m.execution_quote(c['id'],day); p=fill(q,'SELL',self.model)
         if p is None:
             self.fail(day,reason+'_LONG_CLOSE_QUOTE_MISSING',True); return False
         fee=self.cfg.option_commission
@@ -114,7 +117,7 @@ class Account:
     def open_short(self,c,day,decision):
         if self.short or self.shares<0 or (self.strategy=='pmcc' and not self.compatible(self.long,c)) or (self.strategy=='covered_call' and self.shares!=100):
             return 'NO_COMPATIBLE_SUPPORT'
-        q=self.m.quote(c['id'],day); p=fill(q,'SELL',self.model)
+        q=self.m.execution_quote(c['id'],day); p=fill(q,'SELL',self.model)
         if q and (q.get('bid') is not None or q.get('ask') is not None) and (not finite(q.get('bid')) or q['bid']<=0):
             return 'SHORT_BID_NOT_POSITIVE'
         if p is None or p<=0:
@@ -135,7 +138,7 @@ class Account:
     def close_short(self,day,reason):
         if not self.short:
             return True
-        c=self.short; q=self.m.quote(c['id'],day); p=fill(q,'BUY',self.model)
+        c=self.short; q=self.m.execution_quote(c['id'],day); p=fill(q,'BUY',self.model)
         if p is None:
             self.fail(day,reason+'_SHORT_CLOSE_QUOTE_MISSING',True); return False
         fee=self.cfg.option_commission
@@ -186,7 +189,7 @@ class Account:
         if paired:
             if not self.long or self.short:
                 self.fail(day,'ASSIGNED_COVER_UNFUNDED',True); return False
-            c=self.long; q=self.m.quote(c['id'],day); p=fill(q,'SELL',self.model)
+            c=self.long; q=self.m.execution_quote(c['id'],day); p=fill(q,'SELL',self.model)
             fee=self.cfg.option_commission
             if p is None:
                 self.fail(day,'PAIRED_LIQUIDATION_LONG_QUOTE_MISSING',True); return False
@@ -259,7 +262,7 @@ class Account:
         for d in self.m.dividends:
             if self.cal.next(day)!=d['ex_date'] or not d.get('announced_at') or pd.Timestamp(d['announced_at'])>pd.Timestamp(self.cal.close(day)):
                 continue
-            qmid=mid(self.m.quote(c['id'],day))
+            qmid=self.m.mark(c['id'],day)
             if s is None or qmid is None:
                 self.fail(day,'DIVIDEND_ASSIGNMENT_INPUT_MISSING',True); return
             if s>c['strike'] and max(qmid-max(s-c['strike'],0),0)<d['amount']:
@@ -267,8 +270,8 @@ class Account:
 
     def snapshot(self,day,force_gap=False):
         s=self.m.stock(day)
-        lm=mid(self.m.quote(self.long['id'],day)) if self.long else 0.0
-        sm=mid(self.m.quote(self.short['id'],day)) if self.short else 0.0
+        lm=self.m.mark(self.long['id'],day) if self.long else 0.0
+        sm=self.m.mark(self.short['id'],day) if self.short else 0.0
         missing=[]
         if self.long and lm is None: missing.append('LONG_MARK')
         if self.short and sm is None: missing.append('SHORT_MARK')
@@ -285,7 +288,7 @@ class Account:
                                 'MISSING_BID' if quote.get('bid') is None else
                                 'MISSING_ASK' if quote.get('ask') is None else
                                 'INVALID_OR_INCONSISTENT_BBO')
-                        details.append(contract['id']+': '+reason)
+                        details.append(contract['id']+': '+reason+'; no eligible same-event quote within final 60 seconds')
                 self.errors.append(dict(date=day,reason='VALUATION_GAP',fields=missing,
                                        long_contract=self.long['id'] if self.long else None,
                                        short_contract=self.short['id'] if self.short else None,
@@ -309,6 +312,14 @@ class Account:
             else:
                 exposure=s*delta_shares
         deployed=(100*self.long_basis if self.long else 0)+(100*self.stock_basis if self.shares>0 else 0)
+        mark_sources={}
+        for c,label in ((self.long,'long'),(self.short,'short')):
+            if c:
+                q=self.m.quote(c['id'],day)
+                event=q.get('valuation_quote',{}) if q else {}
+                mark_sources[label]=('daily_bbo' if mid(q) is not None else
+                    {k:event.get(k) for k in ('method','source_timestamp','event_timestamp','raw_sha256','age_seconds')}
+                    if q and self.m.mark(c['id'],day) is not None else 'unavailable')
         row=dict(date=day,closing_reference=self.cal.close(day),strategy=self.strategy,fill_model=self.model,
                  economic_cash=self.cash,long_contract=self.long['id'] if self.long else None,n_long=int(bool(self.long)),
                  short_contract=self.short['id'] if self.short else None,n_short=int(bool(self.short)),stock_shares=self.shares,
@@ -317,7 +328,7 @@ class Account:
                  nav=nav,valuation_gaps=missing,unresolved=self.halted,capital_deployed_cost=deployed,
                  long_only=bool(self.long and not self.short and self.shares==0),
                  delta_dollar=exposure,delta_to_nav=exposure/nav if exposure is not None and nav is not None and nav>0 else None,
-                 broker_buying_power=None,settled_cash=None)
+                 broker_buying_power=None,settled_cash=None,mark_sources=mark_sources)
         self.ledger.append(row)
         return row
 
@@ -329,6 +340,11 @@ class Account:
                selected_long=None,selected_short=None,selected_strike=None,actual_entry_moneyness=None,
                time_to_last_trade_days=None,outcome='skipped',reason='',positive_bid_verified=None)
         self.weeks.append(d)
+        coverage=self.m.short_coverage(w['friday'])
+        d.update(candidate_coverage=coverage['scope'] if coverage else 'unassessed_observed_subset',
+                 candidate_coverage_complete=bool(coverage and coverage['complete']),
+                 signal_observed_contracts=coverage.get('signal_observed_contracts') if coverage else None,
+                 candidate_requests=coverage.get('queried_candidates') if coverage else None)
         if covered_today or self.shares<0:
             d['reason']='ASSIGNED_COVER_NO_SAME_CLOSE_REENTRY'; return
         if self.short:
@@ -439,12 +455,18 @@ class Account:
             assert reconciled,'P&L attribution failed'
         event_cash=self.cfg.initial_equity+sum(e['cash_delta'] for e in self.events)
         assert math.isclose(event_cash,self.cash,abs_tol=1e-6),'Cash reconciliation failed'
-        peak=self.cfg.initial_equity; prior=self.cfg.initial_equity; gap=False; drawdowns=[]; returns=[]
+        peak=self.cfg.initial_equity; observed_peak=peak
+        prior=self.cfg.initial_equity; gap=False; drawdowns=[]; observed_drawdowns=[]; returns=[]
         for r in self.ledger:
             n=r['nav']
             r['daily_return']=n/prior-1 if n is not None and prior is not None and prior>0 else None
             if r['daily_return'] is not None: returns.append(r['daily_return'])
             prior=n
+            if n is None:r['observed_drawdown']=None
+            else:
+                observed_peak=max(observed_peak,n)
+                r['observed_drawdown']=n/observed_peak-1
+                observed_drawdowns.append(r['observed_drawdown'])
             if n is None: gap=True
             if not gap:
                 peak=max(peak,n); r['drawdown']=n/peak-1
@@ -453,6 +475,9 @@ class Account:
         metrics=dict(ending_nav=nav,net_pnl=nav-self.cfg.initial_equity if nav is not None else None,
                      account_return=nav/self.cfg.initial_equity-1 if nav is not None else None,
                      max_drawdown=min(drawdowns) if complete and drawdowns else None,
+                     max_observed_drawdown=min(observed_drawdowns) if observed_drawdowns else None,
+                     observed_drawdown_is_lower_bound=not complete,
+                     valuation_gap_dates=[r['date'] for r in self.ledger if r['valuation_gaps']],
                      initial_capital_outlay=self.initial_outlay,
                      stock_equivalent_at_entry=self.first_stock_equivalent,
                      entry_capital_saved=self.first_stock_equivalent-self.initial_outlay if self.initial_outlay is not None else None,

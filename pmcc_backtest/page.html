@@ -22,6 +22,7 @@
   <section id="rules"><div class="section-title"><span class="index">02 / PREDECLARED RULES</span><h2>Choices before prices.</h2></div>
     <div class="table-wrap" tabindex="0"><table class="rules"><thead><tr><th>Decision</th><th>Implemented rule</th></tr></thead><tbody>
       <tr><td>Signal → execution</td><td>Previous session EOD inputs → next scheduled first-session close. 09:00 ET signal checkpoint; publication availability must be known or explicitly assumed. Normal 16:00 ET / actual early close, with DST.</td></tr>
+      <tr><td>Daily close reference</td><td>Valid daily BID/ASK first. If a daily leg is absent, the last complete quote event within the final 60 seconds may supply the mark and unchanged midpoint / quoted-side simulated fill. Both source and event times must be same-day, pre-close and within 60 seconds. No stale-bar carry, trade substitution or null-to-zero. Actual quote time stays separate from modeled closing time.</td></tr>
       <tr><td>Long</td><td id="long-rule">365–550 signal DTE; expiry nearest 450 then earlier. Mode fixed before P&amp;L: 75%-of-spot strike proxy. Largest observed strike ≤ 0.75 × signal spot, valid signal quote. Replace at weekly decision when remaining DTE ≤ 90.</td></tr>
       <tr><td>Weekly short</td><td>Minimum strike among historically evidenced Friday-series candidates with K ≥ 1.05 × signal spot and ≥ long K; shorter expiry, compatible assumed standard terms. No intermediate strikes. Scheduled last-trading date is derived from contract rules and the historical calendar.</td></tr>
       <tr><td>Fill sequence</td><td>Lock both legs at signal. Resolve old obligations → buy new long → permit preselected short. Missing short quote retains long. No re-ranking or midweek retry. Positive bid required when supplied.</td></tr>
@@ -32,7 +33,7 @@
   </section>
   <section id="results"><div class="section-title"><span class="index">03 / SAME EQUITY, SAME DATES</span><h2>Compare the accounts.</h2><label>Fill model <select id="model"><option value="midpoint">Midpoint-assumed</option><option value="quoted_side">Quoted side: buy ask / sell bid</option></select></label></div>
     <div id="metrics" class="metrics"></div><p id="metrics-note" class="caption"></p><div id="comparison" class="table-wrap" tabindex="0"></div>
-    <div class="chart-grid"><div><h3>Account NAV · USD</h3><div id="nav-chart" class="chart" aria-label="Comparable account NAV"></div></div><div><h3>Drawdown · from account peak</h3><div id="dd-chart" class="chart" aria-label="Comparable account drawdowns"></div></div></div>
+    <div class="chart-grid"><div><h3>Account NAV · USD</h3><div id="nav-chart" class="chart" aria-label="Comparable account NAV"></div></div><div><h3 id="dd-title">Drawdown</h3><label>View <select id="drawdown-view"><option value="observed_drawdown">Observed-NAV · magnitude lower bound if gaps</option><option value="drawdown">Strict full-path · stops at first gap</option></select></label><div id="dd-chart" class="chart" aria-label="Comparable account drawdowns"></div><p id="dd-note" class="caption"></p></div></div>
   </section>
   <section id="capital"><div class="section-title"><span class="index">04 / CASH IS NOT BUYING POWER</span><h2>Separate capital from return.</h2></div>
     <div class="chart-grid"><div><h3>Capital deployed at cost · USD</h3><div id="capital-chart" class="chart" aria-label="Ongoing capital deployed at cost"></div></div><div><h3>Delta-dollar exposure · USD</h3><div id="exposure-chart" class="chart" aria-label="Historical delta-dollar exposure"></div></div></div><div id="attribution" class="table-wrap" tabindex="0"></div>
@@ -49,6 +50,7 @@
     <div id="quality" class="metric-strip"></div><div id="blockers" class="notice error"></div>
     <p id="coverage-note" class="caption"></p><div id="weekly" class="table-wrap" tabindex="0" aria-label="Weekly opportunities, holiday handling and skip reasons"></div>
     <h3>Specific valuation gaps</h3><div id="gaps" class="table-wrap" tabindex="0"></div>
+    <details><summary>Closing-quote repair and September candidate coverage</summary><p id="repair-note" class="caption"></p><div id="repair-targets" class="table-wrap" tabindex="0"></div><div class="downloads"><a href="candidate_coverage.csv" download>Candidate coverage CSV ↓</a><a href="quote_rechecks.csv" download>Quote recheck audit CSV ↓</a></div></details>
     <details><summary>Exact provider evidence and provenance</summary><pre id="audit-detail" class="provenance"></pre><a href="data_audit.json" download>Data audit JSON ↓</a></details>
   </section>
   <section id="contracts"><div class="section-title"><span class="index">07 / IDENTITY ≠ TERMS ≠ LAST QUOTE</span><h2>What is known, derived or assumed.</h2></div>
@@ -61,12 +63,12 @@
   <section id="reproduce"><div class="section-title"><span class="index">08 / REPRODUCE &amp; CHECK</span><h2>Inspect the rules, not just the curve.</h2></div>
     <details><summary>Commands, schema, dependencies and source hashes</summary>
       <pre class="data-command">python -m pip install -r pmcc_backtest/requirements.txt
-python -m unittest pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts -v
+python -m unittest pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts pmcc_backtest.test_repair -v
 python -m pmcc_backtest.build
 # Full accounting rerun from the retained licensed input:
-python -m pmcc_backtest.build --input pmcc_backtest/local_data/observed_input_v2.json
-# Assemble exact observed IDs, reusing immutable cached replies; LSEG open:
-python -m pmcc_backtest.acquire_observed --output pmcc_backtest/local_data/observed_input_new.json</pre>
+python -m pmcc_backtest.build --input pmcc_backtest/local_data/observed_input_repaired.json
+# Reassemble using retained real responses, to a NEW snapshot (no network):
+python -m pmcc_backtest.repair_coverage --input pmcc_backtest/local_data/observed_input_v2.json --output pmcc_backtest/local_data/reproduced.json --cache-dir pmcc_backtest/local_data/repair_v3 --offline</pre>
       <p class="caption">The no-input command re-renders committed derived results; it does not pretend to recompute P&amp;L without licensed inputs. The --input command reruns the accounting. A fresh authorized setup first runs probe_lseg (see the source README); no teacher-supplied contract file is required. Tests contain labeled synthetic fixtures, isolated from publication. Raw snapshots remain local, unchanged and Git-ignored; the page needs no live connection.</p>
       <div class="downloads"><a href="config.json" download>Configuration ↓</a><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/pmcc_backtest">Source &amp; tests ↗</a><a href="https://github.com/Vicky-zjx/535_fintech/blob/main/pmcc_backtest/SCHEMA.md">Input schema ↗</a></div>
       <pre id="versions" class="provenance"></pre>

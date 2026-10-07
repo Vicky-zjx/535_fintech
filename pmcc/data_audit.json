@@ -1,9 +1,9 @@
 {
-  "assumption_contracts": 204,
+  "assumption_contracts": 306,
   "availability_policy": "previous_session_by_next_09_assumed",
   "blocking_issues": [],
-  "candidate_universe": "Observed subset: 56 exact expired-call RICs from the prior real cache plus eligible ordinary OPRA long-call IDs from current LSEG discovery, admitted only with historical price evidence by each signal. No complete historical chain or globally minimal listed strike is claimed; long discovery has survivor bias.",
-  "contracts": 204,
+  "candidate_universe": "Strike leads from actual ordinary AAPL OPRA identities in retained history/current discovery; reconstructed expiry RICs are probes only. Historical observations, not construction or current chain, determine signal-time membership. Bounds 95%-120% of prior-session stock price; no assumed strike grid or completeness claim. Existing long-call discovery has survivor bias; earlier short expiries retain their observed subset.",
+  "contracts": 306,
   "corporate_action_review": {
     "apple_split_history": "Apple public FAQ lists its last split in August 2020, before this sample.",
     "limitation": "No detected conflicting corporate-action evidence; absence is not a vendor guarantee of every historical deliverable.",
@@ -21,6 +21,4478 @@
     ],
     "status": "research screening, not a complete OCC memo search",
     "unresolved_adjustment_event": false
+  },
+  "coverage_repair": {
+    "plan": {
+      "base_input_sha256": "a6a3762058b1a1026adf5f97a076b69f99628923a47063e935fbdf71c887927a",
+      "config": {
+        "assignment_itm": 0.01,
+        "borrow_rate": 0.03,
+        "cash_interest": 0.0,
+        "end": "2026-09-30",
+        "initial_equity": 50000.0,
+        "long_delta_max": 0.9,
+        "long_delta_min": 0.7,
+        "long_delta_target": 0.8,
+        "long_dte_max": 550,
+        "long_dte_min": 365,
+        "long_dte_target": 450,
+        "long_mode": "75%-of-spot strike proxy",
+        "long_proxy": 0.75,
+        "option_commission": 0.65,
+        "replace_dte": 90,
+        "short_otm": 0.05,
+        "signal_time": "09:00",
+        "start": "2026-07-06",
+        "stock_ric": "AAPL.O",
+        "stock_slippage_bps": 1.0,
+        "timezone": "America/New_York"
+      },
+      "discovery_seed_sha256": "3d9b4ba9e6f54c3f6b5452d9ff09b2d3d06bb42dcff9750d2d11c5e5b9fb269d",
+      "scope": "Strike leads from actual ordinary AAPL OPRA identities in retained history/current discovery; reconstructed expiry RICs are probes only. Historical observations, not construction or current chain, determine signal-time membership. Bounds 95%-120% of prior-session stock price; no assumed strike grid or completeness claim.",
+      "series": [
+        {
+          "execution_day": "2026-09-08",
+          "expiry": "2026-09-11",
+          "ids": [
+            "AAPLI112630500.U^I26",
+            "AAPLI112630750.U^I26",
+            "AAPLI112631000.U^I26",
+            "AAPLI112631250.U^I26",
+            "AAPLI112631500.U^I26",
+            "AAPLI112631750.U^I26",
+            "AAPLI112632000.U^I26",
+            "AAPLI112632250.U^I26",
+            "AAPLI112632500.U^I26",
+            "AAPLI112632750.U^I26",
+            "AAPLI112633000.U^I26",
+            "AAPLI112633250.U^I26",
+            "AAPLI112633500.U^I26",
+            "AAPLI112633750.U^I26",
+            "AAPLI112634000.U^I26",
+            "AAPLI112634250.U^I26",
+            "AAPLI112634500.U^I26",
+            "AAPLI112634750.U^I26",
+            "AAPLI112635000.U^I26",
+            "AAPLI112635250.U^I26",
+            "AAPLI112635500.U^I26",
+            "AAPLI112635750.U^I26",
+            "AAPLI112636000.U^I26",
+            "AAPLI112636250.U^I26",
+            "AAPLI112636500.U^I26",
+            "AAPLI112636750.U^I26",
+            "AAPLI112637000.U^I26",
+            "AAPLI112637250.U^I26",
+            "AAPLI112637500.U^I26",
+            "AAPLI112638000.U^I26"
+          ],
+          "probe_strikes": [
+            305.0,
+            307.5,
+            310.0,
+            312.5,
+            315.0,
+            317.5,
+            320.0,
+            322.5,
+            325.0,
+            327.5,
+            330.0,
+            332.5,
+            335.0,
+            337.5,
+            340.0,
+            342.5,
+            345.0,
+            347.5,
+            350.0,
+            352.5,
+            355.0,
+            357.5,
+            360.0,
+            362.5,
+            365.0,
+            367.5,
+            370.0,
+            372.5,
+            375.0,
+            380.0
+          ],
+          "signal_day": "2026-09-04",
+          "signal_spot": 319.97
+        },
+        {
+          "execution_day": "2026-09-14",
+          "expiry": "2026-09-18",
+          "ids": [
+            "AAPLI182631750.U^I26",
+            "AAPLI182632000.U^I26",
+            "AAPLI182632250.U^I26",
+            "AAPLI182632500.U^I26",
+            "AAPLI182632750.U^I26",
+            "AAPLI182633000.U^I26",
+            "AAPLI182633250.U^I26",
+            "AAPLI182633500.U^I26",
+            "AAPLI182633750.U^I26",
+            "AAPLI182634000.U^I26",
+            "AAPLI182634250.U^I26",
+            "AAPLI182634500.U^I26",
+            "AAPLI182634750.U^I26",
+            "AAPLI182635000.U^I26",
+            "AAPLI182635250.U^I26",
+            "AAPLI182635500.U^I26",
+            "AAPLI182635750.U^I26",
+            "AAPLI182636000.U^I26",
+            "AAPLI182636250.U^I26",
+            "AAPLI182636500.U^I26",
+            "AAPLI182636750.U^I26",
+            "AAPLI182637000.U^I26",
+            "AAPLI182637250.U^I26",
+            "AAPLI182637500.U^I26",
+            "AAPLI182638000.U^I26",
+            "AAPLI182638500.U^I26",
+            "AAPLI182639000.U^I26",
+            "AAPLI182639500.U^I26"
+          ],
+          "probe_strikes": [
+            317.5,
+            320.0,
+            322.5,
+            325.0,
+            327.5,
+            330.0,
+            332.5,
+            335.0,
+            337.5,
+            340.0,
+            342.5,
+            345.0,
+            347.5,
+            350.0,
+            352.5,
+            355.0,
+            357.5,
+            360.0,
+            362.5,
+            365.0,
+            367.5,
+            370.0,
+            372.5,
+            375.0,
+            380.0,
+            385.0,
+            390.0,
+            395.0
+          ],
+          "signal_day": "2026-09-11",
+          "signal_spot": 332.27
+        },
+        {
+          "execution_day": "2026-09-21",
+          "expiry": "2026-09-25",
+          "ids": [
+            "AAPLI252632000.U^I26",
+            "AAPLI252632250.U^I26",
+            "AAPLI252632500.U^I26",
+            "AAPLI252632750.U^I26",
+            "AAPLI252633000.U^I26",
+            "AAPLI252633250.U^I26",
+            "AAPLI252633500.U^I26",
+            "AAPLI252633750.U^I26",
+            "AAPLI252634000.U^I26",
+            "AAPLI252634250.U^I26",
+            "AAPLI252634500.U^I26",
+            "AAPLI252634750.U^I26",
+            "AAPLI252635000.U^I26",
+            "AAPLI252635250.U^I26",
+            "AAPLI252635500.U^I26",
+            "AAPLI252635750.U^I26",
+            "AAPLI252636000.U^I26",
+            "AAPLI252636250.U^I26",
+            "AAPLI252636500.U^I26",
+            "AAPLI252636750.U^I26",
+            "AAPLI252637000.U^I26",
+            "AAPLI252637250.U^I26",
+            "AAPLI252637500.U^I26",
+            "AAPLI252638000.U^I26",
+            "AAPLI252638500.U^I26",
+            "AAPLI252639000.U^I26",
+            "AAPLI252639500.U^I26",
+            "AAPLI252640000.U^I26"
+          ],
+          "probe_strikes": [
+            320.0,
+            322.5,
+            325.0,
+            327.5,
+            330.0,
+            332.5,
+            335.0,
+            337.5,
+            340.0,
+            342.5,
+            345.0,
+            347.5,
+            350.0,
+            352.5,
+            355.0,
+            357.5,
+            360.0,
+            362.5,
+            365.0,
+            367.5,
+            370.0,
+            372.5,
+            375.0,
+            380.0,
+            385.0,
+            390.0,
+            395.0,
+            400.0
+          ],
+          "signal_day": "2026-09-18",
+          "signal_spot": 336.13
+        },
+        {
+          "execution_day": "2026-09-28",
+          "expiry": "2026-10-02",
+          "ids": [
+            "AAPLJ022632500.U^J26",
+            "AAPLJ022632750.U^J26",
+            "AAPLJ022633000.U^J26",
+            "AAPLJ022633250.U^J26",
+            "AAPLJ022633500.U^J26",
+            "AAPLJ022633750.U^J26",
+            "AAPLJ022634000.U^J26",
+            "AAPLJ022634250.U^J26",
+            "AAPLJ022634500.U^J26",
+            "AAPLJ022634750.U^J26",
+            "AAPLJ022635000.U^J26",
+            "AAPLJ022635250.U^J26",
+            "AAPLJ022635500.U^J26",
+            "AAPLJ022635750.U^J26",
+            "AAPLJ022636000.U^J26",
+            "AAPLJ022636250.U^J26",
+            "AAPLJ022636500.U^J26",
+            "AAPLJ022636750.U^J26",
+            "AAPLJ022637000.U^J26",
+            "AAPLJ022637250.U^J26",
+            "AAPLJ022637500.U^J26",
+            "AAPLJ022638000.U^J26",
+            "AAPLJ022638500.U^J26",
+            "AAPLJ022639000.U^J26",
+            "AAPLJ022639500.U^J26",
+            "AAPLJ022640000.U^J26",
+            "AAPLJ022640500.U^J26"
+          ],
+          "probe_strikes": [
+            325.0,
+            327.5,
+            330.0,
+            332.5,
+            335.0,
+            337.5,
+            340.0,
+            342.5,
+            345.0,
+            347.5,
+            350.0,
+            352.5,
+            355.0,
+            357.5,
+            360.0,
+            362.5,
+            365.0,
+            367.5,
+            370.0,
+            372.5,
+            375.0,
+            380.0,
+            385.0,
+            390.0,
+            395.0,
+            400.0,
+            405.0
+          ],
+          "signal_day": "2026-09-25",
+          "signal_spot": 341.07
+        }
+      ],
+      "valuation_policy": "Daily BBO first. For missing daily BBO only, a complete same-event quote in the final 60 seconds of the actual regular session may supply a valuation-only midpoint. Never previous-session/earlier-bar fill-forward, trade/theoretical-price substitution, or null-to-zero conversion."
+    },
+    "probe_rejections": [
+      {
+        "id": "AAPLI112634750.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI112635250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI112635750.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI112636250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI112636750.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI112637250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI182635250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI182635750.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI182636250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI182636750.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      },
+      {
+        "id": "AAPLI182637250.U^I26",
+        "reason": "NO_PRICE_EVIDENCE_RETURNED_BY_BOUNDED_HISTORY_REQUEST",
+        "scope": "probe failed to establish membership; not evidence of never listed"
+      }
+    ],
+    "quote_checks": [
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-10",
+        "error": null,
+        "id": "AAPLG102633000.U^G26",
+        "raw_sha256": "1aa5fc6ef5b5a74ac8c886d669305f58f5b172baef4328fa65b2748bd41d30e8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-09",
+        "error": null,
+        "id": "AAPLG102633250.U^G26",
+        "raw_sha256": "bb41943f5350661f2b7b065f9d9148cf307abce7579cfbaa36ea14c48b9d1359",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-10",
+        "error": null,
+        "id": "AAPLG102633250.U^G26",
+        "raw_sha256": "4fb82daecdf793dd2d56962288490284592119c5826eb38ddc5a7bfc76a399cb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-09",
+        "error": null,
+        "id": "AAPLG102633500.U^G26",
+        "raw_sha256": "d8b50dd8a29d23778fd8ad89cc691c6c85579d238a7d7bdba320616d5c23b22d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-10",
+        "error": null,
+        "id": "AAPLG102633500.U^G26",
+        "raw_sha256": "8060f67d412d00bedc94ff2d8e91e91759ada58314e5ed4c0a70595bd1825987",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-08",
+        "error": null,
+        "id": "AAPLG102633750.U^G26",
+        "raw_sha256": "79e977f5fe5c43cfbca65c793a1ebafb3d4b5bbce9e37d52de65625103198ad5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-09",
+        "error": null,
+        "id": "AAPLG102633750.U^G26",
+        "raw_sha256": "bf58dc19e0dbcd85ffb19cc591d7ce35878ad6930ed965ab09e0b249e290dd0b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-10",
+        "error": null,
+        "id": "AAPLG102633750.U^G26",
+        "raw_sha256": "09575ca6976f472ba1747e334b9e13f4cd968ac71c3b548a7f0a6cc235c76d31",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-17",
+        "error": null,
+        "id": "AAPLG172633750.U^G26",
+        "raw_sha256": "9badeb5c66cd1c5f4719cb6fde8fc99f11a22943fc4b09020d7191c9ec14db6e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-17",
+        "error": null,
+        "id": "AAPLG172634000.U^G26",
+        "raw_sha256": "cd626eeff9e73362021a0fda0060b95a280e48dcfa60b2b17a65da7a8606cec0",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-17",
+        "error": null,
+        "id": "AAPLG172634250.U^G26",
+        "raw_sha256": "b16cd3db69122b9309663424f3893ac6b16885b4aee0a3038af40df162ddba01",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-17",
+        "error": null,
+        "id": "AAPLG172634500.U^G26",
+        "raw_sha256": "e76b5be2b043f3e4b4f1407184d2e7b81b224a15135104c8561e12c0c20e155d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-23",
+        "error": null,
+        "id": "AAPLG242634500.U^G26",
+        "raw_sha256": "25ea34671f7a3f272ebe0cb7da5e545e7524ac7d5ef6ee8177c6b6c78f6181e8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-24",
+        "error": null,
+        "id": "AAPLG242634500.U^G26",
+        "raw_sha256": "640473727f73575fa4b772d529cda4108b7124715990397240654398697e54b9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-23",
+        "error": null,
+        "id": "AAPLG242634750.U^G26",
+        "raw_sha256": "c9b92052ea85beaa4f4c11f4a1886a741710fa481f62f906c390155f1d0ff150",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-24",
+        "error": null,
+        "id": "AAPLG242634750.U^G26",
+        "raw_sha256": "4a9ed3b73002b3631426acce27acd0a6f46414de8bc32fd37f576b103f3fe4ea",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-23",
+        "error": null,
+        "id": "AAPLG242635000.U^G26",
+        "raw_sha256": "568c569abd40fbc02ded4be425272f2e38043e010fefc4513a5f5913258ac1eb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-24",
+        "error": null,
+        "id": "AAPLG242635000.U^G26",
+        "raw_sha256": "8446714346a63f15207a5f6694693f587232a67bd0a77d336acde74b6bbd91a5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-23",
+        "error": null,
+        "id": "AAPLG242635250.U^G26",
+        "raw_sha256": "caca3b23de2af62348ffb4f40add456abca3c02dce6d4766b58a61555b2990cd",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-24",
+        "error": null,
+        "id": "AAPLG242635250.U^G26",
+        "raw_sha256": "0ff0024cdebc0404edd1d2ff259e3467255d67fc16af1cbc1a5ec64d0c729ba5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312633750.U^G26",
+        "raw_sha256": "40218a491d66803dc5c19197ef1723cc51d8632db08e556a8274a9423952b573",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312634000.U^G26",
+        "raw_sha256": "deb4b50ffffafa219bcb1f6f5636a0cea7bbbadbfce9ea794fdb524a1d245ff9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312635750.U^G26",
+        "raw_sha256": "13a0a722699b20f66d0fadef379adf93417a02d0816b33ad8c23abe2089d2832",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312636000.U^G26",
+        "raw_sha256": "4c74feb7123c90c4f7f3765e98506a6aa30789f6838186e602b8f09131877c85",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312636250.U^G26",
+        "raw_sha256": "c52dcb64b7ca9808d61e178b24401447c021444ddf0c43657f2c259dd78ce0ae",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-31",
+        "error": null,
+        "id": "AAPLG312636500.U^G26",
+        "raw_sha256": "2fad19ab8dcc60d34e7716cbcb934af6bf85987913a087c5810f55d6df587547",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLH072632250.U^H26",
+        "raw_sha256": "1961812bba8be1d241a5b454d5536f28de5a6792cbcb3259c0eab59ac97327b5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLH072632500.U^H26",
+        "raw_sha256": "b3c574f559568c45cf7d8358d44a623ce4f7f84dbfe8ab0e58c621c958a58646",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLH072632750.U^H26",
+        "raw_sha256": "927d5ded0fdbccdad9b595672a483b64d0250d52cc948a72ad4fde32a0368933",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLH072633000.U^H26",
+        "raw_sha256": "1eee5152d0dc793d735fba4d1fef589ff25d1b21b89ae1740d167314dbe22389",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142630750.U^H26",
+        "raw_sha256": "93bd1f35b8d67a757f4202d5760c1f99dc8aa85815a6eb9899a20d0aeed162af",
+        "source_timestamp": "2026-08-14T19:59:57.218000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLH142632250.U^H26",
+        "raw_sha256": "4ce77acd662d6cbe300b42cf16581d3934f6baa056cebe14d41b2389bc61f2d2",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142632250.U^H26",
+        "raw_sha256": "80622a5f86a50f47542d922a8b1f11690d49ab72e3264d2e5411418e14a94d17",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLH142632500.U^H26",
+        "raw_sha256": "11a4f5316c9874224b47fcec9b6c751d32b2df4af17bf486263192417b858151",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142632500.U^H26",
+        "raw_sha256": "a20bac6feb115616ef429d2e70171e9aa3e27257008b5c02381ae49dda1434ad",
+        "source_timestamp": "2026-08-14T19:59:50.045000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-12",
+        "error": null,
+        "id": "AAPLH142632750.U^H26",
+        "raw_sha256": "96b77b797ed3725073e70c79e1b207669a56806abedda692b55612b412b9dca5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLH142632750.U^H26",
+        "raw_sha256": "ee6322929609a92e58c6f4ff29c2c24bd4ff8f2afeb07cb8640700b09973952b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142632750.U^H26",
+        "raw_sha256": "c8e834bd41f17375303e8896c6b1124740d46d1ed950a6b31df51c90c3e0c187",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLH142633000.U^H26",
+        "raw_sha256": "9cdd430d16ac7e65b05da43a2433fed352c2af1ae6b257ed998f7b4f57f638d3",
+        "source_timestamp": "2026-08-13T19:59:31.022000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142633000.U^H26",
+        "raw_sha256": "8b14706cd7646a043f03efdabfcb78a8f3113153e0763f1475a1dbd953597f82",
+        "source_timestamp": "2026-08-14T19:59:50.045000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-12",
+        "error": null,
+        "id": "AAPLH142633250.U^H26",
+        "raw_sha256": "07e79fdf667172b798623841271ad20ad246801225c6b6311822e874cadaa128",
+        "source_timestamp": "2026-08-12T19:59:52.554000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLH142633250.U^H26",
+        "raw_sha256": "ab1dac58759b33f03b599b3855bf0659f845e87dcf99624d8dc227bb7e77fa08",
+        "source_timestamp": "2026-08-13T19:59:29.472000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLH142633250.U^H26",
+        "raw_sha256": "b4e649f53530a5b3d14ffbf1955bb6383921f86012c7446e34aa07f50398c0de",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLH212632000.U^H26",
+        "raw_sha256": "31118399aac783b2600906d623756a5bfe0cd6e993aeb9f5b5df903f9d173255",
+        "source_timestamp": "2026-08-21T19:59:38.232000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLH212632250.U^H26",
+        "raw_sha256": "c8ce0bc10aec64b8b7748f9fd8d0cc2a49565e066349b1c8e63f67e713208354",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLH212632500.U^H26",
+        "raw_sha256": "b1fb06f77296f3021c64b40f27834256439bbae7f1d1ff2621c80182bec878d7",
+        "source_timestamp": "2026-08-21T19:59:09.974000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLH212632750.U^H26",
+        "raw_sha256": "d7f54896a944ba10304fbc1e7198b779fa59ad2f2b9436a2222cafbb85fed4a6",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLH282633000.U^H26",
+        "raw_sha256": "b54bbf92a723d02d270fa1eca5d80655f17c6ffada6f739cbd6db65dff00c634",
+        "source_timestamp": "2026-08-27T19:59:49.231000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLH282633000.U^H26",
+        "raw_sha256": "7376c5a77725e085aa6822ec420deffb3892b7a418ef9dcee1ae6a5e5d3f644b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLH282633250.U^H26",
+        "raw_sha256": "f14427edd24b7bf09c2cb384bb946e0ea874d1cd5cab2df0b111c2c570dd74bb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLH282633250.U^H26",
+        "raw_sha256": "d2f298d637f593b5768a363ef37da32e5061e6a75cd5481fa036244d363ffd76",
+        "source_timestamp": "2026-08-28T19:59:51.384000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLH282633500.U^H26",
+        "raw_sha256": "af64a6b2f282415da558f96a8c368849464f3ffc27955ef0472d3b70c50c674e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLH282633500.U^H26",
+        "raw_sha256": "67042f924602650a3ea0fdc30ddeeb288fd4966bca7eb16c0b13214236d69017",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLH282633750.U^H26",
+        "raw_sha256": "0c9eb336296af0c73140523d726ffeacbf3ba8738d8431b6d001561cfa31ca97",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLH282633750.U^H26",
+        "raw_sha256": "b38cced2e3f3cbd9c7471b49d3590141d009b1e33513dd65352d2bfe8a4dc0b6",
+        "source_timestamp": "2026-08-28T19:59:57.093000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI042633250.U^I26",
+        "raw_sha256": "27ce1c53888297ef5917044a4df4d3680f36fccbd5ff9bb28b795fd55b1ecc23",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI042633500.U^I26",
+        "raw_sha256": "8883ef26b6d512b21aea769001193e24acdf3ef16c2c8d33ad49d6da1c926118",
+        "source_timestamp": "2026-09-04T19:59:38.562000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI042633750.U^I26",
+        "raw_sha256": "4950d0bd0e47cf251f9fb8239a76b580ab2e120652cb45f3b8cc4d75860fe283",
+        "source_timestamp": "2026-09-04T19:59:49.157000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI042634000.U^I26",
+        "raw_sha256": "e54a8b3709183afc7533a7a47b36af8f02187693d271b7a1e6392cc655453786",
+        "source_timestamp": "2026-09-04T19:59:56.746000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112633500.U^I26",
+        "raw_sha256": "d7781083940bea9bb42f899b1621caa8ef859ea9f8fe9ccbe35418adf1bf4fb1",
+        "source_timestamp": "2026-09-11T19:59:57.667000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112633750.U^I26",
+        "raw_sha256": "67f87a79bf481461d99f3b7c6ad6ec0903a14ea5991bf1f774a81d19df36b468",
+        "source_timestamp": "2026-09-11T19:59:51.422000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112634000.U^I26",
+        "raw_sha256": "9cf17c1fb279c25e5dfebf9f60bff99e66c0762e956c2cc48f488be7a5d4638c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112634250.U^I26",
+        "raw_sha256": "04f76ead0f6841cad6adca755746cb455cdf23fd6c99c52ef69e682fa836d083",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112634500.U^I26",
+        "raw_sha256": "9594678f17476e119f827d7a719cb4790f802bfd1283f97b44627f4daa96153c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112635000.U^I26",
+        "raw_sha256": "67d97f563ddbc68eb222166166bfb3feaa653ff1dfb32ab720fd6002dc19d406",
+        "source_timestamp": "2026-09-10T19:59:48.577000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112635000.U^I26",
+        "raw_sha256": "8e995a8e4bcb0bf9c010dc6c9d5129d83e41761983e153b5649e8ded97785e80",
+        "source_timestamp": "2026-09-11T19:59:53.197000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112635500.U^I26",
+        "raw_sha256": "852a183dd608d16c05d78fbb03328394edb7eddb1e199c532f263d9c1b533ff9",
+        "source_timestamp": "2026-09-09T19:59:57.653000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112635500.U^I26",
+        "raw_sha256": "4c7024452b09ce8f6b45cb9228cce513b8ae7e303dab3e801b98a04726650f2a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112635500.U^I26",
+        "raw_sha256": "2e361679ab3731133b003679a4e6d5e10834a54e62baa06b9a46208c52696834",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112636000.U^I26",
+        "raw_sha256": "6d84993866e01c85f27fb3e38ccdaacffa6d0d148bcbf66f76e5796e9dccd7a3",
+        "source_timestamp": "2026-09-09T19:59:56.722000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112636000.U^I26",
+        "raw_sha256": "79402c8d0ec824d93d5c40ad2cdc04d8e6da096ce189fdc6e8e301018de5c62f",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112636000.U^I26",
+        "raw_sha256": "a949987e77bd1ca4593a34b4f2154d29964c8a16eb341f222bc14ec0d409c626",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112636500.U^I26",
+        "raw_sha256": "63c616f604be06efc04a7ee8f113a09e509a880ea03ec6d663c84e426a744843",
+        "source_timestamp": "2026-09-09T19:59:55.478000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112636500.U^I26",
+        "raw_sha256": "0b8c76dfa892c6ce0b2dc4d7fd87d268812bc3f90fd7e66d283b8bb131faebbb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112636500.U^I26",
+        "raw_sha256": "9326419d7e852f62250cfbacefabc0805623ebf5de80be1193352996237f61c0",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "46490582619aff8549532ae7c577f08a4fa3af48a7b5b3e6ac033616af53dc5d",
+        "source_timestamp": "2026-08-27T19:59:51.779000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "456289e6371e8c04716163e4a9d925cfbbe6e38569f88991c09fd9a48e97eb78",
+        "source_timestamp": "2026-08-31T19:59:52.683000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "5bf2c0b814a2806567c9ee60baf725950f5eb3856d0f5cffe406fb7ca32672ea",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "d37831e2a46d97a6c902756c5c29e01ff28a18ae147efb02f808f9214b7577e9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "59f9d90b92ddfc9fabf6fec2b7a81051baad457d4be66ae03ff62027a4228158",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-30",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "2438a68988242a676ebc6b73fe78980244c874e17446bdef244fadbd80f46710",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-18",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "072e029c811ff06b1adbbbc8366275e6b54f02f55d974f43f9d0b9b12b1ebe45",
+        "source_timestamp": "2026-08-18T19:59:55.152000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-24",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "df64a50350c1a30af36042b68af5464f3dbfc3fdbf124ada8eb14eb8a90a9456",
+        "source_timestamp": "2026-08-24T19:59:53.639000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-26",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "6b5ed13da26856596000249c242f08983a26d3d5ea8caf82dc12450e576039cb",
+        "source_timestamp": "2026-08-26T19:59:50.846000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "d030a272562989453659615bdb0d888463d68daf22ff4c138e452ba25cba9dbe",
+        "source_timestamp": "2026-08-27T19:59:50.183000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "7d54f505477fd83e65f031124e4b3591fecd81b7ecac710430a96f86b2c11b1d",
+        "source_timestamp": "2026-08-28T19:59:49.907000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "c113fdfe05537e7e7a9c79cceea3bc69760095b625a4757593ea4552bb72c746",
+        "source_timestamp": "2026-08-31T19:59:56.058000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-03",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "98bb0b59b83a2201edd0cbcdde9bf484a18fcd4f2b9927ccccb9edc31f106456",
+        "source_timestamp": "2026-09-03T19:59:54.258000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "600dd432577317cb3be2b74ae7239826b4bd4186e620cfc31573af6b26ce244a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "7019b65e17c72ae24049b138ff2238b47aac82b4594b1c752b3f1ce56671c167",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "29dd66f8edc152a9b0a13bfadd7ab68ff11f61aaf64f7517da3ff32ff2484fe8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-07-30",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "860dd5157d13aa21dcc8d63065d8bdc95cf801d7d540408db6a8b5a8908b9a8e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-17",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "ffbc80453d914bc733610517290961443514eecc0290d390e9ca0f823df6d77e",
+        "source_timestamp": "2026-08-17T19:59:55.230000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "ee6b453ff859ee1bf447a790040ea9481261832ec9662df8d80cc591f91385f2",
+        "source_timestamp": "2026-08-21T19:59:55.024000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-24",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "2778b4c481b88dcf0edf0bda646cb7781a86b08994030733e0e749d04d0333cb",
+        "source_timestamp": "2026-08-24T19:59:57.047000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-26",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "d1811789632d35d7246eb6bcecfd5a3101554d7532dbc3b4749998d1fbeb2c3a",
+        "source_timestamp": "2026-08-26T19:59:52.866000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "a1b943f412c78b0f855043f909b53773341749cf2421648295cbbac4b91577ce",
+        "source_timestamp": "2026-08-28T19:59:50.392000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "bbabd08f992573b79fe284ce006d89474c6418a19a99b50e13cc0d17234afa13",
+        "source_timestamp": "2026-08-31T19:59:49.163000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-02",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "960b782aef6b5b3abbb10ca267c70658f14499c50595345ce383076aa5466617",
+        "source_timestamp": "2026-09-02T19:59:52.301000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "0b0cb1957867c82806cefca2f12b78f8cc2aee3c87c4e3bd332fdabf86d498ae",
+        "source_timestamp": "2026-09-04T19:59:55.929000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "c8406ee597a7c8a48a6814cf1abf11d9d47fefc5848872dd41e277e248430cf4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "ca680bf0b52c6859501b9d41bcde250396d6f8c9f25f6e5064490a0395fa9bc8",
+        "source_timestamp": "2026-09-09T19:59:45.044000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "55ce140767d6cbddd029b4f5cf8c6b45051d9315ecf49bcadaf0d6f21c570042",
+        "source_timestamp": "2026-09-10T19:59:49.922000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "a48d2568da1ccbcc6d4a9a2b2cd43a506e2de12ddf10c329a872e651b8f20ee9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182633750.U^I26",
+        "raw_sha256": "9b53d5722a79fb2102da66939816b111a21d444972295666c9344faa06f5b97c",
+        "source_timestamp": "2026-09-18T19:59:53.770000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182634000.U^I26",
+        "raw_sha256": "0a766a6b98741d0f5ed57bf6114cfd9c1a39a811919693621e366d96254a594d",
+        "source_timestamp": "2026-09-18T19:59:41.319000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182634250.U^I26",
+        "raw_sha256": "a0383fb5a254cf0beea12574579b46f6cbc39c0563bc134621c9d88ec6311be9",
+        "source_timestamp": "2026-09-18T19:59:35.219000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182634500.U^I26",
+        "raw_sha256": "a20a58d7010b35b55e09d6ea2fe567ef3a0dd96b4c2958d454bb042fdd45333b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182634750.U^I26",
+        "raw_sha256": "715c4eac286aac2b1e65679eb0ee6d782b354362fbbc0fd36146828fe9de70c8",
+        "source_timestamp": "2026-09-18T19:59:06.059000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182635000.U^I26",
+        "raw_sha256": "4f3e39ad5e6ad073c401776f4a999bdfca60a5a8dcfbafa08a3692f613ae89dd",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182635500.U^I26",
+        "raw_sha256": "b8703c3d59d12d170e20b6b24d331b684b98b9f71ff9cf0b603c8bff3a49611e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182636000.U^I26",
+        "raw_sha256": "5497b647607f07c04fb4e16c7182e8de332d108b9cd1d30f18714ccdc531680f",
+        "source_timestamp": "2026-09-17T19:59:55.735000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182636000.U^I26",
+        "raw_sha256": "6fd29d3b9b9095cc8fb555c3ac33e51663b3b814699b1ed4b46067a047c5ea10",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182636500.U^I26",
+        "raw_sha256": "c89f8ef4b8f1b9da68262b2516f6c3d343dfd0f68cd3fdb577258335929c5cdb",
+        "source_timestamp": "2026-09-17T19:59:50.685000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182636500.U^I26",
+        "raw_sha256": "53d0ea66eba768b8251a070338ff7350b6f68e336c6de43daa065cfc6377cb96",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182637000.U^I26",
+        "raw_sha256": "a1c4961e135c02c10d1020b0ca1cc8d2b1cca938cb5e4b21cb675f379fd7ae20",
+        "source_timestamp": "2026-09-15T19:59:55.967000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182637000.U^I26",
+        "raw_sha256": "ce45b6f96a6f0b2f5c472173cc52ae6c660d4f59a4ddec96301bdfe925547ebc",
+        "source_timestamp": "2026-09-16T19:59:54.367000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182637000.U^I26",
+        "raw_sha256": "cc27c547a01a43cea33a85e02acdb35fb5e5436f03c1594bf202070aee9c9df8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182637000.U^I26",
+        "raw_sha256": "c14f849f7d16779d4ccce0e3ad63d14a232297e25adf1f7838e40b4e395c8f32",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "5571d6ec7c35348fd9c10e974adf24700e901976564d9d4368ab550234b35bf6",
+        "source_timestamp": "2026-09-14T19:59:49.964000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "ef5d3080cd8ea57d8dac1fed06da96d278d00e5b362ecd882ba7711b32a5719a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "e13273e92b9c566f4608f948fab47bcce6f277cbd47e65523d9fe45211a91aea",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "3bdc65a5871091709825738ecfa593fc34890945a1a1bd47834fbb37d1356464",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "a225476f31724f2e199c7e9eb35e5a538254de0cd83da8f473d56dfbb536ceb7",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "2618b0fe0e97963837a7cde8a82c3e3569aa175bacfe83d1aac6a81459fec383",
+        "source_timestamp": "2026-09-14T19:59:53.646000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "e04dfe49c481ca2fd846bf03ff9c602ae690826481af8aa212a294a5e7f7b8a7",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "e9ac8a0d2c417b89c8107d51e996ec52b28ef7b4bdcb40feb0d41ba818e5c4b1",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "d2ac632a418c5485184800384845b52d330d3a3587645233325a3fa86df0e7f0",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "285d4ce8d592131dd00463ee0361f4a4cd2cea6822278b9e1308dd12c6a79c1f",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "61e08af45ebcf6d8e72723380fb093fa2e9a1eaf1301af3419143f5e48bfa26a",
+        "source_timestamp": "2026-08-31T19:59:52.170000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "9f39b9a2baf734e18022245cabc48e6eb93c20d8dd44ce1b04555f280a2a3e6c",
+        "source_timestamp": "2026-09-08T19:59:58.309000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "5554d849d82b36b95fb2e50e2b384d7f8125b3d356ad6fc3254959a2d700216f",
+        "source_timestamp": "2026-09-09T19:59:56.196000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "0f07c2c288ea8c4ed18b8b5b04166a7549501fbb1187e7d498f6b425ae259721",
+        "source_timestamp": "2026-09-10T19:59:53.810000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "6e5a65df054f2c4651a645128057a0bc2d6359b160f7700090eafa933fe94c24",
+        "source_timestamp": "2026-09-11T19:59:55.972000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "01282eba13e7205e9984c9be6e402f0c0768a249ac78ea46ba6a8d979368213e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "e0ddd41eda1aa5d6e90ad8a3de0dcdd6370efe94050113e51b282ae6899aaa73",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "aab3555765f58626a3c494ecad7049fab4c0842dc4e205ee309d42fc0602f333",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "47415f8e3eb7b1cb91d25e93ab322700609a6ce3391abe13120f5f484faaab4f",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "07e061e28b6d0390cb32b9e8093623ebb64964259620f65c546425e89946bf03",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-25",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "2de325697bc2ed2695e02b851ed71cc42a24e02d466adca018611c9835acfe38",
+        "source_timestamp": "2026-08-25T19:59:56.087000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "88e9d238bccfe1c038b1ac06e935438f4fb661883e15f4007e1f0f35cf14a378",
+        "source_timestamp": "2026-08-31T19:59:51.098000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-02",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "89d863fe22ad4dfb21054c9cc4ab6436a086eac2b834aae5a7e27c1694dc60fb",
+        "source_timestamp": "2026-09-02T19:59:51.251000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "cea28972f37ea4b1c67e6b28eaeba9c4ff097e40f6cbb467988f9d8ffa99c545",
+        "source_timestamp": "2026-09-08T19:59:56.427000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "13a4369b89dc3ca3fb017c078bd1141d22bec692e5e014da348286c263839498",
+        "source_timestamp": "2026-09-09T19:59:55.362000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "34ccf3902f3b8ef45947a2e5871274b22f613304d8b1022ddd1f63949f76dff7",
+        "source_timestamp": "2026-09-11T19:59:55.918000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "bdfbe1633e4da2759351475cb64c48659c1f6183abcd91c8c49e71dc21579b54",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "8ee10466a2e9b2e13f1f2343ce97b9fe71b736f401e3a6428b9bd4db8328c561",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "8665ce67ccddbe05e31072673bf2598188b72bbae0deade1a40e926839a7b40a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "faacae836da464509fa6b35cf6affc4e33f98e63ad1aaba99947bf0c85b06246",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "38be847ab5cd24cf2a117b20dc37a66d0c790e03a4ab1922ee6e10b3225fc1f8",
+        "source_timestamp": "2026-09-18T19:59:46.858000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-26",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "17ba6c529ab7b2700bd86818a9f572313e70fca9a20f5b6f078f8b00826987d7",
+        "source_timestamp": "2026-08-26T19:59:53.655000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "52da426fbb663ee787106e875a2cf596a86b6db658585d971142b0dd0c29ebc5",
+        "source_timestamp": "2026-08-27T19:59:50.638000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "5f86c88d6f5dc05384eb39ccc723556a5a85813906f6106ff1aa0bb61ec9bb8e",
+        "source_timestamp": "2026-08-31T19:59:56.377000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-02",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "c726a86816445947ea5adf29a98caa3508f8a33221f3af65193641d85e71c698",
+        "source_timestamp": "2026-09-02T19:59:52.910000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-03",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "4c6cb3432d6d4f0c9b99c5f2b01dae67de7c832f89b46bee3013e3c4fec6d8d4",
+        "source_timestamp": "2026-09-03T19:59:52.928000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-04",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "f708927b962a40b3ebe519c304dec9d0d45fe59f510d73bf1fefc8581e2b7fbf",
+        "source_timestamp": "2026-09-04T19:59:51.106000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "c007adb27c953b26d6f67e3d67b9bdfc8973ef84ac1e0bef49f6feff2ce45bf0",
+        "source_timestamp": "2026-09-08T19:59:57.713000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "15e29ef096494e55c2dbde0c796eff30224d1e65629a8f7a69e5e0fad9d04aad",
+        "source_timestamp": "2026-09-09T19:59:53.175000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "2628ca189471984e1533703f9014e173f61a2bba6dcaf357586326ce30be064e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "acce719022c6da16aaac2528676afe4dfca35808480d6b6edc2abc1a3d7f9118",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "91c0df458211bb2f6564c84e815d77c26519cd4e6b44cab59cd088faa272ef10",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "cbffaf1f4059e7fe1c339d5d2328d4df9d86c8a8968adf774dc555a5f4301e66",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "8d0118c58d6e35725f2b3efca7d55eec4f822df944b97fbd3f554b3672a3720c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "724d9e69e72f2865d49778b92681f1d70c4bbac4924c24922f140a688b790c43",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252634250.U^I26",
+        "raw_sha256": "9154ab57c4e6ec1dbda6f1d7ba980d4768980d5f86329b263ebc3931ed8f0fdd",
+        "source_timestamp": "2026-09-25T19:59:54.704000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252634500.U^I26",
+        "raw_sha256": "d104ae72433d5708f2fd4963e657d1a57cf6a7499a913b18e35025d5b52d8a3d",
+        "source_timestamp": "2026-09-25T19:59:25.896000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252634750.U^I26",
+        "raw_sha256": "e45075f2cbd8921b6946987acad6540fdc03548be455c5056a6e104699a969c1",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252635000.U^I26",
+        "raw_sha256": "d4b29c00ebacd57ef40d4019553b75672a555a037f8f9b78c1e199a290dfa333",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252635250.U^I26",
+        "raw_sha256": "dd00eb33f6c8b07267fbf60a8b3ac3d723a12c2afd2c23cdaee567e571636768",
+        "source_timestamp": "2026-09-24T19:59:56.391000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252635250.U^I26",
+        "raw_sha256": "b67f68efb25da45be763e730c754b4deafb9cc956e1e7ad654428d7f4cac3f97",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252635500.U^I26",
+        "raw_sha256": "dc50d2074af27f87e94b111869110d896b9d4d47afe37daaa3a9a14757494556",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252635500.U^I26",
+        "raw_sha256": "f632b6615f0f3a6bdd46f963f874d77ed36c42dabd3807680a130c4eb9406afb",
+        "source_timestamp": "2026-09-24T19:59:53.658000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252635500.U^I26",
+        "raw_sha256": "90688098aa19d3da0ba013f4149f58aa31a38ec11b776f1247e2280f17fdf4d4",
+        "source_timestamp": "2026-09-25T19:59:00.124000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252635750.U^I26",
+        "raw_sha256": "9fd3f5d5e0052ce87ef799b643d4b232355bf236ba97e1a8b450fdd6adcf78a5",
+        "source_timestamp": "2026-09-24T19:59:55.188000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252635750.U^I26",
+        "raw_sha256": "aa7845cbc1b555818d28d445bf25c0103470f18856e5b6ab34d06f756a40470a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-06",
+        "error": null,
+        "id": "AAPLI252636000.U^I26",
+        "raw_sha256": "fb0689d713b368d717fde19af6ce4b2cb9dc2fa42b67b66fbf9d722373655919",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252636000.U^I26",
+        "raw_sha256": "1fdc537d181bb3f7879af31c7d252bf92f012d480f281e482ce7dba6e7ac9455",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252636000.U^I26",
+        "raw_sha256": "32b431659fcdb1b53be8b5a46aa168ae49d6fd62db936934763c60d025ce7455",
+        "source_timestamp": "2026-09-24T19:59:53.557000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252636000.U^I26",
+        "raw_sha256": "9b7d0e69373179c8f77f77a6a99ddd6c32162a276fb4464ed22bad27a80e030a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252636250.U^I26",
+        "raw_sha256": "71d6f0765433cc816748f8f7f94bc7639aa85add2c86c4d6436180417af666a3",
+        "source_timestamp": "2026-09-24T19:59:52.680000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252636250.U^I26",
+        "raw_sha256": "b0a916a22e7a699e95dbe1147f5268fadf55235a6c0652893d7ae9e717f7e6c5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252636500.U^I26",
+        "raw_sha256": "3a4bb44a855ef30f2dc35663e0689a27984f4e71ea71625d5ba78407eeccf5f2",
+        "source_timestamp": "2026-08-10T19:59:53.649000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252636500.U^I26",
+        "raw_sha256": "11b43f371997dee68957eef30f3d2a10ddc925b006a34da1c87ff8ce4fe07b1b",
+        "source_timestamp": "2026-09-23T19:59:56.030000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252636500.U^I26",
+        "raw_sha256": "3280e9a8af089db7a9adbb94313104588346e3c8ea0bccd0ac0e2b63d8f570b3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252636500.U^I26",
+        "raw_sha256": "2137963f2c0abc2701624d641e679467bf917aca33e0569bfb0443521de365da",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252636750.U^I26",
+        "raw_sha256": "f7fd69afd879e7503830cf50d4eaab55a05555ff6bdb609574e4b47cb93a3cf7",
+        "source_timestamp": "2026-09-23T19:59:50.843000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252636750.U^I26",
+        "raw_sha256": "03e677cc98bc14765611a0c55535c7a7a0ff2561e9850246c31bf59524010081",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252636750.U^I26",
+        "raw_sha256": "474f4c9fbd8c1bd5bf58eeedb3ac49111d2df2dd30fac1c03cca4ad4a2c23215",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-06",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "2db5bc0e9a44ab35ae5c39f3ef7acf8062cb35cde2d9d22a76ed94b726b360be",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "3f88f5509915e9bf04df964ef48b570171b2e444a97d642e12127a6dc317cac9",
+        "source_timestamp": "2026-08-10T19:59:54.497000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "30ef4249feefb1d0a2ab8c2ff3f7768ae9e91adeb71ca87dc6f0637ad5d2ce64",
+        "source_timestamp": "2026-09-21T19:59:32.374000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "646ded9a1f2e0fefa1669c70f30603bec020761de233d258a4f4d3255c5bffe7",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "29ddfb1116444eb0173c2e24cabb78494c0d4d07c9e79e8163965e08e7252ecc",
+        "source_timestamp": "2026-09-23T19:59:50.533000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "4ee84744b22b25cb753826ce01f2a70fbca6b9052ea41f775f4dc7055042b8f8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "a479febd904c676e9b22b03c87236b8bf46cf7516d254d43ec1e0f47a23a243a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252637250.U^I26",
+        "raw_sha256": "e3b90f71d10ff5cb404eb0a0090694ae5bc4a318f9ffd5a135cfe98826a238ce",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252637250.U^I26",
+        "raw_sha256": "d37613eca05611fb196d9627df8005987e34b7de1027f8bb9a7e6712beebe12a",
+        "source_timestamp": "2026-09-24T19:59:53.780000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252637250.U^I26",
+        "raw_sha256": "949ff415a45da64488dd229373e59c9b5fa80431646034af50b81755ee1faab1",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-06",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "8df69f1cc74bfb56285bcfe4ff2ddb068ba76307cae7d9880f21a8c342d4f8bb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "962e82d907eb978f54b12d17c4997b88d94e3ece9453761ece04b3f0bbeccc7c",
+        "source_timestamp": "2026-08-10T19:59:50.861000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "e2172cdffabd8b639195bd31527459d7209363130411a6b1a6ad476a4e9a19b3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "dc1566594f96a169e5863c6c6abdebc03805e0743d79eefab40d08b15b55ea96",
+        "source_timestamp": "2026-09-17T19:59:51.090000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "ece4669071f1d8fcaad9f20665e2f29708d28952a20401cfb5d088f6d171975d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "6609925327184848784968987b212a3ce13606dd9aacfa5219a956d67c517370",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "4f4f03c9ff6d61ece23d40cf6cf17f1ca860e3c75f3f864cfacb2deaa7a2919a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "abd16a7614bf8c5056b81937ecf451e4125f86c7965ac38ba08101e1c174dea3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "3d72e67d996e2731a6b295a7bf6e3cb64f05938569b6dcf3189ff522eb6df375",
+        "source_timestamp": "2026-09-25T19:59:54.240000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-06",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "65a22bd8d15e0136e4fa6ea598c7a6040fe92e820f1c545755ddb6546ff30ab7",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "00e6bba1db7b36f6424a6429f39e8df139e13886b6b638756c8debde6af94cb4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "27ef01361fca03567ecca336a6e934a78b5fb747283de82156ea94dc088d26a2",
+        "source_timestamp": "2026-08-10T19:59:49.449000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "e26285b928b7bf35dfd70bb143ad2835c075c4f30febb3b3e1edb3d84a5acd2d",
+        "source_timestamp": "2026-09-18T19:59:50.661000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "cf7e29a0a04bb548f9561105c92ff0eb5cf556cff5fc6e9ca1105e65b5a26bbd",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "66b231ebfb978552cfffc248eafc32fd0fd9d83369d0d2f58111969b50cec046",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "1b68c6af95ab83e185226007360f25037188f5ca93669692842590e011ca5618",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "1c917a8c5693cf827589e2871c6c9eb8f8b82b16aae99c86f1ed817c4d92a25c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "148c8a566662d1cb7be5ca1b09053781cfd13288181f494274db6193e395d8b3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "a9eb4e71bf8863483e67ef521eaf21de67de01e99592a3027c09703b1a0fc6cd",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "19a62719942f8e160e1b20e30625c29440b63c67524b7cdfd338992329083b04",
+        "source_timestamp": "2026-08-10T19:59:49.383000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-02",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "1dd171c697031ebce842dca2fb8eac47a6d3b678f77f39eefeea8c0e0a2bbcd9",
+        "source_timestamp": "2026-09-02T19:59:56.405000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "0cd0c35239645dbf3ec48187a0bc974420dd0e4a8b4b43a363546691dff4e285",
+        "source_timestamp": "2026-09-16T19:59:50.710000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "9acbe73ea3e2a1478c1d62b6f087129c37c534707445a5d5a7570c4c6ae98c2b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "8a956e269cd3c5f5e449db0b6de7e7c936ec49f613fbed6ad5808f8cc975413a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "5779bbbf5fa455cb005c40a5d185603acc93b752ac01836dc662d92c23e48c96",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "1539c4a6d6c17ff30644d46a1cd193a42d86dae2e6e40f30825eaae5eca9e9d8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "3842febcee86a3e7de258e56a45652329e446d63ffc46859c42c8b2ef259776f",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "175a5c5c7d6339c1d08310f5e4bb1f90c3888337c41c481bc92bd346d7ae5f20",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "943cf9b26db77359909eac1bf8a3db5a0bdb2f836a523d1b1b691581c78399d4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "020ee1bfe457eb422e48a62433c3ece974a5c3445f7bf3497f4f8a21c3621d01",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "ac7aa37a133a05409ab73eed7fe5faeb180e28e6bf7c5cc10ad99def03c52d3c",
+        "source_timestamp": "2026-08-10T19:59:50.619000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-25",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "dd2c1cb2c0113f0f358509ce9567d2122fc577d3fc82c32d11f8b993f46dc68c",
+        "source_timestamp": "2026-08-25T19:59:52.293000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "49e0216bba94d35b39381f736259d6b044d358352874061b41d6a3c21d26318c",
+        "source_timestamp": "2026-09-10T19:59:58.750000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "9847c2728c768cb0522c99c31e6be6de0a120b2681cac186970139d4d36a6fef",
+        "source_timestamp": "2026-09-11T19:59:52.947000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "c411cd5f3ba6694eb7b80f4cc5241541ac9288c578b9352502b42a69f46ebead",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "3b69a1bded9f8bba7fc9fe042576e26ae59928c53ea2bc75cae528bb9ffa5385",
+        "source_timestamp": "2026-09-15T19:59:53.232000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "94e3c9fae35a2594347c05a19613e44b3ddb418aba7080ac107e4a375c4ff8a2",
+        "source_timestamp": "2026-09-16T19:59:54.081000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "5b73a46676df1b3054648f04c8a66ee72287323a218afb1c7c5fa157ffb05ddb",
+        "source_timestamp": "2026-09-17T19:59:50.092000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "24a8fb9428cacb776e9bbe1349f723f182bcb991cca1e15c8431740db07b3aee",
+        "source_timestamp": "2026-09-18T19:59:34.104000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "2e7655d60ea379ccbbfcd77566444b1a42fc1474ed91992161f7ddfdf9a88a1c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "d8072b8803a6f18a636064b0c0b6994a137dd3e87495b73c1140ba5f1b6510a9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "7db201dabc3b2ad16b01a9ec28357851d1482a3c2853725d78ce946de07e27c4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "ba69a2405956da032a0d4d6d9f5d6af8d36cf5af7cae36e396fe9842815f9585",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "c0ea6434614b21e2a9c30e470f7529feed4adcfe9b578e0b623469e537f7674e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "403431ec52ec2b316d70b4f5fbc94efb8a67fd645378fdce4ba839be641b8023",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "dda5ede61fc089f98af127df10418c56e4b6362bcaab0ae84ad95a8462ec052c",
+        "source_timestamp": "2026-08-10T19:59:53.038000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-12",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "87ba9da0eb46bbe62cd4850db93804100adb5a4e35304de4b09ae1dd376a9eca",
+        "source_timestamp": "2026-08-12T19:59:52.699000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "71c343755a5791c3fe94f1e3584a84bac2a73513c535e09ff6940bc3d574c608",
+        "source_timestamp": "2026-08-13T19:59:52.317000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-14",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "5c85eda2cf4f5044e7446c9140ca884d86bf135691636153a13c78fafaeb918f",
+        "source_timestamp": "2026-08-14T19:59:55.055000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-17",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "cc2f2f3444ffe7892330ffaf08b6ad02a9826078cdf17d474c3d0959a3f70ec7",
+        "source_timestamp": "2026-08-17T19:59:54.219000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-21",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "fb9853aa574c393d486c3a1dcce88d6e5e747ede5f483e529a67d8ad83ff1b03",
+        "source_timestamp": "2026-08-21T19:59:51.613000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "742844205b05f2a9184c7a1ca1b1f552faa8d448d588444a3b7719221e70d266",
+        "source_timestamp": "2026-08-27T19:59:52.464000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-28",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "0d75d4f9d4afad16b5ded1b2b413bcc416633eed8bc879fe79f5e30ff70e1dd8",
+        "source_timestamp": "2026-08-28T19:59:52.434000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "6e9f9eb460224c777a587540919a4aa3a4a8c1b404cd37558fc61545ea23b5d3",
+        "source_timestamp": "2026-08-31T19:59:51.858000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "596f44bed27d7025983d956d158cf04cbbdabe749207cdb253fc51a775f2a259",
+        "source_timestamp": "2026-09-09T19:59:56.121000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "98700e31b024551380b8447dc552da6ecc496d902e5910a1bff441b5a885310c",
+        "source_timestamp": "2026-09-10T19:59:50.183000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "06260ed7f117173e74d01790007d44d263669188ab57a24d3c13d7caf4ba075c",
+        "source_timestamp": "2026-09-11T19:59:51.941000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "08734cfd12346616ec354c384f29c367f5092aae4612ffa0216dcf11ad96a70f",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "ddad15c9c7dbfeac7f8c5d377967197b27e384e9157c6f049e5915712c64605a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "53e258a819a8c89ce0eaf6ae464a26db8dc50d4c18b64895f63f24c883f55ddb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "7576ffe54cb70e68c0e671a74a155088c5e3252f6eb64e84cdea603cdcacc9b0",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "abdf970db0bf3904e3e3af42fedff2312fb6c7853c8c5ef1344d321aaecf2bdc",
+        "source_timestamp": "2026-09-18T19:59:48.892000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "ac3f60578b5667690d776441862856c284c1c0b6aab9db1920a350a9a2621b2a",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "6dc3edf10fe22e9d3e89f622a84d2c2946c736b221c0f2431b4a618af41a7a37",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "dacb1670c22e5c10c4d6e281fc277af80b7450e00afa4ab79ee3e5d73da934bb",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "99c2c7f5e7c63061db6cc32bcaee3010c8ea9cf70fe559d755a007e830a692ee",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "9a493f75c32321d9f69af93b5a09eb49e4f047a600fd4732eaaa56a0f956be49",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-07",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "0886752230f7a2530dcadd8b74e98b9d055bb6e4ed64cf8102f76e99f03bd086",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-10",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "0d94e39918b8dddcff038f733f9f676da5a71e1f26e5a1ecd3afd41882c6b902",
+        "source_timestamp": "2026-08-10T19:59:52.862000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-11",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "39ee9fb7e6c01bbf28388b14e978496ea8a957b86d99fa2be4965c3e8cd94d74",
+        "source_timestamp": "2026-08-11T19:59:53.284000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-12",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "bd1e0090a5dbc9cb307079218168ddf1cfe8dc65d9939e77b53159dcad5f2c1f",
+        "source_timestamp": "2026-08-12T19:59:53.391000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "2e3fd654d9637ab5f0f71900468c4343e3c491eff9e0835bea06054028bcd8b2",
+        "source_timestamp": "2026-08-13T19:59:50.406000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-17",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "031c27e5a59b1bf4cd8408de55997eacce57ec93d0fb46d6a29d1630cc97e2c2",
+        "source_timestamp": "2026-08-17T19:59:54.798000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-25",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "557aed295c252d1b8382cec09d103eb97efa8f59d389083e5da26295f037f2cf",
+        "source_timestamp": "2026-08-25T19:59:55.011000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "b49763cb77a072b60777f9ad51268af7696a9932197e9db837ef7155ad948974",
+        "source_timestamp": "2026-08-27T19:59:55.246000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "b8555e7e23247acb4fc6513939ede7a9ee0b227c26a9fad49be978a4dbee6989",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "675328ab78ba198550ec582383bb9e5eae96baf7c951b92a11bfc3edb5f4c4a9",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "692dcc5d7299f297fcb7bdd416bae092ae6ed03a2ab2c177e70846771c23406c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "7d139f8f1b64c7883dd8874985d2d798b28d724949ddae264b215c96364ab1fd",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "6e1f5e59c7ee08a964b9a27133a10abb715bd0c4b10e02e90533e1168501b3c6",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "2ec19af17f87b8cec7b3aeb027891b40d990458088b2fa22229d16c481bc5533",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "681a12fa510ce78ef4ed5c203032c863990977772c8791bc7c56ad0f7bd43978",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "2f3838c83a549a96a819f67958b244870e404542d1de667ca75226dc2ffdd8c6",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "980851093cb15610f5816dae07c330e43a597dbdfdc3c1b8c7468a2d2b48edb5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "4fd1132f350f5674fb880e6ad58134686605d02f17aceb4238f9971dbfcc04fe",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022634000.U^J26",
+        "raw_sha256": "3df79f56b7f06eb22a786a0c37fa4e014c29afe2b0c642f2a6ad2342ab7ea985",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022635000.U^J26",
+        "raw_sha256": "4cc91cfe49d630c4dc9e468d212aab4c17ec9eb8039fd88cc77f400a60ba6066",
+        "source_timestamp": "2026-08-13T19:59:50.406000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022635500.U^J26",
+        "raw_sha256": "8fa8a25b21e24545672b3afc35911828303ca02738b2698e906a1134e0f40857",
+        "source_timestamp": "2026-08-13T19:59:50.457000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022636000.U^J26",
+        "raw_sha256": "70c33558ff3e766f146602fb151c23330140926f70c9224212eae177489d7605",
+        "source_timestamp": "2026-08-13T19:59:54.703000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022636000.U^J26",
+        "raw_sha256": "12d38bed4e8e9b1f44729ab38b8ae185be8d1cdf1e8bf36ccb966d56a0f734a4",
+        "source_timestamp": "2026-09-30T19:59:48.070000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022636250.U^J26",
+        "raw_sha256": "8a96b23a4cd2edd03a178ac0a9952b20250d09047a4be87c6c382c2e3994e742",
+        "source_timestamp": "2026-09-29T19:59:52.435000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022636250.U^J26",
+        "raw_sha256": "9fd505d2e3f871e940a511c03a63a0f75a7b62b7009e4a0d6c7ed14d4bd08c7b",
+        "source_timestamp": "2026-09-30T19:59:56.105000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022636500.U^J26",
+        "raw_sha256": "333ef2e93ab763e1410a7fbf1b47621e8b1792e8d28520db2f38282735a464c9",
+        "source_timestamp": "2026-08-13T19:59:54.179000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022636500.U^J26",
+        "raw_sha256": "0147aa8106c9acf00eafa9d0c1a13d872b06f8ea7b8a90f9e04b11bede2986c1",
+        "source_timestamp": "2026-09-30T19:59:53.455000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022636750.U^J26",
+        "raw_sha256": "e1c0a8d93eddfb6033d56db6e0c5e9b5da954421d90dfb5dba30c1922432fc3b",
+        "source_timestamp": "2026-09-28T19:59:52.221000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022636750.U^J26",
+        "raw_sha256": "41853b2e78b4e0c64636020eb31d379855c43c35e3ab2b027924607543914fc8",
+        "source_timestamp": "2026-09-29T19:59:54.051000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022636750.U^J26",
+        "raw_sha256": "6615b2a4d19ae05ada5820e0ea25a6631cd502169b6097bcf1bc5861e857b1a3",
+        "source_timestamp": "2026-09-30T19:59:48.250000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-13",
+        "error": null,
+        "id": "AAPLJ022637000.U^J26",
+        "raw_sha256": "c8e01a0b74d2ae3237e55d5c5a5a60f99b970d7062e0b96a5f4824d727bc83cf",
+        "source_timestamp": "2026-08-13T19:59:55.468000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022637000.U^J26",
+        "raw_sha256": "98ff8a7453353d47da909e7189fbd24729a403c171d68da8df0eae4f410c5b42",
+        "source_timestamp": "2026-09-28T19:59:52.796000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022637000.U^J26",
+        "raw_sha256": "3bb972fc7567a3e631358290a3ea3c82067b2a945af6864855cee06714ee5636",
+        "source_timestamp": "2026-09-29T19:59:54.864000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022637000.U^J26",
+        "raw_sha256": "19d35fdc248027c40acb2f956b1ee25af23e16bb86205cf2e3d41f5716a41d19",
+        "source_timestamp": "2026-09-30T19:59:56.102000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022637250.U^J26",
+        "raw_sha256": "a4fd7a8c17eba81a5ddf01a56ce885f852c010318d202f322d8ef0ec7443fb67",
+        "source_timestamp": "2026-09-25T19:59:56.030000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022637250.U^J26",
+        "raw_sha256": "6c8c123925e0a3f6adafa4d81f8ed38d80b71222dd18066c0a0d168b9d588e51",
+        "source_timestamp": "2026-09-28T19:59:52.306000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022637250.U^J26",
+        "raw_sha256": "642ef8f4a02fe1e0625d1a9b4cd6b0c21db79a3a0efc56ed8cbbdc7e0c0c6c18",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022637250.U^J26",
+        "raw_sha256": "9350479456945ce95a0d89089dc168513c99d9f0c40516d72e5bfda47bbfa62d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022637500.U^J26",
+        "raw_sha256": "f582df3c67dc4961ef6f18e1b34fbd1e6656d1fac1d92ddc21b11a8fc4c84cfc",
+        "source_timestamp": "2026-09-28T19:59:43.088000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022637500.U^J26",
+        "raw_sha256": "b3458239cb663a35d18cf47433afee7ea7131620c7630b763e32030d737cb22b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022637500.U^J26",
+        "raw_sha256": "d4763c6289ad67329483afb556b2f260f23cbd42c945e764d977e87085a9e739",
+        "source_timestamp": "2026-09-30T19:59:52.157000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "82f2a87de6da9b11d4fb1d4f1b8d2a07c4c68a153b8df70464177a5398c02a7d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "61361564e32be46696afbea12bbcf120f8f9907899af80b7df9dc3e436334f52",
+        "source_timestamp": "2026-09-25T19:59:57.172000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "89014bdb14e0624fe5ef3ab5fbfdec1a8fc41538e712311e77af7804eb189863",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "57483e9dd3fe80585897e4d580ede0d099d855d5e966339956a9e289f1a35188",
+        "source_timestamp": "2026-09-29T19:59:53.645000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "6a0005b20824a23b322aea4b36e45e875bc4138631263a4b1bf8ce4b6c56b641",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "54330d3c22a16567dafb75e30015d74f590cec8af1fe125a083b8eac225bf79c",
+        "source_timestamp": "2026-09-24T19:59:51.718000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "25b74f03540a92e8e8d603d43ab2f670f7c422fce4d6192ce70e91f05eb177a7",
+        "source_timestamp": "2026-09-25T19:59:57.137000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "f47b42afbc610aa92912eb942fa0ac2dd8f5fd5340213b848b3acab221de9fb8",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "c18aa9944778fa19ef795c9a4bafbbd012cf72a0bd80b49a987ef10b53db9918",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "605721cde2bc6c43c3b31be13f5b5ad19312304901461379ed49355ea1274b05",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "d139e6f0c02cf7005321d55a8407d83b952074a47df5f51a790b73bf3a3ed73d",
+        "source_timestamp": "2026-09-16T19:59:53.675000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "cf574e46f492db4368b07e4d29b9ed51f042e34932c462e22df37c1852cbe246",
+        "source_timestamp": "2026-09-17T19:59:52.693000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "aace1b5afdb576f87af5564a4f006ae94b822e439c18a456d1a89fcce7591712",
+        "source_timestamp": "2026-09-18T19:59:51.986000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "b5cabcc7b1a5158df21829387af2699a585b94c8e91adcc3d5308b3692d430cd",
+        "source_timestamp": "2026-09-21T19:59:57.266000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "b63622f80af16cdb16474f1f00be7df0bcca3b05c3bb472d3e28eb26074ae19c",
+        "source_timestamp": "2026-09-22T19:59:55.549000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "49f142064764428521df5937e2197500411ae304de12defa2a3bc6705842aa48",
+        "source_timestamp": "2026-09-23T19:59:54.207000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "f07af65836a7401064b865930da01e64daf832e72c18060e9c4162d52dd57f2f",
+        "source_timestamp": "2026-09-24T19:59:52.579000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "c8c931fcced70fd9216697c4cf0319087c467137d3e78107770f974c9a40f991",
+        "source_timestamp": "2026-09-25T19:59:52.704000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "80f301380fd712f66c612b8aa8f0839ffa417b872e7d69fa3b32dd7695b380c4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "6ebc65ac5e8cf8f444b13d21d70ce459581622d0667bcd0f217db49376c073c3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "b545b87187a14c102093db2c0df8f7769ffd08370a21d572ea4f625bae245e2d",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "bbb6ec9690f915036821bcc60294941f00b09c15e84f6ce25f1235f9d711ce34",
+        "source_timestamp": "2026-09-14T19:59:54.690000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "7697bf631b2692c46583e61e0da8ec1d3c32b3e5bbaafdc45ac03b07865ef5c3",
+        "source_timestamp": "2026-09-15T19:59:55.705000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "1c2960d30f0cda38a41bbe7f9cf4413804cb8c330bb54666d9cd57fb841f9a72",
+        "source_timestamp": "2026-09-16T19:59:52.051000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "1fd84ada9d143d3ae36e166d9fa16cee317a35b4e923e21d175bb5e8e5067b08",
+        "source_timestamp": "2026-09-17T19:59:54.626000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "49553ed6fd0787a5f38ecd93dd120cef8245e9073664b1a07f1c9ab9a1fefa73",
+        "source_timestamp": "2026-09-18T19:59:52.655000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "420e9e2a65fa55fe5213066e5e81d040b863fd56fbb3d765399f6c65d3ee8870",
+        "source_timestamp": "2026-09-21T19:59:53.288000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "ab5ad351cb75d7342c125353f3a6eff2707254a0e329dff8bba25d559b04f974",
+        "source_timestamp": "2026-09-22T19:59:57.451000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "3f573fabf6d62abf5f9636c266d5d0a488fa752e73a34fbcd1d1e9ae4e800a58",
+        "source_timestamp": "2026-09-23T19:59:52.193000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "4cc642bb0d46365f50642f0784936f03b3dd0156b33b2a31486359452320559a",
+        "source_timestamp": "2026-09-24T19:59:52.579000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "f7efec440e7b10e535087f3b43447db71be53502f84df5a17696e6bc87d83a86",
+        "source_timestamp": "2026-09-25T19:59:53.301000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "62d413aad9c7c8f7a16e98a324d79ccc42bda62382b82e4a0784ef9b03893af2",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "a5e48ba8ec991418d02cbadf2061cd512d6869395587931af81a0b038ced265c",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "63c94c063d6459e3342767ca8d6a7e029d3084faee2eebbcea8cdca7640b72b3",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "c4681a99e299eb82aad4c92a5637a8b60d28a299acf0aefcca5f214bcbea1126",
+        "source_timestamp": "2026-08-27T19:59:50.935000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-01",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "4ab8cf92f7121685e333801fbbbf2263bb57b6bf5178b39d53e3ef0de57331aa",
+        "source_timestamp": "2026-09-01T19:59:49.473000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-03",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "7c0c5117b71c6a9a0b1e5123c3aa1b9e403af38d5c9374832474696428c1b574",
+        "source_timestamp": "2026-09-03T19:59:52.920000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "6472165242e8c33104e21f1519c3b4c1f5680717164522168b5307ce5006e69c",
+        "source_timestamp": "2026-09-08T19:59:56.857000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "718c988971eb6cb9ce9f5383125c8f0da18d79b2a8022602db0fe7db3256157d",
+        "source_timestamp": "2026-09-09T19:59:50.703000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "51fc3ab215733843f0ab6dc871c38fe3a0dcefbf44d6e91584ca0bb27006cbec",
+        "source_timestamp": "2026-09-14T19:59:52.877000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "8bbbbc3857e2233a5806dea65c3aff3832927640242bcec864df4d77cdab6828",
+        "source_timestamp": "2026-09-15T19:59:49.676000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "f4c3d956523e6d0b343824f0f799b01eab09fe2aa951dba216c04e88ca2eeb61",
+        "source_timestamp": "2026-09-16T19:59:54.077000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "3d56146ac143db74cca70dec473dfb4e5d1a8a3832eef4575b8c515cd916027b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "7fbad79f99d9492fc72917f3f3012ee5084f8ec63d6b3470694c02a692251895",
+        "source_timestamp": "2026-09-18T19:59:48.419000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "8b43ed32c76711329723d78a4a363e754d50dbb65a64122de8bbbf3892a6ed5e",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "d80b9990fc292bd6cbe7b9297739b437da51f13287d1c95272dfc41183cbff8b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "b34d5c5381fa3f1cad716d15f0f26ac048c25ebadb793521bfa71a8a0db9e8b7",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "784fcb447366155c5659e162c24423d56274aae2e03bc51cd5a4b11912558bb4",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "7e4a25447d85fdd28ccb993089634f5156ad6f4e855d8dc11052128701a8bc7b",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "558769421d4f08803e8612fa807676cf3bee60f3bbbd460fb6017c8534ca9c96",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "78b163f63fba1d27a5109a780ec8d0b7f6a3be36c464e851b0d86de3e123acf5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "1d10737cd19f86b52504fe6d16bd01b039c7532835578f2dc363ed113478beba",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-17",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "284a8db6c8456c352f88506b1348dda2f39c4d612682cb16712f6a48394a96fb",
+        "source_timestamp": "2026-08-17T19:59:51.917000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-18",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "a62dde90406df04c5d6df6f6bb07957be654fe1d7fcf04245df93788c6c4314a",
+        "source_timestamp": "2026-08-18T19:59:52.189000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-24",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "5d139a676fa9258e9145d5ef4afb1f33ff2f5475ba2f301fb4fbc5d050ec9309",
+        "source_timestamp": "2026-08-24T19:59:56.127000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-27",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "734908ac8fbe03af5811711291bdb5d4e8116984eb9a4aedd768727d411766be",
+        "source_timestamp": "2026-08-27T19:59:53.463000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-08-31",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "531d28f62063513d08ba79fc4f5131dd627ee46e67a0fb7aad19fe9dc0127b70",
+        "source_timestamp": "2026-08-31T19:59:53.943000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-03",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "511a23d92e1c49caf366902bb5a0ff5142ae76c0332d444723eed31c612be335",
+        "source_timestamp": "2026-09-03T19:59:54.708000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-08",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "f742f18c5bf97f9c52eaac307afb9d1ff2e6d9370b4a19b5e5d7db8567c46023",
+        "source_timestamp": "2026-09-08T19:59:54.450000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-09",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "89827e9cc7af84c309479adf7505596717999ae18273400089a3358003fea01d",
+        "source_timestamp": "2026-09-09T19:59:54.153000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-10",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "2c921e3596c643b9be5c6349bc366dc43bc34ab245f69bd3f3494a326c1b37ff",
+        "source_timestamp": "2026-09-10T19:59:50.815000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-11",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "e188a0cb486ceecba49ea32a746c86fef4d6fe762bfb5bc9b3992652ce180fd9",
+        "source_timestamp": "2026-09-11T19:59:56.259000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-14",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "ea84406b7684c4f4511cd63872a430688df0f24ad31f7a432056496ae2b10180",
+        "source_timestamp": "2026-09-14T19:59:50.790000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-15",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "4a7bca73944f1b7d68deaef825912b7d3b8cfcb38f958e6c5321af4e00917dd0",
+        "source_timestamp": "2026-09-15T19:59:54.113000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-16",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "73082c2ef5376970d318f70f399eb7d98c6c6813aac51226ec1c690df810dd34",
+        "source_timestamp": "2026-09-16T19:59:52.931000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-17",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "245ed9c5a98e0762b3e538c9902e109b52ebb7aeb1814d98d9c86e81fcaf5bf3",
+        "source_timestamp": "2026-09-17T19:59:51.797000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-18",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "8b7633166067a8cc2f27c1649879b1b23a5de3f1c8655ce31eadcac1ee39a25f",
+        "source_timestamp": "2026-09-18T19:59:49.601000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-21",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "623d52d8933da468982a018642dca9b1e996f0d673dbfc7216cb45c0de5b2d83",
+        "source_timestamp": "2026-09-21T19:59:54.391000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-22",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "f07aa9569aabfa6be83e86e2ba45359b0cfcfc7c55e9361dc8060dbfe96c85c7",
+        "source_timestamp": "2026-09-22T19:59:53.827000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-23",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "1df32c99844b9a2cf3186a06771cac7d00b1b92f07a283362c378c2e0ddc4719",
+        "source_timestamp": "2026-09-23T19:59:50.889000+00:00",
+        "status": "recovered_closing_bbo"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-24",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "448a1e0dc2fe666e762095fb11ef45916db249e1e60e864266334984121cb4ce",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-25",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "7a09ac8173aebb0cd1b551b33f65280c49e81afb81550f743a84eb4980f811c5",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-28",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "e25b3eb3afc39021100e1adbb40ce77d050b70b89d8b3248ab0fded50fe62a10",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-29",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "438f79c3fcc266781e5a67228fc0a5a1c00cb9e2d38ab27e0e84b95bcbbd9344",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      },
+      {
+        "daily_bid_missing": true,
+        "date": "2026-09-30",
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "d3e5f73d4940c2b4ca5e53af5fe4ff5513df5bc2b1b1795417197b42d24312ef",
+        "source_timestamp": null,
+        "status": "unresolved_no_valid_quote_in_final_60_seconds"
+      }
+    ],
+    "requests": [
+      {
+        "error": null,
+        "id": "AAPLI112630500.U^I26",
+        "raw_sha256": "33abc00695e5e331b3afe49afc4a02ac9028198bdda1a252480a213d02e092d4",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112630750.U^I26",
+        "raw_sha256": "4a178ab061eb33b63711c99eb230123a672af5f385c82757045eb7be2d5e6b74",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112631000.U^I26",
+        "raw_sha256": "855733164c645b356b44f7244f15e10f12bc60c776fe4a6a9109020680072ae4",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112631250.U^I26",
+        "raw_sha256": "e4874ad56edbe101877993c5380d39652c742038b88688121a6e064da3a79bb1",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112631500.U^I26",
+        "raw_sha256": "fb7d02e3e37f5e1b64f8d8eed89da69a6219ead14fad771bdb0fe6975ed370af",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112631750.U^I26",
+        "raw_sha256": "70dbf550a08500465bcd702624fc0a08c6f3cc7b9a41e2cb5f65205d32118429",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112632000.U^I26",
+        "raw_sha256": "23cea9de7735f9d9659dc8d5a5a244bd87a60c2dd8d3a41ba58bd70aec84ca87",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112632250.U^I26",
+        "raw_sha256": "9aca97c66b87eddd1253d6834ed75eb8d3a6f14ad29719db631dd41585dd2f4e",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112632500.U^I26",
+        "raw_sha256": "c532c686ff0815475c51da76c5210e1c513cf5448c1703692f44eb9ac455e4da",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112632750.U^I26",
+        "raw_sha256": "a32d45d1aa858ce3c0d2167c79c239a1ec241d425eedc6136ba5989ab492f080",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112633000.U^I26",
+        "raw_sha256": "564a6d44041f56fc7955ee8edd658216ed60cdb24f5a08138bbb1bfa204da71f",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112633250.U^I26",
+        "raw_sha256": "df8e3753d35fddc3680e2ccff2b6bd8bfe38918c69559cdc3fd69eab0b4a6568",
+        "rows": 14
+      },
+      {
+        "error": null,
+        "id": "AAPLI112633500.U^I26",
+        "raw_sha256": "920d6e4409810f50e338bc6e57aafa7e5d1033a5f9cd1a1592b9adf5d1a95742",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112633750.U^I26",
+        "raw_sha256": "d6450c8a58a108f9d9ee9fe6d3982de4201f98e2f2c9ae7cde244169c0654140",
+        "rows": 11
+      },
+      {
+        "error": null,
+        "id": "AAPLI112634000.U^I26",
+        "raw_sha256": "c745a0031ea1c0b45b2c8ca6dccd3d1a0a7dcbf4a52cd3ca7ce41de325724139",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112634250.U^I26",
+        "raw_sha256": "ad3e5ffad08375c82460a4253a5889c72ae7a79f9ecceb05eef027c74c5f0bb6",
+        "rows": 10
+      },
+      {
+        "error": null,
+        "id": "AAPLI112634500.U^I26",
+        "raw_sha256": "340015cab4ee1c99790fd839dc84c2f4a3cd0eeb8e3aac2b572963d567be97e6",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112634750.U^I26",
+        "raw_sha256": "7e1a61f38660c43ef1d730fa94a9ea32a17c2175aca68afc013b23724c0a8f1b",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112635000.U^I26",
+        "raw_sha256": "b2fff4a6be926a1abf42f092e76cf3f348cfd15853944c8d3f0909b979aa5d16",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112635250.U^I26",
+        "raw_sha256": "e995dc2be672a8c5d203b53d22f3b60fe3da4ed1b0ed5dfbba0fbfd5607f7654",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112635500.U^I26",
+        "raw_sha256": "395e0ed6c19d0ec7bb0c895e3beaef8cabe2cf0f229362bcd78712ff08109df3",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112635750.U^I26",
+        "raw_sha256": "2a23da97f0596fa5b621dd4d528cd660bd0757053d296f0d8ea71e5f9cbfa1be",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112636000.U^I26",
+        "raw_sha256": "7eef671cbbca5c556e521c923311ac5dca03178fd5e0ae8fe2d7c52bb9be2494",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112636250.U^I26",
+        "raw_sha256": "4bf74325c748ec9e7a48c653f10b527af2ebc182c3dc07126f669f1e58bce517",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112636500.U^I26",
+        "raw_sha256": "f7e3aa6573a786f7d40b168fc22886f250f59a94b869c718c6394243aef25c6e",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112636750.U^I26",
+        "raw_sha256": "772336931389b19c99e9507649e2d166d7a4da0efb3c81daac061f8de9892c52",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112637000.U^I26",
+        "raw_sha256": "44563d370ad660f65a976658a349890a5ae53242132b6f4d6396af82a314f797",
+        "rows": 31
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI112637250.U^I26",
+        "raw_sha256": "57c0693f9e233b2c11eb2ac531e8ee6e32c1bece7403af6b993003a482131c86",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI112637500.U^I26",
+        "raw_sha256": "2bfb1cfff5a24aa085ff03335f5155c3874605c26d3a5d43142fc782033d8978",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI112638000.U^I26",
+        "raw_sha256": "ae7247d07be445cf56b23a919935bd0d09847c55c013afa875c03dc0eedc8159",
+        "rows": 31
+      },
+      {
+        "error": null,
+        "id": "AAPLI182631750.U^I26",
+        "raw_sha256": "f3f8fd1f48a2d169679c72b344d553229a80e15f51c8a8e5808355363ecd73f5",
+        "rows": 19
+      },
+      {
+        "error": null,
+        "id": "AAPLI182632000.U^I26",
+        "raw_sha256": "ffea1416baff5f1f81591edc324cd9da52ae41497597fa064cbc51429241eabc",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182632250.U^I26",
+        "raw_sha256": "9c0b980891309a0f314f5f5044400508c31b18a04e332e26ab4b7d488cb7d3aa",
+        "rows": 19
+      },
+      {
+        "error": null,
+        "id": "AAPLI182632500.U^I26",
+        "raw_sha256": "9c7ae76bfa158288b0da4cb7f9f1a23bffb971d2063995d888ee803449d41afb",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182632750.U^I26",
+        "raw_sha256": "e9772411ab069e7fd5dbb544ae54a53d8fed6dfacdea11bd496b19faefa4a7e1",
+        "rows": 19
+      },
+      {
+        "error": null,
+        "id": "AAPLI182633000.U^I26",
+        "raw_sha256": "f81735d4437d3dd09abf012a3c911c6362a1e0ebd27d6e177afebc77759f2715",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182633250.U^I26",
+        "raw_sha256": "eda1dd042bd7c5519614ffca3a201eedec17d3ab953eb012f4582863ab5bac3b",
+        "rows": 19
+      },
+      {
+        "error": null,
+        "id": "AAPLI182633500.U^I26",
+        "raw_sha256": "ee6cb164ef529bb089be6fc468364bad65de82cd345d69d43c4584e640818534",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182633750.U^I26",
+        "raw_sha256": "aca97535110a0a4e3085ed05c2becd31a0b3f1936b78a34aee4f522b420efc46",
+        "rows": 16
+      },
+      {
+        "error": null,
+        "id": "AAPLI182634000.U^I26",
+        "raw_sha256": "1fd42770a433782904f16333162df5eab405a53aafad706542e921ef98202fb6",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182634250.U^I26",
+        "raw_sha256": "42b43ea00a2e8f31bbee715f3db4d077d031a8f149d7bd1ca400eef91cbe8f33",
+        "rows": 7
+      },
+      {
+        "error": null,
+        "id": "AAPLI182634500.U^I26",
+        "raw_sha256": "6a63f86b92faf10dc0949e3cb48ff572f3fd67191d6895e0bda4ef0fc1d43a46",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182634750.U^I26",
+        "raw_sha256": "6dcf5356ed55a4ac03a571888b00095bdb1934992185ae249978a686c9f0bddc",
+        "rows": 7
+      },
+      {
+        "error": null,
+        "id": "AAPLI182635000.U^I26",
+        "raw_sha256": "4cb5dc0908383484d646feb091e41dff1fc15bce4c3fea1f4b49d077842d3bf7",
+        "rows": 58
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI182635250.U^I26",
+        "raw_sha256": "545b31f6524d112eb27c5e8659c84a82c6434a0c0a562839bbd317269d091ac0",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI182635500.U^I26",
+        "raw_sha256": "47b98844983a1ee9e2a58978d8416adde9c4628d248b9889700268aaa2a98efa",
+        "rows": 58
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI182635750.U^I26",
+        "raw_sha256": "62a58b96a6f44e4a5b7255eaff12530c488360d49eaf33e653fa461a9fc68be1",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI182636000.U^I26",
+        "raw_sha256": "0c1fff56ee51c7c83cff6a4403985e4b932307c55804855f53c4f9dadf6091d4",
+        "rows": 58
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI182636250.U^I26",
+        "raw_sha256": "100d3eee1f9d0ed0e3eaa569fbccb26516567beddcd951d24dbadd9dc44b946c",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI182636500.U^I26",
+        "raw_sha256": "0db12ff45addb0ba8b4b92c5366f9cee05fe0b64f94c3fee0fee0103ce52cd22",
+        "rows": 58
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI182636750.U^I26",
+        "raw_sha256": "8fca91a691f20483b67dde8dd41fea4284a9ad73554093e119adb38cec3c9c71",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI182637000.U^I26",
+        "raw_sha256": "fa6b54255e38fed9180d35b08da06a3783a5a1f5868ebaedf0a44ac0a5062444",
+        "rows": 58
+      },
+      {
+        "error": "No data to return, please check errors: ERROR: No successful response.\n(TS.Interday.UserRequestError.70005, The universe is not found)",
+        "id": "AAPLI182637250.U^I26",
+        "raw_sha256": "10a1a37a68e9da351ec7229990b0abcb898398fc466c0333165a0a51abd2fe67",
+        "rows": 0
+      },
+      {
+        "error": null,
+        "id": "AAPLI182637500.U^I26",
+        "raw_sha256": "2c629c81004316809203221a36306e2cbe34867b66bf27dc2df92efec0a2489e",
+        "rows": 53
+      },
+      {
+        "error": null,
+        "id": "AAPLI182638000.U^I26",
+        "raw_sha256": "bab03971ef21c769468f1b18b2260d0cee2d79b03bbd2677790f08b1528e5812",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182638500.U^I26",
+        "raw_sha256": "1f921758b8b651b3b43a729f38ae77191cc72b1bde0e00ccdfaeda79d2abb063",
+        "rows": 53
+      },
+      {
+        "error": null,
+        "id": "AAPLI182639000.U^I26",
+        "raw_sha256": "3b13f653085cf04f8f9db067d79e0650b6ec655df8cdc3dfa8209e1a3a0d6e4d",
+        "rows": 58
+      },
+      {
+        "error": null,
+        "id": "AAPLI182639500.U^I26",
+        "raw_sha256": "3afb0ebe176bc00e0b248253ac885084c61b9671264ec07579fbb9010ce0475a",
+        "rows": 46
+      },
+      {
+        "error": null,
+        "id": "AAPLI252632000.U^I26",
+        "raw_sha256": "d58f1a026c8bbb5c138fb95df161c793cbd452fb8f0750dc74c1fe79aa4e3e0a",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252632250.U^I26",
+        "raw_sha256": "7c4d6e673d9debdeb1b6c812f0d1654e545b85efa2b560640ab2dd59487b53a3",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252632500.U^I26",
+        "raw_sha256": "3738b72d215085454943975c2bc2659a16171c5c1c0680e5a4559f45fab0e3cf",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252632750.U^I26",
+        "raw_sha256": "1013270a12e834caeadf512346e489e183e20d3bbe3d47caadc16ee36db96503",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252633000.U^I26",
+        "raw_sha256": "f1c7a5e74da4f4db8383c610f25b5f61618a5be28b1c01012fece19d6193c2f2",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252633250.U^I26",
+        "raw_sha256": "61192fa1c9ac8a3b8c971bd68503317c2d7479e23a5fb2c366c5c3d1a81b79e6",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252633500.U^I26",
+        "raw_sha256": "93e16dfdcae65ba090dafa175795a16455f7814d5774c6e9c65e96679f67f230",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252633750.U^I26",
+        "raw_sha256": "220e5f49f8e9733bd2e7e129a5fd53e21642f9fe60f7e15cb9f06a5dd7e5db0a",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252634000.U^I26",
+        "raw_sha256": "4216fd00d2313596bde942c6d54c22ed6b25de7d1c57da4ffc575238e5196a40",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252634250.U^I26",
+        "raw_sha256": "953e03184c9306725ddcecdf29d382ca58352fc41de23fb4744a0d8deb415c6f",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252634500.U^I26",
+        "raw_sha256": "30ba499045ea0b3e8959978f9feea0ffa944d1aa3cf24f5143f997a351631cab",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252634750.U^I26",
+        "raw_sha256": "8b9f05430678d3d7f85369b9d713ff88c89b9e8aa10d3b88f073d51c54d4e491",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252635000.U^I26",
+        "raw_sha256": "a57383c3faf76b3a3db78d820ae71e54801f100ff8315c180dfe61a2c95ae7f8",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252635250.U^I26",
+        "raw_sha256": "6a95f336b5b239e4351792e7e930ca0d3bf75def306e6d90894748dfbd7870b1",
+        "rows": 12
+      },
+      {
+        "error": null,
+        "id": "AAPLI252635500.U^I26",
+        "raw_sha256": "f37a7276a160322ea39b0ab5e3fe16545cc3b349b8c19986ddcff42ebfddb018",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252635750.U^I26",
+        "raw_sha256": "5958ccf611edee5e5026775c72990774bb5bc2f0dfe37e4059ff8a621da26d4c",
+        "rows": 10
+      },
+      {
+        "error": null,
+        "id": "AAPLI252636000.U^I26",
+        "raw_sha256": "48c3f24961a2fd9011880acb92b46797a9190ba4e316b0a1e0f0c0517719e62b",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252636250.U^I26",
+        "raw_sha256": "2bfd25b4def33b655a152f1a2040c7f998b4e392878c21a2c9032db37be76320",
+        "rows": 6
+      },
+      {
+        "error": null,
+        "id": "AAPLI252636500.U^I26",
+        "raw_sha256": "e834bcac72eae61324e4a952309c37acc28ec3c22b4323f368d8ba9e87d4f3bb",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252636750.U^I26",
+        "raw_sha256": "6e369893d3652e5175c8b4f547e8d99f449664c6a868d7eb5ec2a6675d6cec2e",
+        "rows": 3
+      },
+      {
+        "error": null,
+        "id": "AAPLI252637000.U^I26",
+        "raw_sha256": "96d0c864656f366fcb7603aa8381508ad0d5b826fe446066a1bed2e3f3b4e548",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252637250.U^I26",
+        "raw_sha256": "234bcd100d25cd1db7d112886f13bcd924005724d54f74ce56ff4314872c1322",
+        "rows": 3
+      },
+      {
+        "error": null,
+        "id": "AAPLI252637500.U^I26",
+        "raw_sha256": "6754bb33b7586710c8809036698faf40c04b4b9b863def15d8c4ba5093deec98",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252638000.U^I26",
+        "raw_sha256": "3deb8bb54773a789cb9f9f7e6293fef83694eba10a61853cfa87de87cced4bd9",
+        "rows": 36
+      },
+      {
+        "error": null,
+        "id": "AAPLI252638500.U^I26",
+        "raw_sha256": "cf788ce17473e4c75de253f2f20afe14c50a2d430d2e954ecfb27010b4a8d890",
+        "rows": 35
+      },
+      {
+        "error": null,
+        "id": "AAPLI252639000.U^I26",
+        "raw_sha256": "f398f217b99f9415031ae4233d68cfcd6e9d554808f111c589716b1e7f092b57",
+        "rows": 35
+      },
+      {
+        "error": null,
+        "id": "AAPLI252639500.U^I26",
+        "raw_sha256": "3321cae369963dfcd647b04f84be4ce620203b3ff7571c8df5dd770e7562cefc",
+        "rows": 35
+      },
+      {
+        "error": null,
+        "id": "AAPLI252640000.U^I26",
+        "raw_sha256": "aa167fefb26cb22c74fdc889e05e2f78b5e9d0c09cce0359830292ad1596ff3e",
+        "rows": 35
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022632500.U^J26",
+        "raw_sha256": "a30e0d6d8bb6eaf7c604de3e62fb3a830f2e0f8f72e3d8ae1fa23ca6a3e30c9f",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022632750.U^J26",
+        "raw_sha256": "fa54a7ec53bdba4b7b6adf56fa4f3bfa19023b7aa861cad15635de9f706f4090",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022633000.U^J26",
+        "raw_sha256": "7b0b7775d42e08feff985b8f3354254c68c8db223b2b6df9571422688547365c",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022633250.U^J26",
+        "raw_sha256": "9b0e0d80e34f2aa70a773cc65493729fb8ae661063a5a9d9b17b70f1a571e3a4",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022633500.U^J26",
+        "raw_sha256": "f8d259011291ad8f83af3a6423457daa763ad8c6f15b2c6ae4e3d6f2745a738c",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022633750.U^J26",
+        "raw_sha256": "5ddda0f2b7ef571c1202d7959ff8cb3e8780057f448dd298cc69528e86d5b60b",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022634000.U^J26",
+        "raw_sha256": "2e926a43b1fa2c2a2123da905536c5dd823347165d40fe7faa09dfd2e750981f",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022634250.U^J26",
+        "raw_sha256": "7376df6051ee1edb1f3cb9047f07a644b0ddc871b3e8c3e0504d54d988865a7b",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022634500.U^J26",
+        "raw_sha256": "025fb8da667958aec7818ae538ebf3e16717bf2ace802104955786552b0a9a89",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022634750.U^J26",
+        "raw_sha256": "ba3ccacec02c0692549d36ac1906b0cf93d5865117148727fbaaa7e94b55c970",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022635000.U^J26",
+        "raw_sha256": "a1380761708da3cea9c4e53504902aca9fc288be1bfb9791a14350f8859d3d4c",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022635250.U^J26",
+        "raw_sha256": "17c647a0506927e9582e33fba3631465731d8d236fa1850d2accf67e8a5e7781",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022635500.U^J26",
+        "raw_sha256": "d1d16cfe62e0748d0d972cba5532bac9401f1f9d4dbce8bebeeb2894a61e2a5a",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022635750.U^J26",
+        "raw_sha256": "cd5847ce1f2f1b628f42d5f32e6cda87f0b6ffee6402e3a8ea5178993cc4d739",
+        "rows": 13
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022636000.U^J26",
+        "raw_sha256": "fd338ad30976c868b21aa4c419e775eb674a07d04fd059bfbd116446b841b326",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022636250.U^J26",
+        "raw_sha256": "dc179e0a95a81af4fd93c8caee0d401d0937d5f910ef89ec73cd06c1a08b0dc5",
+        "rows": 9
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022636500.U^J26",
+        "raw_sha256": "05b21a2de9e98ad459fa032c309a792dd40e22565e178a24c25f4c7e2ca6e50f",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022636750.U^J26",
+        "raw_sha256": "1f8d78f0d5a7146719625696802e37c204320af7b8a89a401518a435419716af",
+        "rows": 9
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022637000.U^J26",
+        "raw_sha256": "1b6494be68a153e9e674c0b4c65831ac8a3c053a891747b0d7991649818b6ae2",
+        "rows": 34
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022637250.U^J26",
+        "raw_sha256": "75ecfd9af0ac873a28e55a0768e80c7d646a2623f53a79ebcd2ee23d4b9b2aa6",
+        "rows": 6
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022637500.U^J26",
+        "raw_sha256": "9a6282416ed0c3d0ad2c2329339fac9d78ef016dbc9e47b086067f5660270515",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022638000.U^J26",
+        "raw_sha256": "98914ce5d544aa8503030e9eb7d40c688fc9fe9c5873355ad101a66327bc22e0",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022638500.U^J26",
+        "raw_sha256": "821faac27b79b7a382c652cd88da75173a6e313047598ecd94365fa4f14546bf",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022639000.U^J26",
+        "raw_sha256": "9b64430480944c49a420e6091a73f1e477b433e61cd08c394ea6bee2af432c93",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022639500.U^J26",
+        "raw_sha256": "00f4383fa760ad0a9aba551201230314f5516e0206eba64fb44c84b36a74292f",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022640000.U^J26",
+        "raw_sha256": "fc88d8114ef359cda4916559118368385cf9244efd77679f1323ff58ac01ebd2",
+        "rows": 33
+      },
+      {
+        "error": null,
+        "id": "AAPLJ022640500.U^J26",
+        "raw_sha256": "d95725d3c566767042db795c46d7714547dc590615dca0d0e33c4e5b384d6449",
+        "rows": 33
+      }
+    ],
+    "sources": [
+      "https://developers.lseg.com/en/article-catalog/article/functions-to-find-option-rics-traded-on-different-exchanges",
+      "https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing",
+      "https://community.developers.lseg.com/discussion/72431/historical-pricing-api-rdp"
+    ]
   },
   "dividend_assignment_enabled": true,
   "dividends": 4,
@@ -293,14 +4765,385 @@
   ],
   "individually_verified_contracts": 0,
   "long_mode_note": "75%-of-spot proxy predeclared before P&L; subsequently returned historical DELTA is used for exposure only, not a mode switch.",
-  "option_observations": 10822,
+  "option_observations": 13835,
+  "original_gap_investigation": [
+    {
+      "daily_bid_missing": true,
+      "daily_mid_missing": true,
+      "daily_raw_sha256": "8ef430c9e329a70d8191b7549e402cf8a2d76df04a5af8f3f9dcdd622aa1980c",
+      "date": "2026-07-23",
+      "event_timestamp": null,
+      "explanation": "Original daily BID/MID_PRICE null preserved; no eligible final-minute quote event. Earlier minute bars are not carried to the close.",
+      "id": "AAPLG242635250.U^G26",
+      "mark_available": false,
+      "raw_sha256": "caca3b23de2af62348ffb4f40add456abca3c02dce6d4766b58a61555b2990cd",
+      "source_timestamp": null
+    },
+    {
+      "daily_bid_missing": true,
+      "daily_mid_missing": true,
+      "daily_raw_sha256": "1516862710e44a2345379823d30ef100f15d7edf148efbeee279d3b666e18c3d",
+      "date": "2026-08-13",
+      "event_timestamp": "2026-08-13T19:59:35.920000+00:00",
+      "explanation": "Original daily BID/MID_PRICE null preserved; actual zero BID accepted in a same-event complete BBO.",
+      "id": "AAPLH142633000.U^H26",
+      "mark_available": true,
+      "raw_sha256": "9cdd430d16ac7e65b05da43a2433fed352c2af1ae6b257ed998f7b4f57f638d3",
+      "source_timestamp": "2026-08-13T19:59:31.022000+00:00"
+    },
+    {
+      "daily_bid_missing": true,
+      "daily_mid_missing": true,
+      "daily_raw_sha256": "b43158c69e2e063a47f3de64579b92af4a50bf992474cc815d19178c934e840b",
+      "date": "2026-08-27",
+      "event_timestamp": "2026-08-27T19:59:55.587000+00:00",
+      "explanation": "Original daily BID/MID_PRICE null preserved; actual zero BID accepted in a same-event complete BBO.",
+      "id": "AAPLH282633000.U^H26",
+      "mark_available": true,
+      "raw_sha256": "b54bbf92a723d02d270fa1eca5d80655f17c6ffada6f739cbd6db65dff00c634",
+      "source_timestamp": "2026-08-27T19:59:49.231000+00:00"
+    }
+  ],
   "quote_basis": "Real same-date daily closing BID/ASK; MID_PRICE cross-check; exact simultaneous quote times unknown.",
+  "quote_policy_revision": "Acquisition initially isolated events for valuation. The same bounded real BBO is now consumed by closing execution too, fixing an artificial daily-only terminal rejection. Midpoint/quoted-side formulas, timestamps, positive-bid entry gate, signal choices and all strategy parameters are unchanged.",
   "quote_precision": "daily",
+  "quote_recheck_summary": {
+    "checked": 381,
+    "recovered": 189,
+    "scope": "All missing daily BBO observations in the candidate panel, NOT held-account NAV gaps.",
+    "unresolved": 192
+  },
   "ready": true,
   "request_errors": [],
+  "short_universe_coverage": [
+    {
+      "complete": false,
+      "execution_day": "2026-07-06",
+      "expiry": "2026-07-10",
+      "historical_contracts": 7,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-07-02",
+      "signal_observed_contracts": 5,
+      "signal_observed_strikes": [
+        310.0,
+        312.5,
+        315.0,
+        330.0,
+        335.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-07-13",
+      "expiry": "2026-07-17",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-07-10",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        317.5,
+        320.0,
+        337.5,
+        340.0,
+        342.5,
+        345.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-07-20",
+      "expiry": "2026-07-24",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-07-17",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        325.0,
+        327.5,
+        345.0,
+        347.5,
+        350.0,
+        352.5
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-07-27",
+      "expiry": "2026-07-31",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-07-24",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        337.5,
+        340.0,
+        357.5,
+        360.0,
+        362.5,
+        365.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-08-03",
+      "expiry": "2026-08-07",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-07-31",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        305.0,
+        307.5,
+        322.5,
+        325.0,
+        327.5,
+        330.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-08-10",
+      "expiry": "2026-08-14",
+      "historical_contracts": 7,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-08-07",
+      "signal_observed_contracts": 7,
+      "signal_observed_strikes": [
+        305.0,
+        307.5,
+        322.5,
+        325.0,
+        327.5,
+        330.0,
+        332.5
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-08-17",
+      "expiry": "2026-08-21",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-08-14",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        302.5,
+        305.0,
+        320.0,
+        322.5,
+        325.0,
+        327.5
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-08-24",
+      "expiry": "2026-08-28",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-08-21",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        312.5,
+        315.0,
+        330.0,
+        332.5,
+        335.0,
+        337.5
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-08-31",
+      "expiry": "2026-09-04",
+      "historical_contracts": 6,
+      "provider_errors": null,
+      "queried_candidates": null,
+      "scope": "previously_observed_subset",
+      "signal_day": "2026-08-28",
+      "signal_observed_contracts": 6,
+      "signal_observed_strikes": [
+        315.0,
+        317.5,
+        332.5,
+        335.0,
+        337.5,
+        340.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-09-08",
+      "expiry": "2026-09-11",
+      "historical_contracts": 24,
+      "provider_errors": 6,
+      "queried_candidates": 30,
+      "scope": "reconstructed_and_historically_validated_subset",
+      "signal_day": "2026-09-04",
+      "signal_observed_contracts": 24,
+      "signal_observed_strikes": [
+        305.0,
+        307.5,
+        310.0,
+        312.5,
+        315.0,
+        317.5,
+        320.0,
+        322.5,
+        325.0,
+        327.5,
+        330.0,
+        332.5,
+        335.0,
+        337.5,
+        340.0,
+        342.5,
+        345.0,
+        350.0,
+        355.0,
+        360.0,
+        365.0,
+        370.0,
+        375.0,
+        380.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-09-14",
+      "expiry": "2026-09-18",
+      "historical_contracts": 23,
+      "provider_errors": 5,
+      "queried_candidates": 28,
+      "scope": "reconstructed_and_historically_validated_subset",
+      "signal_day": "2026-09-11",
+      "signal_observed_contracts": 23,
+      "signal_observed_strikes": [
+        317.5,
+        320.0,
+        322.5,
+        325.0,
+        327.5,
+        330.0,
+        332.5,
+        335.0,
+        337.5,
+        340.0,
+        342.5,
+        345.0,
+        347.5,
+        350.0,
+        355.0,
+        360.0,
+        365.0,
+        370.0,
+        375.0,
+        380.0,
+        385.0,
+        390.0,
+        395.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-09-21",
+      "expiry": "2026-09-25",
+      "historical_contracts": 28,
+      "provider_errors": 0,
+      "queried_candidates": 28,
+      "scope": "reconstructed_and_historically_validated_subset",
+      "signal_day": "2026-09-18",
+      "signal_observed_contracts": 26,
+      "signal_observed_strikes": [
+        320.0,
+        322.5,
+        325.0,
+        327.5,
+        330.0,
+        332.5,
+        335.0,
+        337.5,
+        340.0,
+        342.5,
+        345.0,
+        347.5,
+        350.0,
+        352.5,
+        355.0,
+        357.5,
+        360.0,
+        362.5,
+        365.0,
+        370.0,
+        375.0,
+        380.0,
+        385.0,
+        390.0,
+        395.0,
+        400.0
+      ]
+    },
+    {
+      "complete": false,
+      "execution_day": "2026-09-28",
+      "expiry": "2026-10-02",
+      "historical_contracts": 27,
+      "provider_errors": 0,
+      "queried_candidates": 27,
+      "scope": "reconstructed_and_historically_validated_subset",
+      "signal_day": "2026-09-25",
+      "signal_observed_contracts": 27,
+      "signal_observed_strikes": [
+        325.0,
+        327.5,
+        330.0,
+        332.5,
+        335.0,
+        337.5,
+        340.0,
+        342.5,
+        345.0,
+        347.5,
+        350.0,
+        352.5,
+        355.0,
+        357.5,
+        360.0,
+        362.5,
+        365.0,
+        367.5,
+        370.0,
+        372.5,
+        375.0,
+        380.0,
+        385.0,
+        390.0,
+        395.0,
+        400.0,
+        405.0
+      ]
+    }
+  ],
   "standard_assumption_policy": "source-supported standard AAPL contract assumption; not per-contract vendor historical verification",
   "stock_observations": 66,
-  "valid_option_marks": 10753,
+  "valid_option_marks": 13444,
+  "valuation_policy": "Daily BBO first; when a daily leg is absent, use the LAST quote event in the final 60 seconds of the actual regular session only if its complete BBO, source timestamp and event timestamp pass validation. The same quote supports daily marking and the unchanged midpoint/quoted-side closing-fill formulas. Never treat it as an observed fill or relabel its timestamp as the exact close. No previous bar, forward fill, theoretical/trade substitution or null-to-zero conversion. Signal selection still uses the original prior-session data.",
   "window_lock": {
     "config": {
       "assignment_itm": 0.01,

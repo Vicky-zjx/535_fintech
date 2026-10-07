@@ -1,5 +1,6 @@
 """Observed RIC identity, rule-derived dates, and explicitly assumed terms."""
 from datetime import date,timedelta
+from decimal import Decimal
 import re
 
 RIC_SOURCE='https://developers.lseg.com/en/article-catalog/article/functions-to-find-option-rics-traded-on-different-exchanges'
@@ -7,6 +8,15 @@ OCC_SOURCE='https://www.theocc.com/clearance-and-settlement/clearing/equity-opti
 ADJUSTMENT_SOURCE='https://www.optionseducation.org/referencelibrary/faq/splits-mergers-spinoffs-bankruptcies'
 APPLE_SOURCE='https://investor.apple.com/faq./default.aspx'
 OCC_AAPL_2020='https://infomemo.theocc.com/infomemos?number=47369'
+
+
+def candidate_call_ric(expiry,strike):
+    """A request candidate, NOT a listing. Only historical replies admit it."""
+    d=date.fromisoformat(expiry);cents=Decimal(str(strike))*100
+    if cents!=cents.to_integral_value() or not 0<cents<100000:
+        raise ValueError('Unsupported strike encoding')
+    month=chr(ord('A')+d.month-1)
+    return f'AAPL{month}{d.day:02d}{d:%y}{int(cents):05d}.U^{month}{d:%y}'
 
 
 def parse_ric(ident):

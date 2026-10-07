@@ -141,5 +141,15 @@ def acquire(root,output):
 
 
 if __name__=='__main__':
+    from .repair_coverage import repair
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
-    args=p.parse_args();acquire(Path(__file__).resolve().parents[1],args.output)
+    p.add_argument('--base-input',type=Path,help='Retained real baseline; never overwritten')
+    p.add_argument('--cache-dir',type=Path,help='Immutable repair request directory')
+    p.add_argument('--offline',action='store_true',help='Use retained request responses only')
+    args=p.parse_args();root=Path(__file__).resolve().parents[1]
+    if args.output.exists():raise ValueError('Choose a new output snapshot')
+    base=args.base_input or args.output.with_stem(args.output.stem+'_base')
+    if not args.base_input:
+        if args.offline:raise ValueError('Offline assembly requires --base-input')
+        acquire(root,base)
+    repair(base,args.output,args.cache_dir or args.output.parent/(args.output.stem+'_repair'),offline=args.offline)

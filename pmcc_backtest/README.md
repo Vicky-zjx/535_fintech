@@ -10,10 +10,11 @@ Six real-input simulated accounts now run over **2026-07-06–2026-09-30**:
 PMCC, fully funded covered call and 100-share buy/hold, each under midpoint and
 actual quoted-side fills. The window was locked from available expired-short
 coverage before P&L; a year-long chain was unavailable. The requested September
-endpoint remains, including four missing weekly-short opportunities rather
-than truncating the sample at the last trade. There are 62 trading sessions.
+endpoint remains. Four previously uncovered short-expiry series are now queried
+and historically validated, including October 2 for September 28 entry and
+September 30 terminal close. There are 62 trading sessions.
 
-The retained local input contains 204 contracts and 10,822 daily option rows,
+The repaired local input contains 306 contracts and 13,835 daily option rows,
 plus 66 stock rows including warm-up and four real dividend records. The
 universe starts with 56 exact RICs observed in the old cache and actual long-call
 identifiers returned by LSEG discovery, never an invented strike grid. Current
@@ -22,24 +23,67 @@ available by its signal. Long discovery is survivor-biased, and the candidate
 chain is incomplete. The long-request strike cap is 255; every sample signal's
 75%-spot threshold is below it. Strikes are actual returned values.
 
+`repair_coverage` locks its acquisition plan before requests. Actual AAPL strike
+values from retained history/current discovery supply leads within 95%–120% of
+each prior-session spot. Expiry-specific zero-padded RICs are **unverified probes**,
+not listings. Of 113 probes, 102 have actual historical price evidence; 11 fail
+to establish membership (not proof they never listed). Signal-time counts for
+September 11/18/25 and October 2 are 24/23/26/27. Two September 25 contracts first
+appear after the signal and cannot enter that signal's candidate set. Bounds and
+historical discovery limitations remain disclosed; no complete chain is claimed.
+
 The selected long is `AAPLI172723000.U`, bought July 6 and closed September 30.
 The long mode was fixed to the 75%-spot proxy before P&L. Later historical DELTA
 responses are used only for exposure, not to switch the selection method.
 
 | Account | Midpoint net P&L | Quoted-side net P&L |
 |---|---:|---:|
-| PMCC | $1,774.35 | $1,376.85 |
-| Cash-funded covered call | $2,249.69 | $2,229.69 |
+| PMCC | $1,841.60 | $1,437.60 |
+| Cash-funded covered call | $2,316.94 | $2,290.44 |
 | 100-share buy/hold | $2,056.54 | $2,056.54 |
 
 These are independently reconciled **terminal** outcomes, not complete PMCC/CC
-daily paths. Held-short BID is absent on July 23, August 13 and August 27; NAV
-is null on those dates, adjacent daily returns are unavailable and full-sample
-drawdown is withheld. No BID=0, trade-price substitution, interpolation or
-forward-fill is used. Positions remain in the ledger. All terminal positions
+daily paths. Original daily replies have null BID/MID_PRICE on July 23, August
+13 and August 27; the parser preserves them. Genuine zero bids are already valid.
+The latter two dates are recovered from real same-event BBOs with source times
+15:59:31.022 and 15:59:49.231 ET respectively. July 23 has no eligible final-minute
+event: the 15:50 minute bar is not a close and is not carried forward. NAV stays
+null on July 23, adjacent daily returns are unavailable and full-sample MDD is
+withheld. Positions remain in the ledger. All terminal positions
 close at observed prices; their cash and attribution reconcile. PMCC/CC each
-write nine shorts, skip four weeks, and have no modeled assignments. Buy/hold
+write 13 shorts, skip zero weeks, and have no modeled assignments. Buy/hold
 has a complete valuation path. No annualized headline return is reported.
+
+The strict `drawdown` stops at the first missing NAV and remains blank afterward,
+because the true running peak may have been missed. `observed_drawdown` resumes
+from observed peaks but retains missing points; its maximum magnitude is only a
+**lower bound** on full-sample MDD. Midpoint observed maxima are −6.8678% PMCC and
+−6.8563% CC; quoted-side are −6.8915% and −6.8613%. Buy/hold full MDD is −7.1219%.
+The page never substitutes the observed statistic for a null full-sample MDD.
+
+### Uniform closing-quote repair
+
+Daily BBO is preferred. For a missing daily leg only, use the **last quote event**
+in the final 60 seconds of the actual regular session if it has a complete valid
+BBO and both source/event timestamps are same-day, pre-close and within 60s.
+A later invalid update rejects the event fallback; no earlier valid quote is
+carried through it. Original null fields stay null in the immutable input.
+[LSEG event-field guidance](https://community.developers.lseg.com/discussion/72431/historical-pricing-api-rdp)
+describes the same-event BID/ASK record; no trade or theoretical field is used.
+
+The same accepted quote supports daily marks and unchanged midpoint/quoted-side
+closing-fill formulas. This fixes a daily-only terminal-price rejection: the
+October 2 $360 call has a real September 30 quote sourced at 15:59:48.070 ET
+(event 15:59:53.116), supporting the preplanned closing buyback. Its actual quote
+time is recorded; the closing execution remains simulated, not an observed fill
+or an asserted exact-16:00 quote. Signal inputs/long selection are unchanged.
+The acquisition began with events isolated for valuation; this plumbing correction
+is recorded as `quote_policy_revision`, not hidden as a vendor correction.
+
+The identical time/validity rule rechecks **all 381 missing candidate-panel BBOs**,
+recovering 189 and leaving 192 unresolved, not just selected winning trades.
+Those counts are not account NAV gaps: only July 23 remains missing for held
+PMCC/CC positions. New raw responses, old snapshots and their hashes are retained.
 
 ## Contract evidence, assumptions and exclusions
 
@@ -64,7 +108,7 @@ deliverable or a complete OCC notice search. The
 [OIC adjustment guidance](https://www.optionseducation.org/referencelibrary/faq/splits-mergers-spinoffs-bankruptcies)
 explains why conflicting/adjusted/mini terms cannot silently be treated as standard.
 
-All 204 records keep `standard_verified=false`, `terms_status="research assumption"`
+All 306 records keep `standard_verified=false`, `terms_status="research assumption"`
 and field-level sources. Of 50 exclusions, five non-OPRA/unsupported identities
 fail the strategy's contract screen; 45 June-2027 candidates are outside the
 predeclared long-DTE acquisition window, not allegedly unlisted. The public
@@ -79,14 +123,15 @@ From the repository root, Python 3.13 was tested:
 
 ```sh
 python -m pip install -r pmcc_backtest/requirements.txt
-python -m unittest pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts covered_call.test_engine -v
+python -m unittest pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts pmcc_backtest.test_repair covered_call.test_engine -v
 python -m pmcc_backtest.build
 ```
 
 With no input, `build` re-renders committed derived accounts; it does **not**
 claim to recalculate P&L without licensed data. It writes only `pmcc/index.html`,
 `book.js`, `results.json`, `config.json`, `data_audit.json`, `daily_nav.csv`,
-`trades.csv`, `weekly_coverage.csv`, `contracts.csv` and `exclusions.csv`.
+`trades.csv`, `weekly_coverage.csv`, `candidate_coverage.csv`, `quote_rechecks.csv`,
+`contracts.csv` and `exclusions.csv`.
 The page uses the existing bundled Plotly library, not a CDN or backend.
 It records dependency versions and source hashes. Identical inputs and runtime
 produce byte-identical results. No current timestamp is inserted by the build.
@@ -101,18 +146,25 @@ in the repository. Use a new directory on each pull; scripts refuse overwrites.
 python -m pmcc_backtest.probe_lseg --output-dir pmcc_backtest/local_data/probe
 # Exact IDs from that discovery and the retained historical cache:
 python -m pmcc_backtest.acquire_observed --output pmcc_backtest/local_data/observed_input_new.json
-# Full accounting rerun from a licensed input (this publication uses v2):
-python -m pmcc_backtest.build --input pmcc_backtest/local_data/observed_input_v2.json
+# This repair's live acquisition (already executed; do not overwrite it):
+python -m pmcc_backtest.repair_coverage --input pmcc_backtest/local_data/observed_input_v2.json --output pmcc_backtest/local_data/observed_input_v3.json --cache-dir pmcc_backtest/local_data/repair_v3
+# Final policy reconstruction from those immutable raw replies (executed offline):
+python -m pmcc_backtest.repair_coverage --input pmcc_backtest/local_data/observed_input_v2.json --output pmcc_backtest/local_data/observed_input_repaired.json --cache-dir pmcc_backtest/local_data/repair_v3 --offline
+# Full accounting rerun + independent cash/positions/NAV/fees/CSV reconciliation:
+python -m pmcc_backtest.build --input pmcc_backtest/local_data/observed_input_repaired.json
+python -m pmcc_backtest.validate_publication --input pmcc_backtest/local_data/observed_input_repaired.json --base pmcc_backtest/local_data/observed_input_v2.json
 ```
 
-The bounded probe tests exact previously observed/discovered RICs. Current
-search is only a lead, never proof of historical membership. The audit source
+For reconstruction choose a NEW output filename. `acquire_observed` now includes
+the missing-series repair stage automatically; `--base-input` reuses an existing
+licensed base and `--cache-dir` selects retained replies. Current
+search and reconstructed RICs are only leads, never proof of historical membership. The audit source
 snapshot used in this publication is retained privately under `local_data/probe`.
 
 `acquire_observed` assembles the source-labeled table automatically and refuses
 to overwrite snapshots. It reuses retained immutable raw responses. Changing
 provider history later is not guaranteed to reproduce the original pull; use
-the recorded input hash and retained v2 snapshot for accounting reproduction.
+the recorded input hash and retained `observed_input_repaired.json` for accounting reproduction.
 The earlier real June 29 long quote, missing from a later reply, is preserved
 from its original response; overlapping BBO values must agree or acquisition
 stops for review. This is a documented real-snapshot merge, not interpolation.
@@ -171,14 +223,15 @@ derived account outputs. Do not stage the private directory or force-add it.
   stock-loan locate, broker buying-power or portfolio-margin feasibility claim
   is made; no prior stock Reg T formula is imported.
 - $0.65 per option per side, stock 1 bp per side, no stock commission or
-  exercise fees. Mark using same-date genuine BBO midpoint; held gaps remain
+  exercise fees. Mark using the uniform same-date closing-quote rule above; held gaps remain
   null. Quoted-side sensitivity buys at ask/sells at bid. Idle cash earns zero.
 - Terminal discretionary entries are suppressed. Close the short first, then
   stock obligations and long; only residual positions face after-close
   assignment. No same-date retroactive cover of a new after-close assignment.
 - NAV and attribution reconcile to cash/events, long, short, signed stock,
   dividends and costs. A missing mark invalidates full-sample path statistics,
-  not the historical position. Drawdown is never bridged across a gap. Returns
+  not the historical position. Strict drawdown is never bridged across a gap;
+  the separate observed-NAV lower-bound statistic is explicitly labeled. Returns
   share the $50,000 denominator, and annualized headline metrics are omitted.
 
 ## Validation and site routes

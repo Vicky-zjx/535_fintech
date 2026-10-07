@@ -68,6 +68,23 @@ real BID/ASK pair is flagged. Vendor-mid-only use requires explicit
 `vendor_mid_definition_verified=true`; the extractor never sets that flag simply
 because the column exists. It cannot generate a quoted-side result without BBO.
 
+Optional `valuation_quote` retains an independently sourced closing BBO without
+rewriting the original daily nulls. It contains `date`, `bid`, `ask`, actual
+timezone-aware `source_timestamp` and `event_timestamp`, `raw_sha256`,
+`method="same_event_bbo_final_60_seconds"`, `precision="quote_event"`,
+`closing_reference_only=true`, `valuation_only=false`. Daily valid BBO wins.
+Missing daily legs can use the last quote event in the final 60s only when both
+timestamps are same-day/pre-close/within60s and BBO is valid; a later invalid event
+must not resurrect an earlier quote. This does not repair inconsistent daily
+quotes, use earlier bars or infer zero bids. A genuine event BID=0 is valid for
+marking, but the positive-bid short-entry gate still applies.
+
+`closing_execution_quote_policy="daily_bbo_then_last_event_final_60_seconds"`
+allows that identical BBO to feed unchanged midpoint/quoted-side fill formulas.
+Legacy `valuation_only=true` records cannot fill. Signal-time quote selection
+continues to read the original previous-session data. Supplemental quote source
+times remain distinct from modeled execution references and unknown actual fills.
+
 `available_at` represents actual availability, not merely a bar's date. When
 unknown, the declared `previous_session_by_next_09_assumed` metadata policy lets
 the engine test a clearly labeled overnight-availability assumption; it does
@@ -110,10 +127,21 @@ The committed publication passes this input gate under explicit research terms.
 - `results.json` / `book.js`: config, public audit, versions/source hashes,
   result status, per-model/account metrics, ledger, events, decisions and prose.
 - `daily_nav.csv`: one account/fill-model/session state; gaps are blank NAV.
+  `drawdown` stops permanently after first missing NAV; `observed_drawdown`
+  retains gaps but resumes at subsequent observed NAVs, from observed peaks.
+  Its maximum magnitude is only a lower bound when the full path is incomplete.
+  `mark_sources` records daily or event evidence separately from derived marks.
 - `trades.csv`: booked trades plus separately typed assignment/accrual/payment
   events. Cash delta, fees, positions and modeled/source timestamps remain distinct.
 - `weekly_coverage.csv`: every scheduled opportunity; `not_run` is distinct from
   a backtest's reason-coded `skipped` or `filled` decision.
+  Historical-candidate coverage and signal-time counts distinguish missing
+  coverage, no signal-time evidence, and no eligible contract in a partial or
+  verified-complete universe. Cache absence is never labeled market absence.
+- `candidate_coverage.csv`: per-expiry request/evidence counts, observed strikes
+  and explicit completeness=false. Later evidence cannot establish prior membership.
+- `quote_rechecks.csv`: all missing daily-BBO checks with result and raw hash;
+  these panel-wide counts are not held-account NAV gaps.
 - `config.json` and `data_audit.json`: reproducible rules and evidence.
 - `contracts.csv`: source-labeled identity, derived expiry/scheduled last trade,
   separate actual quote bounds and assumed multiplier/deliverable.

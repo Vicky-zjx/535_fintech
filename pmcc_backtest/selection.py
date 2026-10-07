@@ -51,4 +51,11 @@ def short_call(market, day, supporting_long=None):
                                 or c['deliverable']!=supporting_long['deliverable']):
             continue
         choices.append(c)
-    return (min(choices,key=lambda c:(c['strike'],c['id'])),None) if choices else (None,'NO_ELIGIBLE_OBSERVED_FRIDAY_CALL')
+    if choices:return min(choices,key=lambda c:(c['strike'],c['id'])),None
+    coverage=market.short_coverage(week['friday'])
+    if not coverage or coverage.get('historical_contracts',0)==0:
+        return None,'CANDIDATE_DATA_NOT_COVERED'
+    if coverage.get('signal_observed_contracts',0)==0:
+        return None,'NO_SIGNAL_TIME_EVIDENCE_IN_QUERIED_CANDIDATES'
+    return None,('NO_ELIGIBLE_CONTRACT_IN_VERIFIED_UNIVERSE' if coverage.get('complete')
+                 else 'NO_ELIGIBLE_CONTRACT_IN_PARTIAL_OBSERVED_UNIVERSE')

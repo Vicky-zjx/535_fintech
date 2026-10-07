@@ -9,8 +9,11 @@
 The PMCC page now runs six real-LSEG-input accounts over July 6–September 30, 2026,
 using a historically evidenced candidate subset and explicitly source-supported
 standard-contract assumptions (not per-contract supplier certification).
-Three missing held-option BID observations leave PMCC/covered-call daily NAV and
-full-sample drawdown incomplete; fully liquidated terminal cash/P&L reconcile.
+Real historical rechecks add the September 11/18/25 and October 2 candidate
+series. All 13 weekly short opportunities now fill under the unchanged rules.
+Two held-option quote gaps are recovered from timestamped LSEG events; July 23
+remains null. PMCC/covered-call full-sample MDD is therefore unavailable, with a
+separately labeled observed-NAV lower-bound view. Terminal cash/P&L reconcile.
 Contract sources, exclusions and data gaps are published. The earlier assignment
 data and results remain unchanged.
 

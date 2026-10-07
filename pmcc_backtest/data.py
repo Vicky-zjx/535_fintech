@@ -95,6 +95,36 @@ class Market:
     def quote(self,ident,day):
         return self.quotes.get((ident,day))
 
+    def closing_quote(self,ident,day):
+        """Daily BBO preferred; final-minute event never changes signal inputs."""
+        q=self.quote(ident,day);value=mid(q)
+        if value is not None:return q
+        if q and (q.get('quote_inconsistent') or q.get('bid_timestamp')!=q.get('ask_timestamp')):return None
+        if not q or (q.get('bid') is not None and q.get('ask') is not None):return None
+        event=q.get('valuation_quote')
+        if not event or event.get('method')!='same_event_bbo_final_60_seconds':return None
+        if event.get('date')!=day or not event.get('raw_sha256'):return None
+        closing=pd.Timestamp(self.calendar.close(day))
+        for field in ('source_timestamp','event_timestamp'):
+            if not event.get(field):return None
+            stamp=pd.Timestamp(event[field])
+            if stamp.tzinfo is None or not 0<=(closing-stamp).total_seconds()<=60:return None
+            if str(stamp.tz_convert('America/New_York').date())!=day:return None
+        return event if mid(event) is not None else None
+
+    def mark(self,ident,day):
+        return mid(self.closing_quote(ident,day))
+
+    def execution_quote(self,ident,day):
+        q=self.closing_quote(ident,day)
+        if q and q.get('method')=='same_event_bbo_final_60_seconds':
+            if (self.meta.get('closing_execution_quote_policy')!='daily_bbo_then_last_event_final_60_seconds'
+                    or q.get('valuation_only') is not False or q.get('closing_reference_only') is not True):return None
+        return q
+
+    def short_coverage(self,expiry):
+        return next((c for c in self.meta.get('short_universe_coverage',[]) if c['expiry']==expiry),None)
+
     def signal_known(self,row,execution_day):
         if not row or row['date']!=self.calendar.previous(execution_day):
             return False

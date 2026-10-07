@@ -35,11 +35,30 @@ def audit_dataset(data,cfg):
         issues.append('No verified historical Friday-series short-call universe.')
     if not any(finite(s.get('price')) for s in m.stocks.values()):
         issues.append('No actual unadjusted stock observations.')
+    repairs=md.get('coverage_repair',{})
+    checks=repairs.get('quote_checks',[])
+    targets=[]
+    for day,ric in [('2026-07-23','AAPLG242635250.U^G26'),('2026-08-13','AAPLH142633000.U^H26'),('2026-08-27','AAPLH282633000.U^H26')]:
+        q=m.quote(ric,day)
+        if q:
+            event=q.get('valuation_quote',{})
+            check=next((r for r in checks if r['id']==ric and r['date']==day),{})
+            targets.append(dict(date=day,id=ric,daily_bid_missing=q.get('bid') is None,
+                daily_mid_missing=q.get('vendor_mid') is None,mark_available=m.mark(ric,day) is not None,
+                source_timestamp=event.get('source_timestamp'),event_timestamp=event.get('event_timestamp'),
+                raw_sha256=event.get('raw_sha256',check.get('raw_sha256')),daily_raw_sha256=q.get('source_snapshot_sha256'),
+                explanation=('Original daily BID/MID_PRICE null preserved; actual zero BID accepted in a same-event complete BBO.' if event else
+                             'Original daily BID/MID_PRICE null preserved; no eligible final-minute quote event. Earlier minute bars are not carried to the close.')))
     return dict(ready=not issues,blocking_issues=issues,eligible_long_signal_dates=eligible,
                 stock_observations=len(m.stocks),option_observations=len(m.quotes),contracts=len(m.contracts),
                 valid_option_marks=sum(mid(q) is not None for q in m.quotes.values()),dividends=len(m.dividends),
                 quote_precision=md.get('source_precision'),candidate_universe=md.get('candidate_universe'),
                 availability_policy=md.get('availability_policy'),quote_basis=md.get('quote_basis'),
+                valuation_policy=md.get('valuation_policy'),quote_policy_revision=md.get('quote_policy_revision'),
+                short_universe_coverage=md.get('short_universe_coverage',[]),
+                coverage_repair=repairs,original_gap_investigation=targets,
+                quote_recheck_summary=dict(checked=len(checks),recovered=sum(r['status']=='recovered_closing_bbo' for r in checks),
+                    unresolved=sum(r['status']!='recovered_closing_bbo' for r in checks),scope='All missing daily BBO observations in the candidate panel, NOT held-account NAV gaps.'),
                 dividend_assignment_enabled=md.get('dividend_assignment_enabled',False),
                 standard_assumption_policy=md.get('standard_assumption_policy'),
                 assumption_contracts=sum(c.get('terms_status')=='research assumption' for c in m.contracts.values()),
