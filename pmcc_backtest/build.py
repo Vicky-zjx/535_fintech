@@ -31,7 +31,7 @@ def csv_text(rows,columns):
     buf=io.StringIO(newline='');writer=csv.DictWriter(buf,fieldnames=columns,extrasaction='ignore',lineterminator='\n')
     writer.writeheader()
     for row in rows:
-        safe={k:json.dumps(v,separators=(',',':')) if isinstance(v,(list,dict)) else v for k,v in row.items()}
+        safe={k:json.dumps(v,separators=(',',':'),sort_keys=True,allow_nan=False) if isinstance(v,(list,dict)) else v for k,v in row.items()}
         writer.writerow(safe)
     return buf.getvalue()
 

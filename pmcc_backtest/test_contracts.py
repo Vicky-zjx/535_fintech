@@ -7,7 +7,7 @@ import unittest
 
 from .calendar import Calendar
 from .contracts import parse_ric, resolve
-from .build import public_provenance, publish
+from .build import public_provenance, publish, csv_text
 from .engine import run
 from .test_engine import fixture, market, row
 
@@ -102,6 +102,11 @@ class ContractTests(unittest.TestCase):
         p=public_provenance(c)
         self.assertNotIn('values',p['current_description']);self.assertIn('values',c['provenance']['current_description'])
 
+    def test_nested_csv_is_stable_after_json_roundtrip(self):
+        rows=[{'provenance':{'z':'last','a':{'y':2,'b':1}}}]
+        restored=json.loads(json.dumps(rows,sort_keys=True))
+        self.assertEqual(csv_text(rows,['provenance']),csv_text(restored,['provenance']))
+
     def test_rerender_preserves_derived_results(self):
         root=Path(__file__).resolve().parents[1]
         result=root/'pmcc/results.json'
@@ -111,7 +116,10 @@ class ContractTests(unittest.TestCase):
             dest=Path(tmp);(dest/'pmcc_backtest').mkdir()
             (dest/'pmcc_backtest/page.html').write_bytes((root/'pmcc_backtest/page.html').read_bytes())
             publish(dest,book);first=(dest/'pmcc/results.json').read_bytes()
-            publish(dest,book);self.assertEqual(first,(dest/'pmcc/results.json').read_bytes())
+            csv_before=(dest/'pmcc/contracts.csv').read_bytes()
+            restored=json.loads(first)
+            publish(dest,restored);self.assertEqual(first,(dest/'pmcc/results.json').read_bytes())
+            self.assertEqual(csv_before,(dest/'pmcc/contracts.csv').read_bytes())
             self.assertEqual(original,book['runs'])
 
 
