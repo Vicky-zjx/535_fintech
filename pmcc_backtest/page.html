@@ -13,13 +13,38 @@
 <main>
   <section class="hero">
     <p class="eyebrow">CAPITAL EFFICIENCY / AAPL / ONE UNIT</p>
-    <div class="hero-row"><div><h1>Less cash deployed.<br>Different exposure.</h1><p class="lead">Poor Man’s Covered Call</p><p class="sublead">A long-dated call, a weekly overlay, and an account that records what each leg actually does.</p></div><div class="strategy-glyph" aria-hidden="true"><span>+1</span><small>LONG CALL</small><b>−</b><span>1</span><small>WEEKLY CALL</small></div></div>
+    <div class="hero-row"><div><h1>Less cash deployed.<br>Different exposure.</h1><p class="lead">Poor Man’s Covered Call</p><p class="sublead">One paid-in-full long call plus one weekly call sold at a 5% OTM target. Compared with a cash-funded covered call and buy and hold.</p></div><div class="strategy-glyph" aria-hidden="true"><span>+1</span><small>LONG CALL</small><b>−</b><span>1</span><small>WEEKLY CALL</small></div></div>
     <div class="statusline"><span id="status" class="badge">Checking published audit</span><span id="window"></span><span>$50,000 per account</span></div>
     <div id="run-finding" class="notice" role="status"></div>
-    <noscript><p class="notice error">Enable JavaScript to inspect generated results and charts. The English analysis below remains readable; raw vendor data and a live connection are not required.</p></noscript>
+    <noscript><p class="notice error">Enable JavaScript to inspect generated results and charts. The finding and method below remain readable; raw vendor data and a live connection are not required.</p></noscript>
   </section>
-  <section id="analysis"><div class="section-title"><span class="index">01 / FINDING &amp; RESEARCH DESIGN</span><h2>The evidence sets the limit.</h2></div><div class="analysis-prose"><!-- GENERATED_NARRATIVE --></div></section>
-  <section id="rules"><div class="section-title"><span class="index">02 / PREDECLARED RULES</span><h2>Choices before prices.</h2></div>
+  <section id="analysis" aria-label="Investment finding"><div class="analysis-prose"><!-- GENERATED_NARRATIVE --></div></section>
+  <section id="results"><div class="section-title"><span class="index">01 / PERFORMANCE</span><h2>Compare the accounts.</h2><label>Fill model <select id="model"><option value="midpoint">Midpoint-assumed</option><option value="quoted_side">Quoted side: buy ask / sell bid</option></select></label></div>
+    <div id="metrics" class="metrics"></div><p id="metrics-note" class="caption"></p><div id="comparison" class="table-wrap" tabindex="0"></div><p class="caption">* Observed-NAV maximum drawdown is a magnitude lower bound when valuations are missing, not full-sample MDD.</p><details id="comparison-details"><summary>Account diagnostics, premium receipts and costs</summary><div id="comparison-extra" class="table-wrap" tabindex="0"></div></details>
+    <div class="chart-grid"><div><h3>Account NAV · USD</h3><div id="nav-chart" class="chart" aria-label="Comparable account NAV"></div></div><div><h3 id="dd-title">Drawdown</h3><label>View <select id="drawdown-view"><option value="observed_drawdown">Observed-NAV · magnitude lower bound if gaps</option><option value="drawdown">Strict full-path · stops at first gap</option></select></label><div id="dd-chart" class="chart" aria-label="Comparable account drawdowns"></div><p id="dd-note" class="caption"></p></div></div>
+  </section>
+  <section id="capital"><div class="section-title"><span class="index">02 / CAPITAL &amp; EXPOSURE</span><h2>Separate capital from return.</h2></div>
+    <div class="chart-grid"><div><h3>Capital deployed at cost · USD</h3><div id="capital-chart" class="chart" aria-label="Ongoing capital deployed at cost"></div></div><div><h3>Delta-dollar exposure · USD</h3><div id="exposure-chart" class="chart" aria-label="Historical delta-dollar exposure"></div></div></div><details><summary>P&amp;L attribution and account formula</summary><div id="attribution" class="table-wrap" tabindex="0"></div>
+    <p class="caption">NAV = economic cash + long-call MV − short-call liability + signed stock MV + dividend receivables − dividend payables − accrued borrow. Trade-date proceeds are included once, not duplicated as settlement receivables. Settled cash and broker buying power are unavailable. No stock Reg T formula is applied to PMCC. Delta-dollar exposure is unavailable without valid date-specific deltas.</p></details>
+  </section>
+  <section id="blotter"><div class="section-title"><span class="index">03 / TRADES</span><h2>Follow every leg.</h2></div>
+    <div class="table-tools"><label for="search">Search events <input id="search" type="search" placeholder="Contract, date, action, reason…"></label><label>Account <select id="account"><option value="pmcc">PMCC</option><option value="covered_call">Covered call</option><option value="buy_hold">Buy and hold</option></select></label><span id="trade-count"></span></div>
+    <div id="trades" class="table-wrap" tabindex="0" role="region" aria-label="Searchable event blotter"></div>
+    <p class="caption">Simulated booked events, not live trades. Quote times and modeled fills are separate; downloads include all accounts and both fill models.</p>
+    <div class="downloads"><a href="trades.csv" download>Trade/event CSV ↓</a><a href="daily_nav.csv" download>Daily ledger CSV ↓</a><a href="weekly_coverage.csv" download>Weekly coverage CSV ↓</a><a href="results.json" download>Complete result JSON ↓</a></div>
+    <details><summary>Worked assignment ledger</summary><div id="assignment-example"></div></details>
+  </section>
+  <section id="coverage"><div class="section-title"><span class="index">04 / DATA LIMITATIONS</span><h2>Data limitations.</h2></div>
+    <div id="quality" class="metric-strip"></div><div id="blockers" class="notice error"></div>
+    <p class="caption">Historical candidates are incomplete; current long-call discovery introduces survivor bias. Standard 100-share terms are research assumptions, not individually verified deliverables. Missing prices remain missing.</p>
+    <p id="coverage-note" class="caption"></p><details id="weekly-details"><summary>All weekly decisions and candidate coverage</summary><div id="weekly" class="table-wrap" tabindex="0" aria-label="Weekly opportunities, holiday handling and skip reasons"></div></details>
+    <h3>Specific valuation gaps</h3><div id="gaps" class="table-wrap" tabindex="0"></div>
+    <details><summary>Closing-quote repair and September candidate coverage</summary><p id="repair-note" class="caption"></p><div id="repair-targets" class="table-wrap" tabindex="0"></div><div class="downloads"><a href="candidate_coverage.csv" download>Candidate coverage CSV ↓</a><a href="quote_rechecks.csv" download>Quote recheck audit CSV ↓</a></div></details>
+    <details><summary>Exact provider evidence and provenance</summary><pre id="audit-detail" class="provenance"></pre><a href="data_audit.json" download>Data audit JSON ↓</a></details>
+  </section>
+  <section id="rules"><div class="section-title"><span class="index">05 / METHOD &amp; REPRODUCIBILITY</span><h2>Inspect the implementation.</h2></div>
+    <details id="method-details"><summary>Trading rules, timing, fills and costs</summary>
+    <p class="caption">Prior-session inputs are checked at 09:00 ET on the first actual trading day of each week. Simulated execution and daily valuation use the close to match the daily input frequency; overnight data availability is assumed where publication times are unknown. No future quotes establish earlier candidate membership.</p>
     <div class="table-wrap" tabindex="0"><table class="rules"><thead><tr><th>Decision</th><th>Implemented rule</th></tr></thead><tbody>
       <tr><td>Signal → execution</td><td>Previous session EOD inputs → next scheduled first-session close. 09:00 ET signal checkpoint; publication availability must be known or explicitly assumed. Normal 16:00 ET / actual early close, with DST.</td></tr>
       <tr><td>Daily close reference</td><td>Valid daily BID/ASK first. If a daily leg is absent, the last complete quote event within the final 60 seconds may supply the mark and unchanged midpoint / quoted-side simulated fill. Both source and event times must be same-day, pre-close and within 60 seconds. No stale-bar carry, trade substitution or null-to-zero. Actual quote time stays separate from modeled closing time.</td></tr>
@@ -29,38 +54,16 @@
       <tr><td>Assignment</td><td>Expiry ≥ $0.01 ITM: cash +100K, stock −100, long retained. Cover next session close. No same-close discretionary re-entry. Announced pre-ex dividend: ITM and max(mid − intrinsic, 0) &lt; dividend.</td></tr>
       <tr><td>Costs</td><td>$0.65 per option per side; stock 1 bp per side, $0 commission; short stock 3% annually over calendar days; exercise/assignment fee $0; idle cash 0%.</td></tr>
       <tr><td>Cash &amp; terminal</td><td>One unit, no discretionary borrowing. Paired long sale/stock cover only if required and affordable. Terminal closing liquidation precedes after-close assignment; missing mandatory prices leave unresolved exposure.</td></tr>
-    </tbody></table></div>
-  </section>
-  <section id="results"><div class="section-title"><span class="index">03 / SAME EQUITY, SAME DATES</span><h2>Compare the accounts.</h2><label>Fill model <select id="model"><option value="midpoint">Midpoint-assumed</option><option value="quoted_side">Quoted side: buy ask / sell bid</option></select></label></div>
-    <div id="metrics" class="metrics"></div><p id="metrics-note" class="caption"></p><div id="comparison" class="table-wrap" tabindex="0"></div>
-    <div class="chart-grid"><div><h3>Account NAV · USD</h3><div id="nav-chart" class="chart" aria-label="Comparable account NAV"></div></div><div><h3 id="dd-title">Drawdown</h3><label>View <select id="drawdown-view"><option value="observed_drawdown">Observed-NAV · magnitude lower bound if gaps</option><option value="drawdown">Strict full-path · stops at first gap</option></select></label><div id="dd-chart" class="chart" aria-label="Comparable account drawdowns"></div><p id="dd-note" class="caption"></p></div></div>
-  </section>
-  <section id="capital"><div class="section-title"><span class="index">04 / CASH IS NOT BUYING POWER</span><h2>Separate capital from return.</h2></div>
-    <div class="chart-grid"><div><h3>Capital deployed at cost · USD</h3><div id="capital-chart" class="chart" aria-label="Ongoing capital deployed at cost"></div></div><div><h3>Delta-dollar exposure · USD</h3><div id="exposure-chart" class="chart" aria-label="Historical delta-dollar exposure"></div></div></div><div id="attribution" class="table-wrap" tabindex="0"></div>
-    <p class="caption">NAV = economic cash + long-call MV − short-call liability + signed stock MV + dividend receivables − dividend payables − accrued borrow. Trade-date proceeds are included once, not duplicated as settlement receivables. Settled cash and broker buying power are unavailable. No stock Reg T formula is applied to PMCC. Delta-dollar exposure is unavailable without valid date-specific deltas.</p>
-  </section>
-  <section id="blotter"><div class="section-title"><span class="index">05 / RECORDED EVENTS</span><h2>Follow every leg.</h2></div>
-    <div class="table-tools"><label for="search">Search events <input id="search" type="search" placeholder="Contract, date, action, reason…"></label><label>Account <select id="account"><option value="pmcc">PMCC</option><option value="covered_call">Covered call</option><option value="buy_hold">Buy and hold</option></select></label><span id="trade-count"></span></div>
-    <div id="trades" class="table-wrap" tabindex="0" role="region" aria-label="Searchable event blotter"></div>
-    <p class="caption">Trading events, assignments and cash/accrual events are labeled separately. Quote dates are actual; closing execution references are modeled. Unknown actual fill timestamps remain blank. Downloads contain all accounts and both fill models.</p>
-    <div class="downloads"><a href="trades.csv" download>Trade/event CSV ↓</a><a href="daily_nav.csv" download>Daily ledger CSV ↓</a><a href="weekly_coverage.csv" download>Weekly coverage CSV ↓</a><a href="results.json" download>Complete result JSON ↓</a></div>
-    <details><summary>Worked assignment ledger</summary><div id="assignment-example"></div></details>
-  </section>
-  <section id="coverage"><div class="section-title"><span class="index">06 / COVERAGE &amp; GAPS</span><h2>Keep the missing weeks visible.</h2></div>
-    <div id="quality" class="metric-strip"></div><div id="blockers" class="notice error"></div>
-    <p id="coverage-note" class="caption"></p><div id="weekly" class="table-wrap" tabindex="0" aria-label="Weekly opportunities, holiday handling and skip reasons"></div>
-    <h3>Specific valuation gaps</h3><div id="gaps" class="table-wrap" tabindex="0"></div>
-    <details><summary>Closing-quote repair and September candidate coverage</summary><p id="repair-note" class="caption"></p><div id="repair-targets" class="table-wrap" tabindex="0"></div><div class="downloads"><a href="candidate_coverage.csv" download>Candidate coverage CSV ↓</a><a href="quote_rechecks.csv" download>Quote recheck audit CSV ↓</a></div></details>
-    <details><summary>Exact provider evidence and provenance</summary><pre id="audit-detail" class="provenance"></pre><a href="data_audit.json" download>Data audit JSON ↓</a></details>
-  </section>
-  <section id="contracts"><div class="section-title"><span class="index">07 / IDENTITY ≠ TERMS ≠ LAST QUOTE</span><h2>What is known, derived or assumed.</h2></div>
+    </tbody></table></div></details>
+  <div id="contracts">
+    <details id="contract-details"><summary>Contract catalogue, term assumptions and exclusions</summary>
     <p class="notice">Multiplier and deliverable are explicitly labeled research assumptions for ordinary AAPL OPRA contracts. They are supported by <a href="https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications">OCC standard specifications</a>, available LSEG descriptions and the corporate-action screen—not individual historical supplier certification. <a href="https://investor.apple.com/faq./default.aspx">Apple’s split history</a>, <a href="https://infomemo.theocc.com/infomemos?number=47369">the 2020 OCC adjustment memo</a> and <a href="https://www.optionseducation.org/referencelibrary/faq/splits-mergers-spinoffs-bankruptcies">OIC adjustment guidance</a> inform that screen; no full historical OCC-memo completeness claim is made.</p>
     <p id="contract-scope" class="caption"></p><div id="contract-table" class="table-wrap" tabindex="0"></div>
     <p class="caption">Identity/expiry follow <a href="https://developers.lseg.com/en/article-catalog/article/functions-to-find-option-rics-traded-on-different-exchanges">LSEG’s option RIC rules</a>. Zero-padded days follow the instructor’s correction and retained paired tests. A historical quote demonstrates existence by its availability time; current discovery alone does not. Last observed quote is an observation, not a contractual date.</p>
     <details><summary>Excluded candidates and acquisition-scope exclusions</summary><div id="exclusions" class="table-wrap" tabindex="0"></div></details>
-    <div class="downloads"><a href="contracts.csv" download>Source-labeled contract table ↓</a><a href="exclusions.csv" download>Exclusion records ↓</a></div>
-  </section>
-  <section id="reproduce"><div class="section-title"><span class="index">08 / REPRODUCE &amp; CHECK</span><h2>Inspect the rules, not just the curve.</h2></div>
+    <div class="downloads"><a href="contracts.csv" download>Source-labeled contract table ↓</a><a href="exclusions.csv" download>Exclusion records ↓</a></div></details>
+  </div>
+  <div id="reproduce">
     <details><summary>Commands, schema, dependencies and source hashes</summary>
       <pre class="data-command">python -m pip install -r pmcc_backtest/requirements.txt
 python -m unittest pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts pmcc_backtest.test_repair -v
@@ -72,9 +75,8 @@ python -m pmcc_backtest.repair_coverage --input pmcc_backtest/local_data/observe
       <p class="caption">The no-input command re-renders committed derived results; it does not pretend to recompute P&amp;L without licensed inputs. The --input command reruns the accounting. A fresh authorized setup first runs probe_lseg (see the source README); no teacher-supplied contract file is required. Tests contain labeled synthetic fixtures, isolated from publication. Raw snapshots remain local, unchanged and Git-ignored; the page needs no live connection.</p>
       <div class="downloads"><a href="config.json" download>Configuration ↓</a><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/pmcc_backtest">Source &amp; tests ↗</a><a href="https://github.com/Vicky-zjx/535_fintech/blob/main/pmcc_backtest/SCHEMA.md">Input schema ↗</a></div>
       <pre id="versions" class="provenance"></pre>
-    </details>
-    <p class="caption sources">Mechanics: <a href="https://www.fidelity.com/learning-center/investment-products/options/options-strategy-guide/long-diagonal-spread-calls">Fidelity: long diagonal calls</a> (short-stock assignment and remaining long time value); <a href="https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications">OCC: equity option specifications</a> (standard contracts and regular hours). Session rules: <a href="https://www.nyse.com/trade/hours-calendars">NYSE calendar</a> and <a href="https://www.cboe.com/about/hours/us-options/">Cboe options calendar</a>. Data: <a href="https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing">LSEG historical pricing</a>; <a href="https://community.developers.lseg.com/discussion/comment/110304">LSEG expired-option search limitation</a>. Calendar implementation: <a href="https://github.com/gerrymanoim/exchange_calendars">exchange_calendars</a>. The model uses regular AAPL equity-option hours, not index-option or proposed extended sessions.</p>
-  </section>
+    <p class="caption sources">Mechanics: <a href="https://www.fidelity.com/learning-center/investment-products/options/options-strategy-guide/long-diagonal-spread-calls">Fidelity: long diagonal calls</a> (short-stock assignment and remaining long time value); <a href="https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications">OCC: equity option specifications</a> (standard contracts and regular hours). Session rules: <a href="https://www.nyse.com/trade/hours-calendars">NYSE calendar</a> and <a href="https://www.cboe.com/about/hours/us-options/">Cboe options calendar</a>. Data: <a href="https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing">LSEG historical pricing</a>; <a href="https://community.developers.lseg.com/discussion/comment/110304">LSEG expired-option search limitation</a>. Calendar implementation: <a href="https://github.com/gerrymanoim/exchange_calendars">exchange_calendars</a>. The model uses regular AAPL equity-option hours, not index-option or proposed extended sessions.</p></details>
+  </div></section>
 </main>
 <footer><span>FINTECH 535 · PMCC</span><span>Real observations only · simulated execution · no investment recommendation</span><a href="../covered-call/">Previous covered-call assignment ↗</a></footer>
 </body></html>

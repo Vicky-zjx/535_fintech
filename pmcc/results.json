@@ -5179,7 +5179,7 @@
     "__init__.py": "c27202189f6db0b16d3470d26a92848078d2e97d1ebb15695ceb8c0a8b8e0c9c",
     "acquire_observed.py": "89dc7bbe91219d3526aef8718f025df70d7393d606f1194f7fa1863dac8a0867",
     "audit.py": "3ffdce1115626df31350d2aeab58e0fdbfff1abe4fafc94a1850973d1a2e1da9",
-    "build.py": "3a0d8e41e5e69f8034cb8df9466767c7a6423b01d42576f5841ff1fdfbb5d6f3",
+    "build.py": "89601cd1be62b969abd820ee51f1ead7576f4a00bb5194a0b2c49edddf137c39",
     "calendar.py": "5eb9490a78c579283193d5a3cd5643c1f9ad24857d944954d7f1a5fc293ee3ab",
     "config.py": "8abf3a1d0f2d051368a073e9b4de9130154f7a49ed8ddabaee7115881f37bd18",
     "contracts.py": "a3491b8fe033a27e38be5806905bf39ab3add3ff491f49ca6771fda47cdf620a",
@@ -5192,7 +5192,7 @@
     "serve_preview.py": "19aa0d1d0cbf4d53140550fcfe5536bbe8475ecac071cdf5aec4dc7fe8f33fbf",
     "test_contracts.py": "1bf7e3a7f2d0d9bb784442b1dd7826bf501acca01d69ec7591cec92b79167505",
     "test_engine.py": "621f65b47f602c8588d5f01fa8506673921cea15c3e4ef422ee65249a1cc6ccd",
-    "test_pipeline.py": "4dc80547d5339003806fd63976a8b4b738938977f701900fc2465fd55939e88f",
+    "test_pipeline.py": "dc2bc61fdd8efa367f2f9da84d4933b7efbf7c41fbcccd02af471fecf6dc1682",
     "test_repair.py": "48a35bc33e3ecf0c1cfe6eafdee996382b23199fa43efa5fd0e5fa47f31f124e",
     "validate_publication.py": "79fa0eafa345005c7c9f17c6def423f411ea98e7cb3512620863bf503f39d77d"
   },
@@ -31438,28 +31438,8 @@
   "input_sha256": "5f9530e5c122939a467536a66078af3d09aa4d4142f9be0c72bde9832d29d6f7",
   "narrative": [
     [
-      "Finding from the generated ledger",
-      "Over 2026-07-06\u20132026-09-30, midpoint PMCC net P&L is $1,841.60; the cash-funded covered call reports $2,316.94 and buy and hold $2,056.54. PMCC collected $271.00 in gross premiums from 13 shorts, with 0 skipped weeks and 12 end-of-session long-only states. Quoted-side PMCC P&L is $1,437.60. There are 1 PMCC NAV gaps (2026-07-23); full-sample MDD is unavailable. The separately labeled observed-NAV drawdown is only a lower bound on its magnitude. Terminal positions are fully liquidated and cash reconciles independently. No missing observation is interpolated."
-    ],
-    [
-      "Why AAPL, why these rules",
-      "I use AAPL to connect this study to my earlier covered-call assignment, not because it was a prospectively selected winner. Each new account starts with $50,000 and can hold only one strategy unit. The comparison covered call is fully funded; its results must be rebuilt under the new timing rules rather than borrowed from the old $30,000 Reg T account. The 5% OTM threshold stays fixed. A missing listed strike is not an invitation to invent an intermediate one."
-    ],
-    [
-      "First session is the schedule; close is the reference",
-      "The first trading session gives the short call most of its remaining weekly cycle; a Monday holiday moves the opportunity to Tuesday. I use the closing reference because the inputs are daily and the three accounts need a consistent valuation schedule, not because the close is optimal. Choices use the prior session, at a 09:00 ET checkpoint after overnight availability. Where publication timestamps are absent, that availability is an explicit assumption. Daily dates are not verified intraday quote or fill times. Waiting until the close leaves less time to expiry and can move the strike away from 5% OTM."
-    ],
-    [
-      "Capital is not profit",
-      "The declared long-selection mode is the 75%-of-spot strike proxy, not a claim of 0.80 delta. The long call is paid in full and retained between weekly cycles. Lower entry cash would leave more unused cash, but one long call is not 100 shares and its remaining time value can change substantially. Premium receipts create a short-option liability; they are not immediate profit. Account returns use the same $50,000 denominator. Idle cash earns zero, and discretionary entries cannot borrow. Economic cash includes trade-date proceeds; it is not settled cash or broker buying power. Here PMCC underperformed buy and hold by $214.94 under the midpoint model; lower cash outlay did not determine the better return."
-    ],
-    [
-      "What assignment changes",
-      "An assigned PMCC short call removes the option, credits the strike proceeds and leaves the long call alongside minus 100 shares. The model covers those shares at the next actual session\u2019s close, including weekend borrow accrual. It sells the long only if a mandatory paired liquidation is needed to fund that cover. There is no automatic exercise and no new short at the same close as the cover. Dividend-related assignment is a disclosed time-value convention, not an observation of what a historical holder did."
-    ],
-    [
-      "Terms and coverage are part of the result",
-      "Identity and expiry are decoded from real RICs; historical observations establish signal-time membership. Multiplier 100 and delivery of 100 AAPL shares are source-supported research assumptions, not supplier-confirmed historical terms for every contract. The screen excludes conflicting or nonstandard identities, using OCC specifications, available descriptions and corporate-action evidence. Scheduled last trading date comes from contract rules and the exchange calendar, never the final quote date. The strike is the minimum among historically evidenced candidates, not necessarily every listed strike. Current long-contract discovery also leaves survivor bias. This retrospective single-stock study does not establish a universal edge."
+      "Finding",
+      "The long call required $10,133.15 upfront versus $31,269.13 for 100 shares, before short-premium receipts. On the same $50,000 equity, midpoint PMCC earned $1,841.60 net\u2014$214.94 below buy and hold; quoted-side PMCC earned $1,437.60. Lower upfront outlay is not lower risk: the long call adds time-value and volatility exposure. This short, single-stock sample does not establish a general advantage."
     ]
   ],
   "python": "3.13.7",

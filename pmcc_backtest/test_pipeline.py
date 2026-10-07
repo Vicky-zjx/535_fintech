@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 from .audit import audit_dataset
-from .build import build, csv_text
+from .build import build, csv_text, narrative
 from .data import Market, mid
 from .fetch_lseg import parse_daily, parse_dividends
 from .selection import long_call, short_call
@@ -77,6 +77,27 @@ class PipelineTests(unittest.TestCase):
 
     def test_blank_csv_is_header_only_not_fake_trade(self):
         self.assertEqual(csv_text([],['date','nav']),'date,nav\n')
+
+    def test_executive_finding_is_brief_and_does_not_change_accounts(self):
+        # Synthetic summary fixture only; not a market input.
+        metrics=dict(initial_capital_outlay=10000,stock_equivalent_at_entry=30000,net_pnl=100)
+        book=dict(status='incomplete',runs=[dict(strategy='pmcc',fill_model='midpoint',metrics=metrics),
+            dict(strategy='buy_hold',fill_model='midpoint',metrics={'net_pnl':200}),
+            dict(strategy='pmcc',fill_model='quoted_side',metrics={'net_pnl':50})])
+        original=deepcopy(book);summary=narrative(book)
+        self.assertEqual(book,original)
+        self.assertEqual(len(summary),1)
+        self.assertLessEqual(len(summary[0][1].split()),100)
+        self.assertIn('$100.00 below buy and hold',summary[0][1])
+        self.assertIn('not lower risk',summary[0][1])
+
+    def test_results_precede_folded_method_and_caveats_remain_visible(self):
+        template=(Path(__file__).parent/'page.html').read_text()
+        self.assertLess(template.index('id="results"'),template.index('id="method-details"'))
+        self.assertIn('<details id="method-details">',template)
+        self.assertIn('<details id="contract-details">',template)
+        self.assertIn('current long-call discovery introduces survivor bias',template)
+        self.assertIn('id="gaps"',template)
 
     def test_deterministic_blocked_build(self):
         import shutil

@@ -27,6 +27,16 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   }
   await page.reload({waitUntil:'networkidle'});
   const book=await page.evaluate(()=>window.PMCC_BOOK);
+  assert.equal(await page.locator('#analysis .narrative').count(),1);
+  assert.ok((await page.locator('#analysis p').innerText()).split(/\s+/).length<=100);
+  assert.equal(await page.locator('#method-details').getAttribute('open'),null);
+  assert.equal(await page.locator('#contract-details').getAttribute('open'),null);
+  assert.equal(await page.locator('#comparison th').count(),6);
+  assert.ok(await page.locator('#coverage').innerText().then(t=>t.includes('survivor bias')));
+  await page.locator('#method-details > summary').click();
+  assert.ok(await page.locator('#long-rule').isVisible());
+  await page.locator('#method-details > summary').click();
+  await page.locator('#weekly-details > summary').click();
   assert.equal(book.status,'incomplete');assert.equal(book.runs.length,6);
   assert.equal(book.contract_catalogue.length,306);assert.equal(book.audit.assumption_contracts,306);
   assert.equal(book.audit.individually_verified_contracts,0);assert.equal(book.audit.excluded_contracts.length,50);
@@ -68,6 +78,10 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
     if(name==='daily_nav.csv')assert.equal(text.trim().split('\n').length,373);
     if(name==='results.json')assert.equal(JSON.parse(text).input_sha256,book.input_sha256);
   }
+  await page.locator('#weekly-details > summary').click();
+  await page.locator('#contract-details > summary').click();
+  assert.ok(await page.locator('#contract-table').isVisible());
+  await page.locator('#contract-details > summary').click();
   await page.screenshot({path:path.join(output,'pmcc-desktop.png'),fullPage:true});
   await page.locator('#results').screenshot({path:path.join(output,'pmcc-results.png')});
   // UI-only complete-state fixture: verify the card note is not hardcoded.

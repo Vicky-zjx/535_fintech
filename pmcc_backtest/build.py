@@ -40,52 +40,24 @@ def money(x): return 'unavailable' if x is None else f'${x:,.2f}'
 
 
 def narrative(book):
-    common=[
-      ('Why AAPL, why these rules',
-       'I use AAPL to connect this study to my earlier covered-call assignment, not because it was a prospectively selected winner. Each new account starts with $50,000 and can hold only one strategy unit. The comparison covered call is fully funded; its results must be rebuilt under the new timing rules rather than borrowed from the old $30,000 Reg T account. The 5% OTM threshold stays fixed. A missing listed strike is not an invitation to invent an intermediate one.'),
-      ('First session is the schedule; close is the reference',
-       'The first trading session gives the short call most of its remaining weekly cycle; a Monday holiday moves the opportunity to Tuesday. I use the closing reference because the inputs are daily and the three accounts need a consistent valuation schedule, not because the close is optimal. Choices use the prior session, at a 09:00 ET checkpoint after overnight availability. Where publication timestamps are absent, that availability is an explicit assumption. Daily dates are not verified intraday quote or fill times. Waiting until the close leaves less time to expiry and can move the strike away from 5% OTM.'),
-      ('Capital is not profit',
-       'The declared long-selection mode is the 75%-of-spot strike proxy, not a claim of 0.80 delta. The long call is paid in full and retained between weekly cycles. Lower entry cash would leave more unused cash, but one long call is not 100 shares and its remaining time value can change substantially. Premium receipts create a short-option liability; they are not immediate profit. Account returns use the same $50,000 denominator. Idle cash earns zero, and discretionary entries cannot borrow. Economic cash includes trade-date proceeds; it is not settled cash or broker buying power.'),
-      ('What assignment changes',
-       'An assigned PMCC short call removes the option, credits the strike proceeds and leaves the long call alongside minus 100 shares. The model covers those shares at the next actual session’s close, including weekend borrow accrual. It sells the long only if a mandatory paired liquidation is needed to fund that cover. There is no automatic exercise and no new short at the same close as the cover. Dividend-related assignment is a disclosed time-value convention, not an observation of what a historical holder did.'),
-      ('Terms and coverage are part of the result',
-       'Identity and expiry are decoded from real RICs; historical observations establish signal-time membership. Multiplier 100 and delivery of 100 AAPL shares are source-supported research assumptions, not supplier-confirmed historical terms for every contract. The screen excludes conflicting or nonstandard identities, using OCC specifications, available descriptions and corporate-action evidence. Scheduled last trading date comes from contract rules and the exchange calendar, never the final quote date. The strike is the minimum among historically evidenced candidates, not necessarily every listed strike. Current long-contract discovery also leaves survivor bias. This retrospective single-stock study does not establish a universal edge.')]
+    """A short investment finding; algorithm details stay in the method drawer."""
     if book['status']=='blocked':
-        audit=book['audit']
-        stock_count=audit.get('stock',{}).get('rows',audit.get('stock_observations','unavailable'))
-        dividend_count=audit.get('dividends',{})
-        dividend_count=dividend_count.get('records','unavailable') if isinstance(dividend_count,dict) else dividend_count
-        long_count=audit.get('long_probe',{}).get('rows')
-        long_evidence=(f' and {long_count} daily observations for one real long-dated call' if long_count is not None else '')
-        lead=('Finding: prices exist, but the historical universe is not verified',
-          f'The LSEG input audit records {stock_count} AAPL daily stock observations and {dividend_count} dividend records{long_evidence}. '
-          'It did not establish all required historical inputs and contract terms; inspect the exact blocking issues below. '
-          'An observed candidate subset is not a complete historical chain. Therefore no empirical PMCC or comparison return is published. '
-          'Blank charts and unavailable metrics mean the audit stopped the run; they do not mean zero return. '
-          f"The requested window is {book['config']['start']}–{book['config']['end']}, with no validated common empirical backtest published. "
-          'The period has not been shortened to select favorable returns.')
-    else:
-        runs={r['strategy']:r for r in book['runs'] if r['fill_model']=='midpoint'}
-        p,c,b=[runs[s] for s in STRATEGIES]
-        side=next(r for r in book['runs'] if r['strategy']=='pmcc' and r['fill_model']=='quoted_side')
-        lead=('Finding from the generated ledger',
-          f"Over {book['config']['start']}–{book['config']['end']}, midpoint PMCC net P&L is {money(p['metrics']['net_pnl'])}; "
-          f"the cash-funded covered call reports {money(c['metrics']['net_pnl'])} and buy and hold {money(b['metrics']['net_pnl'])}. "
-          f"PMCC collected {money(p['metrics']['gross_premiums'])} in gross premiums from {p['metrics']['short_calls']} shorts, with "
-          f"{p['metrics']['skipped_weeks']} skipped weeks and {p['metrics']['long_only_sessions']} end-of-session long-only states. "
-          f"Quoted-side PMCC P&L is {money(side['metrics']['net_pnl'])}. "+
-          (f"There are {p['metrics']['valuation_gap_sessions']} PMCC NAV gaps ({', '.join(p['metrics']['valuation_gap_dates'])}); full-sample MDD is unavailable. The separately labeled observed-NAV drawdown is only a lower bound on its magnitude. " if p['metrics']['valuation_gap_sessions'] else
-           'The complete daily NAV path supports a full-sample maximum drawdown. ')+
-          ('Terminal positions are fully liquidated and cash reconciles independently. ' if p['metrics']['terminal_resolved'] else 'Terminal exposure remains unresolved. ')+
-          'No missing observation is interpolated.')
-        if p['metrics']['net_pnl'] is not None and b['metrics']['net_pnl'] is not None:
-            direction='underperformed' if p['metrics']['net_pnl']<b['metrics']['net_pnl'] else 'outperformed'
-            common[2]=(common[2][0],common[2][1]+f" Here PMCC {direction} buy and hold by {money(abs(p['metrics']['net_pnl']-b['metrics']['net_pnl']))} under the midpoint model; lower cash outlay did not determine the better return.")
-    if book['config']['long_mode']!='75%-of-spot strike proxy':
-        common[2]=(common[2][0],common[2][1].replace('The declared long-selection mode is the 75%-of-spot strike proxy, not a claim of 0.80 delta.','The declared long-selection mode targets 0.80 historical delta, using eligible signal-time deltas from 0.70 to 0.90.'))
-    return [lead,*common]
-
+        return [('Backtest not published',
+                 'The input audit has unresolved issues. No return is reported; blank values are not zero. See data limitations and reproduction details below.')]
+    p=next(r for r in book['runs'] if r['strategy']=='pmcc' and r['fill_model']=='midpoint')['metrics']
+    b=next(r for r in book['runs'] if r['strategy']=='buy_hold' and r['fill_model']=='midpoint')['metrics']
+    side=next(r for r in book['runs'] if r['strategy']=='pmcc' and r['fill_model']=='quoted_side')['metrics']
+    outlay=(f"The long call required {money(p['initial_capital_outlay'])} upfront versus "
+            f"{money(p['stock_equivalent_at_entry'])} for 100 shares, before short-premium receipts. ")
+    if p['net_pnl'] is None or b['net_pnl'] is None:
+        return [('Finding',outlay+'Unresolved terminal exposure prevents a complete profit comparison. Lower entry outlay alone does not establish lower risk.')]
+    difference=p['net_pnl']-b['net_pnl']
+    comparison=('equal to buy and hold' if abs(difference)<.005 else
+                f"{money(abs(difference))} {'below' if difference<0 else 'above'} buy and hold")
+    return [('Finding',
+        outlay+f"On the same $50,000 equity, midpoint PMCC earned {money(p['net_pnl'])} net—{comparison}; "
+        f"quoted-side PMCC earned {money(side['net_pnl'])}. "
+        'Lower upfront outlay is not lower risk: the long call adds time-value and volatility exposure. This short, single-stock sample does not establish a general advantage.')]
 
 def build(root,input_path=None):
     root=Path(root);out=root/'pmcc';out.mkdir(exist_ok=True)
