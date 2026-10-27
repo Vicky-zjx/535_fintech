@@ -13,3 +13,7 @@ reflex.lock/
 pmcc_backtest/local_data/
 pmcc_backtest/.local_*/
 pmcc_backtest/__pycache__/
+
+# Wheel: separate licensed snapshots; never publish provider raw responses.
+wheel_backtest/local_data/
+wheel_backtest/__pycache__/

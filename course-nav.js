@@ -4,7 +4,7 @@
   const base=new URL('./',document.currentScript.src);
   const nav=document.querySelector('[data-course-nav]')||document.querySelector('nav[aria-label="Course navigation"]');
   if(!nav)return;
-  const routes=[['','Option Surface Lab'],['covered-call/','Covered call'],['covered-call/data.html','Data & method'],['pmcc/','PMCC']];
+  const routes=[['','Option Surface Lab'],['covered-call/','Covered call'],['covered-call/data.html','Data & method'],['pmcc/','PMCC'],['wheel/','Wheel']];
   nav.setAttribute('aria-label','Course navigation');nav.classList.add('course-navigation');
   nav.replaceChildren(...routes.map(([path,label])=>{
     const a=document.createElement('a');a.href=new URL(path,base).href;a.textContent=label;

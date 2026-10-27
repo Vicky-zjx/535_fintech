@@ -10,7 +10,7 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   const context=await browser.newContext({viewport:{width:1440,height:1100}});
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   const output=fs.mkdtempSync(path.join(os.tmpdir(),'pmcc-browser-'));
-  const expected=['','covered-call/','covered-call/data.html','pmcc/'].map(p=>base+p);
+  const expected=['','covered-call/','covered-call/data.html','pmcc/','wheel/'].map(p=>base+p);
   for(const route of ['','options_surface_preview.html','covered-call/','covered-call/data.html','pmcc/']){
     const response=await page.goto(base+route,{waitUntil:'networkidle'});assert.equal(response.status(),200,route);
     await page.waitForSelector('nav.course-navigation');
@@ -144,6 +144,6 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   await checkCapitalAndExposure('midpoint');
   await page.locator('#capital').screenshot({path:path.join(output,'pmcc-capital-mobile.png')});
   assert.deepEqual(errors,[],'browser exceptions');
-  console.log(JSON.stringify({base,routes:5,navigationLinks:20,downloads:10,weeklyOpportunities:13,realScenarios:6,contracts:306,valuationGapsPreserved:1,initialCostBars:3,capitalModelsChecked:2,terminalZeroPreserved:true,postLiquidationHover:true,oldResultPreserved:true,browserErrors:errors,screenshots:output},null,2));
+  console.log(JSON.stringify({base,routes:5,navigationLinks:25,downloads:10,weeklyOpportunities:13,realScenarios:6,contracts:306,valuationGapsPreserved:1,initialCostBars:3,capitalModelsChecked:2,terminalZeroPreserved:true,postLiquidationHover:true,oldResultPreserved:true,browserErrors:errors,screenshots:output},null,2));
   await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
