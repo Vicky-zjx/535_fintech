@@ -15,9 +15,22 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
   }
   const book=await page.evaluate(()=>window.WHEEL_BOOK);assert.equal(book.synthetic,false);assert.equal(book.runs.length,3);
   const money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(x);
+  const pct=x=>(x*100).toFixed(2)+'%';
   let checks=0;
   for(const model of ['quoted_side','midpoint']){
     await page.selectOption('#model',model);
+    const wheelRun=book.runs.find(r=>r.strategy==='wheel'&&r.fill_model===model),m=wheelRun.metrics;
+    assert.deepEqual(await page.locator('#metrics .metric-label').allTextContents(),['Wheel total return','Wheel ending equity','Observed-NAV max drawdown','Gross premiums']);
+    assert.deepEqual(await page.locator('#metrics .metric-value').allTextContents(),[pct(m.total_return),money(m.ending_equity),pct(m.observed_max_drawdown),money(m.gross_premiums)]);
+    assert.equal((await page.locator('#comparison thead').innerText()).includes('Sharpe'),false);
+    assert.equal((await page.locator('#comparison thead').innerText()).includes('Full MDD'),false);
+    if(m.valuation_gap_dates.length){
+      assert.equal(m.max_drawdown,null);assert.equal(m.sharpe,null);
+      assert.match(await page.locator('#metrics .metric-note').nth(2).innerText(),/Lower bound/);
+      const note=await page.locator('#valuation-note').innerText();
+      for(const gap of m.valuation_gap_dates)assert.ok(note.includes(gap));
+      assert.match(note,/Full-sample MDD and Sharpe are not reported/);
+    }
     for(const strategy of ['wheel','buy_hold']){
       await page.selectOption('#account',strategy);
       const r=book.runs.find(r=>r.strategy===strategy&&(strategy==='buy_hold'||r.fill_model===model));
@@ -29,8 +42,9 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
           await page.selectOption('#snapshot',state.snapshot_id);
           const values=await page.locator('#portfolio-values strong').allTextContents();
           assert.equal(values[0],money(state.cash));assert.equal(values[1],money(state.reserved_cash));assert.equal(values[3],String(state.shares));
-          assert.equal(values[6],state.option_liability==null?'N/A':money(state.option_liability));
-          assert.equal(values[7],state.equity==null?'N/A':money(state.equity));
+          assert.equal(values[6],state.option_liability==null?'Not valued':money(state.option_liability));
+          assert.equal(values[7],state.equity==null?'Not valued':money(state.equity));
+          assert.ok(!values.includes('N/A'));
           if(state.option)assert.match(await page.locator('#open-option').innerText(),new RegExp(state.option.id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
           checks++;
         }
@@ -44,9 +58,18 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
     }
     const plotted=await page.locator('#equity-chart').evaluate(el=>el.data);
     for(const t of plotted){const r=book.runs.find(r=>(t.name==='Buy and hold'?r.strategy==='buy_hold':r.strategy==='wheel'&&r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.equity));assert.equal(t.connectgaps,false);}
+    const drawdowns=await page.locator('#drawdown-chart').evaluate(el=>el.data);
+    for(const t of drawdowns){const r=book.runs.find(r=>(t.name==='Buy and hold'?r.strategy==='buy_hold':r.strategy==='wheel'&&r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.drawdown));assert.equal(t.connectgaps,false);}
+    assert.equal((await page.locator('body').innerText()).includes('N/A'),false);
   }
   for(const file of ['results.json','config.json','data_audit.json','blotter.csv','ledger.csv','snapshots.csv','decisions.csv','coverage.csv','quote_issues.csv'])assert.equal((await context.request.get(base+'wheel/'+file)).status(),200);
   await page.selectOption('#model','quoted_side');await page.selectOption('#account','wheel');
+  const gap=book.runs[0].metrics.valuation_gap_dates[0];
+  if(gap){
+    await page.selectOption('#date',gap);
+    assert.equal(await page.locator('#portfolio-values strong').nth(7).innerText(),'Not valued');
+    await page.locator('#portfolio').screenshot({path:path.join(out,'wheel-gap.png')});
+  }
   const assignment=book.runs[0].events.find(e=>e.event_type==='PUT_ASSIGNMENT');
   if(assignment){await page.selectOption('#date',assignment.date);await page.selectOption('#snapshot',assignment.event_id+'-after');}
   await page.screenshot({path:path.join(out,'wheel-desktop.png'),fullPage:true});
