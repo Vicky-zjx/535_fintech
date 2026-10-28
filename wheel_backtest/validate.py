@@ -1,5 +1,5 @@
 """Independent event/state and CSV reconciliation plus exact accounting replay."""
-import argparse,csv,json,math
+import argparse,csv,json,math,statistics
 from pathlib import Path
 from .acquire import digest
 from .config import Config
@@ -17,6 +17,25 @@ def validate(input_path,output):
         replay=run(data,cfg,r['strategy'],r['fill_model'])
         compare=json.loads(json.dumps(r));compare['metrics'].pop('benchmark_excess_return',None)
         assert replay==compare,'Recomputed account differs'
+        # Independently check adjacent-session returns on the unfiltered ledger.
+        previous=cfg.initial_cash;available=[];excluded=[]
+        for row in r['ledger']:
+            nav=row['equity']
+            if nav is None or previous is None or previous<=0:
+                assert row['daily_return'] is None;excluded.append(row['date'])
+            else:
+                expected_return=nav/previous-1;equal(row['daily_return'],expected_return);available.append(expected_return)
+            previous=nav
+        m=r['metrics']
+        assert m['excluded_daily_return_dates']==excluded
+        assert m['excluded_daily_return_count']==len(excluded)
+        assert m['valid_daily_returns']==len(available)
+        assert m['daily_return_session_count']==len(r['ledger'])
+        if m['empirical_strategy_supported'] and len(available)>1 and statistics.stdev(available)>0:
+            expected_sharpe=(statistics.mean(available)-((1+cfg.risk_free_rate)**(1/252)-1))/statistics.stdev(available)*math.sqrt(252)
+            equal(m['available_daily_return_sharpe'],expected_sharpe)
+        else:assert m['available_daily_return_sharpe'] is None
+        if m['valuation_gap_dates']:assert m['sharpe'] is None and m['max_drawdown'] is None
         cash=cfg.initial_cash;shares=0
         for e in r['events']:
             equal(e['cash_before'],cash);assert e['shares_before']==shares
@@ -48,9 +67,10 @@ def validate(input_path,output):
             for event in r['events']:
                 if event['date']==row['date']:assert row['timestamp']>event['timestamp'],'EOD must follow booked events'
         summaries.append(dict(strategy=r['strategy'],fill_model=r['fill_model'],status=r['status'],events=len(r['events']),snapshots=len(r['snapshots']),net_pnl=r['metrics']['net_pnl'],nav_gaps=r['metrics']['valuation_gap_dates']))
-    for name,key in [('blotter.csv','events'),('ledger.csv','ledger'),('snapshots.csv','snapshots')]:
+    for name,key in [('blotter.csv','events'),('ledger.csv','ledger'),('snapshots.csv','snapshots'),('metrics.csv','metrics')]:
         with (output/name).open() as f:rows=list(csv.DictReader(f))
-        expected=[e for r in book['runs'] for e in r[key]];assert len(rows)==len(expected)
+        expected=[{'strategy':r['strategy'],'fill_model':r['fill_model'],**r['metrics']} for r in book['runs']] if key=='metrics' else [e for r in book['runs'] for e in r[key]]
+        assert len(rows)==len(expected)
         for row,original in zip(rows,expected):
             for k,value in row.items():
                 v=original.get(k)

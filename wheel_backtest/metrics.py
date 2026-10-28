@@ -22,6 +22,11 @@ def calculate(rows,initial,start,end,risk_free_rate):
     vol=statistics.stdev(returns)*math.sqrt(252) if complete and len(returns)>1 else None
     rf=(1+risk_free_rate)**(1/252)-1
     sharpe=(statistics.mean(returns)-rf)*252/vol if vol and vol>0 else None
+    # Keep the full calendar above: a missing NAV also invalidates the next
+    # one-session return. Never calculate pct_change after dropping NAV rows.
+    available_vol=statistics.stdev(returns)*math.sqrt(252) if len(returns)>1 else None
+    available_sharpe=(statistics.mean(returns)-rf)*252/available_vol if available_vol and available_vol>0 else None
+    excluded=[r['date'] for r in rows if r['daily_return'] is None]
     cagr=(last/initial)**(365.25/span)-1 if complete and last>0 else None
     mdd=min([0]+[r['drawdown'] for r in rows]) if complete else None
     observed=min([0]+[r['observed_drawdown'] for r in rows if r['observed_drawdown'] is not None])
@@ -29,4 +34,7 @@ def calculate(rows,initial,start,end,risk_free_rate):
         cagr=cagr,annualized_volatility=vol,sharpe=sharpe,max_drawdown=mdd,observed_max_drawdown=observed,
         calmar=cagr/abs(mdd) if cagr is not None and mdd and span>=365 else None,
         sample_calendar_days=span,valuation_gap_dates=gaps,valid_daily_returns=len(returns),full_path_complete=complete,
+        available_daily_return_sharpe=available_sharpe,daily_return_session_count=len(rows),
+        excluded_daily_return_dates=excluded,excluded_daily_return_count=len(excluded),
+        available_daily_return_sharpe_note='Available one-session returns only; no return bridges a missing NAV. First-session return uses initial cash. Sample standard deviation (ddof=1), 252 periods/year, daily RF=(1+annual RF)^(1/252)-1. Not full-sample Sharpe when returns are missing; exclusion may bias either direction. Unequal samples do not establish risk-adjusted outperformance.',
         annualization_note='252 daily periods; risk-free rate configurable; cash earns 0%. Short-sample annualization is extrapolation, not a forecast. Calmar withheld below one year.')

@@ -19,7 +19,9 @@ the rest of the cash remains idle and earns zero interest. No financing.
 | Total return | 3.73% | 3.83% | 6.55% |
 | Excess return vs benchmark | −2.82 pp | −2.72 pp | — |
 | Full-sample MDD | N/A | N/A | −10.99% |
-| Sharpe | N/A | N/A | 1.1005 |
+| Full-sample Sharpe | N/A | N/A | 1.1005 |
+| Available daily-return Sharpe | 1.2130 | 1.2543 | 1.1005 |
+| Valid daily returns / sessions | 60 / 62 | 60 / 62 | 62 / 62 |
 | Observed-NAV drawdown lower bound | −3.63% | −3.62% | −10.99% (complete) |
 | Gross premium cash receipts | $1,221.00 | $1,271.50 | $0 |
 | Option / stock execution costs | $7.15 / $0 | $7.15 / $0 | $0 / $4.97 |
@@ -65,6 +67,25 @@ observed peaks, retains the missing point and is only a **lower bound on the
 magnitude** of full-sample drawdown. Endpoint P&L remains measurable.
 
 ## Strategy and timing
+
+### Available-return statistic (separate from full-sample Sharpe)
+
+`available_daily_return_sharpe` uses only already-computed one-session returns
+on the unfiltered daily ledger. Missing August 13 NAV excludes returns dated
+**August 13 and August 14**; it never turns the August 12–14 move into a daily
+return. The first-session return uses starting cash. Both Wheel scenarios use
+60 of 62 returns; buy-and-hold uses 62 of 62. Source prices, NAV gaps, strategy,
+fills and all pre-existing statistics remain unchanged.
+
+The formula is `(mean(valid returns) - daily RF) / sample_std(valid returns)
+* sqrt(252)`, with `ddof=1` and `daily RF=(1+annual RF)^(1/252)-1` (configured
+annual RF is 0%). Fewer than two observations or zero sample variance leaves the
+estimate undefined. This is a **partial-sample estimate**, not a repaired NAV
+path or full-sample Sharpe; missing-return selection may bias it either way.
+Do not infer risk-adjusted outperformance from unequal samples. The page,
+`results.json` and `metrics.csv` report its sample counts and excluded dates.
+
+### Trading rules
 
 - First actual trading session of each week, 09:00 ET: use only previous-session
   stock/BBO/historical DELTA and historically evidenced membership. Overnight
@@ -186,7 +207,7 @@ python -m pip install -r pmcc_backtest/requirements.txt
 # Actual full replay, exports and independent account/CSV reconciliation:
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m wheel_backtest.build --input wheel_backtest/local_data/input_v2.json --config wheel/config.json
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m wheel_backtest.validate --input wheel_backtest/local_data/input_v2.json
-PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest wheel_backtest.test_engine wheel_backtest.test_pipeline pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts pmcc_backtest.test_repair covered_call.test_engine -q
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest wheel_backtest.test_engine wheel_backtest.test_pipeline wheel_backtest.test_metrics pmcc_backtest.test_engine pmcc_backtest.test_pipeline pmcc_backtest.test_contracts pmcc_backtest.test_repair covered_call.test_engine -q
 
 # Public checkout without licensed inputs: deterministic rendering of committed
 # derived results, NOT a claim of recalculating prices or a new empirical run.
@@ -218,15 +239,15 @@ checks before/after snapshots and compares every exported transaction/state cell
 The browser test checks navigation, downloads, charts, filters, sorting, config
 download, desktop/mobile layout and every selectable event/EOD state.
 
-Executed validation: **146 tests passed** across Wheel and existing engines;
+Executed validation: **151 tests passed** across Wheel and existing engines;
 49 events, 186 daily ledger rows and 284 snapshots reconcile. Browser checks
-passed 352 state selections, 5 routes / 25 navigation links and 9 downloads with
+passed 352 state selections, 5 routes / 25 navigation links and 10 downloads with
 zero JavaScript exceptions. Existing PMCC charts/results also passed regression.
 Offline replay of retained raw mark responses reproduced `input_v2.json`
 byte-for-byte; a full replay and a saved-result render reproduced result JSON.
 
 Outputs are `wheel/{index.html,book.js,results.json,config.json,data_audit.json,
-blotter.csv,ledger.csv,snapshots.csv,decisions.csv,coverage.csv,quote_issues.csv}`.
+metrics.csv,blotter.csv,ledger.csv,snapshots.csv,decisions.csv,coverage.csv,quote_issues.csv}`.
 The static page uses bundled Plotly; it needs no live LSEG connection or backend.
 Existing Pages deployment is `main:/`; private `local_data` and credentials are
 excluded. Only the shared route registry and its navigation test change outside

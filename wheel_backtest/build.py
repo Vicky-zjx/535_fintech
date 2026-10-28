@@ -76,7 +76,8 @@ def make_book(path,cfg):
             'Adjusted/mini contracts are excluded; unresolved split, merger, delisting or adjustment blocks the run. No silent standard-contract continuation.',
             'No forward fill, interpolation, theoretical premiums, future membership, assumed intermediate strikes, or missing-option zero marks.',
             'Endpoint positions are marked, not forcibly sold; unrealized P&L is included. Zero rolls is intentional.',
-            'Full-path statistics are withheld across NAV gaps. Observed drawdown magnitude is only a lower bound; strict drawdown stops at the first gap.'])
+            'Full-path statistics are withheld across NAV gaps. Observed drawdown magnitude is only a lower bound; strict drawdown stops at the first gap.',
+            'Available daily-return Sharpe excludes returns with either endpoint missing; it is not full-sample Sharpe. Exclusion may bias either direction; unequal return samples do not establish risk-adjusted outperformance.'])
 
 
 def csv_text(rows,keys):
@@ -91,6 +92,7 @@ def publish(book,output,template=None):
     output.mkdir(parents=True,exist_ok=True)
     events=[e for r in book['runs'] for e in r['events']];ledger=[e for r in book['runs'] for e in r['ledger']];snapshots=[e for r in book['runs'] for e in r['snapshots']]
     export={
+        'metrics.csv':([{'strategy':r['strategy'],'fill_model':r['fill_model'],**r['metrics']} for r in book['runs']],['strategy','fill_model','ending_equity','net_pnl','total_return','sharpe','max_drawdown','observed_max_drawdown','available_daily_return_sharpe','valid_daily_returns','daily_return_session_count','excluded_daily_return_count','excluded_daily_return_dates','valuation_gap_dates','full_path_complete','available_daily_return_sharpe_note']),
         'blotter.csv':(events,['event_id','timestamp','strategy','fill_model','event_type','underlying','contract','cp','expiry','strike','quantity','multiplier','fill_price','bid','ask','midpoint','spread','quote_date','quote_timestamp','quote_precision','gross_cash_flow','commission','assignment_fee','stock_execution_cost','net_cash_flow','realized_pnl_gross','stock_action','cash_before','cash_after','shares_before','shares_after','reason','source','source_snapshot_sha256','assumption_flags']),
         'ledger.csv':(ledger,['date','strategy','fill_model','cash','dividend_receivable','economic_cash','reserved_cash','buying_power','shares','share_acquisition_cost','stock_mark','stock_value','short_put','covered_call','option','option_mark','option_liability','equity','realized_pnl_net','unrealized_stock_pnl','unrealized_option_pnl','commissions','stock_execution_costs','assignment_fees','daily_return','drawdown','observed_drawdown','unresolved']),
         'snapshots.csv':(snapshots,['snapshot_id','event_id','timestamp','phase','date','mark_date','strategy','fill_model','cash','dividend_receivable','reserved_cash','buying_power','shares','share_acquisition_cost','stock_value','option','option_mark','option_liability','equity']),

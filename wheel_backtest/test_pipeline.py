@@ -30,6 +30,7 @@ class PipelineTests(unittest.TestCase):
     def test_no_fake_wheel_performance_when_puts_absent(self):
         cfg,data=fixture();data['contracts']=[c for c in data['contracts'] if c['cp']=='C'];ids={c['id'] for c in data['contracts']};data['options']=[q for q in data['options'] if q['id'] in ids]
         r=simulate(data,cfg);self.assertIsNone(r['metrics']['net_pnl']);self.assertEqual(r['events'],[])
+        self.assertIsNone(r['metrics']['available_daily_return_sharpe'])
         self.assertTrue(all(d['outcome']=='CANDIDATE_DATA_NOT_COVERED' for d in r['decisions']))
         bm=simulate(data,cfg,strategy='buy_hold');self.assertIn('Not tested',conclusion([r,bm]))
     def test_missing_final_quote_does_not_erase_liability(self):

@@ -199,7 +199,7 @@ class Account:
             total_costs=self.commissions+self.stock_costs+self.assignment_fees,empirical_strategy_supported=supported,
             spread_cost_vs_mid=sum(100*(e['midpoint']-e['fill_price']) for e in opened))
         if not supported:
-            for k in ('ending_equity','net_pnl','total_return','cagr','annualized_volatility','sharpe','max_drawdown','observed_max_drawdown','calmar'):stats[k]=None
+            for k in ('ending_equity','net_pnl','total_return','cagr','annualized_volatility','sharpe','available_daily_return_sharpe','max_drawdown','observed_max_drawdown','calmar'):stats[k]=None
         return dict(strategy=self.strategy,fill_model=self.model,
             status='unsupported_no_option_fills' if not supported else 'incomplete_valuation' if not stats['full_path_complete'] else 'observed_universe_run',
             metrics=stats,events=self.events,ledger=self.ledger,snapshots=self.snapshots,decisions=self.decisions,issues=self.issues,
