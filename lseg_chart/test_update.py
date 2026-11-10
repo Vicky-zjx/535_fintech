@@ -91,16 +91,22 @@ class ChartTests(unittest.TestCase):
         session.authentication_token_endpoint_url = "https://api.refinitiv.com/auth/oauth2/v1/token"
         session.stream_auto_reconnection = False
         session.signon_control = False
-        session.open.side_effect = RuntimeError("PRIVATE_AUTH_RESPONSE")
+        session.open.side_effect = RuntimeError("offline-fixture-not-a-credential")
         credentials = dict.fromkeys(update.SECRET_NAMES, "offline-fixture-not-a-credential")
         with patch.object(ld.session.platform, "Definition") as definition, \
                 patch.object(ld, "get_data") as get_data:
             definition.return_value.get_session.return_value = session
             with self.assertRaises(RuntimeError) as error:
                 update.query_lseg(self.start, self.end, credentials)
-            self.assertNotIn("PRIVATE_AUTH_RESPONSE", str(error.exception))
+            self.assertNotIn("offline-fixture-not-a-credential", str(error.exception))
             get_data.assert_not_called()
             session.open.assert_called_once()
+
+    def test_failure_diagnostics_redact_credentials_and_tokens(self):
+        env = {"LSEG_APP_KEY": "dummy-key", "LSEG_USERNAME": "dummy@example.test", "LSEG_PASSWORD": "dummy/pwd"}
+        result = update.safe_failure_detail('dummy-key dummy@example.test dummy/pwd dummy%2Fpwd Bearer sensitive_token', env)
+        for value in (*env.values(), "dummy%2Fpwd", "sensitive_token"):
+            self.assertNotIn(value, result)
 
     def payload(self):
         return update.make_payload(update.normalize(self.frame(), self.start, self.end),

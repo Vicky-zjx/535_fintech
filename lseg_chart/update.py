@@ -16,8 +16,10 @@ import logging
 import math
 import os
 from pathlib import Path
+import re
 import signal
 import tempfile
+from urllib.parse import quote
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -28,6 +30,19 @@ FIELDS = ["TR.PriceClose.date", "TR.PriceClose"]
 SECRET_NAMES = ("LSEG_APP_KEY", "LSEG_USERNAME", "LSEG_PASSWORD")
 OUTPUT_NAMES = ("chart.html", "data.json", "prices.csv")
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "lseg-live"
+
+
+def safe_failure_detail(value, environ):
+    """Return bounded diagnostics, never configured credentials or bearer tokens."""
+    text = str(value)
+    for name in SECRET_NAMES:
+        secret = environ.get(name, "")
+        if secret:
+            text = text.replace(secret, "[REDACTED]").replace(quote(secret, safe=""), "[REDACTED]")
+    text = re.sub(r"(?i)Bearer\s+\S+", "Bearer [REDACTED]", text)
+    text = re.sub(r"(?i)(access_token|refresh_token|id_token)([\s\"':=]+)([^\s,}]+)", r"\1\2[REDACTED]", text)
+    text = re.sub(r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", "[REDACTED TOKEN]", text)
+    return text.replace("\n", " ").replace("\r", " ")[:500]
 
 
 def query_window(now: datetime) -> tuple[date, date]:
@@ -90,6 +105,7 @@ def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
     session = None
     stage = "initialization"
     auth_code = "not supplied"
+    auth_http = "no response captured"
     with io.StringIO() as captured, contextlib.redirect_stdout(captured), contextlib.redirect_stderr(captured):
         try:
             import lseg.data as ld
@@ -120,6 +136,26 @@ def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
             if session.stream_auto_reconnection or session.signon_control:
                 raise RuntimeError("Unsafe session configuration")
 
+            # Observe the existing SDK request; do NOT issue another login request.
+            # SDK failure callbacks race with open() returning when retries are off.
+            original_request = session.http_request
+
+            def observe_request(request, *args, **kwargs):
+                nonlocal auth_http
+                response = original_request(request, *args, **kwargs)
+                if request.url == session.authentication_token_endpoint_url:
+                    auth_http = f"HTTP {response.status_code}"
+                    if response.status_code != 200:
+                        try:
+                            body = response.json()
+                            detail = {key: body.get(key) for key in ("error", "error_description")}
+                            auth_http += "; " + safe_failure_detail(detail, environ)
+                        except (ValueError, AttributeError):
+                            auth_http += "; non-JSON error response (body suppressed)"
+                return response
+
+            session.http_request = observe_request
+
             def on_event(event, message, _session):
                 nonlocal auth_code
                 if getattr(event, "name", "") == "SessionAuthenticationFailed":
@@ -141,6 +177,7 @@ def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
         except Exception as exc:
             raise RuntimeError(
                 f"{stage} failed ({type(exc).__name__}; authentication category: {auth_code}). "
+                f"Auth response: {auth_http}. Detail: {safe_failure_detail(exc, environ)}. "
                 "Check the three Actions Secrets and Platform/data entitlements. "
                 "No retry, desktop fallback or replacement prices were used."
             ) from None
