@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LSEG Data Lab · FIN 535</title>
+  <meta name="description" content="A real LSEG API query, a reproducible Plotly chart, and a GitHub Actions update workflow.">
+  <link rel="stylesheet" href="../covered-call/assets/style.css"><link rel="stylesheet" href="style.css">
+  <script defer src="../course-nav.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<header class="topbar"><a href="../">FIN <strong>535</strong></a><nav data-course-nav aria-label="Course navigation"><a href="../">Surface lab</a><a href="../covered-call/">Covered call</a><a href="../pmcc/">PMCC</a><a href="../wheel/">Wheel</a></nav></header>
+<main>
+  <section class="hero">
+    <p class="eyebrow">LSEG DATA PLATFORM / PYTHON / GITHUB ACTIONS</p>
+    <h1>From query to chart.</h1>
+    <p class="lead">Apple · daily closing prices</p>
+    <p class="sublead">One real API request. An interactive Plotly chart. A reproducible update.</p>
+    <div class="statusline"><span id="status" class="badge" role="status">Checking published data</span><span>AAPL.O · USD · historical, not live</span></div>
+  </section>
+  <section aria-labelledby="chart-title">
+    <div class="section-title"><span class="index">01 / THE DATA</span><h2 id="chart-title">AAPL closing price</h2><a class="secondary" href="https://github.com/Vicky-zjx/535_fintech/actions/workflows/lseg-plot.yml" target="_blank" rel="noopener">Run query on GitHub ↗</a></div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-label">Latest returned close</div><div id="close" class="metric-value">—</div><div id="close-date" class="metric-note">Awaiting a successful query</div></div>
+      <div class="metric"><div class="metric-label">Real price observations</div><div id="count" class="metric-value">—</div><div id="range" class="metric-note">90-calendar-day request</div></div>
+      <div class="metric"><div class="metric-label">Last successful query · UTC</div><div id="updated" class="metric-value date-value">—</div><div id="nulls" class="metric-note">Missing prices are never filled</div></div>
+    </div>
+    <p id="message" class="notice">Loading the last successful published query…</p>
+    <iframe id="price-chart" title="Interactive Plotly chart of real AAPL daily closing prices" hidden loading="lazy"></iframe>
+    <p class="caption">Source: LSEG <code>TR.PriceClose</code> and <code>TR.PriceClose.date</code>. The query ends on the previous New York calendar date to avoid a partial current-day close. Returned null prices stay missing; dates absent from the response are not manufactured. This is a price series, not a total-return backtest.</p>
+    <div id="downloads" class="downloads" hidden><a href="prices.csv" download>Price CSV ↓</a><a href="data.json">Data &amp; provenance JSON ↗</a><a href="chart.html" target="_blank" rel="noopener">Open Plotly chart ↗</a><a id="run-link" hidden>Successful workflow run ↗</a></div>
+    <noscript>Enable JavaScript to view the chart, or open <a href="chart.html">the saved Plotly HTML</a> and <a href="prices.csv">download the prices</a>.</noscript>
+  </section>
+  <section aria-labelledby="method-title">
+    <div class="section-title"><span class="index">02 / REPRODUCE</span><h2 id="method-title">Query → save → publish.</h2></div>
+    <div class="rule-grid"><article><h3>1. Query real data</h3><p>Python <code>lseg-data</code> uses an explicit Platform session on a GitHub runner. Workspace is not required. Credentials come from repository Secrets, never from this page.</p></article><article><h3>2. Save a Plotly chart</h3><p>Validate dates and prices, then save the chart, CSV and JSON together. No synthetic fallback, interpolation or forward filling.</p></article><article><h3>3. Update this page</h3><p>Open the workflow above and choose <strong>Run workflow → main</strong>. A successful run commits only these three generated files and requests a Pages build. Refresh this page after the build finishes.</p></article></div>
+    <details><summary>Source code, freshness and failure behavior</summary><p class="caption">Updates are manual; opening this page does not query LSEG. The timestamp is the last successful data query, not a guarantee that every exchange session is covered. If authentication, validation or publishing fails, Actions reports the failure and the previous successful result stays available. Do not interpret an old result as a new query.</p><div class="downloads"><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/lseg_chart">Python &amp; tests ↗</a><a href="https://github.com/Vicky-zjx/535_fintech/blob/main/.github/workflows/lseg-plot.yml">Workflow YAML ↗</a></div></details>
+  </section>
+</main>
+<footer><span>FIN 535 · LSEG Data Lab</span><span>Real observations · no browser credentials</span><a href="../wheel/">Back to the Wheel study ↗</a></footer>
+</body></html>

@@ -2,6 +2,7 @@
 
 ## Course website
 
+- [LSEG Data Lab](https://vicky-zjx.github.io/535_fintech/lseg-live/) — real AAPL daily closes, a saved Plotly chart and a manual GitHub Actions update; see [reproduction instructions](lseg_chart/README.md).
 - [Option Surface Lab](https://vicky-zjx.github.io/535_fintech/)
 - [Earlier AAPL covered call](https://vicky-zjx.github.io/535_fintech/covered-call/)
 - [PMCC study and historical-data audit](https://vicky-zjx.github.io/535_fintech/pmcc/) — a separate $50,000-account implementation; see [reproduction instructions](pmcc_backtest/README.md).
