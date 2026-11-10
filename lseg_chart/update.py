@@ -1,4 +1,4 @@
-"""Query real AAPL closes via Platform; publish only validated chart inputs.
+"""Query real closes via Platform; publish only validated chart inputs.
 
 Secrets are environment-only. No desktop fallback, config credentials, synthetic
 prices, forward filling, or authentication retries. Run: python -m lseg_chart.update
@@ -10,6 +10,7 @@ import contextlib
 import csv
 from datetime import date, datetime, timedelta, timezone
 import hashlib
+from html import escape
 import io
 import json
 import logging
@@ -25,11 +26,13 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import plotly.graph_objects as go
 
-RIC = "AAPL.O"
+# Change this one RIC, then run locally or push to main. Labels follow the response.
+RIC = "TSLA.O"
 FIELDS = ["TR.PriceClose.date", "TR.PriceClose"]
 SECRET_NAMES = ("LSEG_APP_KEY", "LSEG_USERNAME", "LSEG_PASSWORD")
 OUTPUT_NAMES = ("chart.html", "data.json", "prices.csv")
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[1] / "lseg-live"
+DEFAULT_SIMPLE_OUTPUT = Path(__file__).resolve().parents[1] / "lseg-local"
 
 
 def safe_failure_detail(value, environ):
@@ -61,6 +64,16 @@ def normalize(frame: pd.DataFrame, start: date, end: date) -> list[dict]:
     """Use provider date + field names. Retain returned nulls; reject ambiguity."""
     if frame is None or frame.empty:
         raise ValueError("LSEG returned no rows")
+    names = [str(c).strip().casefold() for c in frame.columns]
+    # Observed with lseg-data 2.1.1 + HeaderType.NAME: the date extension
+    # loses its '.date' suffix, producing two identical TR.PriceClose headers.
+    # Accept only this exact three-column shape in our declared request order;
+    # validate every date and price below rather than guessing arbitrary columns.
+    if names == ["instrument", "tr.priceclose", "tr.priceclose"]:
+        frame = frame.copy()
+        frame.columns = ["Instrument", "TR.PriceClose.date", "TR.PriceClose"]
+    elif len(set(names)) != len(names):
+        raise ValueError("Ambiguous duplicate response columns")
     columns = {str(c).strip().casefold(): c for c in frame.columns}
     required = ("instrument", "tr.priceclose.date", "tr.priceclose")
     if not all(key in columns for key in required):
@@ -69,7 +82,10 @@ def normalize(frame: pd.DataFrame, start: date, end: date) -> list[dict]:
     for _, row in frame.iterrows():
         if row[columns["instrument"]] != RIC:
             raise ValueError("Response contains an unexpected instrument")
-        parsed = pd.to_datetime(row[columns["tr.priceclose.date"]], utc=True, errors="coerce")
+        raw_date = row[columns["tr.priceclose.date"]]
+        if not isinstance(raw_date, (str, date, datetime, pd.Timestamp)):
+            raise ValueError("Observation date is not a date/string value")
+        parsed = pd.to_datetime(raw_date, utc=True, errors="coerce")
         if pd.isna(parsed):
             raise ValueError("Response contains an invalid observation date")
         # This is the vendor's calendar-date field, not an intraday timestamp.
@@ -169,7 +185,7 @@ def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
             if getattr(session.open(), "name", "") != "Opened":
                 raise RuntimeError("Platform session did not open")
             ld.session.set_default(session)
-            stage = "AAPL historical price query"
+            stage = f"{RIC} historical price query"
             return ld.get_data(
                 universe=[RIC], fields=FIELDS, parameters=parameters(start, end),
                 header_type=ld.HeaderType.NAME,
@@ -229,7 +245,7 @@ def make_figure(payload):
         x=[r["date"] for r in rows], y=[r["close_usd"] for r in rows],
         mode="lines+markers", name="TR.PriceClose", connectgaps=False,
         line={"color": "#167765", "width": 2.3}, marker={"size": 5},
-        hovertemplate="%{x|%b %d, %Y}<br>Close: $%{y:,.2f}<extra>AAPL.O</extra>",
+        hovertemplate="%{x|%b %d, %Y}<br>Close: $%{y:,.2f}<extra>" + escape(payload["instrument"]) + "</extra>",
     ))
     fig.update_layout(
         template="plotly_white", autosize=True, height=430,
@@ -238,33 +254,44 @@ def make_figure(payload):
         margin={"l": 60, "r": 25, "t": 25, "b": 65}, hovermode="x unified",
         xaxis={"title": "Observation date", "type": "date", "showgrid": False},
         yaxis={"title": "Closing price · USD", "tickprefix": "$", "gridcolor": "#e8edeb", "zeroline": False},
-        meta={"observations_sha256": payload["observations_sha256"]},
+        meta={"instrument": payload["instrument"], "observations_sha256": payload["observations_sha256"]},
     )
     return fig
 
 
-def publish(payload, output: Path):
-    """Stage all files before replacing the three known generated targets."""
+def publish(payload, output: Path, simple_output: Path | None = None):
+    """Render all outputs from one response before replacing known targets."""
+    if simple_output is not None and output.resolve() == simple_output.resolve():
+        raise ValueError("Detailed and simple output directories must differ")
     output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".build-", dir=output) as temp:
         staging = Path(temp)
         (staging / "data.json").write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
         with (staging / "prices.csv").open("w", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=["date", "close_usd"])
+            writer = csv.DictWriter(handle, fieldnames=["date", "close_usd"], lineterminator="\n")
             writer.writeheader()
             writer.writerows(payload["observations"])
-        make_figure(payload).write_html(
+        figure = make_figure(payload)
+        figure.write_html(
             staging / "chart.html", full_html=True,
             include_plotlyjs="../covered-call/assets/plotly.min.js",
-            div_id="lseg-aapl-close", config={"responsive": True, "displaylogo": False},
+            div_id="lseg-price-close", config={"responsive": True, "displaylogo": False},
         )
+        if simple_output is not None:
+            from lseg_chart.page import render
+            render(payload, figure, staging / "simple")
+            simple_output.mkdir(parents=True, exist_ok=True)
         for name in OUTPUT_NAMES:
             (staging / name).replace(output / name)
+        if simple_output is not None:
+            for name in ("index.html", "data.json"):
+                (staging / "simple" / name).replace(simple_output / name)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument("--simple-output", type=Path, default=DEFAULT_SIMPLE_OUTPUT)
     args = parser.parse_args()
     start, end = query_window(datetime.now(timezone.utc))
     try:
@@ -277,7 +304,9 @@ def main():
         signal.alarm(0)
         records = normalize(frame, start, end)
         payload = make_payload(records, start, end, datetime.now(timezone.utc))
-        publish(payload, args.output)
+        payload["execution"] = "fresh API query; no cache input"
+        payload["provider_columns"] = list(frame.columns)
+        publish(payload, args.output, args.simple_output)
     except Exception as exc:
         # Do not dump an SDK traceback or provider response into public CI logs.
         print(f"FAILED ({type(exc).__name__}): no new publication. Check secrets, Platform access and response validation.")

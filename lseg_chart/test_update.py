@@ -18,7 +18,7 @@ class ChartTests(unittest.TestCase):
 
     def frame(self, values=(100, None, 102), dates=None):
         dates = dates or ["2026-11-02", "2026-11-03", "2026-11-04"]
-        return pd.DataFrame({"Instrument": ["AAPL.O"] * len(values),
+        return pd.DataFrame({"Instrument": [update.RIC] * len(values),
                              "TR.PRICECLOSE.DATE": dates, "TR.PRICECLOSE": values})
 
     def test_window_uses_previous_new_york_date_not_utc_date(self):
@@ -39,6 +39,19 @@ class ChartTests(unittest.TestCase):
         rows = update.normalize(self.frame(), self.start, self.end)
         self.assertIsNone(rows[1]["close_usd"])
         self.assertEqual(len(rows), 3)
+
+    def test_actual_sdk_duplicate_base_headers_follow_requested_field_order(self):
+        frame = self.frame()
+        frame.columns = ["Instrument", "TR.PriceClose", "TR.PriceClose"]
+        self.assertEqual(update.normalize(frame, self.start, self.end),
+                         update.normalize(self.frame(), self.start, self.end))
+        self.assertEqual(list(frame.columns), ["Instrument", "TR.PriceClose", "TR.PriceClose"])
+
+    def test_duplicate_header_values_cannot_be_silently_swapped(self):
+        frame = self.frame().iloc[:, [0, 2, 1]]
+        frame.columns = ["Instrument", "TR.PriceClose", "TR.PriceClose"]
+        with self.assertRaises(ValueError):
+            update.normalize(frame, self.start, self.end)
 
     def test_invalid_prices_rejected(self):
         for price in (0, -1, float("inf"), "invalid"):
@@ -81,7 +94,7 @@ class ChartTests(unittest.TestCase):
             get_data.return_value = self.frame()
             update.query_lseg(self.start, self.end, credentials)
             self.assertFalse(definition.call_args.kwargs["signon_control"])
-            get_data.assert_called_once_with(universe=["AAPL.O"], fields=update.FIELDS,
+            get_data.assert_called_once_with(universe=[update.RIC], fields=update.FIELDS,
                 parameters=update.parameters(self.start, self.end), header_type=ld.HeaderType.NAME)
             session.close.assert_called_once()
 
@@ -148,6 +161,45 @@ class ChartTests(unittest.TestCase):
                     update.publish(self.payload(), target)
             for name in update.OUTPUT_NAMES:
                 self.assertEqual((target / name).read_text(), "previous-success")
+
+    def test_one_ric_setting_drives_all_generated_outputs(self):
+        for ric in ("AAPL.O", "TSLA.O", "MSFT.O"):
+            with self.subTest(ric=ric), patch.object(update, "RIC", ric), tempfile.TemporaryDirectory() as temp:
+                payload = self.payload()
+                self.assertEqual(payload["instrument"], ric)
+                # Rendering must honor the response, even if configuration later changes.
+                with patch.object(update, "RIC", "DIFFERENT.O"):
+                    root = Path(temp)
+                    update.publish(payload, root / "live", root / "simple")
+                    fig = update.make_figure(payload)
+                self.assertIn(ric, fig.data[0].hovertemplate)
+                self.assertEqual(fig.layout.meta["instrument"], ric)
+                self.assertEqual((root / "live/data.json").read_bytes(),
+                                 (root / "simple/data.json").read_bytes())
+                html = (root / "simple/index.html").read_text()
+                self.assertIn(f"<h1>{ric} daily close.</h1>", html)
+                self.assertIn(payload["observations_sha256"], html)
+                self.assertNotIn("DIFFERENT.O", html)
+                self.assertNotIn("LOCAL ONLY", html)
+
+    def test_wrong_response_cannot_relabel_apple_as_tesla(self):
+        with patch.object(update, "RIC", "TSLA.O"):
+            with self.assertRaisesRegex(ValueError, "unexpected instrument"):
+                update.normalize(self.frame().assign(Instrument="AAPL.O"), self.start, self.end)
+
+    def test_simple_render_failure_preserves_both_pages(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            live, simple = root / "live", root / "simple"
+            live.mkdir()
+            simple.mkdir()
+            targets = [live / name for name in update.OUTPUT_NAMES] + [simple / "index.html", simple / "data.json"]
+            for target in targets:
+                target.write_text("previous-success")
+            with patch("lseg_chart.page.render", side_effect=ValueError("render failed")):
+                with self.assertRaises(ValueError):
+                    update.publish(self.payload(), live, simple)
+            self.assertTrue(all(target.read_text() == "previous-success" for target in targets))
 
 
 if __name__ == "__main__":
