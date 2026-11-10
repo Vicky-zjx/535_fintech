@@ -25,7 +25,7 @@ from zoneinfo import ZoneInfo
 import pandas as pd
 import plotly.graph_objects as go
 
-RIC = "AAPL.O"
+RIC = "TSLA.O"
 FIELDS = ["TR.PriceClose.date", "TR.PriceClose"]
 SECRET_NAMES = ("LSEG_APP_KEY", "LSEG_USERNAME", "LSEG_PASSWORD")
 OUTPUT_NAMES = ("chart.html", "data.json", "prices.csv")
