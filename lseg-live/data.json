@@ -13,7 +13,7 @@
     "Frq": "D",
     "Curn": "USD"
   },
-  "retrieved_at_utc": "2026-11-10T17:58:04.815399+00:00",
+  "retrieved_at_utc": "2026-11-10T18:01:08.463222+00:00",
   "requested_start": "2026-08-12",
   "requested_end": "2026-11-09",
   "first_price_date": "2026-08-12",
@@ -22,7 +22,7 @@
   "valid_prices": 63,
   "returned_null_prices": 0,
   "observations_sha256": "98ff059e18ffc09997c35ff84393fbdaa4b59207430e7cad707f87b232a8005b",
-  "workflow_run_url": null,
+  "workflow_run_url": "https://github.com/Vicky-zjx/535_fintech/actions/runs/42870735263",
   "notes": [
     "Provider-reported TR.PriceClose in USD; not live quotes or total return.",
     "90-calendar-day request ending yesterday in America/New_York.",
@@ -284,11 +284,10 @@
       "close_usd": 378.05
     }
   ],
-  "execution": "fresh local API query; no cache input",
+  "execution": "fresh API query; no cache input",
   "provider_columns": [
     "Instrument",
     "TR.PriceClose",
     "TR.PriceClose"
-  ],
-  "column_mapping": "Instrument, requested TR.PriceClose.date, requested TR.PriceClose; dates and numeric values validated"
+  ]
 }
