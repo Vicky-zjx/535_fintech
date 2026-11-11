@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source": "LSEG Data Platform",
   "connection": "lseg.data Platform Session / GrantPassword",
-  "instrument": "MSFT.O",
+  "instrument": "AMZN.O",
   "fields": [
     "TR.PriceClose.date",
     "TR.PriceClose"
@@ -13,16 +13,16 @@
     "Frq": "D",
     "Curn": "USD"
   },
-  "retrieved_at_utc": "2026-11-11T00:46:02.971343+00:00",
+  "retrieved_at_utc": "2026-11-11T00:49:37.575177+00:00",
   "requested_start": "2026-08-12",
   "requested_end": "2026-11-09",
   "first_price_date": "2026-08-12",
   "last_price_date": "2026-11-09",
-  "last_close_usd": 545.18,
+  "last_close_usd": 266.93,
   "valid_prices": 63,
   "returned_null_prices": 0,
-  "observations_sha256": "e0e6a7341964fbd3b732f5553654b87fa018c028b9587e0e87439584ed08c61a",
-  "workflow_run_url": "https://github.com/Vicky-zjx/535_fintech/actions/runs/42933839782",
+  "observations_sha256": "31b54b9b17f10bf5f7bbd34b49c10bb40a0f9e902c846383f5f4b100300b1ce4",
+  "workflow_run_url": "https://github.com/Vicky-zjx/535_fintech/actions/runs/42934316214",
   "notes": [
     "Provider-reported TR.PriceClose in USD; not live quotes or total return.",
     "90-calendar-day request ending yesterday in America/New_York.",
@@ -33,255 +33,255 @@
   "observations": [
     {
       "date": "2026-08-12",
-      "close_usd": 492.43
+      "close_usd": 267.28
     },
     {
       "date": "2026-08-13",
-      "close_usd": 496.88
+      "close_usd": 265.13
     },
     {
       "date": "2026-08-14",
-      "close_usd": 495.4
+      "close_usd": 262.65
     },
     {
       "date": "2026-08-17",
-      "close_usd": 480.35
+      "close_usd": 261.31
     },
     {
       "date": "2026-08-18",
-      "close_usd": 481.63
+      "close_usd": 259.45
     },
     {
       "date": "2026-08-19",
-      "close_usd": 484.31
+      "close_usd": 265.84
     },
     {
       "date": "2026-08-20",
-      "close_usd": 481.15
+      "close_usd": 260.11
     },
     {
       "date": "2026-08-21",
-      "close_usd": 483.24
+      "close_usd": 258.63
     },
     {
       "date": "2026-08-24",
-      "close_usd": 487.31
+      "close_usd": 262.07
     },
     {
       "date": "2026-08-25",
-      "close_usd": 491.71
+      "close_usd": 261.06
     },
     {
       "date": "2026-08-26",
-      "close_usd": 496.37
+      "close_usd": 260.28
     },
     {
       "date": "2026-08-27",
-      "close_usd": 505.06
+      "close_usd": 256.26
     },
     {
       "date": "2026-08-28",
-      "close_usd": 513.53
+      "close_usd": 266.43
     },
     {
       "date": "2026-08-31",
-      "close_usd": 507.29
+      "close_usd": 259.77
     },
     {
       "date": "2026-09-01",
-      "close_usd": 501.02
+      "close_usd": 254.92
     },
     {
       "date": "2026-09-02",
-      "close_usd": 496.82
+      "close_usd": 254.98
     },
     {
       "date": "2026-09-03",
-      "close_usd": 510.12
+      "close_usd": 258.9
     },
     {
       "date": "2026-09-04",
-      "close_usd": 499.7
+      "close_usd": 258.51
     },
     {
       "date": "2026-09-08",
-      "close_usd": 493.95
+      "close_usd": 256.97
     },
     {
       "date": "2026-09-09",
-      "close_usd": 491.65
+      "close_usd": 252.4
     },
     {
       "date": "2026-09-10",
-      "close_usd": 492.44
+      "close_usd": 251.89
     },
     {
       "date": "2026-09-11",
-      "close_usd": 495.63
+      "close_usd": 256.78
     },
     {
       "date": "2026-09-14",
-      "close_usd": 505.41
+      "close_usd": 253.54
     },
     {
       "date": "2026-09-15",
-      "close_usd": 497.12
+      "close_usd": 248.42
     },
     {
       "date": "2026-09-16",
-      "close_usd": 490.3
+      "close_usd": 245.96
     },
     {
       "date": "2026-09-17",
-      "close_usd": 497.75
+      "close_usd": 251.19
     },
     {
       "date": "2026-09-18",
-      "close_usd": 493.78
+      "close_usd": 253.71
     },
     {
       "date": "2026-09-21",
-      "close_usd": 501.61
+      "close_usd": 258.45
     },
     {
       "date": "2026-09-22",
-      "close_usd": 498.0
+      "close_usd": 254.98
     },
     {
       "date": "2026-09-23",
-      "close_usd": 500.59
+      "close_usd": 249.27
     },
     {
       "date": "2026-09-24",
-      "close_usd": 497.93
+      "close_usd": 249.38
     },
     {
       "date": "2026-09-25",
-      "close_usd": 516.17
+      "close_usd": 249.67
     },
     {
       "date": "2026-09-28",
-      "close_usd": 509.22
+      "close_usd": 246.15
     },
     {
       "date": "2026-09-29",
-      "close_usd": 508.96
+      "close_usd": 246.67
     },
     {
       "date": "2026-09-30",
-      "close_usd": 512.9
+      "close_usd": 249.15
     },
     {
       "date": "2026-10-01",
-      "close_usd": 512.8
+      "close_usd": 248.23
     },
     {
       "date": "2026-10-02",
-      "close_usd": 517.53
+      "close_usd": 251.52
     },
     {
       "date": "2026-10-05",
-      "close_usd": 525.18
+      "close_usd": 251.4
     },
     {
       "date": "2026-10-06",
-      "close_usd": 529.3
+      "close_usd": 256.29
     },
     {
       "date": "2026-10-07",
-      "close_usd": 529.76
+      "close_usd": 259.92
     },
     {
       "date": "2026-10-08",
-      "close_usd": 522.61
+      "close_usd": 254.06
     },
     {
       "date": "2026-10-09",
-      "close_usd": 535.07
+      "close_usd": 262.43
     },
     {
       "date": "2026-10-12",
-      "close_usd": 541.15
+      "close_usd": 259.53
     },
     {
       "date": "2026-10-13",
-      "close_usd": 543.45
+      "close_usd": 258.58
     },
     {
       "date": "2026-10-14",
-      "close_usd": 533.69
+      "close_usd": 254.08
     },
     {
       "date": "2026-10-15",
-      "close_usd": 539.44
+      "close_usd": 254.76
     },
     {
       "date": "2026-10-16",
-      "close_usd": 529.05
+      "close_usd": 250.0
     },
     {
       "date": "2026-10-19",
-      "close_usd": 533.52
+      "close_usd": 262.45
     },
     {
       "date": "2026-10-20",
-      "close_usd": 531.87
+      "close_usd": 262.63
     },
     {
       "date": "2026-10-21",
-      "close_usd": 532.95
+      "close_usd": 262.37
     },
     {
       "date": "2026-10-22",
-      "close_usd": 521.08
+      "close_usd": 250.38
     },
     {
       "date": "2026-10-23",
-      "close_usd": 524.51
+      "close_usd": 248.0
     },
     {
       "date": "2026-10-26",
-      "close_usd": 532.6
+      "close_usd": 249.09
     },
     {
       "date": "2026-10-27",
-      "close_usd": 531.33
+      "close_usd": 253.1
     },
     {
       "date": "2026-10-28",
-      "close_usd": 531.01
+      "close_usd": 254.6
     },
     {
       "date": "2026-10-29",
-      "close_usd": 530.14
+      "close_usd": 243.79
     },
     {
       "date": "2026-10-30",
-      "close_usd": 521.91
+      "close_usd": 240.35
     },
     {
       "date": "2026-11-02",
-      "close_usd": 507.12
+      "close_usd": 245.63
     },
     {
       "date": "2026-11-03",
-      "close_usd": 520.99
+      "close_usd": 250.69
     },
     {
       "date": "2026-11-04",
-      "close_usd": 555.8
+      "close_usd": 266.03
     },
     {
       "date": "2026-11-05",
-      "close_usd": 535.93
+      "close_usd": 260.21
     },
     {
       "date": "2026-11-06",
-      "close_usd": 530.61
+      "close_usd": 259.3
     },
     {
       "date": "2026-11-09",
-      "close_usd": 545.18
+      "close_usd": 266.93
     }
   ],
   "execution": "fresh API query; no cache input",
