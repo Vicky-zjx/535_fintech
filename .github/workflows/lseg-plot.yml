@@ -10,6 +10,7 @@ on:
       - 'lseg_chart/local_api.py'
       - 'lseg_chart/test_update.py'
       - 'lseg_chart/test_page.cjs'
+      - 'tests/test_site_layout.py'
       - 'lseg_chart/requirements.txt'
       - '.github/workflows/lseg-plot.yml'
 
@@ -45,6 +46,8 @@ jobs:
         run: python -m unittest lseg_chart.test_update -v
       - name: Test instrument-driven page labels (offline)
         run: node --test lseg_chart/test_page.cjs
+      - name: Check site links and canonical data layout (offline)
+        run: python -m unittest discover -s tests -p 'test_site_layout.py' -v
       - name: Query LSEG Platform and save Plotly chart
         env:
           LSEG_APP_KEY: ${{ secrets.LSEG_APP_KEY }}
@@ -55,7 +58,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- lseg-live/chart.html lseg-live/data.json lseg-live/prices.csv lseg-local/index.html lseg-local/data.json
+          git add -- lseg-live/chart.html lseg-live/data.json lseg-live/prices.csv lseg-local/index.html
           if ! git diff --cached --quiet; then
             git commit -m 'Update real LSEG Plotly charts'
             git push origin HEAD:main

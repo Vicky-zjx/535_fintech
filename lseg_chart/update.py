@@ -284,8 +284,7 @@ def publish(payload, output: Path, simple_output: Path | None = None):
         for name in OUTPUT_NAMES:
             (staging / name).replace(output / name)
         if simple_output is not None:
-            for name in ("index.html", "data.json"):
-                (staging / "simple" / name).replace(simple_output / name)
+            (staging / "simple" / "index.html").replace(simple_output / "index.html")
 
 
 def main():

@@ -3,7 +3,7 @@
 Independent API exercise. It does not rebuild or modify the older options backtests.
 
 - Page: <https://vicky-zjx.github.io/535_fintech/lseg-live/>
-- Change the single `RIC` setting in `lseg_chart/update.py` (currently `TSLA.O`)
+- Change the single `RIC` setting in `lseg_chart/update.py`
   and push to **main**. The push triggers a fresh API query and publication. Or use
   **Actions → Update LSEG Plotly chart → Run workflow → main** to requery unchanged code.
 - Inputs: the existing repository Secrets `LSEG_APP_KEY`, `LSEG_USERNAME`,
@@ -16,7 +16,8 @@ Independent API exercise. It does not rebuild or modify the older options backte
   Prices are not a real-time quote or total-return series. Response coverage is not
   assumed complete. Missing values remain null; unreturned dates are not fabricated.
 - Outputs: `lseg-live/chart.html` (Plotly saved to disk), `prices.csv`, `data.json`,
-  plus the compact `lseg-local/index.html` and identical `lseg-local/data.json`.
+  plus the compact `lseg-local/index.html`. Both pages link to the single canonical
+  `lseg-live/data.json`; a duplicate JSON is no longer generated in `lseg-local/`.
   JSON includes query parameters, UTC retrieval time, a data digest and workflow-run link.
   All outputs use the same validated response. Titles, hover labels and metrics
   follow its instrument, not a hardcoded Apple label. The page reads that JSON
@@ -26,7 +27,7 @@ Independent API exercise. It does not rebuild or modify the older options backte
   with its original retrieval timestamp. Failed Pages builds are visible in Actions.
 - Updates: query/render code and workflow changes on main, or a manual run; no
   scheduled automation. Generated output paths are excluded from push triggers.
-  The workflow commits an exact five-file allowlist, then requests a Pages build because bot pushes
+  The workflow commits an exact four-file allowlist, then requests a Pages build because bot pushes
   with `GITHUB_TOKEN` do not automatically trigger legacy Pages. Existing `main /`
   publishing configuration and all earlier pages are preserved.
 
@@ -36,6 +37,7 @@ Independent API exercise. It does not rebuild or modify the older options backte
 python -m pip install -r lseg_chart/requirements.txt
 python -m unittest lseg_chart.test_update -v
 node --test lseg_chart/test_page.cjs
+python -m unittest discover -s tests -p 'test_site_layout.py' -v
 # Supply the three variables securely in this process's environment; never in arguments.
 python -m lseg_chart.update
 # Local alternative: prompts securely for missing credentials and updates BOTH pages.

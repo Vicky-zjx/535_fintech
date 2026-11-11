@@ -1,6 +1,5 @@
 """Compact, instrument-independent page rendered from the same API payload."""
 from html import escape
-import json
 from pathlib import Path
 
 
@@ -23,8 +22,7 @@ def render(payload, figure, output: Path):
 <div class="stats"><span><strong>${latest:,.2f}</strong>latest returned close</span><span><strong>{count}</strong>real observations</span><span><strong>{payload['returned_null_prices']}</strong>returned nulls</span></div>
 <div class="chart">{chart}</div>
 <p class="note">Fetched directly from LSEG Data Platform at {received}. Fields: <code>TR.PriceClose.date</code> and <code>TR.PriceClose</code>. The query does not read an old market-data cache. Historical daily prices, not a real-time quote; no interpolation, forward filling or zero substitution.</p>
-<footer><a href="data.json">Query response &amp; provenance JSON</a> · Change <code>RIC</code> in <code>lseg_chart/update.py</code>, then push to main or run <code>.venv/bin/python -m lseg_chart.local_api</code>. Both pages update only after a successful query; opening this page does not query LSEG.</footer>
+<footer><a href="../lseg-live/data.json">Query response &amp; provenance JSON</a> · Change <code>RIC</code> in <code>lseg_chart/update.py</code>, then push to main or run <code>.venv/bin/python -m lseg_chart.local_api</code>. Both pages update only after a successful query; opening this page does not query LSEG.</footer>
 </main></body></html>'''
     output.mkdir(parents=True, exist_ok=True)
     (output / "index.html").write_text(html, encoding="utf-8")
-    (output / "data.json").write_text(json.dumps(payload, allow_nan=False, indent=2) + "\n", encoding="utf-8")

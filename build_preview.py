@@ -24,6 +24,20 @@ from option_surface_utils import (
 )
 
 
+PREVIEW_ALIAS = """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="refresh" content="0; url=./">
+  <link rel="canonical" href="./">
+  <title>Option Surface Lab — moved to the homepage</title>
+</head>
+<body><p>The preview is the homepage. <a href="./">Open Option Surface Lab</a>.</p></body>
+</html>
+"""
+
+
 PLOT_CONFIG = {
     "displaylogo": False,
     "responsive": True,
@@ -495,10 +509,10 @@ def main() -> Path:
     html = "\n".join(line.rstrip() for line in html.splitlines()) + "\n"
     out = base_dir / "options_surface_preview.html"
     index = base_dir / "index.html"
-    out.write_text(html, encoding="utf-8")
+    out.write_text(PREVIEW_ALIAS, encoding="utf-8")
     index.write_text(html, encoding="utf-8")
     print(
-        f"Wrote {out.name} and {index.name}  asof={asof_txt}  "
+        f"Wrote {index.name} and redirect {out.name}  asof={asof_txt}  "
         f"quotes={stats['n_quotes']}  paired={stats['n_both']}  synthetic=False"
     )
     return out

@@ -184,9 +184,10 @@ class ChartTests(unittest.TestCase):
                     fig = update.make_figure(payload)
                 self.assertIn(ric, fig.data[0].hovertemplate)
                 self.assertEqual(fig.layout.meta["instrument"], ric)
-                self.assertEqual((root / "live/data.json").read_bytes(),
-                                 (root / "simple/data.json").read_bytes())
+                self.assertEqual(json.loads((root / "live/data.json").read_text()), payload)
+                self.assertFalse((root / "simple/data.json").exists())
                 html = (root / "simple/index.html").read_text()
+                self.assertIn('href="../lseg-live/data.json"', html)
                 self.assertIn(f"<h1>{ric} daily close.</h1>", html)
                 self.assertIn(payload["observations_sha256"], html)
                 self.assertNotIn("DIFFERENT.O", html)
@@ -203,7 +204,7 @@ class ChartTests(unittest.TestCase):
             live, simple = root / "live", root / "simple"
             live.mkdir()
             simple.mkdir()
-            targets = [live / name for name in update.OUTPUT_NAMES] + [simple / "index.html", simple / "data.json"]
+            targets = [live / name for name in update.OUTPUT_NAMES] + [simple / "index.html"]
             for target in targets:
                 target.write_text("previous-success")
             with patch("lseg_chart.page.render", side_effect=ValueError("render failed")):

@@ -10,7 +10,7 @@ const base=(process.argv[2]||'http://127.0.0.1:8768/535_fintech/').replace(/\/?$
   const context=await browser.newContext({viewport:{width:1440,height:1100}});
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
   const output=fs.mkdtempSync(path.join(os.tmpdir(),'pmcc-browser-'));
-  const expected=['','covered-call/','covered-call/data.html','pmcc/','wheel/'].map(p=>base+p);
+  const expected=['','covered-call/','covered-call/data.html','pmcc/','wheel/','lseg-live/'].map(p=>base+p);
   for(const route of ['','options_surface_preview.html','covered-call/','covered-call/data.html','pmcc/']){
     const response=await page.goto(base+route,{waitUntil:'networkidle'});assert.equal(response.status(),200,route);
     await page.waitForSelector('nav.course-navigation');

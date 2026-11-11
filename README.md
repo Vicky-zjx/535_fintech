@@ -6,6 +6,29 @@
 - [Option Surface Lab](https://vicky-zjx.github.io/535_fintech/)
 - [Earlier AAPL covered call](https://vicky-zjx.github.io/535_fintech/covered-call/)
 - [PMCC study and historical-data audit](https://vicky-zjx.github.io/535_fintech/pmcc/) — a separate $50,000-account implementation; see [reproduction instructions](pmcc_backtest/README.md).
+- [Wheel strategy](https://vicky-zjx.github.io/535_fintech/wheel/) — see [reproduction instructions](wheel_backtest/README.md).
+- [Compact API chart](https://vicky-zjx.github.io/535_fintech/lseg-local/) — the same LSEG query in a simpler view; its download links to `lseg-live/data.json`.
+
+## Repository map
+
+| Website / published outputs | Source code / purpose |
+|---|---|
+| `index.html` | Option Surface Lab; built by `build_preview.py` from the real `option_pipeline_data.pkl` |
+| `options_surface_preview.html` | Small compatibility redirect to the homepage, not a second chart copy |
+| `covered-call/` | Published pages; `covered_call/` contains the Python backtest and historical evidence |
+| `pmcc/` | Published results; `pmcc_backtest/` contains the Python engine, templates and audits |
+| `wheel/` | Published results; `wheel_backtest/` contains the Python engine and source template |
+| `lseg-live/`, `lseg-local/` | Detailed and compact API views; `lseg_chart/` contains the query and render code |
+| `.github/workflows/lseg-plot.yml` | Automatic API query and publication after relevant changes on main |
+| `tests/` | Offline link/layout checks; no API credentials or queries |
+
+Similar source/output names are intentional: for example, `wheel_backtest/page.html`
+is the build template and `wheel/index.html` is the deployed page. Keep both.
+The unused historical synthetic pickle was removed; the real option pickle and
+historical quote evidence are retained. `price_history.json` is a separate older
+API export, not used by the current charts; it is retained because its Git history
+shows recurring updates whose external producer is not defined in this repository.
+Uncommitted local API experiments are not part of the published repository.
 
 The PMCC page now runs six real-LSEG-input accounts over July 6–September 30, 2026,
 using a historically evidenced candidate subset and explicitly source-supported
@@ -197,10 +220,12 @@ loaded from the same environment.
 
 The app checks for `option_pipeline_data.pkl` beside the app before attempting
 an LSEG pull. If that cache is not available (or cannot be read with the
-current pandas version), it uses the included sparse synthetic UUUU-like panel
-as a local fallback. The static builder intentionally requires the real cache
+current pandas version), the local Reflex app can generate a sparse synthetic
+UUUU-like demo as a fallback; it does not read the removed synthetic pickle.
+The static builder intentionally requires the real cache
 and refuses to create a synthetic GitHub Pages page. Run `python build_preview.py`
-and open `options_surface_preview.html` after the real cache is available.
+and open `index.html` after the real cache is available. The old
+`options_surface_preview.html` URL redirects to that same homepage.
 
 ## Covered Call Backtest — new assignment
 
