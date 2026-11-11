@@ -27,7 +27,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # Change this one RIC, then run locally or push to main. Labels follow the response.
-RIC = "TSLA.O"
+RIC = "MSFT.O"
 FIELDS = ["TR.PriceClose.date", "TR.PriceClose"]
 SECRET_NAMES = ("LSEG_APP_KEY", "LSEG_USERNAME", "LSEG_PASSWORD")
 OUTPUT_NAMES = ("chart.html", "data.json", "prices.csv")
