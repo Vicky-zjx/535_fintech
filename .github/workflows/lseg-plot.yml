@@ -8,6 +8,8 @@ on:
       - 'lseg_chart/update.py'
       - 'lseg_chart/page.py'
       - 'lseg_chart/local_api.py'
+      - 'lseg_chart/test_update.py'
+      - 'lseg_chart/test_page.cjs'
       - 'lseg_chart/requirements.txt'
       - '.github/workflows/lseg-plot.yml'
 

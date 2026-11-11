@@ -58,14 +58,24 @@ class ChartTests(unittest.TestCase):
             with self.subTest(price=price), self.assertRaises(ValueError):
                 update.normalize(self.frame((100, price, 102)), self.start, self.end)
 
-    def test_missing_columns_wrong_ric_and_invalid_dates_rejected(self):
+    def test_missing_columns_and_invalid_dates_rejected(self):
         frames = [self.frame().drop(columns=["TR.PRICECLOSE.DATE"]),
-                  self.frame().assign(Instrument="MSFT.O"),
                   self.frame(dates=["not-a-date", "2026-11-03", "2026-11-04"]),
                   self.frame(dates=["2026-11-07", "2026-11-03", "2026-11-04"])]
         for frame in frames:
             with self.assertRaises(ValueError):
                 update.normalize(frame, self.start, self.end)
+
+    def test_wrong_instrument_rejected_for_each_configured_ric(self):
+        # A negative fixture must differ from the configured instrument. MSFT.O
+        # is a valid user selection, not a permanently invalid response ticker.
+        for ric in dict.fromkeys((update.RIC, "AAPL.O", "TSLA.O", "MSFT.O", "NVDA.O")):
+            wrong_ric = next(other for other in ("AAPL.O", "MSFT.O") if other != ric)
+            with self.subTest(ric=ric), patch.object(update, "RIC", ric):
+                frame = self.frame()
+                self.assertEqual(len(update.normalize(frame, self.start, self.end)), len(frame))
+                with self.assertRaisesRegex(ValueError, "unexpected instrument"):
+                    update.normalize(frame.assign(Instrument=wrong_ric), self.start, self.end)
 
     def test_duplicate_conflicts_rejected(self):
         with self.assertRaises(ValueError):
