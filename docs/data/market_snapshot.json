@@ -1,7 +1,7 @@
 {
   "mode": "live",
   "source": "LSEG Data Platform",
-  "retrieved_at": "2026-11-16T22:18:16.249152+00:00",
+  "retrieved_at": "2026-11-16T22:25:33.494543+00:00",
   "calendar": {
     "as_of": "2026-11-16",
     "target_session": "2026-11-17",
@@ -5105,6 +5105,7 @@
         }
       ],
       "errors": [],
+      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
       "option_underlying_ric": "BAC",
       "exclusions": [
         {
@@ -20601,6 +20602,7 @@
         }
       ],
       "errors": [],
+      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
       "option_underlying_ric": "F",
       "exclusions": [
         {
@@ -25455,6 +25457,23 @@
             "2026-11-13T00:00:00.000",
             51.02
           ],
+          [
+            "BAC.N",
+            "2026-11-13T00:00:00.000",
+            51.02
+          ]
+        ]
+      },
+      "close_recheck": {
+        "columns": [
+          "Instrument",
+          "TR.PriceClose",
+          "TR.PriceClose"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
           [
             "BAC.N",
             "2026-11-13T00:00:00.000",
@@ -47578,6 +47597,23 @@
             "2026-11-13T00:00:00.000",
             11.91
           ],
+          [
+            "F.N",
+            "2026-11-13T00:00:00.000",
+            11.91
+          ]
+        ]
+      },
+      "close_recheck": {
+        "columns": [
+          "Instrument",
+          "TR.PriceClose",
+          "TR.PriceClose"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
           [
             "F.N",
             "2026-11-13T00:00:00.000",

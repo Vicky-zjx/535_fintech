@@ -2,9 +2,9 @@
   "schema_version": 1,
   "mode": "live",
   "status": "blocked",
-  "attempted_at": "2026-11-16T22:18:16.249152+00:00",
+  "attempted_at": "2026-11-16T22:25:33.494543+00:00",
   "successful_at": null,
-  "market_data_retrieved_at": "2026-11-16T22:18:16.249152+00:00",
+  "market_data_retrieved_at": "2026-11-16T22:25:33.494543+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": false,
   "errors": [
@@ -80,7 +80,7 @@
   },
   "strategy_revision": "no-earnings-filter-v1",
   "evaluation_kind": "fresh_api",
-  "market_snapshot_sha256": "4cfa4c8143fa7cfbb0875f381256a390c4fad3220684337ba06104b96928418a",
+  "market_snapshot_sha256": "195f601858ac237df9e033878e7d2bd8aa42f59f37bf26c2bc1aacb0785abb00",
   "conid_status": {
     "BAC": 10098,
     "KO": 8894,
@@ -132,6 +132,7 @@
     "BAC": {
       "ric": "BAC.N",
       "errors": [],
+      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
       "exclusions": [
         {
           "ric": "BAC-w0r2Xm.FO",
@@ -367,6 +368,7 @@
     "F": {
       "ric": "F.N",
       "errors": [],
+      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
       "exclusions": [
         {
           "ric": "2FW2026D00013000.FO",
