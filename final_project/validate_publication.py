@@ -1,6 +1,7 @@
 """Offline publication contract: orders, diagnostics, links and editable SVG."""
 from html.parser import HTMLParser
 import json
+import math
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
@@ -15,6 +16,19 @@ class Links(HTMLParser):
         super().__init__(); self.links = []
     def handle_starttag(self, tag, attrs):
         self.links += [(k, v) for k, v in attrs if k in ('href', 'src') and v]
+
+
+def equivalent_observations(actual, expected):
+    """Allow floating-point roundoff across CPUs, never changed counts/flags/dates."""
+    if type(actual) is not type(expected):
+        return False
+    if isinstance(expected, float):
+        return math.isfinite(actual) and math.isfinite(expected) and math.isclose(actual, expected, rel_tol=1e-12, abs_tol=1e-12)
+    if isinstance(expected, dict):
+        return actual.keys() == expected.keys() and all(equivalent_observations(actual[k], v) for k, v in expected.items())
+    if isinstance(expected, list):
+        return len(actual) == len(expected) and all(equivalent_observations(a, e) for a, e in zip(actual, expected))
+    return actual == expected
 
 
 def check(root):
@@ -82,7 +96,7 @@ def check(root):
         if historical['market_snapshot_sha256'] != digest(market):
             raise ValueError('Historical analysis snapshot mismatch')
         expected = analyze(market)
-        if any(historical.get(k) != v for k,v in expected.items()):
+        if any(not equivalent_observations(historical.get(k), v) for k,v in expected.items()):
             raise ValueError('Historical statistics do not reproduce from real observations')
     html = (root/'docs/index.html').read_text()
     if '<html lang="en">' not in html:

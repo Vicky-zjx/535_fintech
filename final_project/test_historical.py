@@ -1,6 +1,14 @@
 """Synthetic test fixtures are never published as historical market data."""
 from copy import deepcopy
 import unittest
+from .validate_publication import equivalent_observations
+
+
+class PublicationRoundoffTests(unittest.TestCase):
+    def test_roundoff_only_not_changed_evidence(self):
+        self.assertTrue(equivalent_observations({'hv': [.31]}, {'hv': [.31000000000000005]}))
+        for actual, expected in [(1, True), (1, 2), (None, 0), (.31, .31001), (float('nan'), float('nan')), ({'date': '2026-11-16'}, {'date': '2026-11-13'})]:
+            self.assertFalse(equivalent_observations(actual, expected))
 import pandas as pd
 import exchange_calendars as xcals
 from .historical import analyze, history_window, summarize
