@@ -2,12 +2,14 @@
   "schema_version": 1,
   "mode": "live",
   "status": "blocked",
-  "attempted_at": "2026-11-16T22:05:05.273358+00:00",
+  "attempted_at": "2026-11-16T22:18:16.249152+00:00",
   "successful_at": null,
-  "market_data_retrieved_at": "2026-11-16T07:21:13.214133+00:00",
+  "market_data_retrieved_at": "2026-11-16T22:18:16.249152+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": false,
   "errors": [
+    "BAC: Missing/stale close: require 50 consecutive completed exchange sessions",
+    "F: Missing/stale close: require 50 consecutive completed exchange sessions",
     "Authoritative Sanji account unavailable: cash, equity and complete positions required"
   ],
   "decisions": [
@@ -16,19 +18,9 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
+        "Missing/stale close: require 50 consecutive completed exchange sessions",
         "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
-      ],
-      "close": 51.02,
-      "price_date": "2026-11-13",
-      "sma20": 50.506,
-      "sma50": 54.0708,
-      "hv20": 0.24777861499347337,
-      "r5": 0.032375556454876664,
-      "filters": {
-        "trend": false,
-        "volatility": true,
-        "sudden_drop": true
-      }
+      ]
     },
     {
       "ticker": "KO",
@@ -37,12 +29,12 @@
       "reasons": [
         "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
       ],
-      "close": 99.25,
-      "price_date": "2026-11-13",
-      "sma20": 94.759,
-      "sma50": 90.82,
-      "hv20": 0.20648052188200483,
-      "r5": 0.037420298944287556,
+      "close": 99.48,
+      "price_date": "2026-11-16",
+      "sma20": 95.062,
+      "sma50": 91.0482,
+      "hv20": 0.20438553082905986,
+      "r5": 0.035926273039675216,
       "filters": {
         "trend": true,
         "volatility": true,
@@ -56,12 +48,12 @@
       "reasons": [
         "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
       ],
-      "close": 28.89,
-      "price_date": "2026-11-13",
-      "sma20": 29.7925,
-      "sma50": 28.8018,
-      "hv20": 0.25284984861362597,
-      "r5": -0.01701258931609395,
+      "close": 28.86,
+      "price_date": "2026-11-16",
+      "sma20": 29.7635,
+      "sma50": 28.81,
+      "hv20": 0.25249897960535567,
+      "r5": -0.012658227848101333,
       "filters": {
         "trend": true,
         "volatility": true,
@@ -73,32 +65,22 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
+        "Missing/stale close: require 50 consecutive completed exchange sessions",
         "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
-      ],
-      "close": 11.91,
-      "price_date": "2026-11-13",
-      "sma20": 12.1515,
-      "sma50": 12.5594,
-      "hv20": 0.30399345421011414,
-      "r5": -0.042604501607717005,
-      "filters": {
-        "trend": false,
-        "volatility": true,
-        "sudden_drop": true
-      }
+      ]
     }
   ],
   "capital": null,
   "calendar": {
-    "as_of": "2026-11-13",
-    "target_session": "2026-11-16",
-    "first_session_of_week": true,
+    "as_of": "2026-11-16",
+    "target_session": "2026-11-17",
+    "first_session_of_week": false,
     "exchange": "XNYS",
-    "close_time": "2026-11-13T21:00:00+00:00"
+    "close_time": "2026-11-16T21:00:00+00:00"
   },
   "strategy_revision": "no-earnings-filter-v1",
-  "evaluation_kind": "retained_market_replay",
-  "market_snapshot_sha256": "46a5025d54b4e57ce686a29a86d028f74ddf49082ad5b2b7d90bbf190a4f2ea3",
+  "evaluation_kind": "fresh_api",
+  "market_snapshot_sha256": "4cfa4c8143fa7cfbb0875f381256a390c4fad3220684337ba06104b96928418a",
   "conid_status": {
     "BAC": 10098,
     "KO": 8894,
@@ -151,6 +133,10 @@
       "ric": "BAC.N",
       "errors": [],
       "exclusions": [
+        {
+          "ric": "BAC-w0r2Xm.FO",
+          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
+        },
         {
           "ric": "BAC-w0qAzf.FO",
           "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
@@ -213,7 +199,7 @@
         }
       ],
       "options_status": "observed",
-      "candidate_count": 84,
+      "candidate_count": 156,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "KO": {
@@ -322,7 +308,7 @@
         }
       ],
       "options_status": "observed",
-      "candidate_count": 92,
+      "candidate_count": 176,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "PFE": {
@@ -375,7 +361,7 @@
         }
       ],
       "options_status": "observed",
-      "candidate_count": 80,
+      "candidate_count": 152,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "F": {
@@ -396,7 +382,7 @@
         }
       ],
       "options_status": "observed",
-      "candidate_count": 80,
+      "candidate_count": 140,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     }
   },
