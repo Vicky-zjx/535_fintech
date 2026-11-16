@@ -6,7 +6,8 @@
     "fields": ["TR.EventStartDate", "TR.EventType", "TR.EventStatus"],
     "parameters": {"EventType": "RES"},
     "observed_combined_request": "Access denied for all four universes in retained API responses. This does not establish which individual field caused the combined request failure.",
-    "individual_field_diagnostics": "Nightly fetch records independent responses/errors in market_snapshot.json raw.<ticker>.earnings_field_probe if the combined query fails. Independent rows are never merged without event identity verification.",
+    "individual_field_diagnostics": "Verified on the 2026-11-16T07:21:13.214133+00:00 live run: each of the three fields independently returned access denied for each of BAC.N, KO.N, PFE.N and F.N (12 denied requests). Exact sanitized errors are retained in market_snapshot.json raw.<ticker>.earnings_field_probe. This is not a single-field combination problem. Independent rows are never merged without event identity verification.",
+    "verification_run": "https://github.com/Vicky-zjx/535_fintech/actions/runs/43822857009",
     "definition_source": "https://developers.lseg.com/en/article-catalog/article/workspace-corporate-actions-content-set-guide",
     "confirmation_definition": "TR.EventStatus false means company-confirmed; true means estimated. A returned date alone is not enough under the existing rule."
   },

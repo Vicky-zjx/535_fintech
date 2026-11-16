@@ -135,9 +135,10 @@ the production status, either `open_orders.json`, or `mkt/positions.json`. A fai
 demo has a null proposal, not a stale example array. Unit-test fixtures remain
 separate synthetic TEST data and are not presented as real-market examples.
 
-Earnings investigation: the combined LSEG RES fields returned access-denied errors;
-the next live run probes each ordinary field separately and retains sanitized
-responses/errors under `market_snapshot.json -> raw -> ticker -> earnings_field_probe`.
+Earnings investigation: the combined LSEG RES fields returned access-denied errors.
+The live run at **2026-11-16 07:21 UTC** also queried each ordinary field separately:
+all **12 requests** (three fields, four stocks) returned access denied. Exact sanitized
+errors are under `market_snapshot.json -> raw -> ticker -> earnings_field_probe`.
 Rows from independent requests are not joined speculatively. Public company IR is
 an authorized possible alternative: BAC explicitly identifies 2027-01-15, but no
 confirmed next earnings date was verified for KO/PFE/F. Public absence, past releases
@@ -179,6 +180,14 @@ python -m final_project.demo            # refresh isolated examples after fresh 
 The nightly workflow runs production and demonstration separately; its final blocked
 production status can remain red while the LSEG requests and isolated examples pass.
 That status must not be misreported as an API authentication failure.
+
+Verified run: https://github.com/Vicky-zjx/535_fintech/actions/runs/43822857009 .
+All **90** regression checks passed (73 Python engine/provider tests, four site-layout
+tests and 13 JavaScript DOM tests). Fresh real inputs reproduced the same 0/3 example
+orders above. Both production files retain their original byte hash
+`37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570`.
+GitHub Pages deployed the generated evidence at commit `6b5a3b7`; the red final
+workflow step is the intentionally reported missing production-account dependency.
 
 ## Rules and conventions
 
