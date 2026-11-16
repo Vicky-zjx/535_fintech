@@ -174,15 +174,26 @@ def fetch_market(ctx, retrieved_at):
             try:
                 lo = str(date.fromisoformat(session)+timedelta(days=3))
                 hi = str(date.fromisoformat(session)+timedelta(days=10))
+                # US NYSE options use the consolidated underlying (e.g. IBM),
+                # not its exchange-specific listing (IBM.N). Verify that lookup
+                # independently; a constructed identifier is not listing evidence.
+                option_underlying = ticker
+                option_identity = paced(ld.get_data, [option_underlying], ['TR.TickerSymbol'],
+                                        header_type=ld.HeaderType.NAME)
+                raw['option_underlying_identity'] = table(option_identity)
+                checked = named(option_identity, ['TR.TickerSymbol'])
+                if len(checked) != 1 or checked.iloc[0]['Instrument'] != option_underlying or checked.iloc[0]['TR.TickerSymbol'] != ticker:
+                    raise ValueError('Consolidated option-underlying identity mismatch')
+                d['option_underlying_ric'] = option_underlying
                 fields = 'RIC,StrikePrice,ExpiryDate,CallPutOption,UnderlyingQuoteRIC,LotSize,Currency,ContractType,ExerciseStyle'
                 # The derivative view exposes the lot/contract metadata already
                 # used by the repository's real PMCC capability audit.
                 chain = paced(ld.discovery.search, view=ld.discovery.Views.EQUITY_DERIVATIVE_QUOTES, top=1000,
-                    filter=f"UnderlyingQuoteRIC eq '{ric}' and ExpiryDate ge {lo} and ExpiryDate le {hi}", select=fields)
+                    filter=f"UnderlyingQuoteRIC eq '{option_underlying}' and RCSAssetClass eq 'OPT' and IsChain eq false and ExpiryDate ge {lo} and ExpiryDate le {hi}", select=fields)
                 raw['discovery'] = table(chain)
                 if chain is None or len(chain) >= 1000:
                     raise ValueError('Search unavailable or capped; completeness cannot be assessed')
-                d['contracts'], d['exclusions'] = normalize_contracts(chain, ticker, ric, as_of)
+                d['contracts'], d['exclusions'] = normalize_contracts(chain, ticker, option_underlying, as_of)
                 d['options_status'] = 'observed'
                 d['candidate_count'] = len(d['contracts'])
                 d['universe_limitation'] = 'Current observed discovery subset, not a complete historical option chain'

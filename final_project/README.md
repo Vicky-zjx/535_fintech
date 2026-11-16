@@ -71,6 +71,9 @@ identifiers/book; this is the remaining external setup for actual order generati
 ## Rules and conventions
 
 - Universe BAC/KO/PFE/F. Lookup RICs are validated against `TR.TickerSymbol` before use.
+  Closing prices use the NYSE listings (`.N`); US option discovery uses independently
+  validated consolidated underlyings (`BAC`, `KO`, `PFE`, `F`). They are not interchangeable
+  search filters: `.N` can return foreign derivatives rather than US OPRA contracts.
 - XNYS calendar; latest completed close; next session must not already have opened.
   Puts only the first actual weekly session; calls any next session after confirmed
   assignment. No future close or missing-session compression in indicators.
@@ -138,6 +141,7 @@ Existing main/root Pages publishing is retained, including previous navigation.
 - [GitHub timezone-aware schedule](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule).
 - [LSEG event fields and confirmed/estimated status](https://developers.lseg.com/en/article-catalog/article/workspace-corporate-actions-content-set-guide).
 - [LSEG dated delta example](https://community.developers.lseg.com/discussion/68876/how-to-retrieve-historical-delta-of-one-specific-option).
+- [LSEG consolidated versus exchange-specific option underlyings](https://community.developers.lseg.com/discussion/71956/how-to-retrieve-the-list-of-live-option-contracts-for-a-given-equity-or-equity-index).
 - [OCC equity option terms](https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications).
 
 ## Review

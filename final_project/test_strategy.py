@@ -263,6 +263,13 @@ class DataTests(unittest.TestCase):
         df.loc[0, 'LotSize'] = 10
         self.assertEqual(normalize_contracts(df, 'BAC', 'BAC.N', '2026-11-13')[0], [])
 
+    def test_consolidated_underlying_must_match_verified_lookup(self):
+        df = pd.DataFrame([dict(RIC='BACW202604850.U', StrikePrice=48.5, ExpiryDate='2026-11-20',
+            CallPutOption='Put', UnderlyingQuoteRIC=['BAC'], LotSize=100, Currency='USD',
+            ContractType='Standard', ExerciseStyle='A')])
+        self.assertEqual(len(normalize_contracts(df, 'BAC', 'BAC', '2026-11-13')[0]), 1)
+        self.assertEqual(normalize_contracts(df, 'BAC', 'BAC.N', '2026-11-13')[0], [])
+
     def test_earnings_status_false_means_confirmed(self):
         df = pd.DataFrame([['BAC.N', '2027-01-15', 'RES', False]],
                           columns=['Instrument', 'TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'])
