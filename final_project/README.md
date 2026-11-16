@@ -17,6 +17,38 @@ and put-entry schedule. It does not relax technical thresholds, option selection
 cash security, position protection or exposure limits. Current real outcomes are
 in `docs/data/strategy_status.json`; the older run below describes superseded rules.
 
+### Verified fresh run — November 16, 2026, 23:42 UTC
+
+[Actions run 43981421173](https://github.com/Vicky-zjx/535_fintech/actions/runs/43981421173)
+completed successfully, queried real LSEG data and wrote both matching order files
+plus the durable proposal history. Target: Tuesday November 17; no Monday gate.
+Mode: explicitly hypothetical $40,000 course proposal, NOT an official Sanji account.
+
+| Stock | Close / SMA20 / SMA50 | HV20 / R5 | Result |
+| --- | --- | --- | --- |
+| BAC | 50.08 / 50.4905 / 53.8188 | 24.97% / -0.93% | Trend failed |
+| KO | 99.48 / 95.0620 / 91.0482 | 20.44% / +3.59% | Propose 1 put, strike 96, expiry 2026-11-27 |
+| PFE | 28.86 / 29.7635 / 28.8100 | 25.25% / -1.27% | Propose 1 put, strike 28, expiry 2026-11-27 |
+| F | 11.57 / 12.1210 / 12.4984 | 31.23% / -7.59% | Trend failed |
+
+All four now have 55/55 valid recent closes and the actual November 16 price date.
+BAC/F's earlier reply and exact-day retry stopped at November 13; the newly queried
+original-RIC history itself now contains November 16. This is an observed provider
+availability change, not a confirmed explanation of LSEG's update timing. No
+additional recovery/alternate-RIC queries were needed this time, and no price
+field, date or observation was fabricated. Earlier raw replies remain in Git history
+(commit `79dff0e`); current raw replies are in `docs/data/market_snapshot.json`.
+
+The two proposals reserve $12,400 (31%); uncommitted cash is $27,600 (69%), above the
+$12,000 floor. KO/PFE commitments are 24%/7% of starting equity. Cash remains $40,000:
+no premium or fill is credited. Both expiries are 10 calendar DTE, the observed
+expiry nearest the unchanged seven-day target. Dated Greeks remain incomplete;
+the existing observed-strike-nearest-3%-OTM fallback was used, NOT verified 25-delta.
+
+Validation: 119 Python tests, 4 layout tests, 35 JavaScript tests and independent
+publication reproduction. Official account/fill history and course execution
+coverage remain unresolved; these do not prevent labeled course proposals.
+
 ### Archived run — November 16, 2026, 23:16 UTC (superseded policy)
 
 [Live Actions run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43977705993)
