@@ -9,5 +9,44 @@
     "leverage": false
   },
   "authoritative_account_seen": false,
-  "unconfirmed_orders": []
+  "unconfirmed_orders": [
+    {
+      "id": "fin535-course-ko-put-2026-11-17",
+      "for": "2026-11-17",
+      "order_type": "mkt",
+      "action": "SHT",
+      "qty": 1,
+      "underlying": 8894,
+      "contract": "put",
+      "expiry": "2026-11-27",
+      "strike": 96.0,
+      "ref": "prev_close"
+    },
+    {
+      "id": "fin535-course-pfe-put-2026-11-17",
+      "for": "2026-11-17",
+      "order_type": "mkt",
+      "action": "SHT",
+      "qty": 1,
+      "underlying": 11031,
+      "contract": "put",
+      "expiry": "2026-11-27",
+      "strike": 28.0,
+      "ref": "prev_close"
+    }
+  ],
+  "put_proposal_history": [
+    {
+      "id": "fin535-course-ko-put-2026-11-17",
+      "underlying": 8894,
+      "for": "2026-11-17",
+      "week": "2026-11-16"
+    },
+    {
+      "id": "fin535-course-pfe-put-2026-11-17",
+      "underlying": 11031,
+      "for": "2026-11-17",
+      "week": "2026-11-16"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 {
   "mode": "live",
   "source": "LSEG Data Platform",
-  "retrieved_at": "2026-11-16T23:16:16.755402+00:00",
+  "retrieved_at": "2026-11-16T23:42:40.614531+00:00",
   "calendar": {
     "as_of": "2026-11-16",
     "target_session": "2026-11-17",
@@ -12,8 +12,8 @@
   "history_window": {
     "analysis_start": "2023-11-16",
     "analysis_end": "2026-11-16",
-    "query_start": "2023-09-07",
-    "warmup_sessions_requested": 50,
+    "query_start": "2023-08-30",
+    "warmup_sessions_requested": 55,
     "expected_sample_sessions": 752
   },
   "tickers": {
@@ -21,6 +21,26 @@
       "ric": "BAC.N",
       "identity_verified": true,
       "history": [
+        {
+          "date": "2023-08-30",
+          "close": 29.04
+        },
+        {
+          "date": "2023-08-31",
+          "close": 28.67
+        },
+        {
+          "date": "2023-09-01",
+          "close": 28.98
+        },
+        {
+          "date": "2023-09-05",
+          "close": 28.65
+        },
+        {
+          "date": "2023-09-06",
+          "close": 28.39
+        },
         {
           "date": "2023-09-07",
           "close": 28.13
@@ -3226,8 +3246,8 @@
           "close": 51.02
         },
         {
-          "date": "2026-11-13",
-          "close": 51.02
+          "date": "2026-11-16",
+          "close": 50.08
         }
       ],
       "contracts": [
@@ -5105,7 +5125,17 @@
         }
       ],
       "errors": [],
-      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "option_underlying_ric": "BAC",
       "exclusions": [
         {
@@ -5182,6 +5212,26 @@
       "ric": "KO.N",
       "identity_verified": true,
       "history": [
+        {
+          "date": "2023-08-30",
+          "close": 60.47
+        },
+        {
+          "date": "2023-08-31",
+          "close": 59.83
+        },
+        {
+          "date": "2023-09-01",
+          "close": 59.31
+        },
+        {
+          "date": "2023-09-05",
+          "close": 58.82
+        },
+        {
+          "date": "2023-09-06",
+          "close": 58.78
+        },
         {
           "date": "2023-09-07",
           "close": 58.33
@@ -10506,6 +10556,17 @@
         }
       ],
       "errors": [],
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "option_underlying_ric": "KO",
       "exclusions": [
         {
@@ -10618,6 +10679,26 @@
       "ric": "PFE.N",
       "identity_verified": true,
       "history": [
+        {
+          "date": "2023-08-30",
+          "close": 35.9
+        },
+        {
+          "date": "2023-08-31",
+          "close": 35.38
+        },
+        {
+          "date": "2023-09-01",
+          "close": 35.78
+        },
+        {
+          "date": "2023-09-05",
+          "close": 35.38
+        },
+        {
+          "date": "2023-09-06",
+          "close": 34.37
+        },
         {
           "date": "2023-09-07",
           "close": 34.28
@@ -15654,6 +15735,17 @@
         }
       ],
       "errors": [],
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "option_underlying_ric": "PFE",
       "exclusions": [
         {
@@ -15710,6 +15802,26 @@
       "ric": "F.N",
       "identity_verified": true,
       "history": [
+        {
+          "date": "2023-08-30",
+          "close": 11.85759807
+        },
+        {
+          "date": "2023-08-31",
+          "close": 11.95616497
+        },
+        {
+          "date": "2023-09-01",
+          "close": 11.96602166
+        },
+        {
+          "date": "2023-09-05",
+          "close": 11.91673821
+        },
+        {
+          "date": "2023-09-06",
+          "close": 11.89702483
+        },
         {
           "date": "2023-09-07",
           "close": 11.78860124
@@ -18915,8 +19027,8 @@
           "close": 11.91
         },
         {
-          "date": "2026-11-13",
-          "close": 11.91
+          "date": "2026-11-16",
+          "close": 11.57
         }
       ],
       "contracts": [
@@ -20602,7 +20714,17 @@
         }
       ],
       "errors": [],
-      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "option_underlying_ric": "F",
       "exclusions": [
         {
@@ -21449,9 +21571,39 @@
           798,
           799,
           800,
-          801
+          801,
+          802,
+          803,
+          804,
+          805,
+          806
         ],
         "data": [
+          [
+            "BAC.N",
+            "2023-08-30T00:00:00.000",
+            29.04
+          ],
+          [
+            "BAC.N",
+            "2023-08-31T00:00:00.000",
+            28.67
+          ],
+          [
+            "BAC.N",
+            "2023-09-01T00:00:00.000",
+            28.98
+          ],
+          [
+            "BAC.N",
+            "2023-09-05T00:00:00.000",
+            28.65
+          ],
+          [
+            "BAC.N",
+            "2023-09-06T00:00:00.000",
+            28.39
+          ],
           [
             "BAC.N",
             "2023-09-07T00:00:00.000",
@@ -25459,25 +25611,8 @@
           ],
           [
             "BAC.N",
-            "2026-11-13T00:00:00.000",
-            51.02
-          ]
-        ]
-      },
-      "close_recheck": {
-        "columns": [
-          "Instrument",
-          "TR.PriceClose",
-          "TR.PriceClose"
-        ],
-        "index": [
-          0
-        ],
-        "data": [
-          [
-            "BAC.N",
-            "2026-11-13T00:00:00.000",
-            51.02
+            "2026-11-16T00:00:00.000",
+            50.08
           ]
         ]
       },
@@ -28747,9 +28882,39 @@
           798,
           799,
           800,
-          801
+          801,
+          802,
+          803,
+          804,
+          805,
+          806
         ],
         "data": [
+          [
+            "KO.N",
+            "2023-08-30T00:00:00.000",
+            60.47
+          ],
+          [
+            "KO.N",
+            "2023-08-31T00:00:00.000",
+            59.83
+          ],
+          [
+            "KO.N",
+            "2023-09-01T00:00:00.000",
+            59.31
+          ],
+          [
+            "KO.N",
+            "2023-09-05T00:00:00.000",
+            58.82
+          ],
+          [
+            "KO.N",
+            "2023-09-06T00:00:00.000",
+            58.78
+          ],
           [
             "KO.N",
             "2023-09-07T00:00:00.000",
@@ -36434,9 +36599,39 @@
           798,
           799,
           800,
-          801
+          801,
+          802,
+          803,
+          804,
+          805,
+          806
         ],
         "data": [
+          [
+            "PFE.N",
+            "2023-08-30T00:00:00.000",
+            35.9
+          ],
+          [
+            "PFE.N",
+            "2023-08-31T00:00:00.000",
+            35.38
+          ],
+          [
+            "PFE.N",
+            "2023-09-01T00:00:00.000",
+            35.78
+          ],
+          [
+            "PFE.N",
+            "2023-09-05T00:00:00.000",
+            35.38
+          ],
+          [
+            "PFE.N",
+            "2023-09-06T00:00:00.000",
+            34.37
+          ],
           [
             "PFE.N",
             "2023-09-07T00:00:00.000",
@@ -43589,9 +43784,39 @@
           798,
           799,
           800,
-          801
+          801,
+          802,
+          803,
+          804,
+          805,
+          806
         ],
         "data": [
+          [
+            "F.N",
+            "2023-08-30T00:00:00.000",
+            11.85759807
+          ],
+          [
+            "F.N",
+            "2023-08-31T00:00:00.000",
+            11.95616497
+          ],
+          [
+            "F.N",
+            "2023-09-01T00:00:00.000",
+            11.96602166
+          ],
+          [
+            "F.N",
+            "2023-09-05T00:00:00.000",
+            11.91673821
+          ],
+          [
+            "F.N",
+            "2023-09-06T00:00:00.000",
+            11.89702483
+          ],
           [
             "F.N",
             "2023-09-07T00:00:00.000",
@@ -47599,25 +47824,8 @@
           ],
           [
             "F.N",
-            "2026-11-13T00:00:00.000",
-            11.91
-          ]
-        ]
-      },
-      "close_recheck": {
-        "columns": [
-          "Instrument",
-          "TR.PriceClose",
-          "TR.PriceClose"
-        ],
-        "index": [
-          0
-        ],
-        "data": [
-          [
-            "F.N",
-            "2026-11-13T00:00:00.000",
-            11.91
+            "2026-11-16T00:00:00.000",
+            11.57
           ]
         ]
       },

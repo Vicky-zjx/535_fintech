@@ -2,11 +2,11 @@
   "schema_version": 1,
   "mode": "live",
   "status": "success",
-  "attempted_at": "2026-11-16T23:38:10.591678+00:00",
-  "successful_at": null,
-  "market_data_retrieved_at": "2026-11-16T23:16:16.755402+00:00",
+  "attempted_at": "2026-11-16T23:42:40.614531+00:00",
+  "successful_at": "2026-11-16T23:42:40.614531+00:00",
+  "market_data_retrieved_at": "2026-11-16T23:42:40.614531+00:00",
   "source": "LSEG Data Platform",
-  "orders_updated": false,
+  "orders_updated": true,
   "errors": [],
   "decisions": [
     {
@@ -14,22 +14,19 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Latest completed exchange session close is missing/stale"
+        "trend filter failed"
       ],
-      "category": "Data unavailable",
-      "technical_status": "Data unavailable",
-      "close": null,
-      "price_date": null,
+      "category": "Technical filter failed",
+      "technical_status": "Technical filter failed",
+      "close": 50.08,
+      "price_date": "2026-11-16",
       "observation_window": {
         "window_start": "2026-08-31",
         "window_end": "2026-11-16",
         "expected_sessions": 55,
-        "valid_closes": 54,
-        "missing_dates": [
-          "2026-11-16"
-        ],
+        "valid_closes": 55,
+        "missing_dates": [],
         "sma20_dates": [
-          "2026-10-19",
           "2026-10-20",
           "2026-10-21",
           "2026-10-22",
@@ -48,10 +45,10 @@
           "2026-11-10",
           "2026-11-11",
           "2026-11-12",
-          "2026-11-13"
+          "2026-11-13",
+          "2026-11-16"
         ],
         "sma50_dates": [
-          "2026-09-04",
           "2026-09-08",
           "2026-09-09",
           "2026-09-10",
@@ -100,13 +97,10 @@
           "2026-11-10",
           "2026-11-11",
           "2026-11-12",
-          "2026-11-13"
+          "2026-11-13",
+          "2026-11-16"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-16",
-            "2026-10-19"
-          ],
           [
             "2026-10-19",
             "2026-10-20"
@@ -182,9 +176,22 @@
           [
             "2026-11-12",
             "2026-11-13"
+          ],
+          [
+            "2026-11-13",
+            "2026-11-16"
           ]
         ],
         "r5_anchor_date": "2026-11-09"
+      },
+      "sma20": 50.4905,
+      "sma50": 53.8188,
+      "hv20": 0.24968292114415427,
+      "r5": -0.00929772502472792,
+      "filters": {
+        "trend": false,
+        "volatility": true,
+        "sudden_drop": true
       },
       "position": {
         "shares": 0,
@@ -636,22 +643,19 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Latest completed exchange session close is missing/stale"
+        "trend filter failed"
       ],
-      "category": "Data unavailable",
-      "technical_status": "Data unavailable",
-      "close": null,
-      "price_date": null,
+      "category": "Technical filter failed",
+      "technical_status": "Technical filter failed",
+      "close": 11.57,
+      "price_date": "2026-11-16",
       "observation_window": {
         "window_start": "2026-08-31",
         "window_end": "2026-11-16",
         "expected_sessions": 55,
-        "valid_closes": 54,
-        "missing_dates": [
-          "2026-11-16"
-        ],
+        "valid_closes": 55,
+        "missing_dates": [],
         "sma20_dates": [
-          "2026-10-19",
           "2026-10-20",
           "2026-10-21",
           "2026-10-22",
@@ -670,10 +674,10 @@
           "2026-11-10",
           "2026-11-11",
           "2026-11-12",
-          "2026-11-13"
+          "2026-11-13",
+          "2026-11-16"
         ],
         "sma50_dates": [
-          "2026-09-04",
           "2026-09-08",
           "2026-09-09",
           "2026-09-10",
@@ -722,13 +726,10 @@
           "2026-11-10",
           "2026-11-11",
           "2026-11-12",
-          "2026-11-13"
+          "2026-11-13",
+          "2026-11-16"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-16",
-            "2026-10-19"
-          ],
           [
             "2026-10-19",
             "2026-10-20"
@@ -804,9 +805,22 @@
           [
             "2026-11-12",
             "2026-11-13"
+          ],
+          [
+            "2026-11-13",
+            "2026-11-16"
           ]
         ],
         "r5_anchor_date": "2026-11-09"
+      },
+      "sma20": 12.121,
+      "sma50": 12.4984,
+      "hv20": 0.3122868574000494,
+      "r5": -0.07587859424920118,
+      "filters": {
+        "trend": false,
+        "volatility": true,
+        "sudden_drop": true
       },
       "position": {
         "shares": 0,
@@ -868,8 +882,8 @@
       "ref": "prev_close"
     }
   ],
-  "evaluation_kind": "retained_market_replay",
-  "market_snapshot_sha256": "3b0ea94e4e43584987edd35b92aaae6fdb7a495665f4f6b2a823faa7bfa2b71c",
+  "evaluation_kind": "fresh_api",
+  "market_snapshot_sha256": "6e8bd2d9ba02dee0a31cc71d41796e0f08bc318258377a947826edbdb77852fa",
   "authoritative_account_available": false,
   "account_status": "Unavailable; explicit course proposal assumptions used, not an official account",
   "account_assumptions": {
@@ -915,10 +929,7 @@
     }
   },
   "identifier_verified_at": "2026-11-16T22:00:10.475449+00:00",
-  "warnings": [
-    "BAC: Latest completed exchange session close is missing/stale",
-    "F: Latest completed exchange session close is missing/stale"
-  ],
+  "warnings": [],
   "capital_before": {
     "passed": true,
     "reasons": [],
@@ -934,7 +945,7 @@
       "F": 0.0
     }
   },
-  "unconfirmed_proposal_count": 0,
+  "unconfirmed_proposal_count": 2,
   "past_unconfirmed_proposal_count": 0,
   "pipeline_audit": {
     "first_blocking_stage": null,
@@ -953,7 +964,17 @@
     "BAC": {
       "ric": "BAC.N",
       "errors": [],
-      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "exclusions": [
         {
           "ric": "BAC-w0r2Xm.FO",
@@ -1027,6 +1048,17 @@
     "KO": {
       "ric": "KO.N",
       "errors": [],
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "exclusions": [
         {
           "ric": "2KOK2026D00100000.FO",
@@ -1136,6 +1168,17 @@
     "PFE": {
       "ric": "PFE.N",
       "errors": [],
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "exclusions": [
         {
           "ric": "2PFEK2026D00027000.FO",
@@ -1189,7 +1232,17 @@
     "F": {
       "ric": "F.N",
       "errors": [],
-      "close_recheck_status": "Requested date still unavailable; older dated prices not substituted",
+      "price_recovery": {
+        "window_start": "2026-08-31",
+        "window_end": "2026-11-16",
+        "field": "TR.PriceClose",
+        "currency": "USD",
+        "recovered": [],
+        "attempts": [],
+        "remaining_missing_dates": [],
+        "latest_completed_close_valid": true,
+        "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
+      },
       "exclusions": [
         {
           "ric": "2FW2026D00013000.FO",
@@ -1214,6 +1267,7 @@
     "fin535-course-ko-put-2026-11-17",
     "fin535-course-pfe-put-2026-11-17"
   ],
-  "order_count": 0,
-  "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  "order_files_changed": true,
+  "order_count": 2,
+  "orders_sha256": "7d0a3742004a67f5b7517f836b5c178b498d4177624ca05d84e44b8abeaaf498"
 }

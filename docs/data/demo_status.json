@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-16T23:38:10.885538+00:00",
+  "generated_at": "2026-11-16T23:43:04.186138+00:00",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
-  "market_retrieved_at": "2026-11-16T23:16:16.755402+00:00",
-  "market_snapshot_sha256": "3b0ea94e4e43584987edd35b92aaae6fdb7a495665f4f6b2a823faa7bfa2b71c",
+  "market_retrieved_at": "2026-11-16T23:42:40.614531+00:00",
+  "market_snapshot_sha256": "6e8bd2d9ba02dee0a31cc71d41796e0f08bc318258377a947826edbdb77852fa",
   "calendar": {
     "as_of": "2026-11-16",
     "target_session": "2026-11-17",
@@ -38,32 +38,26 @@
       },
       "status": "success",
       "errors": [],
-      "warnings": [
-        "BAC: Latest completed exchange session close is missing/stale",
-        "F: Latest completed exchange session close is missing/stale"
-      ],
+      "warnings": [],
       "decisions": [
         {
           "ticker": "BAC",
           "decision": "No Trade",
           "eligible": false,
           "reasons": [
-            "Latest completed exchange session close is missing/stale"
+            "trend filter failed"
           ],
-          "category": "Data unavailable",
-          "technical_status": "Data unavailable",
-          "close": null,
-          "price_date": null,
+          "category": "Technical filter failed",
+          "technical_status": "Technical filter failed",
+          "close": 50.08,
+          "price_date": "2026-11-16",
           "observation_window": {
             "window_start": "2026-08-31",
             "window_end": "2026-11-16",
             "expected_sessions": 55,
-            "valid_closes": 54,
-            "missing_dates": [
-              "2026-11-16"
-            ],
+            "valid_closes": 55,
+            "missing_dates": [],
             "sma20_dates": [
-              "2026-10-19",
               "2026-10-20",
               "2026-10-21",
               "2026-10-22",
@@ -82,10 +76,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "sma50_dates": [
-              "2026-09-04",
               "2026-09-08",
               "2026-09-09",
               "2026-09-10",
@@ -134,13 +128,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-16",
-                "2026-10-19"
-              ],
               [
                 "2026-10-19",
                 "2026-10-20"
@@ -216,9 +207,22 @@
               [
                 "2026-11-12",
                 "2026-11-13"
+              ],
+              [
+                "2026-11-13",
+                "2026-11-16"
               ]
             ],
             "r5_anchor_date": "2026-11-09"
+          },
+          "sma20": 50.4905,
+          "sma50": 53.8188,
+          "hv20": 0.24968292114415427,
+          "r5": -0.00929772502472792,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
           },
           "position": {
             "shares": 0,
@@ -670,22 +674,19 @@
           "decision": "No Trade",
           "eligible": false,
           "reasons": [
-            "Latest completed exchange session close is missing/stale"
+            "trend filter failed"
           ],
-          "category": "Data unavailable",
-          "technical_status": "Data unavailable",
-          "close": null,
-          "price_date": null,
+          "category": "Technical filter failed",
+          "technical_status": "Technical filter failed",
+          "close": 11.57,
+          "price_date": "2026-11-16",
           "observation_window": {
             "window_start": "2026-08-31",
             "window_end": "2026-11-16",
             "expected_sessions": 55,
-            "valid_closes": 54,
-            "missing_dates": [
-              "2026-11-16"
-            ],
+            "valid_closes": 55,
+            "missing_dates": [],
             "sma20_dates": [
-              "2026-10-19",
               "2026-10-20",
               "2026-10-21",
               "2026-10-22",
@@ -704,10 +705,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "sma50_dates": [
-              "2026-09-04",
               "2026-09-08",
               "2026-09-09",
               "2026-09-10",
@@ -756,13 +757,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-16",
-                "2026-10-19"
-              ],
               [
                 "2026-10-19",
                 "2026-10-20"
@@ -838,9 +836,22 @@
               [
                 "2026-11-12",
                 "2026-11-13"
+              ],
+              [
+                "2026-11-13",
+                "2026-11-16"
               ]
             ],
             "r5_anchor_date": "2026-11-09"
+          },
+          "sma20": 12.121,
+          "sma50": 12.4984,
+          "hv20": 0.3122868574000494,
+          "r5": -0.07587859424920118,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
           },
           "position": {
             "shares": 0,
@@ -910,35 +921,64 @@
     },
     {
       "id": "covered_inventory",
-      "description": "Covered-inventory demonstration unavailable: Latest completed exchange session close is missing/stale",
-      "account": null,
-      "status": "blocked",
-      "errors": [
-        "Authoritative Sanji account unavailable: cash, equity and complete positions required"
-      ],
+      "description": "Independent hypothetical $40,000 book: 100 shares of each ticker; basis equals its observed close; remaining funds held as cash. These are assumed holdings, not simulated purchases, actual assignments, or a continuation of the cash-start run.",
+      "account": {
+        "schema_version": 1,
+        "source": "HYPOTHETICAL_DEMONSTRATION",
+        "as_of": "2026-11-16",
+        "currency": "USD",
+        "cash": 21001.0,
+        "equity": 40000.0,
+        "positions": [
+          {
+            "ticker": "BAC",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 50.08
+          },
+          {
+            "ticker": "KO",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 99.48
+          },
+          {
+            "ticker": "PFE",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 28.86
+          },
+          {
+            "ticker": "F",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 11.57
+          }
+        ],
+        "resolved_order_ids": []
+      },
+      "status": "success",
+      "errors": [],
+      "warnings": [],
       "decisions": [
         {
           "ticker": "BAC",
-          "decision": "No Trade",
-          "eligible": false,
+          "decision": "Sell Covered Call",
+          "eligible": true,
           "reasons": [
-            "Latest completed exchange session close is missing/stale",
-            "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+            "Fallback: two observed strikes above ATM; both price floors checked"
           ],
-          "category": "Data unavailable",
-          "technical_status": "Data unavailable",
-          "close": null,
-          "price_date": null,
+          "category": "Proposed order",
+          "technical_status": "Technical filter failed",
+          "close": 50.08,
+          "price_date": "2026-11-16",
           "observation_window": {
             "window_start": "2026-08-31",
             "window_end": "2026-11-16",
             "expected_sessions": 55,
-            "valid_closes": 54,
-            "missing_dates": [
-              "2026-11-16"
-            ],
+            "valid_closes": 55,
+            "missing_dates": [],
             "sma20_dates": [
-              "2026-10-19",
               "2026-10-20",
               "2026-10-21",
               "2026-10-22",
@@ -957,10 +997,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "sma50_dates": [
-              "2026-09-04",
               "2026-09-08",
               "2026-09-09",
               "2026-09-10",
@@ -1009,13 +1049,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-16",
-                "2026-10-19"
-              ],
               [
                 "2026-10-19",
                 "2026-10-20"
@@ -1091,9 +1128,56 @@
               [
                 "2026-11-12",
                 "2026-11-13"
+              ],
+              [
+                "2026-11-13",
+                "2026-11-16"
               ]
             ],
             "r5_anchor_date": "2026-11-09"
+          },
+          "sma20": 50.4905,
+          "sma50": 53.8188,
+          "hv20": 0.24968292114415427,
+          "r5": -0.00929772502472792,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 50.08
+          },
+          "candidate": {
+            "ric": "BACK272605200.U",
+            "type": "call",
+            "strike": 52.0,
+            "expiry": "2026-11-27",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-16",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 21001.0,
+            "exposure": 18999.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 21001.0,
+            "by_ticker": {
+              "BAC": 5008.0,
+              "KO": 9948.0,
+              "PFE": 2886.0,
+              "F": 1157.0
+            }
           }
         },
         {
@@ -1101,9 +1185,9 @@
           "decision": "No Trade",
           "eligible": false,
           "reasons": [
-            "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+            "Two-strikes-OTM fallback fails cost-basis/2%-above-close constraints"
           ],
-          "category": "Technical filter passed",
+          "category": "Option unavailable",
           "technical_status": "Technical filter passed",
           "close": 99.48,
           "price_date": "2026-11-16",
@@ -1279,16 +1363,22 @@
             "trend": true,
             "volatility": true,
             "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 99.48
           }
         },
         {
           "ticker": "PFE",
-          "decision": "No Trade",
-          "eligible": false,
+          "decision": "Sell Covered Call",
+          "eligible": true,
           "reasons": [
-            "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+            "Fallback: two observed strikes above ATM; both price floors checked"
           ],
-          "category": "Technical filter passed",
+          "category": "Proposed order",
           "technical_status": "Technical filter passed",
           "close": 28.86,
           "price_date": "2026-11-16",
@@ -1464,30 +1554,60 @@
             "trend": true,
             "volatility": true,
             "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 28.86
+          },
+          "candidate": {
+            "ric": "PFEK272603000.U",
+            "type": "call",
+            "strike": 30.0,
+            "expiry": "2026-11-27",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-16",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 21001.0,
+            "exposure": 18999.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 21001.0,
+            "by_ticker": {
+              "BAC": 5008.0,
+              "KO": 9948.0,
+              "PFE": 2886.0,
+              "F": 1157.0
+            }
           }
         },
         {
           "ticker": "F",
-          "decision": "No Trade",
-          "eligible": false,
+          "decision": "Sell Covered Call",
+          "eligible": true,
           "reasons": [
-            "Latest completed exchange session close is missing/stale",
-            "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+            "Fallback: two observed strikes above ATM; both price floors checked"
           ],
-          "category": "Data unavailable",
-          "technical_status": "Data unavailable",
-          "close": null,
-          "price_date": null,
+          "category": "Proposed order",
+          "technical_status": "Technical filter failed",
+          "close": 11.57,
+          "price_date": "2026-11-16",
           "observation_window": {
             "window_start": "2026-08-31",
             "window_end": "2026-11-16",
             "expected_sessions": 55,
-            "valid_closes": 54,
-            "missing_dates": [
-              "2026-11-16"
-            ],
+            "valid_closes": 55,
+            "missing_dates": [],
             "sma20_dates": [
-              "2026-10-19",
               "2026-10-20",
               "2026-10-21",
               "2026-10-22",
@@ -1506,10 +1626,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "sma50_dates": [
-              "2026-09-04",
               "2026-09-08",
               "2026-09-09",
               "2026-09-10",
@@ -1558,13 +1678,10 @@
               "2026-11-10",
               "2026-11-11",
               "2026-11-12",
-              "2026-11-13"
+              "2026-11-13",
+              "2026-11-16"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-16",
-                "2026-10-19"
-              ],
               [
                 "2026-10-19",
                 "2026-10-20"
@@ -1640,20 +1757,133 @@
               [
                 "2026-11-12",
                 "2026-11-13"
+              ],
+              [
+                "2026-11-13",
+                "2026-11-16"
               ]
             ],
             "r5_anchor_date": "2026-11-09"
+          },
+          "sma20": 12.121,
+          "sma50": 12.4984,
+          "hv20": 0.3122868574000494,
+          "r5": -0.07587859424920118,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 11.57
+          },
+          "candidate": {
+            "ric": "FK272601250.U",
+            "type": "call",
+            "strike": 12.5,
+            "expiry": "2026-11-27",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-16",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 21001.0,
+            "exposure": 18999.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 21001.0,
+            "by_ticker": {
+              "BAC": 5008.0,
+              "KO": 9948.0,
+              "PFE": 2886.0,
+              "F": 1157.0
+            }
           }
         }
       ],
-      "capital": null,
-      "proposed_orders": null,
-      "order_count": null
+      "capital": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 21001.0,
+        "exposure": 18999.0,
+        "put_collateral": 0.0,
+        "uncommitted_cash": 21001.0,
+        "by_ticker": {
+          "BAC": 5008.0,
+          "KO": 9948.0,
+          "PFE": 2886.0,
+          "F": 1157.0
+        }
+      },
+      "capital_before": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 21001.0,
+        "exposure": 18999.0,
+        "put_collateral": 0.0,
+        "uncommitted_cash": 21001.0,
+        "by_ticker": {
+          "BAC": 5008.0,
+          "KO": 9948.0,
+          "PFE": 2886.0,
+          "F": 1157.0
+        }
+      },
+      "proposed_orders": [
+        {
+          "id": "fin535-demo-bac-call-2026-11-17",
+          "for": "2026-11-17",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 10098,
+          "contract": "call",
+          "expiry": "2026-11-27",
+          "strike": 52.0,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-pfe-call-2026-11-17",
+          "for": "2026-11-17",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 11031,
+          "contract": "call",
+          "expiry": "2026-11-27",
+          "strike": 30.0,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-f-call-2026-11-17",
+          "for": "2026-11-17",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 9599491,
+          "contract": "call",
+          "expiry": "2026-11-27",
+          "strike": 12.5,
+          "ref": "prev_close"
+        }
+      ],
+      "order_count": 3
     }
   ],
   "production_orders_changed": false,
   "production_order_hashes": [
-    "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
-    "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    "c5685d2be8fbe42a1668c76452fe52e57997cd43d6e67c13c64adbc0bc41f7ef",
+    "c5685d2be8fbe42a1668c76452fe52e57997cd43d6e67c13c64adbc0bc41f7ef"
   ]
 }
