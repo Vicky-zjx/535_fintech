@@ -82,7 +82,9 @@ identifiers/book; this is the remaining external setup for actual order generati
   adjustment convention, retrieved afresh; this forward planner does not claim a
   point-in-time historical backtest. Null closes are retained and block validation.
 - Current discovery candidates only, 3–10 calendar DTE from the **target session**,
-  eligible expiry closest to7 (earlier tie). No synthetic RIC construction/strike grid.
+  observed expiry closest to7 (earlier tie), chosen before the strike test. If that
+  expiry has no qualifying strike, skip rather than silently changing the tenor.
+  No synthetic RIC construction/strike grid.
 - Ordinary zero-padded-day OPRA RICs are parsed and compared to discovery descriptions.
   LotSize100, USD, Standard, American and underlying identity must agree. Exclusions
   are saved. This is current reference verification, not proof of historical listing.
@@ -150,3 +152,28 @@ No promised performance, historical returns, premiums, fills or illustrative acc
 balances are displayed as actual. Evaluate a future baseline using identical data,
 window, costs and fill assumptions. Track total return, MDD, Sharpe, receipts versus
 P&L, assignment, exposure and costs only once real supporting history exists.
+
+## Verified implementation run — 2026-11-16
+
+The [third live verification](https://github.com/Vicky-zjx/535_fintech/actions/runs/43815983908)
+opened the direct Platform session without Workspace, retrieved 86 actual close
+observations per ticker through 2026-11-13, and verified 84 BAC, 92 KO, 80 PFE and
+80 F standard OPRA candidates (336 total). The raw discovery also contained 54
+nonstandard/foreign identifiers, all excluded with reasons. NYSE listing versus
+consolidated-underlying search and display-name header differences were found in
+real responses and fixed, with regression tests.
+
+The proposed target session was 2026-11-16. BAC and F failed the trend screen;
+KO and PFE passed the three price-based filters. This is **not** an order approval:
+the account file and all four course conids are missing, LSEG denied access to the
+requested earnings fields, and dated DELTA_EXCH retrieval was unavailable. The
+planner has a documented listed-strike fallback for missing Greeks, not for missing
+earnings/account information. Orders were not changed; both initial arrays remain
+empty. The workflow tested and published diagnostics successfully but deliberately
+ended with a failed/blocked evaluation, not a claimed successful trading run.
+
+Local verification: 45 Final Project Python tests, 20 existing LSEG Python tests,
+4 site-layout tests, 7 Final Project DOM tests and 4 existing chart DOM tests passed
+(80 total). Publication JSON/SVG/link checks and YAML parsing passed separately.
+Browser checks at 390px and desktop width confirmed the SVG, four ticker rows,
+seven navigation links, no horizontal page overflow and no console errors.

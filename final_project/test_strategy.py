@@ -207,6 +207,11 @@ class StrategyTests(unittest.TestCase):
         self.m['tickers']['BAC']['contracts'] = [dict(original, expiry='2026-11-27')]
         self.assertFalse(self.decision(self.go())['eligible'])
 
+    def test_no_silent_expiry_change_when_nearest_has_no_valid_strike(self):
+        original = self.m['tickers']['BAC']['contracts'][0]
+        self.m['tickers']['BAC']['contracts'].append(dict(original, expiry='2026-11-23', strike=80, ric='TEST-ITM'))
+        self.assertFalse(self.decision(self.go())['eligible'])
+
     def test_rank_by_hv_then_ticker(self):
         self.a['cash'] = self.a['equity'] = 20000.
         r = self.go()

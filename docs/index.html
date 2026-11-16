@@ -350,8 +350,9 @@
             <ul>
               <li>
                 Actual observed OTM puts, 3–10 calendar DTE measured from the
-                order’s <code>for</code> date; prefer the eligible expiry
-                closest to 7 days (earlier on a tie).
+                order’s <code>for</code> date; choose the observed expiry
+                closest to 7 days (earlier on a tie), then test strikes. If none
+                qualifies, skip rather than silently changing the tenor.
               </li>
               <li>
                 Closest absolute delta to 0.25 when the eligible expiry slice

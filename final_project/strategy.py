@@ -34,6 +34,10 @@ def select_contract(contracts, phase, session, close, cost_basis, as_of):
     valid = [c for c in contracts if c['type'] == phase and c.get('terms_verified') is True
              and c.get('multiplier') == 100 and c.get('observed_on') == as_of
              and 3 <= (date.fromisoformat(c['expiry'])-date.fromisoformat(session)).days <= 10]
+    if not valid:
+        return None, 'No observed standard expiry within 3–10 DTE; candidate set may be incomplete'
+    expiry = min({c['expiry'] for c in valid}, key=lambda e: (abs((date.fromisoformat(e)-date.fromisoformat(session)).days-7), e))
+    valid = [c for c in valid if c['expiry'] == expiry]
     if phase == 'put':
         valid = [c for c in valid if 0 < c['strike'] < close]
     else:
@@ -42,8 +46,7 @@ def select_contract(contracts, phase, session, close, cost_basis, as_of):
         valid = [c for c in valid if c['strike'] >= max(1.01*cost_basis, 1.02*close)]
     if not valid:
         return None, 'No observed standard contract satisfies DTE/strike constraints; candidate set may be incomplete'
-    expiry = min({c['expiry'] for c in valid}, key=lambda e: (abs((date.fromisoformat(e)-date.fromisoformat(session)).days-7), e))
-    near = [c for c in valid if c['expiry'] == expiry]
+    near = valid
     reliable = [c for c in near if c.get('delta_date') == as_of and type(c.get('delta')) in (int, float)
                 and math.isfinite(c['delta']) and ((-1 < c['delta'] < 0) if phase == 'put' else (0 < c['delta'] < 1))]
     # Partial delta coverage can bias selection: fallback uses the whole observed slice.
