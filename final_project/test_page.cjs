@@ -44,3 +44,10 @@ test('Real-shaped validated observations populate labels and charts',async()=>{
   const e=await render({...baseline,status:'blocked',calendar:{as_of:'2026-11-13',target_session:'2026-11-16'},market_data_retrieved_at:'2026-11-16T03:00:00Z',decisions:[d]});
   assert.match(e.get('decision-rows').textContent,/\$50\.00/);assert.match(e.get('decision-rows').textContent,/30\.00%/);assert.equal(e.get('signal-chart').children[0].tag,'svg');
 });
+test('Negative signal deviations draw left of zero, not positive bars',async()=>{
+  const d={ticker:'BAC',close:45,sma20:46,sma50:48,hv20:.3,r5:-.1,filters:{trend:false},decision:'No Trade',reasons:[]};
+  const e=await render({...baseline,decisions:[d]});
+  const svg=e.get('signal-chart').children[0];
+  const zero=svg.children.find(n=>n.tag==='line').attributes.x1;
+  for(const bar of svg.children.filter(n=>n.tag==='rect'))assert.ok(Number(bar.attributes.x)<Number(zero));
+});

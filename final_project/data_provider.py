@@ -3,10 +3,11 @@ from datetime import date, timedelta
 import hashlib
 import json
 import math
+import os
 import re
 import time
 import pandas as pd
-from lseg_chart.update import query_lseg
+from lseg_chart.update import query_lseg, safe_failure_detail
 from .strategy_config import UNIVERSE
 
 
@@ -18,6 +19,12 @@ def named(frame, fields):
     if frame is None or frame.empty:
         raise ValueError('Empty LSEG response')
     names = [str(x).casefold() for x in frame.columns]
+    aliases = {'ticker symbol': 'tr.tickersymbol', 'price close': 'tr.priceclose',
+               'event start date': 'tr.eventstartdate', 'event type': 'tr.eventtype',
+               'event status': 'tr.eventstatus'}
+    if fields == ['TR.PriceClose.date', 'TR.PriceClose']:
+        aliases['date'] = 'tr.priceclose.date'
+    names = [aliases.get(n, n) for n in names]
     # Known SDK .date header collision; only accept exact declared request order.
     expected = ['instrument'] + [x.casefold() for x in fields]
     collapsed = ['instrument'] + [x.casefold().removesuffix('.date') for x in fields]
@@ -163,13 +170,15 @@ def fetch_market(ctx, retrieved_at):
                 raw['closes'] = table(prices)
                 d['history'] = normalize_closes(prices, ric, start, as_of)
             except Exception as e:
-                d['errors'].append('Price/identity query or validation failed: '+type(e).__name__)
+                d['errors'].append('Price/identity query or validation failed: '+safe_failure_detail(e, os.environ))
             try:
                 lo = str(date.fromisoformat(session)+timedelta(days=3))
                 hi = str(date.fromisoformat(session)+timedelta(days=10))
                 fields = 'RIC,StrikePrice,ExpiryDate,CallPutOption,UnderlyingQuoteRIC,LotSize,Currency,ContractType,ExerciseStyle'
-                chain = paced(ld.discovery.search, view=ld.discovery.Views.SEARCH_ALL, top=1000,
-                    filter=f"SearchAllCategoryv2 eq 'Options' and UnderlyingQuoteRIC eq '{ric}' and ExpiryDate ge {lo} and ExpiryDate le {hi}", select=fields)
+                # The derivative view exposes the lot/contract metadata already
+                # used by the repository's real PMCC capability audit.
+                chain = paced(ld.discovery.search, view=ld.discovery.Views.EQUITY_DERIVATIVE_QUOTES, top=1000,
+                    filter=f"UnderlyingQuoteRIC eq '{ric}' and ExpiryDate ge {lo} and ExpiryDate le {hi}", select=fields)
                 raw['discovery'] = table(chain)
                 if chain is None or len(chain) >= 1000:
                     raise ValueError('Search unavailable or capped; completeness cannot be assessed')
@@ -186,7 +195,7 @@ def fetch_market(ctx, retrieved_at):
                     d['delta_status'] = 'Dated Greeks unavailable; listed-strike fallback: '+type(e).__name__
             except Exception as e:
                 d['options_status'] = 'unavailable'
-                d['errors'].append('Contract discovery/terms validation failed: '+type(e).__name__)
+                d['errors'].append('Contract discovery/terms validation failed: '+safe_failure_detail(e, os.environ))
             try:
                 through = str(date.fromisoformat(session)+timedelta(days=180))
                 events = paced(ld.get_data, [ric], ['TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'],
@@ -194,7 +203,7 @@ def fetch_market(ctx, retrieved_at):
                 raw['earnings'] = table(events)
                 d['earnings'] = earnings_calendar(events, ric, as_of, through)
             except Exception as e:
-                d['earnings'] = {'reliable': False, 'reason': 'Earnings query/validation unavailable: '+type(e).__name__}
+                d['earnings'] = {'reliable': False, 'reason': 'Earnings query/validation unavailable: '+safe_failure_detail(e, os.environ)}
         return out
     return query_lseg(date.fromisoformat(start), date.fromisoformat(as_of), operation=operation)
 

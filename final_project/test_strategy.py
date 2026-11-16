@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from .calendar import context, required_sessions
-from .data_provider import conids_from_course, normalize_closes, normalize_contracts, earnings_calendar
+from .data_provider import conids_from_course, normalize_closes, normalize_contracts, earnings_calendar, named
 from .portfolio import validate_account
 from .run import run
 from .sanji_orders import validate, publish_orders, read_orders
@@ -246,6 +246,10 @@ class StrategyTests(unittest.TestCase):
 
 
 class DataTests(unittest.TestCase):
+    def test_observed_display_name_header_despite_header_type_name(self):
+        df = pd.DataFrame([['BAC.N', 'BAC']], columns=['Instrument', 'Ticker Symbol'])
+        self.assertEqual(named(df, ['TR.TickerSymbol']).iloc[0]['TR.TickerSymbol'], 'BAC')
+
     def test_duplicate_date_headers(self):
         df = pd.DataFrame([['BAC.N', '2026-11-13', 50]], columns=['Instrument', 'TR.PriceClose', 'TR.PriceClose'])
         self.assertEqual(normalize_closes(df, 'BAC.N', '2026-11-01', '2026-11-13')[0]['close'], 50.)
