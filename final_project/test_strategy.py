@@ -317,6 +317,28 @@ class DataTests(unittest.TestCase):
             self.assertEqual(d['errors'], [])
             self.assertNotIn('earnings', d); self.assertNotIn('earnings', result['raw'][t])
 
+    def test_latest_close_recheck_requires_actual_date_not_requested_date(self):
+        for stale in (False, True):
+            market, _, _ = fixture(); as_of=market['calendar']['as_of']
+            def get_data(universe, fields, **kwargs):
+                ric=universe[0]; ticker=ric.split('.')[0]
+                if fields == ['TR.TickerSymbol']:
+                    return pd.DataFrame([[ric,ticker]],columns=['Instrument']+fields)
+                history=market['tickers'][ticker]['history']
+                if kwargs['parameters']['SDate'] == as_of:
+                    rows=history[-2:-1] if stale else history[-1:]
+                else:
+                    rows=history[:-1]
+                return pd.DataFrame([[ric,r['date'],r['close']] for r in rows],columns=['Instrument']+fields)
+            ld=SimpleNamespace(get_data=Mock(side_effect=get_data),HeaderType=SimpleNamespace(NAME='NAME'),
+                discovery=SimpleNamespace(Views=SimpleNamespace(EQUITY_DERIVATIVE_QUOTES='options'),search=Mock(return_value=pd.DataFrame())))
+            with patch('final_project.data_provider.query_lseg',side_effect=lambda *a,operation:operation(ld)),patch('final_project.data_provider.time.sleep'):
+                result=fetch_market(market['calendar'],'2026-11-16T03:00:00+00:00')
+            for ticker,data in result['tickers'].items():
+                self.assertEqual(any(r['date']==as_of for r in data['history']),not stale)
+                self.assertIn('close_recheck',result['raw'][ticker])
+                self.assertIn('older dated prices not substituted' if stale else 'Verified same-day',data['close_recheck_status'])
+
 
 class PublicationTests(unittest.TestCase):
     def setUp(self):

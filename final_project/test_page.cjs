@@ -8,8 +8,13 @@ const html=fs.readFileSync(path.join(__dirname,'../docs/index.html'),'utf8');
 const script=fs.readFileSync(path.join(__dirname,'../docs/assets/app.js'),'utf8');
 const analysisScript=fs.readFileSync(path.join(__dirname,'../docs/assets/analysis.js'),'utf8');
 const analysis=require('../docs/assets/analysis.js');
-const realStatus=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/strategy_status.json'),'utf8'));
-const realDemo=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/demo_status.json'),'utf8'));
+const currentStatus=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/strategy_status.json'),'utf8'));
+const currentDemo=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/demo_status.json'),'utf8'));
+// Stable dated real evidence for complete-input UI cases, even when today's feed is incomplete.
+// This in-memory test fixture is never written or presented as current production state.
+const realDemo=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/entry_demo_status.json'),'utf8'));
+const realStatus={...currentStatus,calendar:realDemo.calendar,decisions:realDemo.scenarios[0].decisions,
+  market_data_retrieved_at:realDemo.market_retrieved_at,market_snapshot_sha256:realDemo.market_snapshot_sha256,capital:null};
 class Element {
   constructor(tag='div'){this.tag=tag;this.children=[];this.attributes={};this.value='';this.hidden=false;this.classList={add(){}};}
   set textContent(v){this.value=String(v);this.children=[];}
@@ -135,6 +140,19 @@ test('Interpretation leaves all source and example records unchanged',()=>{
   const before=JSON.stringify([realStatus,realDemo]);
   analysis.signalParagraphs(analysis.signalEvidence(realStatus));analysis.hypotheticalCapital(realDemo);
   assert.equal(JSON.stringify([realStatus,realDemo]),before);
+});
+test('Current incomplete market/demo evidence is explicitly withheld, not silently replaced',async()=>{
+  const e=await render(currentStatus,[],false,currentDemo);
+  assert.match(e.get('demo-summary').textContent,/DEMONSTRATION ONLY/);
+  try {analysis.signalEvidence(currentStatus);} catch (_) {
+    assert.match(e.get('signal-discussion').textContent,/withheld/);
+    assert.match(e.get('analysis-source').textContent,/No complete/);
+  }
+  if(currentDemo.scenarios.some(s=>s.account===null)) {
+    assert.match(e.get('demo-results').textContent,/No inventory or cash balance assumed/);
+    assert.match(e.get('demo-results').textContent,/Blocked/);
+  }
+  assert.doesNotMatch(e.get('order-rows').textContent,/fin535-demo-/);
 });
 test('English methodology and formulas are visible without a fabricated performance chart',()=>{
   assert.match(html,/Capital Utilization and Return Measurement/);

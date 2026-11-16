@@ -59,7 +59,7 @@
       return `${d.ticker} ${trend}. HV20 was ${pct(d.hv20)} (${d.filters.volatility ? "passed" : "failed"} the 45% ceiling); R5 was ${pct(d.r5)} (${d.filters.sudden_drop ? "passed" : "failed"} the −8% floor). ${interpretation}`;
     });
     return [overview, ...paragraphs,
-      "A single quiet snapshot cannot show that volatility and drop filters are redundant. Their incremental value requires point-in-time replay across stressed and recovering markets, including opportunities rejected by each gate. This observation demonstrates screening behavior, not avoided losses or profitability."];
+      "A single quiet snapshot cannot show that volatility and drop filters are redundant. The three-year section measures their incremental effect on historical eligibility and overlapping rejections. Whether that selectivity improves investment returns still requires comparable option trades and complete NAV histories; this observation is not proof of avoided losses or profitability."];
   }
   function hypotheticalCapital(demo) {
     if (demo?.mode !== "demonstration" || demo.production_orders_changed !== false ||

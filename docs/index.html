@@ -12,6 +12,8 @@
     <script defer src="../course-nav.js"></script>
     <script defer src="assets/analysis.js"></script>
     <script defer src="assets/app.js"></script>
+    <script defer src="../covered-call/assets/plotly.min.js"></script>
+    <script defer src="assets/history.js"></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -76,160 +78,97 @@
         ><span id="run-time">No verified live evaluation yet</span>
       </div>
       <nav class="section-nav" aria-label="On this page">
-        <a href="#decisions">Monitor</a><a href="#demonstration">Demonstration</a><a href="#universe">Universe</a
-        ><a href="#workflow">Process</a><a href="#rules">Rules</a
-        ><a href="#risk">Capital</a><a href="#analysis">Analysis</a
-        ><a href="#measurement">Measurement</a><a href="#orders">Orders</a
-        ><a href="#reproducibility">Reproduce</a><a href="#evaluation">Evaluation plan</a>
+        <a href="#objective">Hypothesis</a><a href="#workflow">Overview</a><a href="#universe">Universe</a>
+        <a href="#rules">Rules</a><a href="#risk">Risk</a><a href="#historical">Three-year evidence</a>
+        <a href="#decisions">Latest signals</a><a href="#orders">Production orders</a>
+        <a href="#demonstration">Demonstration</a><a href="#measurement">Capital</a>
+        <a href="#analysis">Discussion</a><a href="#evaluation">Limitations</a><a href="#reproducibility">Reproduce</a>
       </nav>
 
-      <section id="decisions">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">01 / PRODUCTION MONITOR</p>
-            <h2>Authoritative-account decisions</h2>
+      <section id="objective" class="discussion">
+        <p class="eyebrow">01 / RESEARCH OBJECTIVE / A HYPOTHESIS, NOT A RESULT</p>
+        <h2>Can selectivity improve the Wheel?</h2>
+        <p>I hypothesize that adding trend, volatility and sudden-drop filters to a multi-asset
+          weekly Wheel may reduce downside exposure compared with an unfiltered Wheel, although
+          these restrictions may reduce premium income and capital utilization.</p>
+        <p>The test below establishes how much the unchanged filters alter historical entry
+          eligibility. It does not yet establish better returns or downside protection: those require
+          comparable option trades, costs and complete NAV histories. Production proposals also
+          require the real course account. A missing account is not a successful no-trade decision.</p>
+      </section>
+
+      <section id="workflow">
+        <p class="eyebrow">02 / THE PROCESS</p>
+        <h2>From the nightly book to the next session.</h2>
+        <div class="workflow-layout">
+          <figure class="workflow">
+            <img
+              src="assets/strategy-workflow.svg"
+              width="560"
+              height="1100"
+              alt="Nightly workflow: collect completed LSEG data and the Sanji account; inspect BAC, KO, PFE and F positions; screen new puts or covered calls; check capital; write identical dated JSON orders; commit and publish. Put assignment creates shares; call assignment returns the account to cash."
+            />
+            <figcaption>
+              <a href="assets/strategy-workflow.svg"
+                >Open the editable SVG at full size</a
+              >
+            </figcaption>
+          </figure>
+          <div class="process-notes">
+            <h3>The Wheel, one phase at a time</h3>
+            <ol class="steps">
+              <li>
+                <strong>Cash → short put</strong>
+                <p>
+                  Sell one OTM put and reserve strike × 100 in cash. The premium
+                  is a receipt, not the strategy’s net profit.
+                </p>
+              </li>
+              <li>
+                <strong>Put assignment → shares</strong>
+                <p>
+                  If assigned, buy 100 shares at the strike. If the put expires
+                  without assignment, wait for the next weekly put-entry
+                  session.
+                </p>
+              </li>
+              <li>
+                <strong>Shares → covered call</strong>
+                <p>
+                  After Sanji confirms the stock position, evaluate a call for
+                  the next session. Keep at least 100 unencumbered shares behind
+                  it.
+                </p>
+              </li>
+              <li>
+                <strong>Call assignment → cash</strong>
+                <p>
+                  If called away, return to the cash phase. Otherwise retain
+                  shares and evaluate another qualifying call.
+                </p>
+              </li>
+            </ol>
+            <aside class="note">
+              <h3>The book is authoritative</h3>
+              <p>
+                Sanji owns fills, expiry and assignment. This algorithm reads
+                the updated book; it never edits positions or invents fills.
+                Existing short options and pending orders prevent duplicate
+                exposure.
+              </p>
+            </aside>
+            <p>
+              No rolls, stop-losses, naked calls or borrowing. Stock losses can
+              exceed all premiums collected.
+            </p>
           </div>
-          <span id="target-session" class="mono"
-            >Target session: not yet evaluated</span
-          >
         </div>
-        <p class="muted" id="decision-note">
-          Only validated inputs appear here. Missing data is not a no-trade
-          signal.
-        </p>
-        <div id="issues" class="notice" role="status">
-          Live data not yet available.
-        </div>
-        <div
-          class="table-wrap"
-          tabindex="0"
-          aria-label="Strategy decisions; scroll horizontally on narrow screens"
-        >
-          <table>
-            <caption class="sr-only">
-              Current observations, filters and decisions for each ticker
-            </caption>
-            <thead>
-              <tr>
-                <th>Ticker / close date</th>
-                <th>Close</th>
-                <th>SMA20</th>
-                <th>SMA50</th>
-                <th>HV20</th>
-                <th>R5</th>
-                <th>Position</th>
-                <th>Filters / eligibility</th>
-                <th>Decision / reason</th>
-              </tr>
-            </thead>
-            <tbody id="decision-rows">
-              <tr>
-                <td colspan="9">Live data not yet available</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="chart-grid">
-          <figure>
-            <h3>Signal comparison</h3>
-            <div id="signal-chart" class="chart-placeholder">
-              Awaiting validated closing prices and indicators.
-            </div>
-            <figcaption>
-              Close and SMA20 relative to SMA50, in percent. LSEG
-              completed-session closes; no filled observations.
-            </figcaption>
-          </figure>
-          <figure>
-            <h3>Capital committed &amp; cash reserve</h3>
-            <div id="capital-chart" class="chart-placeholder">
-              Awaiting a reconciled Sanji account.
-            </div>
-            <figcaption>
-              Production account only: stock market value + put strike collateral,
-              versus uncommitted cash. Collateral is included in exposure, not
-              added twice. No hypothetical balance is substituted.
-            </figcaption>
-          </figure>
-        </div>
-        <details>
-          <summary>Data quality and latest attempt</summary>
-          <div id="data-quality">No live query has been verified.</div>
-          <p>
-            <a href="data/strategy_status.json">Decision diagnostics JSON</a> ·
-            <a id="snapshot-link" hidden href="data/market_snapshot.json"
-              >Retained LSEG response snapshot</a
-            >
-          </p>
-        </details>
-      </section>
-
-      <section id="analysis" class="discussion" aria-labelledby="analysis-title">
-        <p class="eyebrow">CURRENTLY SUPPORTED ANALYSIS / NOT PERFORMANCE</p>
-        <h2 id="analysis-title">What the market screen tells us.</h2>
-        <p id="analysis-source" class="muted">Waiting for dated, validated signal evidence.</p>
-        <div id="signal-discussion" aria-live="polite">
-          <p>Financial interpretation requires a verified saved market evaluation.
-            An unavailable input is not a negative trading signal.</p>
-        </div>
-        <p id="pipeline-discussion">Final order eligibility also requires the authoritative
-          account, verified stock identifiers, a usable option contract and sufficient reserved capital.</p>
-        <h3>Different missing inputs have different consequences</h3>
-        <div class="table-wrap" tabindex="0" aria-label="Evidence availability and its implications">
-          <table><thead><tr><th>Layer</th><th>Current evidence</th><th>What it permits — or prevents</th></tr></thead>
-            <tbody id="availability-rows"><tr><td colspan="3">Published diagnostics have not loaded; no account state is assumed.</td></tr></tbody>
-          </table>
-        </div>
-        <h3>What these decisions establish</h3>
-        <p>The screen makes the willingness to take new bullish exposure conditional on observable
-          inputs. It can reject a stock for weak trend alignment even when its recent volatility
-          is acceptable. Refusing an order when the account cannot be checked
-          is a separate control: it prevents an unverified obligation rather than predicting a loss.
-          Neither kind of refusal tells us what an executed trade would have earned.</p>
-        <p>The present evidence supports a working decision policy and an auditable separation of
-          inputs, filters and proposals. It does not test the hypothesis that premium collection
-          improves risk-adjusted returns. That requires actual executions or a separately specified,
-          point-in-time simulation, with the losses and missed opportunities included.</p>
-      </section>
-
-      <section id="demonstration" aria-labelledby="demo-title">
-        <p class="eyebrow">ISOLATED DEMONSTRATION / NOT AN ACTUAL ACCOUNT</p>
-        <h2 id="demo-title">Real market inputs. Hypothetical $40,000 books.</h2>
-        <p>These independent examples use the same current Wheel engine and remaining risk checks.
-          They are not actual Sanji orders, fills, assignments, or a performance backtest.
-          Production still requires the authoritative account; no example writes to either production order file.</p>
-        <p class="notice" id="demo-summary">Demonstration results have not loaded.</p>
-        <div id="demo-results"></div>
-        <details>
-          <summary>Verified identifiers, remaining inputs, and reproduction</summary>
-          <p>IBKR public search and security definitions independently confirm NYSE / USD common stocks:
-            BAC 10098; KO 8894; PFE 11031; F 9599491.
-            This verifies identity, not enrollment or option-price coverage in the course database.
-            Production validates the configured static conids against this evidence and rejects any conflicting course mapping.
-            No nightly IBKR login is required; missing course coverage remains an execution-readiness limitation.</p>
-          <p>The account file is the first current production blocker. The native Sanji account format,
-            authoritative balances, complete positions, cost bases, marks, and resolution history must come
-            from the course producer. Its update must finish before nightly planning.
-            The professor documents that Sanji does not yet resolve orders; generating a valid JSON proposal does not require an active resolver.</p>
-          <p>Earnings screening was intentionally removed from the strategy, not temporarily bypassed for missing data.
-            No earnings dates are requested or used. Account, technical, capital and position checks remain in force.
-            Missing same-session Greeks use only the existing listed-strike fallback.</p>
-          <p><a href="data/conid_verification.json">IBKR verification evidence</a> ·
-            <a href="data/demo_status.json">Example accounts and full decision audit</a> ·
-            <a href="data/demo_cash_start_orders.json">Cash-start example JSON</a> ·
-            <a href="data/demo_covered_inventory_orders.json">Covered-inventory example JSON</a></p>
-          <p><code>python -m final_project.demo</code> reproduces these isolated examples from the retained real LSEG response.
-            <code>python -m final_project.run --replay</code> re-evaluates production dependencies without querying APIs or writing orders.
-            <code>python -m final_project.run</code> queries fresh data and plans production orders only from an authoritative account.</p>
-          <p class="muted">The retained raw response is unchanged audit evidence from before this policy revision;
-            any legacy event-field responses in it are unused, not current strategy inputs or blockers.</p>
-        </details>
       </section>
 
       <section id="universe">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">02 / PREDEFINED, NOT OPTIMIZED</p>
+            <p class="eyebrow">03 / PREDEFINED, NOT OPTIMIZED</p>
             <h2>The investment universe</h2>
           </div>
         </div>
@@ -296,74 +235,6 @@
             one contract per ticker is not an equal-dollar or equal-risk portfolio. A lower share price
             reduces the dollar obligation of a comparable put strike, not the probability of a severe loss.</p>
           <p id="lot-size-note" class="muted">Per-lot dollar comparisons await verified closing prices.</p>
-        </div>
-      </section>
-
-      <section id="workflow">
-        <p class="eyebrow">03 / THE PROCESS</p>
-        <h2>From the nightly book to the next session.</h2>
-        <div class="workflow-layout">
-          <figure class="workflow">
-            <img
-              src="assets/strategy-workflow.svg"
-              width="560"
-              height="1100"
-              alt="Nightly workflow: collect completed LSEG data and the Sanji account; inspect BAC, KO, PFE and F positions; screen new puts or covered calls; check capital; write identical dated JSON orders; commit and publish. Put assignment creates shares; call assignment returns the account to cash."
-            />
-            <figcaption>
-              <a href="assets/strategy-workflow.svg"
-                >Open the editable SVG at full size</a
-              >
-            </figcaption>
-          </figure>
-          <div class="process-notes">
-            <h3>The Wheel, one phase at a time</h3>
-            <ol class="steps">
-              <li>
-                <strong>Cash → short put</strong>
-                <p>
-                  Sell one OTM put and reserve strike × 100 in cash. The premium
-                  is a receipt, not the strategy’s net profit.
-                </p>
-              </li>
-              <li>
-                <strong>Put assignment → shares</strong>
-                <p>
-                  If assigned, buy 100 shares at the strike. If the put expires
-                  without assignment, wait for the next weekly put-entry
-                  session.
-                </p>
-              </li>
-              <li>
-                <strong>Shares → covered call</strong>
-                <p>
-                  After Sanji confirms the stock position, evaluate a call for
-                  the next session. Keep at least 100 unencumbered shares behind
-                  it.
-                </p>
-              </li>
-              <li>
-                <strong>Call assignment → cash</strong>
-                <p>
-                  If called away, return to the cash phase. Otherwise retain
-                  shares and evaluate another qualifying call.
-                </p>
-              </li>
-            </ol>
-            <aside class="note">
-              <h3>The book is authoritative</h3>
-              <p>
-                Sanji owns fills, expiry and assignment. This algorithm reads
-                the updated book; it never edits positions or invents fills.
-                Existing short options and pending orders prevent duplicate
-                exposure.
-              </p>
-            </aside>
-            <p>
-              No rolls, stop-losses, naked calls or borrowing. Stock losses can
-              exceed all premiums collected.
-            </p>
-          </div>
         </div>
       </section>
 
@@ -599,47 +470,137 @@
         </div>
       </section>
 
-      <section id="measurement" class="discussion" aria-labelledby="measurement-title">
-        <p class="eyebrow">CAPITAL EFFICIENCY / MEASUREMENT CONVENTIONS</p>
-        <h2 id="measurement-title">Capital Utilization and Return Measurement</h2>
-        <p>Account return measures the change in the owner's full portfolio, including cash.
-          Return on deployed capital asks how much net strategy profit was earned relative to the
-          capital actually committed. Reporting both avoids praising a low-volatility account merely
-          because much of it remained in cash, or hiding that cash's effect on total wealth.</p>
-        <div class="measurement-formulas">
-          <p>Account Return = Net Portfolio P&amp;L / Starting Portfolio Equity</p>
-          <p>Return on Deployed Capital = Net Strategy P&amp;L / Average Deployed Capital</p>
-          <p>Capital Utilization = Deployed Capital / Portfolio Equity</p>
+      <section id="historical" aria-labelledby="history-title">
+        <p class="eyebrow">06 / OBSERVED MARKET DATA / NOT A THREE-YEAR OPTIONS BACKTEST</p>
+        <h2 id="history-title">Three-Year Historical Signal Analysis</h2>
+        <p id="history-status" class="notice">Historical evidence has not loaded; no results assumed.</p>
+        <p>Each weekly entry uses the preceding completed-session close, usually Friday for Monday,
+          with XNYS holidays respected. Daily indicators use only that date and earlier closes.
+          Each valid evaluation requires 50 consecutive observed sessions; missing windows are excluded,
+          never filled or counted as a rejection. Option availability and capital constraints are not
+          simulated in these technical counts.</p>
+        <div class="table-wrap" tabindex="0" aria-label="Observed price coverage">
+          <table><thead><tr><th>Stock</th><th>Observed sample dates</th><th>Observed / expected closes</th><th>Earlier warm-up closes</th><th>Evaluable / sample days</th><th>Evaluable / weekly entries</th></tr></thead>
+            <tbody id="history-coverage"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
         </div>
-        <p>The proposed convention uses each completed session's stock <strong>market value</strong>
-          plus gross strike × 100 for filled short puts; a covered call adds no second stock amount.
-          Average deployed capital will be the arithmetic mean across every trading session in the
-          evaluation period, including cash-only days. Pending puts are also reserved by the planner,
-          but their unfilled reservations will be disclosed separately from capital in executed positions.
-          A mark-based denominator can fall when stocks lose value, so it is not a leverage-adjusted
-          performance measure and must be read alongside account return and drawdown.</p>
-        <p>Evaluation will run between verified opening and closing account snapshots with complete
-          intervening records, not convenient endpoints chosen after seeing returns. Net P&amp;L will
-          include realized and unrealized stock/option gains and losses, dividends and reported cash
-          interest, less actual commissions and fees. Premium receipts are not profit while a short
-          option liability remains. External deposits and withdrawals must be reconciled; the simple
-          account-return formula assumes none, otherwise a flow-adjusted return is required. The
-          capital-return ratio is descriptive and non-annualized, not a time-weighted return or Sharpe.</p>
-        <figure id="demo-allocation" data-evidence-scope="hypothetical">
-          <h3>Hypothetical allocation — not Sanji capital</h3>
-          <div id="demo-capital-chart" class="chart-placeholder">Awaiting a reconciled, explicitly hypothetical example.</div>
-          <figcaption id="demo-capital-note">No actual account allocation is inferred from a demonstration.</figcaption>
-        </figure>
-        <p id="demo-capital-interpretation">The example illustrates a capital stock at one date, not investment performance.</p>
-        <p>Actual account return, return on deployed capital and time-average utilization remain
-          unmeasured until Sanji supplies the book and history. A single starting balance, a candidate
-          option or three valid JSON proposals cannot supply their missing numerators or denominators.</p>
+        <h3>How often do the screens allow a weekly entry?</h3>
+        <div class="table-wrap" tabindex="0" aria-label="Weekly filter pass rates">
+          <table><thead><tr><th>Stock</th><th>Trend</th><th>HV20 ≤ 45%</th><th>R5 ≥ −8%</th><th>All three</th><th>Excluded dates</th></tr></thead>
+            <tbody id="history-weekly"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
+        </div>
+        <div class="chart-grid">
+          <figure><h3>Weekly eligibility by filter</h3><div id="history-filter-chart" class="history-plot"></div>
+            <figcaption>Passes / evaluable weekly entry dates. Individual filters overlap; their pass rates are not additive.</figcaption></figure>
+          <figure><h3>Combined eligibility across calendar years</h3><div id="history-year-chart" class="history-plot"></div>
+            <figcaption>Same rules, different periods. First and last calendar years cover only the stated rolling sample dates.</figcaption></figure>
+        </div>
+        <div id="history-findings" class="discussion" aria-live="polite"><p>Interpretation awaits observed historical counts.</p></div>
+        <details><summary>Daily rates, overlapping rejections and yearly denominators</summary>
+          <p>Every cell reports count / evaluated dates (rate). Daily dates are not all permissible put-entry dates.</p>
+          <div class="table-wrap" tabindex="0"><table><thead><tr><th>Stock</th><th>Daily trend</th><th>Daily HV20</th><th>Daily R5</th><th>Daily combined</th><th>Excluded days</th></tr></thead><tbody id="history-daily"></tbody></table></div>
+          <p>Rejections below are standalone / exclusive. Exclusive means this filter fails while both others pass;
+            it is the number of opportunities restored by removing only that filter, not a profit estimate.</p>
+          <div class="table-wrap" tabindex="0"><table><thead><tr><th>Stock</th><th>Trend rejections</th><th>HV20 rejections</th><th>R5 rejections</th></tr></thead><tbody id="history-overlap"></tbody></table></div>
+          <div class="table-wrap" tabindex="0"><table><thead><tr><th>Entry year</th><th>BAC combined</th><th>KO combined</th><th>PFE combined</th><th>F combined</th></tr></thead><tbody id="history-years"></tbody></table></div>
+        </details>
+        <details><summary>Inspect historical prices and indicators</summary>
+          <label for="history-ticker">Stock</label> <select id="history-ticker"><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select>
+          <figure><h3>Observed close, moving averages, HV20 and five-day return</h3><div id="history-series" class="history-plot"></div>
+            <figcaption>Dotted thresholds are 45% HV20 and −8% R5. No missing observations are connected.</figcaption></figure>
+        </details>
+        <p class="muted">This is a retrospective analysis of four currently selected survivors, not a point-in-time
+          universe-selection test. LSEG adjusted closes are as retrieved, not archived vintage prices;
+          revisions and corporate-action adjustments limit a strict historical replication claim.
+          Thresholds are unchanged, not optimized against these results.</p>
+        <p><a href="data/historical_signals.csv">Daily indicators CSV</a> · <a href="data/historical_signals.json">Complete analysis JSON</a> ·
+          <a href="data/market_snapshot.json">Real LSEG source and raw responses</a></p>
+      </section>
+
+      <section id="decisions">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">07 / PRODUCTION MONITOR</p>
+            <h2>Latest Live Market Signals</h2>
+          </div>
+          <span id="target-session" class="mono"
+            >Target session: not yet evaluated</span
+          >
+        </div>
+        <p class="muted" id="decision-note">
+          Only validated inputs appear here. Missing data is not a no-trade
+          signal.
+        </p>
+        <div id="issues" class="notice" role="status">
+          Live data not yet available.
+        </div>
+        <div
+          class="table-wrap"
+          tabindex="0"
+          aria-label="Strategy decisions; scroll horizontally on narrow screens"
+        >
+          <table>
+            <caption class="sr-only">
+              Current observations, filters and decisions for each ticker
+            </caption>
+            <thead>
+              <tr>
+                <th>Ticker / close date</th>
+                <th>Close</th>
+                <th>SMA20</th>
+                <th>SMA50</th>
+                <th>HV20</th>
+                <th>R5</th>
+                <th>Position</th>
+                <th>Filters / eligibility</th>
+                <th>Decision / reason</th>
+              </tr>
+            </thead>
+            <tbody id="decision-rows">
+              <tr>
+                <td colspan="9">Live data not yet available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="chart-grid">
+          <figure>
+            <h3>Signal comparison</h3>
+            <div id="signal-chart" class="chart-placeholder">
+              Awaiting validated closing prices and indicators.
+            </div>
+            <figcaption>
+              Close and SMA20 relative to SMA50, in percent. LSEG
+              completed-session closes; no filled observations.
+            </figcaption>
+          </figure>
+          <figure>
+            <h3>Capital committed &amp; cash reserve</h3>
+            <div id="capital-chart" class="chart-placeholder">
+              Awaiting a reconciled Sanji account.
+            </div>
+            <figcaption>
+              Production account only: stock market value + put strike collateral,
+              versus uncommitted cash. Collateral is included in exposure, not
+              added twice. No hypothetical balance is substituted.
+            </figcaption>
+          </figure>
+        </div>
+        <details>
+          <summary>Data quality and latest attempt</summary>
+          <div id="data-quality">No live query has been verified.</div>
+          <p>
+            <a href="data/strategy_status.json">Decision diagnostics JSON</a> ·
+            <a id="snapshot-link" hidden href="data/market_snapshot.json"
+              >Retained LSEG response snapshot</a
+            >
+          </p>
+        </details>
       </section>
 
       <section id="orders">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">06 / SIMULATED ORDER QUEUE</p>
+            <p class="eyebrow">08 / SIMULATED ORDER QUEUE</p>
             <h2>Latest open orders</h2>
           </div>
           <a class="text-link" href="../open_orders.json">Download JSON ↗</a>
@@ -677,8 +638,224 @@
         </p>
       </section>
 
+      <section id="demonstration" aria-labelledby="demo-title">
+        <p class="eyebrow">09 / ISOLATED DEMONSTRATION / NOT AN ACTUAL ACCOUNT</p>
+        <h2 id="demo-title">Real market inputs. Hypothetical $40,000 books.</h2>
+        <p>These independent examples use the same current Wheel engine and remaining risk checks.
+          They are not actual Sanji orders, fills, assignments, or a performance backtest.
+          Production still requires the authoritative account; no example writes to either production order file.</p>
+        <p class="notice" id="demo-summary">Demonstration results have not loaded.</p>
+        <div id="demo-results"></div>
+        <details>
+          <summary>First-weekly-session example — separately dated historical replay</summary>
+          <div id="weekly-entry-demo">Archived example has not loaded.</div>
+          <p>A current midweek cash-only book can correctly produce zero new puts. This saved week-start
+            example proves the same engine can generate puts without relaxing the entry schedule.</p>
+          <p><a href="data/entry_demo_cash_start_orders.json">Archived cash-start orders</a> ·
+            <a href="data/entry_demo_status.json">Dated example account and audit</a> ·
+            <a href="data/entry_example_market.json">Unchanged real source snapshot</a></p>
+        </details>
+        <details>
+          <summary>Verified identifiers, remaining inputs, and reproduction</summary>
+          <p>IBKR public search and security definitions independently confirm NYSE / USD common stocks:
+            BAC 10098; KO 8894; PFE 11031; F 9599491.
+            This verifies identity, not enrollment or option-price coverage in the course database.
+            Production validates the configured static conids against this evidence and rejects any conflicting course mapping.
+            No nightly IBKR login is required; missing course coverage remains an execution-readiness limitation.</p>
+          <p>The account file is the first current production blocker. All entries require authoritative
+            cash, equity, a complete position inventory and its date/source. Calls additionally need actual
+            shares and cost bases; existing short options need terms and marks. Pending/resolved orders
+            must reconcile where applicable. A confirmed empty book does not need invented cost bases or fills.
+            Its native schema and update timing must be supplied by the course producer.
+            The professor documents that Sanji does not yet resolve orders; generating a valid JSON proposal does not require an active resolver.</p>
+          <p>Earnings screening was intentionally removed from the strategy, not temporarily bypassed for missing data.
+            No earnings dates are requested or used. Account, technical, capital and position checks remain in force.
+            Missing same-session Greeks use only the existing listed-strike fallback.</p>
+          <p><a href="data/conid_verification.json">IBKR verification evidence</a> ·
+            <a href="data/demo_status.json">Example accounts and full decision audit</a> ·
+            <a href="data/demo_cash_start_orders.json">Cash-start example JSON</a> ·
+            <a href="data/demo_covered_inventory_orders.json">Covered-inventory example JSON</a></p>
+          <p><code>python -m final_project.demo</code> reproduces these isolated examples from the retained real LSEG response.
+            <code>python -m final_project.run --replay</code> re-evaluates production dependencies without querying APIs or writing orders.
+            <code>python -m final_project.run</code> queries fresh data and plans production orders only from an authoritative account.</p>
+          <p class="muted">Only the separately archived week-start response predates the policy revision;
+            legacy event-field responses there are unused audit evidence, not current inputs or blockers.</p>
+        </details>
+      </section>
+
+      <section id="measurement" class="discussion" aria-labelledby="measurement-title">
+        <p class="eyebrow">10 / CAPITAL EFFICIENCY / MEASUREMENT CONVENTIONS</p>
+        <h2 id="measurement-title">Capital Utilization and Return Measurement</h2>
+        <p>Account return measures the change in the owner's full portfolio, including cash.
+          Return on deployed capital asks how much net strategy profit was earned relative to the
+          capital actually committed. Reporting both avoids praising a low-volatility account merely
+          because much of it remained in cash, or hiding that cash's effect on total wealth.</p>
+        <div class="measurement-formulas">
+          <p>Account Return = Net Portfolio P&amp;L / Starting Portfolio Equity</p>
+          <p>Return on Deployed Capital = Net Strategy P&amp;L / Average Deployed Capital</p>
+          <p>Capital Utilization = Deployed Capital / Portfolio Equity</p>
+        </div>
+        <p>The proposed convention uses each completed session's stock <strong>market value</strong>
+          plus gross strike × 100 for filled short puts; a covered call adds no second stock amount.
+          Average deployed capital will be the arithmetic mean across every trading session in the
+          evaluation period, including cash-only days. Pending puts are also reserved by the planner,
+          but their unfilled reservations will be disclosed separately from capital in executed positions.
+          A mark-based denominator can fall when stocks lose value, so it is not a leverage-adjusted
+          performance measure and must be read alongside account return and drawdown.</p>
+        <p>Evaluation will run between verified opening and closing account snapshots with complete
+          intervening records, not convenient endpoints chosen after seeing returns. Net P&amp;L will
+          include realized and unrealized stock/option gains and losses, dividends and reported cash
+          interest, less actual commissions and fees. Premium receipts are not profit while a short
+          option liability remains. External deposits and withdrawals must be reconciled; the simple
+          account-return formula assumes none, otherwise a flow-adjusted return is required. The
+          capital-return ratio is descriptive and non-annualized, not a time-weighted return or Sharpe.</p>
+        <figure id="demo-allocation" data-evidence-scope="hypothetical">
+          <h3>Hypothetical allocation — not Sanji capital</h3>
+          <div id="demo-capital-chart" class="chart-placeholder">Awaiting a reconciled, explicitly hypothetical example.</div>
+          <figcaption id="demo-capital-note">No actual account allocation is inferred from a demonstration.</figcaption>
+        </figure>
+        <p id="demo-capital-interpretation">The example illustrates a capital stock at one date, not investment performance.</p>
+        <p>Actual account return, return on deployed capital and time-average utilization remain
+          unmeasured until Sanji supplies the book and history. A single starting balance, a candidate
+          option or three valid JSON proposals cannot supply their missing numerators or denominators.</p>
+      </section>
+
+      <section id="analysis" class="discussion" aria-labelledby="analysis-title">
+        <p class="eyebrow">11 / CURRENTLY SUPPORTED ANALYSIS / NOT PERFORMANCE</p>
+        <h2 id="analysis-title">Results and Discussion</h2>
+        <p id="analysis-source" class="muted">Waiting for dated, validated signal evidence.</p>
+        <div id="signal-discussion" aria-live="polite">
+          <p>Financial interpretation requires a verified saved market evaluation.
+            An unavailable input is not a negative trading signal.</p>
+        </div>
+        <p id="pipeline-discussion">Final order eligibility also requires the authoritative
+          account, verified stock identifiers, a usable option contract and sufficient reserved capital.</p>
+        <h3>Different missing inputs have different consequences</h3>
+        <div class="table-wrap" tabindex="0" aria-label="Evidence availability and its implications">
+          <table><thead><tr><th>Layer</th><th>Current evidence</th><th>What it permits — or prevents</th></tr></thead>
+            <tbody id="availability-rows"><tr><td colspan="3">Published diagnostics have not loaded; no account state is assumed.</td></tr></tbody>
+          </table>
+        </div>
+        <h3>What these decisions establish</h3>
+        <p>The screen makes the willingness to take new bullish exposure conditional on observable
+          inputs. It can reject a stock for weak trend alignment even when its recent volatility
+          is acceptable. Refusing an order when the account cannot be checked
+          is a separate control: it prevents an unverified obligation rather than predicting a loss.
+          Neither kind of refusal tells us what an executed trade would have earned.</p>
+        <p>The present evidence supports a working decision policy and an auditable separation of
+          inputs, filters and proposals. It does not test the hypothesis that premium collection
+          improves risk-adjusted returns. That requires actual executions or a separately specified,
+          point-in-time simulation, with the losses and missed opportunities included.</p>
+      </section>
+
+      <section id="evaluation">
+        <p class="eyebrow">12 / EVALUATION &amp; LIMITATIONS</p>
+        <h2>Performance Evaluation Pending Sanji Data</h2>
+        <div class="discussion">
+          <p id="performance-pending">Portfolio performance has not yet been calculated because
+            verified Sanji execution and account NAV histories are unavailable. The current analysis
+            concerns real market signals, risk checks and separately labeled hypothetical books.
+            This is a missing evidence dependency, not an unexplained calculation error or a zero return.</p>
+          <h3>The cost of conservative rules</h3>
+          <p>Fewer qualifying entries mean fewer chances to collect premium, while cash can miss a
+            rising market. A volatility cap may exclude precisely the contracts offering the largest
+            premiums; a trend or drop filter may postpone entry until a rebound is already underway.
+            The opposite possibility is that avoiding some entries reduces large losses. Today's
+            rejections establish neither result. Cash drag and avoided losses require an executed
+            or consistently simulated alternative path, not hindsight about rejected stocks.</p>
+          <h3>After assignment, the risk changes</h3>
+          <p>A put assignment exchanges reserved cash for 100 shares at the strike. The obligation
+            becomes direct stock exposure; it is not a new profit, and loss can already exist at the
+            assignment price. Subsequent covered calls exchange some upside for premium. These shares
+            remain exposed when no call satisfies the strike floors, and the new-put filters do not
+            trigger an automatic sale of existing stock. There are no stop-losses or rolls in this policy.</p>
+          <p>Sanji must confirm assignment and available shares before the planner can write a call.
+            American-option exercise can occur before expiry, and dividend-related call assignment
+            can alter both holdings and dividend entitlement. A simulator that simply assumes all
+            options expire on Friday would miss those account transitions. The current planner
+            delegates them to the authoritative book; the hypothetical inventory is not evidence
+            that any assignment occurred.</p>
+          <h3>What a valid performance record would contain</h3>
+          <p>Actual fills, realized premium receipts, net P&amp;L, account return, return on deployed
+            capital, Sharpe, maximum drawdown and assignment frequency are all pending. A current
+            account snapshot alone would not recover that history. Required records include fill
+            IDs, times, quantities and prices; costs; dividends and cash flows; option resolutions;
+            and daily reconciled cash, holdings, marks and NAV. Earlier single-stock assignments are
+            not performance evidence for this four-stock policy.</p>
+          <p>The planned daily Sharpe uses genuine adjacent-session, flow-adjusted account returns,
+            sample standard deviation and √252 annualization. A contemporaneous short-term Treasury
+            risk-free series, dated without look-ahead and converted to daily units, will be specified
+            before evaluating performance; 0% is only a separately labeled sensitivity comparison,
+            not the default claim of excess return. Actual credited cash interest belongs in P&amp;L.
+            A simulated cash-yield assumption must state its source and accrual rule and be compared
+            with a zero-interest sensitivity case. Neither interest series nor performance is calculated here.
+            Maximum drawdown will use the entire flow-adjusted wealth path relative to its running peak,
+            including opening equity (the NAV path when there are no external flows).
+            Missing marks remain missing: full-period statistics will be withheld
+            rather than bridging returns, interpolating NAV or substituting zero. Any partial-sample
+            statistic would have its own dates and explicit limitations.</p>
+          <h3>A comparison to run, not a result already obtained</h3>
+          <p>The proposed baseline is a weekly Wheel on the same four names, retaining cash security,
+            account limits and contract-selection rules but omitting the three
+            technical entry screens. Compare it with this risk-managed version using identical market
+            periods, initial equity, observed contract access, transaction costs, assignment treatment
+            and execution assumptions. This isolates the screens without granting either strategy
+            leverage or better fills. It is a proposed research protocol; the comparison has not run.</p>
+          <p>Sanji history for only the selected strategy cannot reveal fills for the baseline's
+            counterfactual trades. Those would need a separately labeled, point-in-time simulation
+            or parallel course evaluation. Compare net account and deployed-capital returns, utilization,
+            drawdown, Sharpe and assignment frequency together. Keep the rules fixed, then test
+            sensitivity over other periods without selecting parameters on the evaluation sample.</p>
+          <h3>What remains uncertain — and how to resolve it</h3>
+          <p><strong>The IV–RV thesis is untested.</strong> This project has no paired, reliable
+            entry-date implied volatility and subsequent realized-volatility sample for the historical
+            option trades. HV20 is backward-looking stock volatility, not IV. Neither the eligibility
+            analysis nor a put proposal establishes that an implied-volatility premium was earned.</p>
+          <p>Current LSEG discovery is an observed candidate set, not a complete historical chain.
+            A fallback is reproducible within that set but can select differently as coverage changes.
+            Missing dated Greeks prevent a claim that demonstrated proposals are 25-delta trades.
+            A replay needs archived point-in-time chains and contract exclusions, so
+            later discoveries cannot establish earlier availability. The historical section tests variation
+            in eligibility across periods, not regime-specific investment returns, correlation protection
+            or the performance of alternative parameter choices.</p>
+          <p>For production generation, the professor must supply the native Sanji account schema,
+            actual cash/equity and complete positions, plus update-complete timing. Bases, marks and
+            resolution IDs are needed when the corresponding positions or orders exist; a flat confirmed
+            book has no such positions to value. For execution, course enrollment and contract-open coverage
+            for the four verified conids remain unconfirmed. Resolver activation is needed to observe course executions, not to validate a
+            proposal's JSON. No earnings-calendar entitlement or alternative event feed is required.</p>
+          <p>These records can feed a separate, read-only performance report alongside the existing
+            market, decision and order artifacts. That preserves the planner and page layout while
+            adding auditable account evidence; no production balance or fill needs to be invented
+            to make the current website look complete.</p>
+        </div>
+        <div class="limitations">
+          <p>
+            <strong>Earnings-event risk.</strong> The strategy does not screen around earnings announcements
+            and may therefore be exposed to earnings-related price gaps. Trend, volatility and cash-reserve
+            checks do not eliminate this risk.
+          </p>
+          <p>
+            <strong>Equity risk.</strong> Four stocks can decline together. Put
+            assignment can create losses larger than premium income; calls cap
+            upside and do not remove downside.
+          </p>
+          <p>
+            <strong>Execution risk.</strong> Short-dated gamma, overnight gaps,
+            early assignment, dividends, spreads, fees and market-order slippage
+            matter. No fills or fees are invented by the nightly planner.
+          </p>
+          <p>
+            <strong>Data risk.</strong> Observed option coverage may be
+            incomplete. Greeks can be missing or revised. A
+            fallback changes selection—not the facts—and historical replay would
+            need point-in-time snapshots.
+          </p>
+        </div>
+      </section>
+
       <section id="reproducibility">
-        <p class="eyebrow">07 / REPRODUCIBILITY</p>
+        <p class="eyebrow">13 / REPRODUCIBILITY</p>
         <h2>One engine. Two identical order paths.</h2>
         <div class="architecture">
           <article>
@@ -739,107 +916,13 @@
             Sanji documents the order shape but not a complete account-file
             schema. The read-only account adapter is versioned and refuses
             unknown formats. No account has been initialized with illustrative
-            cash. The course’s <code>price_history.json</code> must explicitly
-            bind numeric conids to BAC, KO, PFE and F; company-name guesses are
-            not accepted.
+            cash. Configured conids are cross-checked against official IBKR evidence; an explicitly
+            conflicting course mapping blocks publication. Missing course enrollment does not invalidate
+            verified stock identity, but still prevents a claim of execution readiness. No company-name guessing.
           </p>
+          <p><a href="data/sanji_input_audit.json">Inspected account sources and exact remaining dependencies</a> ·
+            <a href="data/conid_verification.json">Official stock-identity evidence</a></p>
         </details>
-      </section>
-
-      <section id="evaluation">
-        <p class="eyebrow">08 / EVALUATION &amp; LIMITATIONS</p>
-        <h2>Performance Evaluation Pending Sanji Data</h2>
-        <div class="discussion">
-          <p id="performance-pending">Portfolio performance has not yet been calculated because
-            verified Sanji execution and account NAV histories are unavailable. The current analysis
-            concerns real market signals, risk checks and separately labeled hypothetical books.
-            This is a missing evidence dependency, not an unexplained calculation error or a zero return.</p>
-          <h3>The cost of conservative rules</h3>
-          <p>Fewer qualifying entries mean fewer chances to collect premium, while cash can miss a
-            rising market. A volatility cap may exclude precisely the contracts offering the largest
-            premiums; a trend or drop filter may postpone entry until a rebound is already underway.
-            The opposite possibility is that avoiding some entries reduces large losses. Today's
-            rejections establish neither result. Cash drag and avoided losses require an executed
-            or consistently simulated alternative path, not hindsight about rejected stocks.</p>
-          <h3>After assignment, the risk changes</h3>
-          <p>A put assignment exchanges reserved cash for 100 shares at the strike. The obligation
-            becomes direct stock exposure; it is not a new profit, and loss can already exist at the
-            assignment price. Subsequent covered calls exchange some upside for premium. These shares
-            remain exposed when no call satisfies the strike floors, and the new-put filters do not
-            trigger an automatic sale of existing stock. There are no stop-losses or rolls in this policy.</p>
-          <p>Sanji must confirm assignment and available shares before the planner can write a call.
-            American-option exercise can occur before expiry, and dividend-related call assignment
-            can alter both holdings and dividend entitlement. A simulator that simply assumes all
-            options expire on Friday would miss those account transitions. The current planner
-            delegates them to the authoritative book; the hypothetical inventory is not evidence
-            that any assignment occurred.</p>
-          <h3>What a valid performance record would contain</h3>
-          <p>Actual fills, realized premium receipts, net P&amp;L, account return, return on deployed
-            capital, Sharpe, maximum drawdown and assignment frequency are all pending. A current
-            account snapshot alone would not recover that history. Required records include fill
-            IDs, times, quantities and prices; costs; dividends and cash flows; option resolutions;
-            and daily reconciled cash, holdings, marks and NAV. Earlier single-stock assignments are
-            not performance evidence for this four-stock policy.</p>
-          <p>The planned daily Sharpe uses genuine adjacent-session, flow-adjusted account returns,
-            sample standard deviation and √252 annualization, with a disclosed 0% risk-free reference
-            for the course comparison. Actual credited cash interest still belongs in P&amp;L.
-            Maximum drawdown will use the entire flow-adjusted wealth path relative to its running peak,
-            including opening equity (the NAV path when there are no external flows).
-            Missing marks remain missing: full-period statistics will be withheld
-            rather than bridging returns, interpolating NAV or substituting zero. Any partial-sample
-            statistic would have its own dates and explicit limitations.</p>
-          <h3>A comparison to run, not a result already obtained</h3>
-          <p>The proposed baseline is a weekly Wheel on the same four names, retaining cash security,
-            account limits and contract-selection rules but omitting the three
-            technical entry screens. Compare it with this risk-managed version using identical market
-            periods, initial equity, observed contract access, transaction costs, assignment treatment
-            and execution assumptions. This isolates the screens without granting either strategy
-            leverage or better fills. It is a proposed research protocol; the comparison has not run.</p>
-          <p>Sanji history for only the selected strategy cannot reveal fills for the baseline's
-            counterfactual trades. Those would need a separately labeled, point-in-time simulation
-            or parallel course evaluation. Compare net account and deployed-capital returns, utilization,
-            drawdown, Sharpe and assignment frequency together. Keep the rules fixed, then test
-            sensitivity over other periods without selecting parameters on the evaluation sample.</p>
-          <h3>What remains uncertain — and how to resolve it</h3>
-          <p>Current LSEG discovery is an observed candidate set, not a complete historical chain.
-            A fallback is reproducible within that set but can select differently as coverage changes.
-            Missing dated Greeks prevent a claim that demonstrated proposals are 25-delta trades.
-            A replay needs archived point-in-time chains and contract exclusions, so
-            later discoveries cannot establish earlier availability. Different regimes, correlated
-            declines and parameter sensitivity also remain untested.</p>
-          <p>The professor must supply the native Sanji account schema, authoritative balances and
-            complete positions, stock bases, option marks, fill/resolution histories, and an update-complete
-            signal. The course feed must enroll all four tickers with explicit conids and contract-open
-            coverage. Resolver activation is needed to observe course executions, not to validate a
-            proposal's JSON. No earnings-calendar entitlement or alternative event feed is required.</p>
-          <p>These records can feed a separate, read-only performance report alongside the existing
-            market, decision and order artifacts. That preserves the planner and page layout while
-            adding auditable account evidence; no production balance or fill needs to be invented
-            to make the current website look complete.</p>
-        </div>
-        <div class="limitations">
-          <p>
-            <strong>Earnings-event risk.</strong> The strategy does not screen around earnings announcements
-            and may therefore be exposed to earnings-related price gaps. Trend, volatility and cash-reserve
-            checks do not eliminate this risk.
-          </p>
-          <p>
-            <strong>Equity risk.</strong> Four stocks can decline together. Put
-            assignment can create losses larger than premium income; calls cap
-            upside and do not remove downside.
-          </p>
-          <p>
-            <strong>Execution risk.</strong> Short-dated gamma, overnight gaps,
-            early assignment, dividends, spreads, fees and market-order slippage
-            matter. No fills or fees are invented by the nightly planner.
-          </p>
-          <p>
-            <strong>Data risk.</strong> Observed option coverage may be
-            incomplete. Greeks can be missing or revised. A
-            fallback changes selection—not the facts—and historical replay would
-            need point-in-time snapshots.
-          </p>
-        </div>
       </section>
       <footer>
         <p>FIN 535 · Vicky · Course simulation</p>

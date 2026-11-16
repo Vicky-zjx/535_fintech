@@ -560,6 +560,11 @@ footer p {
 .allocation-track span { display: block; height: 100%; background: #32668f; }
 .allocation-row + .allocation-row .allocation-track span { background: #91adbf; }
 #availability-rows td { min-width: 190px; }
+.history-plot { width: 100%; min-width: 0; min-height: 340px; }
+#historical .chart-grid > figure { min-width: 0; padding: 18px 10px; }
+#history-findings { margin-top: 28px; }
+#historical td:last-child { min-width: 105px; }
+#history-ticker { padding: 6px 20px 6px 8px; margin: 0 0 18px 10px; color: var(--ink); background: white; border: 1px solid var(--line); }
 @media (max-width: 1000px) {
   .hero {
     gap: 30px;

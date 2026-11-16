@@ -168,7 +168,7 @@
       ["Technical screen", evidence ? evidence.passed.length+" of 4 pass; "+evidence.rows.filter(d=>!d.technical).map(d=>d.ticker+": "+d.failed.join(", ")).join("; ") : "Complete validated comparison unavailable",
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
       ["Sanji account", s.account_status || "No verified account status",
-        "Need authoritative cash, equity, all positions, bases, option marks and resolved IDs. An assumed $40,000 account cannot establish production capacity."],
+        "Need authoritative cash, equity and all positions; bases, option marks and resolution IDs when relevant to held positions or prior orders. An assumed $40,000 account cannot establish production capacity."],
       ["Stock identifiers", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four static conids validated against official IBKR evidence",
         "Literal strike/expiry proposals use verified stock identities. Course conflicts block publication; no nightly IBKR login is required."],
       ["Course execution coverage", (s.pipeline_audit?.course_coverage_unconfirmed || []).length ? "Course binding unconfirmed for "+s.pipeline_audit.course_coverage_unconfirmed.join(", ") : "Inspect the separate course coverage audit",
@@ -343,7 +343,7 @@
       const h = document.createElement('h3');
       h.textContent = s.id === 'cash_start' ? 'Example A — cash-only starting portfolio' : 'Example B — assumed covered inventory';
       const account = document.createElement('p');
-      account.textContent = s.description + ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) +
+      account.textContent = s.description + (s.account ? ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) : ' No inventory or cash balance assumed.') +
         '. Proposed orders: ' + (s.order_count ?? 'Blocked') + '. Evaluation completed is not a claim that every input passed.';
       block.append(h, account);
       for (const d of s.decisions) {

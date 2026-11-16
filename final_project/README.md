@@ -3,6 +3,79 @@
 Simulation-only Final Project for FIN 535. Website: [Final Project](https://vicky-zjx.github.io/535_fintech/docs/).
 Earlier assignments and their real caches are independent and unchanged.
 
+## Current implementation — three-year analysis and verified identities
+
+**Production is not complete:** no authoritative account was found. The root and
+`mkt/open_orders.json` remain byte-identical and unchanged. No Canvas submission.
+
+Configured static IDs: **BAC 10098, KO 8894, PFE 11031, F 9599491**. Official IBKR
+public search/security definitions independently verify ticker, issuer, NYSE, USD,
+US common stock. `resolve_identifiers` checks the static mapping against retained
+official evidence and rejects conflicting course mappings. No nightly IBKR login.
+The accessible course history only identifies Apple: course execution coverage for
+these IDs remains unconfirmed, not their stock identity. This does not block literal
+strike/expiry JSON generation when a valid account exists, but prevents claiming
+that Sanji can resolve/fill it. `sanji_input_audit.json` lists sources inspected.
+
+Account dependency is conditional: all orders need actual dated cash, equity and
+complete positions. Calls need shares and actual bases; held shorts require terms,
+marks and collateral. Reconcile pending/resolved orders where applicable. A confirmed
+flat book needs no fictional bases or historical fills. The professor must provide
+the native account schema/book and update-complete timing. Resolver activation is an
+execution requirement, not a JSON-generation requirement.
+
+`historical.py` requests a rolling three years ending at the latest completed XNYS
+session, plus 50 earlier exchange sessions. Real `TR.PriceClose.date`/`TR.PriceClose`
+responses remain in the source snapshot. No synthetic data, interpolation or missing
+session compression. The analysis writes `docs/data/historical_signals.json` and
+`historical_signals.csv`, including source hash, actual coverage, null dates, rolling
+indicators, daily/weekly pass rates, yearly counts and joint eligibility. Warm-up
+rows do not count in the analysis. A historical weekly entry uses the previous
+completed session, never its own closing price; XNYS holidays are respected.
+Only fully observed four-stock dates enter the multi-stock denominator. Standalone
+rejection counts overlap; exclusive counts measure the incremental effect of one gate.
+Partial data stays partial. Float recomputation tolerates 1e-12 CPU roundoff only;
+dates, decisions, counts, IDs and nulls must match exactly.
+
+This tests **technical eligibility**, not options P&L. Current fixed survivors and
+as-retrieved adjusted closes are not a vintage universe. Corporate-action revisions
+and survivorship remain limitations. Thresholds have not been retuned. No historical
+premiums, fills, assignments, profits, Sharpe or drawdowns are invented.
+
+The unchanged real November 13 snapshot targeting November 16 is separately retained
+as `entry_example_market.json`. `demo --weekly-entry-example` writes `entry_demo_*`
+outputs: two cash-start puts (KO 96/PFE 28, November 20 expiry) and three calls in a
+separate assumed-stock account. These are dated historical proposals, not today's
+orders. Current examples continue to read the latest real response; a midweek flat
+book can legitimately generate zero puts. Missing closes block an example instead
+of assigning stale stock marks. The published website distinguishes these states.
+
+The hypothesis is explicit but unproven: technical screens may reduce downside at
+the cost of premiums/capital utilization. The page tests rejection frequency, overlap
+and variation across stocks/years. The IV–RV premium remains untested: HV20 is not IV.
+Future Sharpe should use a dated short-term Treasury reference converted to daily
+units, with 0% RF only a labeled sensitivity; actual credited cash interest belongs
+in P&L. Any simulated idle-cash yield needs a stated source/accrual rule and zero-yield
+sensitivity. No such performance calculations are claimed here.
+
+Additional reproduction after the fresh API query (using existing GitHub Secrets):
+
+```sh
+python -m final_project.demo
+python -m final_project.demo --weekly-entry-example
+python -m final_project.historical
+python -m final_project.validate_publication
+python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo final_project.test_historical lseg_chart.test_update -q
+python -m unittest discover -s tests -p test_site_layout.py -q
+node --test final_project/test_page.cjs final_project/test_history_page.cjs lseg_chart/test_page.cjs
+```
+
+Nightly 10 PM America/New_York, direct LSEG integration, Secrets, all remaining
+trading/capital rules and prior assignment navigation remain unchanged. A red final
+workflow can mean missing account inputs while retrieval/analysis/publication succeed;
+inspect individual steps. Test fixtures are synthetic only inside temporary tests,
+never published as real observations. No production positions/fills are created.
+
 ## Intentional strategy revision — no earnings filter
 
 Revision `no-earnings-filter-v1` removes earnings screening as a strategy design
@@ -22,7 +95,7 @@ its evaluation time, the original market retrieval time and original session dat
 This mode is explicit, never a fallback after a failed live query. Run
 `python -m final_project.demo` separately to rebuild the hypothetical examples.
 
-Verification for this revision: 74 Python engine/provider/demo tests, four site
+Historical verification for the earlier earnings-only revision: 74 Python engine/provider/demo tests, four site
 layout tests and 24 JavaScript tests pass (102 total), plus publication validation.
 Browser verification confirms two cash-start put proposals, three unchanged
 covered-inventory call proposals, all seven course-navigation links and no console
@@ -47,7 +120,7 @@ single dated stock allocation, not actual Sanji holdings, average deployed capit
 or investment performance. Production allocation remains unmeasured without the
 account. The real saved 2026-11-13 close (retrieved 2026-11-16) has BAC/F failing
 trend and KO/PFE passing all three technical gates; all four pass HV20/R5. Missing
-account data and course mappings are separate dependencies.
+account data and course execution coverage are separate dependencies.
 
 The proposed future measurement convention uses EOD stock market value plus
 filled-put strike collateral, without double-counting covered calls. Average all
@@ -57,7 +130,7 @@ return = net strategy P&L / average deployed capital; utilization = deployed /
 equity. Net P&L includes realized/unrealized positions, dividends and credited
 interest after actual costs. Flow adjustment is required if external flows occur.
 Capital return is descriptive and non-annualized. Daily Sharpe would use sample
-SD, sqrt(252) and a disclosed 0% RF comparison; complete drawdown needs a complete
+SD, sqrt(252) and a dated risk-free reference (0% only a sensitivity); complete drawdown needs a complete
 flow-adjusted wealth path. No performance values are calculated from signals.
 
 The evaluation discussion proposes a future comparison with the same four-name
@@ -138,16 +211,15 @@ Sanji must finish the preceding session's fills/assignment before this script ru
 Stale books and a NAV reconciliation error over $1 block new orders. Unknown outside-
 universe positions are rejected rather than silently ignored in risk calculations.
 
-Conids must come from numeric keys in the course `price_history.json`, with an explicit
-`symbol`, `ticker`, or `ric` binding. The current file identifies Apple only, not the
-four Final Project names. No conids are inferred from issuer names or copied from an
-unrelated example. Have the course feed enroll BAC, KO, PFE and F and publish their
-identifiers/book; this is the remaining external setup for actual order generation.
+Conids are verified static configuration cross-checked with official IBKR evidence.
+Any course numeric key with an explicit `symbol`, `ticker`, or `ric` binding must agree.
+The current file identifies Apple only. That leaves execution coverage unconfirmed,
+not identity unknown. No conids are guessed from issuer names or unrelated examples.
 
 ### Production versus isolated demonstration (2026-11-16 audit)
 
 The actual control flow is `run.run -> read_orders -> fetch_market ->
-conids_from_course -> strategy.evaluate -> validate_account -> pending obligations
+resolve_identifiers -> strategy.evaluate -> validate_account -> pending obligations
 -> per-name filters/contract selection -> capital_check -> publish_orders`.
 Account validation is the **first current failure**, so subsequent gates have not
 passed merely because they did not appear in the top-level error. The retained
@@ -182,15 +254,15 @@ IBKR's public search and security definitions were independently queried on
 US common stock. `docs/data/conid_verification.json` retains request URLs, selected
 search responses and complete security definitions. `verify_conids.py` checks
 ticker, issuer, conid, exchange, currency and asset class. It does not log into IBKR
-or place orders. These identifiers are used in demonstrations; production retains
-the professor's explicit course `price_history.json` mapping requirement. The
-remaining issue is course-feed enrollment/coverage, **not unknown stock identity**.
+or place orders. These identifiers are now also validated for production; course
+mapping conflicts still block publication. The remaining execution issue is course-feed
+enrollment/coverage, **not unknown stock identity**.
 
 `python -m final_project.demo` reads the real retained LSEG response, not new prices,
 and calls the identical engine with `mode:demonstration` and
 `source:HYPOTHETICAL_DEMONSTRATION`. It creates two independent example books:
 
-1. $40,000 cash, no stock/options/pending orders. For the 2026-11-13 signals targeting
+1. $40,000 cash, no stock/options/pending orders. In the separately archived 2026-11-13 signals targeting
    2026-11-16, BAC/F fail trend. Under the revised policy, KO and PFE generate
    one put proposal each: strikes $96 and $28, expiry 2026-11-20 (four DTE).
    They use the unchanged observed-strike fallback, not verified 25-delta Greeks.
@@ -218,7 +290,7 @@ The professor-specific dependencies are:
 1. Authoritative end-of-session book and its **native schema/sample** (actual balances,
    complete positions, stock bases, option terms/marks, resolution IDs/fills), plus
    the upstream completion signal/timing. We must adapt read-only, not write his book.
-2. Enrollment of BAC/KO/PFE/F in the course price/option feed and explicit conid bindings,
+2. For execution: enrollment of BAC/KO/PFE/F in the course price/option feed and explicit conid bindings,
    consistent with the independently verified IDs. Provider identity does not prove
    Robin contains the contract-open bars needed for resolution.
 3. Resolver activation and outputs only for **actual course execution**, not for

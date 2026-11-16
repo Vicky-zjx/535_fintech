@@ -41,6 +41,7 @@ jobs:
           python -m unittest discover -s tests -p 'test_site_layout.py' -v
           node --test lseg_chart/test_page.cjs
           node --test final_project/test_page.cjs
+          node --test final_project/test_history_page.cjs
           python -m final_project.validate_publication
       - name: Query real data and plan production-account orders
         id: plan
