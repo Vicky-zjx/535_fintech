@@ -10,6 +10,7 @@ from .data_provider import fetch_market, conids_from_course, digest
 from .sanji_orders import atomic_json, read_orders, publish_orders
 from .strategy import evaluate
 from .strategy_config import UNIVERSE
+from .verify_conids import verified_mapping
 from lseg_chart.update import safe_failure_detail
 
 
@@ -40,6 +41,20 @@ def run(root, now, provider=fetch_market):
         report.update({k: v for k, v in result.items() if k != 'orders'})
         report['account_status'] = 'Available' if account else 'Missing mkt/positions.json; no account balance assumed'
         report['conid_status'] = {t: conids.get(t) for t in UNIVERSE}
+        verification = root/'docs/data/conid_verification.json'
+        if verification.exists():
+            try:
+                report['ibkr_verified_conids'] = verified_mapping(json.loads(verification.read_text()))
+            except (ValueError, KeyError, TypeError):
+                report['ibkr_verified_conids'] = None
+        report['pipeline_audit'] = {
+            'first_blocking_stage': 'account/pending validation' if result['capital'] is None else None,
+            'account_present': account_path.exists(),
+            'course_conids_missing': [t for t in UNIVERSE if t not in conids],
+            'earnings_unreliable': [t for t, d in market['tickers'].items() if not d.get('earnings', {}).get('reliable')],
+            'resolver_status': 'Professor documentation: Sanji does not resolve orders yet. This is not a JSON-generation requirement.',
+            'production_account_assumed': False,
+        }
         report['data_quality'] = {t: {k: v for k, v in d.items() if k in (
             'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'earnings', 'exclusions')}
                                  for t, d in market['tickers'].items()}

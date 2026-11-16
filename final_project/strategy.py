@@ -90,8 +90,10 @@ def evaluate(market, account, conids, pending):
     by_ticker = {d['ticker']: d for d in decisions}
     try:
         states, cash, equity = validate_account(account, as_of, {d['ticker']: d.get('close') for d in decisions})
-        if account.get('source') != ('TEST_FIXTURE' if market.get('mode') == 'test' else 'Sanji'):
-            raise ValueError('Test account is forbidden in a live run')
+        expected = {'live': 'Sanji', 'test': 'TEST_FIXTURE',
+                    'demonstration': 'HYPOTHETICAL_DEMONSTRATION'}.get(market.get('mode'))
+        if expected is None or account.get('source') != expected:
+            raise ValueError('Test account is forbidden in a live run; market/account modes must match')
         resolved = account.get('resolved_order_ids', [])
         if not isinstance(resolved, list) or any(not isinstance(i, str) for i in resolved):
             raise ValueError('Invalid resolved order IDs')
@@ -167,6 +169,8 @@ def evaluate(market, account, conids, pending):
                 d['reasons'].append('Earnings blackout includes entry through expiry')
                 continue
         order = make_order(t, phase, session, conids[t], chosen)
+        if market.get('mode') == 'demonstration':
+            order['id'] = order['id'].replace('fin535-wheel-', 'fin535-demo-')
         if order['id'] in resolved:
             d['reasons'].append('This deterministic order ID was already resolved by Sanji')
             continue

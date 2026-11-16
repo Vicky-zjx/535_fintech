@@ -215,6 +215,18 @@ def fetch_market(ctx, retrieved_at):
                 d['earnings'] = earnings_calendar(events, ric, as_of, through)
             except Exception as e:
                 d['earnings'] = {'reliable': False, 'reason': 'Earnings query/validation unavailable: '+safe_failure_detail(e, os.environ)}
+                # Diagnose ordinary entitled field requests independently. Do not
+                # join separate rows or turn a date without confirmation into a
+                # reliable calendar. No entitlement bypass or substitute vendor.
+                raw['earnings_field_probe'] = {}
+                for field in ('TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'):
+                    try:
+                        probe = paced(ld.get_data, [ric], [field],
+                            parameters={'SDate': session, 'EDate': through, 'EventType': 'RES'},
+                            header_type=ld.HeaderType.NAME)
+                        raw['earnings_field_probe'][field] = {'response': table(probe)}
+                    except Exception as probe_error:
+                        raw['earnings_field_probe'][field] = {'error': safe_failure_detail(probe_error, os.environ)}
         return out
     return query_lseg(date.fromisoformat(start), date.fromisoformat(as_of), operation=operation)
 

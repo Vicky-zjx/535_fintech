@@ -75,7 +75,7 @@
         ><span id="run-time">No verified live evaluation yet</span>
       </div>
       <nav class="section-nav" aria-label="On this page">
-        <a href="#decisions">Monitor</a><a href="#universe">Universe</a
+        <a href="#decisions">Monitor</a><a href="#demonstration">Demonstration</a><a href="#universe">Universe</a
         ><a href="#workflow">Process</a><a href="#rules">Rules</a
         ><a href="#risk">Capital</a><a href="#orders">Orders</a
         ><a href="#reproducibility">Reproduce</a>
@@ -84,8 +84,8 @@
       <section id="decisions">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">01 / LIVE MONITOR</p>
-            <h2>Latest strategy decisions</h2>
+            <p class="eyebrow">01 / PRODUCTION MONITOR</p>
+            <h2>Authoritative-account decisions</h2>
           </div>
           <span id="target-session" class="mono"
             >Target session: not yet evaluated</span
@@ -158,6 +158,37 @@
               >Retained LSEG response snapshot</a
             >
           </p>
+        </details>
+      </section>
+
+      <section id="demonstration" aria-labelledby="demo-title">
+        <p class="eyebrow">ISOLATED DEMONSTRATION / NOT AN ACTUAL ACCOUNT</p>
+        <h2 id="demo-title">Real market inputs. Hypothetical $40,000 books.</h2>
+        <p>These independent examples use the same Wheel engine and unchanged risk checks.
+          They are not actual Sanji orders, fills, assignments, or a performance backtest.
+          Production still requires the authoritative account; no example writes to either production order file.</p>
+        <p class="notice" id="demo-summary">Demonstration results have not loaded.</p>
+        <div id="demo-results"></div>
+        <details>
+          <summary>Verified identifiers, remaining inputs, and reproduction</summary>
+          <p>IBKR public search and security definitions independently confirm NYSE / USD common stocks:
+            BAC 10098; KO 8894; PFE 11031; F 9599491.
+            This verifies identity, not enrollment or option-price coverage in the course database.
+            Production retains the professor's course-feed mapping requirement.</p>
+          <p>The account file is the first current production blocker. The native Sanji account format,
+            authoritative balances, complete positions, cost bases, marks, and resolution history must come
+            from the course producer. Its update must finish before nightly planning.
+            The professor documents that Sanji does not yet resolve orders; generating a valid JSON proposal does not require an active resolver.</p>
+          <p>Unknown earnings still block new puts. A company-confirmed future release from an official investor-relations
+            source can be an authorized alternative; an empty event page or estimated date cannot certify a clear window.
+            See the dated investigation below. Missing same-session Greeks use only the existing listed-strike fallback.</p>
+          <p><a href="data/conid_verification.json">IBKR verification evidence</a> ·
+            <a href="data/earnings_investigation.json">Earnings-source investigation</a> ·
+            <a href="data/demo_status.json">Example accounts and full decision audit</a> ·
+            <a href="data/demo_cash_start_orders.json">Cash-start example JSON</a> ·
+            <a href="data/demo_covered_inventory_orders.json">Covered-inventory example JSON</a></p>
+          <p><code>python -m final_project.demo</code> reproduces these isolated examples from the retained real LSEG response.
+            <code>python -m final_project.run</code> queries fresh data and plans production orders only from an authoritative account.</p>
         </details>
       </section>
 

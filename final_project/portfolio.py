@@ -14,7 +14,7 @@ def validate_account(account, as_of, closes):
         raise ValueError('Account adapter schema unavailable; raw Sanji format must be verified')
     if account.get('as_of') != as_of or account.get('currency') != 'USD':
         raise ValueError('Missing/stale account date or non-USD account')
-    if account.get('source') not in ('Sanji', 'TEST_FIXTURE'):
+    if account.get('source') not in ('Sanji', 'TEST_FIXTURE', 'HYPOTHETICAL_DEMONSTRATION'):
         raise ValueError('Account source is not identified')
     cash = number(account.get('cash'), 'cash (no borrowing)')
     equity = number(account.get('equity'), 'equity', .01)

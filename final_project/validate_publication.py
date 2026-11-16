@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
-from .sanji_orders import read_orders
+from .sanji_orders import read_orders, validate
+from .data_provider import digest
 
 
 class Links(HTMLParser):
@@ -24,6 +25,28 @@ def check(root):
         raise ValueError('A blocked run must not claim updated orders')
     if status['order_count'] != len(orders):
         raise ValueError('Displayed order count disagrees with canonical file')
+    if any(o['id'].startswith('fin535-demo-') for o in orders):
+        raise ValueError('Demonstration order in production queue')
+    demo_path = root/'docs/data/demo_status.json'
+    if demo_path.exists():
+        demo = json.loads(demo_path.read_text())
+        if demo['mode'] != 'demonstration' or demo['production_orders_changed'] is not False:
+            raise ValueError('Demonstration isolation/label missing')
+        market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+        if demo['market_snapshot_sha256'] != digest(market):
+            raise ValueError('Demonstration does not match retained real market snapshot')
+        for scenario in demo['scenarios']:
+            proposed = scenario['proposed_orders']
+            saved = json.loads((root/f"docs/data/demo_{scenario['id']}_orders.json").read_text())
+            if saved != proposed:
+                raise ValueError('Demonstration download disagrees with report')
+            if proposed is None:
+                continue
+            validate(proposed)
+            if any(not o['id'].startswith('fin535-demo-') for o in proposed):
+                raise ValueError('Demo orders need independent identifiers')
+            if saved != proposed or len(proposed) != scenario['order_count']:
+                raise ValueError('Demonstration JSON/count mismatch')
     html = (root/'docs/index.html').read_text()
     if '<html lang="en">' not in html:
         raise ValueError('English page language required')

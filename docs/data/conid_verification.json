@@ -1,0 +1,362 @@
+{
+  "source": "IBKR public Products, Exchanges and Contracts Search",
+  "retrieved_at": "2026-11-16T06:49:41.613075+00:00",
+  "records": {
+    "BAC": {
+      "conid": 10098,
+      "search_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/iserver/secdef/search",
+      "search_payload": {
+        "symbol": "BAC",
+        "secType": "STK"
+      },
+      "search_response": {
+        "conid": "10098",
+        "companyHeader": "BANK OF AMERICA CORP - NYSE",
+        "companyName": "BANK OF AMERICA CORP",
+        "symbol": "BAC",
+        "description": "NYSE",
+        "restricted": null,
+        "sections": [
+          {
+            "secType": "STK"
+          },
+          {
+            "secType": "OPT",
+            "months": "NOV26;DEC26;JAN27;FEB27;MAR27;APR27;MAY27;JUN27;JUL27;SEP27;DEC27;JAN28;DEC28;JAN29",
+            "exchange": "SMART;AMEX;BATS;BOX;CBOE;CBOE2;EDGX;EMERALD;GEMINI;IBUSOPT;IEX;ISE;MEMX;MERCURY;MIAX;MX2;NASDAQBX;NASDAQOM;PEARL;PHLX;PSE;SAPPHIRE"
+          },
+          {
+            "secType": "WAR",
+            "months": "OCT26;NOV26;DEC26;JAN27;FEB27;MAR27;APR27;MAY27;JUN27;JUL27;SEP27;DEC27;JAN28;MAR28;JUN28;SEP28;DEC28;JAN29;MAR29",
+            "exchange": "EBS;FWB;GETTEX;SWB"
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "exchange": "SMART",
+            "conid": "118239135"
+          },
+          {
+            "secType": "BAG"
+          }
+        ]
+      },
+      "detail_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/trsrv/secdef?conids=10098",
+      "detail_response": {
+        "secdef": [
+          {
+            "incrementRules": [
+              {
+                "lowerEdge": 0.0,
+                "increment": 0.01
+              }
+            ],
+            "displayRule": {
+              "magnification": 0,
+              "displayRuleStep": [
+                {
+                  "decimalDigits": 2,
+                  "lowerEdge": 0.0,
+                  "wholeDigits": 4
+                }
+              ]
+            },
+            "conid": 10098,
+            "currency": "USD",
+            "time": 37,
+            "chineseName": "&#x7F8E;&#x56FD;&#x94F6;&#x884C;&#x516C;&#x53F8;",
+            "allExchanges": "AMEX,NYSE,CBOE,PHLX,CHX,ARCA,ISLAND,ISE,IDEAL,NASDAQQ,DRCTEDGE,BEX,BATS,NITEECN,EDGEA,CSFBALGO,PSX,BYX,PDQ,IBKRATS,NYSEFLOOR,CITADEL,NYSEDARK,MIAX,IBDARK,CITADELDP,NASDDARK,IEX,SUMMER,FINRA,UBSDARK,BTIG,VIRTU,JEFF,OPCO,DBK,JPMC,EDGX,JANE,FRACSHARE,RBCALGO,VIRTUDP,FOXRIVER,NITEEXST,PEARL,GSDARK,NITERTL,NYSENAT,IEXMID,HRT,FLOWTRADE,HRTDP,JANELP,PEAK6,CTDLZERO,HRTMID,JANEZERO,HRTEXST,IMCLP,LTSE,SOCGENDP,MEMX,INTELCROS,VIRTUBYIN,JUMPTRADE,NITEZERO,XTXEXST,XTXDP,XTXMID,COWENLP,BARCDP,JUMPLP,OLDMCLP,RBCCMALP,WALLBETH,IBEOS,JONES,GSLP,BLUEOCEAN,USIBSILP,OVERNIGHT,JANEMID,IBATSEOS,HRTZERO,VIRTUALGO,G1XLP,VIRTUMID,GLOBALXLP,CTDLMID,TPLUS0,JUMPMID,CLOSEOUT,T24X,OMCDP,OMCMID,TXSE,MOON,BRUCE,JUMPZERO,EARLY",
+            "listingExchange": "NYSE",
+            "countryCode": "US",
+            "name": "BANK OF AMERICA CORP",
+            "assetClass": "STK",
+            "expiry": null,
+            "lastTradingDay": null,
+            "group": "Banks",
+            "putOrCall": null,
+            "sector": "Financial",
+            "sectorGroup": "Diversified Banking Inst",
+            "strike": "0",
+            "ticker": "BAC",
+            "undConid": 0,
+            "multiplier": 0.0,
+            "type": "COMMON",
+            "hasOptions": true,
+            "fullName": "BAC",
+            "isUS": true,
+            "isEventContract": false
+          }
+        ]
+      }
+    },
+    "KO": {
+      "conid": 8894,
+      "search_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/iserver/secdef/search",
+      "search_payload": {
+        "symbol": "KO",
+        "secType": "STK"
+      },
+      "search_response": {
+        "conid": "8894",
+        "companyHeader": "COCA-COLA CO/THE - NYSE",
+        "companyName": "COCA-COLA CO/THE",
+        "symbol": "KO",
+        "description": "NYSE",
+        "restricted": null,
+        "sections": [
+          {
+            "secType": "STK"
+          },
+          {
+            "secType": "OPT",
+            "months": "NOV26;DEC26;JAN27;FEB27;MAR27;MAY27;JUN27;SEP27;DEC27;JAN28;JUN28;DEC28;JAN29",
+            "exchange": "SMART;AMEX;BATS;BOX;CBOE;CBOE2;EDGX;EMERALD;GEMINI;IBUSOPT;IEX;ISE;MEMX;MERCURY;MIAX;MX2;NASDAQBX;NASDAQOM;PEARL;PHLX;PSE;SAPPHIRE"
+          },
+          {
+            "secType": "WAR",
+            "months": "OCT26;NOV26;DEC26;JAN27;FEB27;MAR27;MAY27;JUN27;SEP27;DEC27;JAN28;MAR28;JUN28;SEP28;DEC28;JAN29;MAR29;JUN29",
+            "exchange": "EBS;FWB;GETTEX;SBF;SWB"
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "exchange": "SMART",
+            "conid": "118239195"
+          },
+          {
+            "secType": "BAG"
+          }
+        ]
+      },
+      "detail_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/trsrv/secdef?conids=8894",
+      "detail_response": {
+        "secdef": [
+          {
+            "incrementRules": [
+              {
+                "lowerEdge": 0.0,
+                "increment": 0.01
+              }
+            ],
+            "displayRule": {
+              "magnification": 0,
+              "displayRuleStep": [
+                {
+                  "decimalDigits": 2,
+                  "lowerEdge": 0.0,
+                  "wholeDigits": 4
+                }
+              ]
+            },
+            "conid": 8894,
+            "currency": "USD",
+            "time": 37,
+            "chineseName": "&#x53EF;&#x53E3;&#x53EF;&#x4E50;",
+            "allExchanges": "AMEX,NYSE,CBOE,PHLX,CHX,ARCA,ISLAND,ISE,IDEAL,NASDAQQ,DRCTEDGE,BEX,BATS,NITEECN,EDGEA,CSFBALGO,PSX,BYX,PDQ,IBKRATS,NYSEFLOOR,CITADEL,NYSEDARK,MIAX,IBDARK,CITADELDP,NASDDARK,IEX,SUMMER,FINRA,UBSDARK,BTIG,VIRTU,JEFF,OPCO,DBK,JPMC,EDGX,JANE,FRACSHARE,RBCALGO,VIRTUDP,FOXRIVER,NITEEXST,PEARL,GSDARK,NITERTL,NYSENAT,IEXMID,HRT,FLOWTRADE,HRTDP,JANELP,PEAK6,CTDLZERO,HRTMID,JANEZERO,HRTEXST,IMCLP,LTSE,SOCGENDP,MEMX,INTELCROS,VIRTUBYIN,JUMPTRADE,NITEZERO,XTXEXST,XTXDP,XTXMID,COWENLP,BARCDP,JUMPLP,OLDMCLP,RBCCMALP,WALLBETH,IBEOS,JONES,GSLP,BLUEOCEAN,USIBSILP,OVERNIGHT,JANEMID,IBATSEOS,HRTZERO,VIRTUALGO,G1XLP,VIRTUMID,GLOBALXLP,CTDLMID,TPLUS0,JUMPMID,CLOSEOUT,T24X,OMCDP,OMCMID,TXSE,MOON,BRUCE,JUMPZERO,EARLY",
+            "listingExchange": "NYSE",
+            "countryCode": "US",
+            "name": "COCA-COLA CO/THE",
+            "assetClass": "STK",
+            "expiry": null,
+            "lastTradingDay": null,
+            "group": "Beverages",
+            "putOrCall": null,
+            "sector": "Consumer, Non-cyclical",
+            "sectorGroup": "Beverages-Non-alcoholic",
+            "strike": "0",
+            "ticker": "KO",
+            "undConid": 0,
+            "multiplier": 0.0,
+            "type": "COMMON",
+            "hasOptions": true,
+            "fullName": "KO",
+            "isUS": true,
+            "isEventContract": false
+          }
+        ]
+      }
+    },
+    "PFE": {
+      "conid": 11031,
+      "search_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/iserver/secdef/search",
+      "search_payload": {
+        "symbol": "PFE",
+        "secType": "STK"
+      },
+      "search_response": {
+        "conid": "11031",
+        "companyHeader": "PFIZER INC - NYSE",
+        "companyName": "PFIZER INC",
+        "symbol": "PFE",
+        "description": "NYSE",
+        "restricted": null,
+        "sections": [
+          {
+            "secType": "STK"
+          },
+          {
+            "secType": "OPT",
+            "months": "NOV26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;DEC28;JAN29",
+            "exchange": "SMART;AMEX;BATS;BOX;CBOE;CBOE2;EDGX;EMERALD;GEMINI;IBUSOPT;IEX;ISE;MEMX;MERCURY;MIAX;MX2;NASDAQBX;NASDAQOM;PEARL;PHLX;PSE;SAPPHIRE"
+          },
+          {
+            "secType": "WAR",
+            "months": "OCT26;NOV26;DEC26;JAN27;FEB27;MAR27;APR27;MAY27;JUN27;SEP27;DEC27;JAN28;MAR28;JUN28;SEP28;DEC28;JAN29;MAR29",
+            "exchange": "EBS;FWB;GETTEX;SBF;SWB"
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "exchange": "SMART",
+            "conid": "118239178"
+          },
+          {
+            "secType": "BAG"
+          }
+        ]
+      },
+      "detail_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/trsrv/secdef?conids=11031",
+      "detail_response": {
+        "secdef": [
+          {
+            "incrementRules": [
+              {
+                "lowerEdge": 0.0,
+                "increment": 0.01
+              }
+            ],
+            "displayRule": {
+              "magnification": 0,
+              "displayRuleStep": [
+                {
+                  "decimalDigits": 2,
+                  "lowerEdge": 0.0,
+                  "wholeDigits": 4
+                }
+              ]
+            },
+            "conid": 11031,
+            "currency": "USD",
+            "time": 36,
+            "chineseName": "&#x8F89;&#x745E;&#x5236;&#x836F;&#x516C;&#x53F8;",
+            "allExchanges": "AMEX,NYSE,CBOE,PHLX,CHX,ARCA,ISLAND,ISE,IDEAL,NASDAQQ,DRCTEDGE,BEX,BATS,NITEECN,EDGEA,CSFBALGO,PSX,BYX,PDQ,IBKRATS,NYSEFLOOR,CITADEL,NYSEDARK,MIAX,IBDARK,CITADELDP,NASDDARK,IEX,SUMMER,FINRA,UBSDARK,BTIG,VIRTU,JEFF,OPCO,DBK,JPMC,EDGX,JANE,FRACSHARE,RBCALGO,VIRTUDP,FOXRIVER,NITEEXST,PEARL,GSDARK,NITERTL,NYSENAT,IEXMID,HRT,FLOWTRADE,HRTDP,JANELP,PEAK6,CTDLZERO,HRTMID,JANEZERO,HRTEXST,IMCLP,LTSE,SOCGENDP,MEMX,INTELCROS,VIRTUBYIN,JUMPTRADE,NITEZERO,XTXEXST,XTXDP,XTXMID,COWENLP,BARCDP,JUMPLP,OLDMCLP,RBCCMALP,WALLBETH,IBEOS,JONES,GSLP,BLUEOCEAN,USIBSILP,OVERNIGHT,JANEMID,IBATSEOS,HRTZERO,VIRTUALGO,G1XLP,VIRTUMID,GLOBALXLP,CTDLMID,TPLUS0,JUMPMID,CLOSEOUT,T24X,OMCDP,OMCMID,TXSE,MOON,BRUCE,JUMPZERO,EARLY",
+            "listingExchange": "NYSE",
+            "countryCode": "US",
+            "name": "PFIZER INC",
+            "assetClass": "STK",
+            "expiry": null,
+            "lastTradingDay": null,
+            "group": "Pharmaceuticals",
+            "putOrCall": null,
+            "sector": "Consumer, Non-cyclical",
+            "sectorGroup": "Medical-Drugs",
+            "strike": "0",
+            "ticker": "PFE",
+            "undConid": 0,
+            "multiplier": 0.0,
+            "type": "COMMON",
+            "hasOptions": true,
+            "fullName": "PFE",
+            "isUS": true,
+            "isEventContract": false
+          }
+        ]
+      }
+    },
+    "F": {
+      "conid": 9599491,
+      "search_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/iserver/secdef/search",
+      "search_payload": {
+        "symbol": "F",
+        "secType": "STK"
+      },
+      "search_response": {
+        "conid": "9599491",
+        "companyHeader": "FORD MOTOR CO - NYSE",
+        "companyName": "FORD MOTOR CO",
+        "symbol": "F",
+        "description": "NYSE",
+        "restricted": null,
+        "sections": [
+          {
+            "secType": "STK"
+          },
+          {
+            "secType": "OPT",
+            "months": "NOV26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;DEC28;JAN29",
+            "exchange": "SMART;AMEX;BATS;BOX;CBOE;CBOE2;EDGX;EMERALD;GEMINI;IBUSOPT;IEX;ISE;MEMX;MERCURY;MIAX;MX2;NASDAQBX;NASDAQOM;PEARL;PHLX;PSE;SAPPHIRE"
+          },
+          {
+            "secType": "WAR",
+            "months": "OCT26;NOV26;DEC26;JAN27;MAR27;JUN27;SEP27;DEC27;JAN28;JUN28",
+            "exchange": "EBS;FWB;GETTEX;SWB"
+          },
+          {
+            "secType": "IOPT"
+          },
+          {
+            "secType": "CFD",
+            "exchange": "SMART",
+            "conid": "120551117"
+          },
+          {
+            "secType": "BAG"
+          }
+        ]
+      },
+      "detail_url": "https://www.interactivebrokers.com/portal.proxy/v1/mkt/trsrv/secdef?conids=9599491",
+      "detail_response": {
+        "secdef": [
+          {
+            "incrementRules": [
+              {
+                "lowerEdge": 0.0,
+                "increment": 0.01
+              }
+            ],
+            "displayRule": {
+              "magnification": 0,
+              "displayRuleStep": [
+                {
+                  "decimalDigits": 2,
+                  "lowerEdge": 0.0,
+                  "wholeDigits": 4
+                }
+              ]
+            },
+            "conid": 9599491,
+            "currency": "USD",
+            "time": 36,
+            "chineseName": "&#x798F;&#x7279;&#x6C7D;&#x8F66;",
+            "allExchanges": "AMEX,NYSE,CBOE,PHLX,CHX,ARCA,ISLAND,ISE,IDEAL,NASDAQQ,DRCTEDGE,BEX,BATS,NITEECN,EDGEA,CSFBALGO,PSX,BYX,PDQ,IBKRATS,NYSEFLOOR,CITADEL,NYSEDARK,MIAX,IBDARK,CITADELDP,NASDDARK,IEX,SUMMER,FINRA,UBSDARK,BTIG,VIRTU,JEFF,OPCO,DBK,JPMC,EDGX,JANE,FRACSHARE,RBCALGO,VIRTUDP,FOXRIVER,NITEEXST,PEARL,GSDARK,NITERTL,NYSENAT,IEXMID,HRT,FLOWTRADE,HRTDP,JANELP,PEAK6,CTDLZERO,HRTMID,JANEZERO,HRTEXST,IMCLP,LTSE,SOCGENDP,MEMX,INTELCROS,VIRTUBYIN,JUMPTRADE,NITEZERO,XTXEXST,XTXDP,XTXMID,COWENLP,BARCDP,JUMPLP,OLDMCLP,RBCCMALP,WALLBETH,IBEOS,JONES,GSLP,BLUEOCEAN,USIBSILP,OVERNIGHT,JANEMID,IBATSEOS,HRTZERO,VIRTUALGO,G1XLP,VIRTUMID,GLOBALXLP,CTDLMID,TPLUS0,JUMPMID,CLOSEOUT,T24X,OMCDP,OMCMID,TXSE,MOON,BRUCE,JUMPZERO,EARLY",
+            "listingExchange": "NYSE",
+            "countryCode": "US",
+            "name": "FORD MOTOR CO",
+            "assetClass": "STK",
+            "expiry": null,
+            "lastTradingDay": null,
+            "group": "Auto Manufacturers",
+            "putOrCall": null,
+            "sector": "Consumer, Cyclical",
+            "sectorGroup": "Auto-Cars/Light Trucks",
+            "strike": "0",
+            "ticker": "F",
+            "undConid": 0,
+            "multiplier": 0.0,
+            "type": "COMMON",
+            "hasOptions": true,
+            "fullName": "F",
+            "isUS": true,
+            "isEventContract": false
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "review_date": "2026-11-16",
+  "scope": "Authorized LSEG fields and public issuer investor-relations pages only; no credential or entitlement bypass",
+  "policy": "Do not interpret an empty calendar, past earnings, a conference, or an estimated date as a confirmed clear earnings window. No event dates are invented. This investigation is not an active calendar override.",
+  "lseg": {
+    "fields": ["TR.EventStartDate", "TR.EventType", "TR.EventStatus"],
+    "parameters": {"EventType": "RES"},
+    "observed_combined_request": "Access denied for all four universes in retained API responses. This does not establish which individual field caused the combined request failure.",
+    "individual_field_diagnostics": "Nightly fetch records independent responses/errors in market_snapshot.json raw.<ticker>.earnings_field_probe if the combined query fails. Independent rows are never merged without event identity verification.",
+    "definition_source": "https://developers.lseg.com/en/article-catalog/article/workspace-corporate-actions-content-set-guide",
+    "confirmation_definition": "TR.EventStatus false means company-confirmed; true means estimated. A returned date alone is not enough under the existing rule."
+  },
+  "public_sources": {
+    "BAC": {
+      "url": "https://investor.bankofamerica.com/",
+      "status": "Company IR explicitly identifies its next quarterly earnings release",
+      "next_release": "2027-01-15",
+      "supporting_announcement": "https://newsroom.bankofamerica.com/content/newsroom/press-releases/2026/03/bank-of-america-announces-fourth-quarter-2026-and-quarterly-2027",
+      "use_limit": "Candidate authorized alternative for forward evaluation after freshness, announcement date, supersession and coverage checks; not retrospectively injected into the retained LSEG snapshot. BAC currently fails the independent trend filter anyway."
+    },
+    "KO": {
+      "url": "https://investors.coca-colacompany.com/news-events/events",
+      "status": "Upcoming page lists a December 2 conference and past October 27 earnings; no confirmed next earnings date verified",
+      "next_release": null,
+      "use_limit": "Unknown; a conference is not an earnings release. New puts remain blocked."
+    },
+    "PFE": {
+      "url": "https://investors.pfizer.com/Investors/news-events/",
+      "status": "Public events page did not provide a verifiable next company-confirmed earnings date in retrieved content",
+      "next_release": null,
+      "use_limit": "Unknown; blank or dynamically unavailable content is not a negative calendar confirmation. New puts remain blocked."
+    },
+    "F": {
+      "url": "https://shareholder.ford.com/events-and-presentations/default.aspx",
+      "status": "No next company-confirmed earnings release verified from accessible official material",
+      "next_release": null,
+      "use_limit": "Unknown; no third-party estimates substituted. F currently fails the independent trend filter."
+    }
+  },
+  "remaining_dependency": "An entitled confirmed LSEG calendar, or an independently auditable company-confirmed calendar with current coverage. Professor involvement is needed only if this must be supplied under the course license/feed, not for public issuer access."
+}

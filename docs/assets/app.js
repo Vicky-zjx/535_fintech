@@ -282,6 +282,42 @@
     if (!r.ok) throw Error("HTTP " + r.status);
     return r.json();
   }
+  function renderDemo(demo) {
+    if (demo.mode !== 'demonstration' || demo.production_orders_changed !== false)
+      throw Error('Invalid demonstration label');
+    text('demo-summary', 'DEMONSTRATION ONLY · Retained real LSEG response: ' + demo.market_retrieved_at +
+      ' · Signal close: ' + demo.calendar.as_of + ' · Target: ' + demo.calendar.target_session +
+      '. Production orders unchanged. Not a new market query.');
+    const container = $('demo-results');
+    container.replaceChildren();
+    for (const s of demo.scenarios) {
+      const block = document.createElement('article');
+      const h = document.createElement('h3');
+      h.textContent = s.id === 'cash_start' ? 'Example A — cash-only starting portfolio' : 'Example B — assumed covered inventory';
+      const account = document.createElement('p');
+      account.textContent = s.description + ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) +
+        '. Proposed orders: ' + (s.order_count ?? 'Blocked') + '. Evaluation completed is not a claim that every input passed.';
+      block.append(h, account);
+      for (const d of s.decisions) {
+        const p = document.createElement('p');
+        const order = (s.proposed_orders || []).find(o => o.underlying === demo.conids[d.ticker]);
+        p.textContent = d.ticker + ' — ' + d.decision + ': ' + (order ?
+          '1 ' + order.contract + ', strike ' + fmt(order.strike) + ', expiry ' + order.expiry + '; ' : '') + d.reasons.join('; ');
+        block.append(p);
+      }
+      if (s.capital) {
+        const p = document.createElement('p');
+        p.textContent = 'Hypothetical exposure ' + fmt(s.capital.exposure) + '; put collateral ' + fmt(s.capital.put_collateral) +
+          '; uncommitted cash ' + fmt(s.capital.uncommitted_cash) + '; required reserve ' + fmt(s.capital.equity * .3) +
+          '. Existing 30% per-name / 70% portfolio limits remain in force.';
+        block.append(p);
+      }
+      container.append(block);
+    }
+  }
+  get('data/demo_status.json').then(renderDemo).catch(() => {
+    text('demo-summary', 'Demonstration unavailable. Production status and orders are shown independently above.');
+  });
   Promise.all([get("data/strategy_status.json"), get("../open_orders.json")])
     .then(([s, o]) => {
       if (!Array.isArray(o)) throw Error("Invalid orders");

@@ -15,10 +15,10 @@ class Element {
   get firstChild(){return this.children[0];}
   setAttribute(k,v){this.attributes[k]=v;}
 }
-async function render(status,orders=[],fail=false){
+async function render(status,orders=[],fail=false,demo=null){
   const elements=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const document={getElementById:id=>{assert.ok(elements.has(id),'Real HTML ID '+id);return elements.get(id);},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),querySelector:()=>new Element()};
-  vm.runInNewContext(script,{document,Intl,Date,fetch:async url=>({ok:!fail,json:async()=>url.includes('strategy_status')?status:orders})});
+  vm.runInNewContext(script,{document,Intl,Date,fetch:async url=>({ok:!fail,json:async()=>url.includes('demo_status')?demo:url.includes('strategy_status')?status:orders})});
   await new Promise(resolve=>setImmediate(resolve));
   return elements;
 }
@@ -50,4 +50,17 @@ test('Negative signal deviations draw left of zero, not positive bars',async()=>
   const svg=e.get('signal-chart').children[0];
   const zero=svg.children.find(n=>n.tag==='line').attributes.x1;
   for(const bar of svg.children.filter(n=>n.tag==='rect'))assert.ok(Number(bar.attributes.x)<Number(zero));
+});
+test('Demonstration is explicitly labeled and cannot populate production orders',async()=>{
+  const demo=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/demo_status.json'),'utf8'));
+  const e=await render({...baseline,status:'blocked'},[],false,demo);
+  assert.match(e.get('demo-summary').textContent,/DEMONSTRATION ONLY/);
+  assert.match(e.get('demo-results').textContent,/Hypothetical/);
+  assert.doesNotMatch(e.get('order-rows').textContent,/fin535-demo-/);
+  assert.match(e.get('order-note').textContent,/not changed/);
+});
+test('Malformed demonstration cannot change production rendering',async()=>{
+  const e=await render({...baseline,status:'success',errors:[]},[],false,{mode:'live'});
+  assert.match(e.get('demo-summary').textContent,/unavailable/);
+  assert.match(e.get('order-note').textContent,/Valid no-trade/);
 });

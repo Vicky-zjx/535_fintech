@@ -68,6 +68,8 @@ def read_orders(root):
 
 def publish_orders(root, orders):
     validate(orders)  # Validate the complete batch BEFORE either write.
+    if any(o['id'].startswith('fin535-demo-') for o in orders):
+        raise ValueError('Demonstration orders must never enter the production queue')
     # Git commits publish both together. In-process write failure restores both.
     paths = [Path(root)/'open_orders.json', Path(root)/'mkt/open_orders.json']
     old = [p.read_text() for p in paths]

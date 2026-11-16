@@ -40,7 +40,8 @@ run preserves both order files and updates diagnostics. API failures never becom
 The public Sanji specification documents orders and the read-only role of
 `mkt/positions.json`, **not its exact account object schema**. No positions file exists
 in this checkout. The planner therefore cannot assert actual equity, cash or holdings.
-It must not initialize a $40,000 account. That amount is illustrative only.
+Production must not initialize a $40,000 account. That amount is used only by the
+separate, explicitly hypothetical demonstration described below.
 
 `portfolio.validate_account` defines the following **internal adapter contract**, not
 an invented claim about Sanji's native format:
@@ -67,6 +68,117 @@ Conids must come from numeric keys in the course `price_history.json`, with an e
 four Final Project names. No conids are inferred from issuer names or copied from an
 unrelated example. Have the course feed enroll BAC, KO, PFE and F and publish their
 identifiers/book; this is the remaining external setup for actual order generation.
+
+### Production versus isolated demonstration (2026-11-16 audit)
+
+The actual control flow is `run.run -> read_orders -> fetch_market ->
+conids_from_course -> strategy.evaluate -> validate_account -> pending obligations
+-> per-name filters/contract selection/earnings -> capital_check -> publish_orders`.
+Account validation is the **first current failure**, so subsequent gates have not
+passed merely because they did not appear in the top-level error. The retained
+four-ticker LSEG price and option responses are real; the missing book is not an
+authentication failure. `run.py` now records these independent dependencies in
+`pipeline_audit` even when the account blocks the batch.
+
+- `portfolio.validate_account`: missing schema/account, stale date, non-USD book,
+  unrecognized source, negative cash, invalid quantities, unsupported/unverified
+  obligations, expired unresolved positions, NAV mismatch over $1, uncovered calls
+  or conflicting Wheel phases block the account. Cost basis is essential for a call.
+- `strategy.evaluate`: source must match the mode; pending orders must be valid,
+  identified, nonconflicting and covered. A held short option prevents a new order.
+  Partial stock holdings cannot back a call or start another put.
+- For puts: first weekly session, close >= SMA50, SMA20 >= SMA50, HV20 <=45%,
+  R5 >=-8%, reliable confirmed calendar through expiry, and no earnings in the
+  inclusive entry/expiry window. Unknown earnings is a refusal, not a clear window.
+- Both branches need verified conids, actual observed standard contracts and the
+  unchanged expiry/strike rules. Expiry is selected first: 3–10 calendar DTE,
+  nearest seven days, earlier tie. Same-session delta missing => existing fallback,
+  **not** an additional hard block. Calls' two-observed-strikes fallback must still
+  satisfy both price floors. Trend/volatility/event gates were and remain new-put
+  gates; they are not newly waived to obtain covered-call examples.
+- Every new order must satisfy per-name exposure <=30%, total exposure <=70%,
+  free cash >=30% of equity. Existing obligations and pending puts consume capacity;
+  expected premiums do not fund collateral. No margin or fabricated positions.
+- Missing required identity/account/chain inputs block the batch and preserve the
+  production queue. Individual strategy/earnings rejections can finish evaluation
+  with zero orders. This is not the same as passing every input gate.
+
+IBKR's public search and security definitions were independently queried on
+2026-11-16: BAC **10098**, KO **8894**, PFE **11031**, F **9599491**; all NYSE, USD,
+US common stock. `docs/data/conid_verification.json` retains request URLs, selected
+search responses and complete security definitions. `verify_conids.py` checks
+ticker, issuer, conid, exchange, currency and asset class. It does not log into IBKR
+or place orders. These identifiers are used in demonstrations; production retains
+the professor's explicit course `price_history.json` mapping requirement. The
+remaining issue is course-feed enrollment/coverage, **not unknown stock identity**.
+
+`python -m final_project.demo` reads the real retained LSEG response, not new prices,
+and calls the identical engine with `mode:demonstration` and
+`source:HYPOTHETICAL_DEMONSTRATION`. It creates two independent example books:
+
+1. $40,000 cash, no stock/options/pending orders. For the 2026-11-13 signals targeting
+   2026-11-16, BAC/F fail trend and KO/PFE fail calendar confirmation: zero orders.
+2. $40,000 marked equity, 100 shares of each name with explicitly assumed basis
+   equal to the real close, $20,893 residual cash, no short options/pending orders.
+   This is **not** a claimed assignment or purchase history. Exposure $19,107
+   (47.7675%), each name below $12,000, free cash $20,893 above the $12,000 reserve.
+   The original rules generate one call each: BAC $52.50, PFE $30, F $13, all
+   expiring 2026-11-20 (four calendar DTE). KO's two-strike fallback fails the 2%
+   above-close floor, so no KO call. Numeric strikes reference actually discovered
+   contracts, not fabricated strike grids. No option premium or fill is invented.
+
+The downloadable example arrays are `docs/data/demo_cash_start_orders.json` and
+`docs/data/demo_covered_inventory_orders.json`. Full example books, rejection reasons
+and capital checks are in `docs/data/demo_status.json`. Their `fin535-demo-*` IDs
+cannot be published by the production writer. Demonstration records never change
+the production status, either `open_orders.json`, or `mkt/positions.json`. A failed
+demo has a null proposal, not a stale example array. Unit-test fixtures remain
+separate synthetic TEST data and are not presented as real-market examples.
+
+Earnings investigation: the combined LSEG RES fields returned access-denied errors;
+the next live run probes each ordinary field separately and retains sanitized
+responses/errors under `market_snapshot.json -> raw -> ticker -> earnings_field_probe`.
+Rows from independent requests are not joined speculatively. Public company IR is
+an authorized possible alternative: BAC explicitly identifies 2027-01-15, but no
+confirmed next earnings date was verified for KO/PFE/F. Public absence, past releases
+and third-party estimates are insufficient under the existing rule. This evidence
+is documented in `docs/data/earnings_investigation.json`, **not injected as a blanket
+calendar override**. Dates would require auditable announcement/observation time,
+freshness, rescission checks and coverage before entering a nightly calendar.
+
+The professor-specific dependencies are:
+
+1. Authoritative end-of-session book and its **native schema/sample** (actual balances,
+   complete positions, stock bases, option terms/marks, resolution IDs/fills), plus
+   the upstream completion signal/timing. We must adapt read-only, not write his book.
+2. Enrollment of BAC/KO/PFE/F in the course price/option feed and explicit conid bindings,
+   consistent with the independently verified IDs. Provider identity does not prove
+   Robin contains the contract-open bars needed for resolution.
+3. Resolver activation and outputs only for **actual course execution**, not for
+   producing schema-valid example JSON: his current spec explicitly says Sanji does
+   not resolve orders yet. These proposals are therefore not claimed fills.
+
+Confirmed earnings coverage remains a data-provider/issuer dependency; ask the
+professor only if the course license/feed is meant to supply it. Greek entitlement
+is optional because the original fallback exists. Neither a broker connection nor
+a fabricated starting production account is needed or permitted.
+
+Reproduction (from repository root):
+
+```bash
+python -m final_project.verify_conids   # public IBKR read-only lookup; no credentials
+python -m final_project.demo            # isolated real-response replay
+python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo lseg_chart.test_update -q
+python -m unittest discover -s tests -p test_site_layout.py -q
+node --test final_project/test_page.cjs lseg_chart/test_page.cjs
+python -m final_project.validate_publication
+python -m final_project.run             # fresh LSEG; env secrets; exit 2 if production blocked
+python -m final_project.demo            # refresh isolated examples after fresh response
+```
+
+The nightly workflow runs production and demonstration separately; its final blocked
+production status can remain red while the LSEG requests and isolated examples pass.
+That status must not be misreported as an API authentication failure.
 
 ## Rules and conventions
 

@@ -12,4 +12,4 @@ PER_NAME = .30
 TOTAL_EXPOSURE = .70
 RESERVE = .30
 MIN_DTE, TARGET_DTE, MAX_DTE = 3, 7, 10
-ILLUSTRATIVE_CAPITAL = 40000  # Documentation/test fixtures ONLY; never account input.
+ILLUSTRATIVE_CAPITAL = 40000  # Explicit demonstration ONLY; never production account input.

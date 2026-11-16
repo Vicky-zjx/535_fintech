@@ -1,0 +1,96 @@
+"""Mode isolation, real-response replay and authoritative identifier regressions."""
+from copy import deepcopy
+from datetime import datetime, timezone
+import json
+from pathlib import Path
+import shutil
+import tempfile
+import unittest
+from .demo import build, examples
+from .sanji_orders import publish_orders, validate
+from .strategy import evaluate
+from .test_strategy import fixture
+from .verify_conids import verified_mapping
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class DemoTests(unittest.TestCase):
+    def test_real_public_identifiers(self):
+        evidence = json.loads((ROOT/'docs/data/conid_verification.json').read_text())
+        self.assertEqual(verified_mapping(evidence), {'BAC': 10098, 'KO': 8894, 'PFE': 11031, 'F': 9599491})
+        bad = deepcopy(evidence)
+        bad['records']['BAC']['detail_response']['secdef'][0]['currency'] = 'MXN'
+        with self.assertRaisesRegex(ValueError, 'identity mismatch'):
+            verified_mapping(bad)
+
+    def test_hypothetical_account_forbidden_in_live_mode(self):
+        m, a, ids = fixture()
+        m['mode'] = 'live'; a['source'] = 'HYPOTHETICAL_DEMONSTRATION'
+        r = evaluate(m, a, ids, [])
+        self.assertEqual(r['status'], 'blocked'); self.assertIsNone(r['orders'])
+
+    def test_demo_requires_explicit_hypothetical_source(self):
+        m, a, ids = fixture()
+        m['mode'] = 'demonstration'
+        r = evaluate(m, a, ids, [])
+        self.assertEqual(r['status'], 'blocked')
+
+    def test_demo_keeps_all_put_checks_and_idempotence(self):
+        # These synthetic prices/earnings exist ONLY in unit tests, never on the site.
+        m, a, ids = fixture()
+        m['mode'] = 'demonstration'; a['source'] = 'HYPOTHETICAL_DEMONSTRATION'
+        r = evaluate(m, a, ids, [])
+        self.assertEqual(len(r['orders']), 4)
+        self.assertTrue(all(o['id'].startswith('fin535-demo-') for o in r['orders']))
+        repeated = evaluate(m, a, ids, r['orders'])
+        self.assertEqual(repeated['orders'], r['orders'])
+        m['tickers']['BAC']['earnings']['reliable'] = False
+        r = evaluate(m, a, ids, [])
+        self.assertNotIn(ids['BAC'], [o['underlying'] for o in r['orders']])
+        self.assertIn('Earnings calendar unknown', str(r['decisions']))
+
+    def test_demo_does_not_bypass_capital(self):
+        m, a, ids = fixture()
+        m['mode'] = 'demonstration'; a['source'] = 'HYPOTHETICAL_DEMONSTRATION'
+        a['cash'] = a['equity'] = 1000.
+        r = evaluate(m, a, ids, [])
+        self.assertEqual(r['orders'], [])
+        self.assertIn('30% of equity', str(r['decisions']))
+
+    def test_publisher_refuses_demo_orders(self):
+        m, a, ids = fixture()
+        m['mode'] = 'demonstration'; a['source'] = 'HYPOTHETICAL_DEMONSTRATION'
+        orders = evaluate(m, a, ids, [])['orders']
+        with self.assertRaisesRegex(ValueError, 'production queue'):
+            publish_orders('/unused', orders)
+
+    def test_real_snapshot_replay_never_changes_production(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); (root/'docs/data').mkdir(parents=True); (root/'mkt').mkdir()
+            # Noncanonical whitespace proves byte preservation rather than rewriting [].
+            for p in ('open_orders.json', 'mkt/open_orders.json'):
+                (root/p).write_bytes(b'[  ]\n')
+            for p in ('market_snapshot.json', 'conid_verification.json'):
+                shutil.copyfile(ROOT/'docs/data'/p, root/'docs/data'/p)
+            result = build(root, datetime.now(timezone.utc))
+            for p in ('open_orders.json', 'mkt/open_orders.json'):
+                self.assertEqual((root/p).read_bytes(), b'[  ]\n')
+            for s in result['scenarios']:
+                self.assertEqual(s['account']['equity'], 40000.)
+                self.assertEqual(s['account']['source'], 'HYPOTHETICAL_DEMONSTRATION')
+                if s['proposed_orders'] is not None:
+                    validate(s['proposed_orders'])
+            market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+            market['mode'] = 'test'
+            (root/'docs/data/market_snapshot.json').write_text(json.dumps(market))
+            with self.assertRaisesRegex(ValueError, 'real LSEG response'):
+                build(root, datetime.now(timezone.utc))
+
+    def test_example_books_reconcile_without_claiming_fills(self):
+        m, _, _ = fixture()
+        cases = examples(m)
+        for _, _, account in cases:
+            marked = sum(p['quantity']*p['cost_basis'] for p in account['positions'])
+            self.assertEqual(account['cash'] + marked, account['equity'])
+            self.assertEqual(account['resolved_order_ids'], [])
