@@ -4,8 +4,11 @@
   // Display-only missing-value labels; never coerce or replace source nulls.
   const money=x=>x==null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(x),pct=x=>x==null?'—':(x*100).toFixed(2)+'%',num=x=>x==null?'—':Number(x).toLocaleString('en-US',{maximumFractionDigits:4});
   if(!b){$('finding').textContent='Results could not be loaded; no performance assumed.';return;}
-  const title={wheel:'Cash-secured Wheel',buy_hold:'Buy and hold'},color={wheel:'#167765',buy_hold:'#3973a3'},sorts={};
-  const selected=()=>b.runs.find(r=>r.strategy===$('account').value&&(r.strategy==='buy_hold'||r.fill_model===$('model').value));
+  const research=window.WHEEL_RESEARCH;
+  if(!research){$('finding').textContent='Supplemental comparison could not be loaded; saved results remain available in the downloads.';return;}
+  const title={wheel:'Cash-secured Wheel',buy_hold:'Full-capital buy and hold',buy_hold_100:'Fixed-100-share buy and hold'},color={wheel:'#167765',buy_hold:'#3973a3',buy_hold_100:'#988138'},sorts={};
+  const fixed=()=>research.fixed_benchmark;
+  const selected=()=>[...b.runs,fixed()].find(r=>r.strategy===$('account').value&&(r.strategy!=='wheel'||r.fill_model===$('model').value));
   const wheel=()=>b.runs.find(r=>r.strategy==='wheel'&&r.fill_model===$('model').value),benchmark=()=>b.runs.find(r=>r.strategy==='buy_hold');
   function table(id,rows,cols,empty='No recorded events.'){
     const order=sorts[id],sorted=[...rows];if(order)sorted.sort((a,b)=>{const x=a[order.key],y=b[order.key];if(x==null)return y==null?0:1;if(y==null)return -1;return (typeof x==='number'&&typeof y==='number'?x-y:String(x).localeCompare(String(y)))*order.direction;});
@@ -46,22 +49,39 @@
     plot('composition-chart',[trace(r,'cash','Cash','#167765'),trace(r,'stock_value','Stock value','#3973a3'),{...trace(r,'option_liability','Short-option liability','#b55037'),y:r.ledger.map(s=>s.option_liability==null?null:-s.option_liability)},trace(r,'dividend_receivable','Dividend receivable','#988138')],'Components · USD');
   }
   function performance(){
-    const w=wheel(),bm=benchmark(),m=w.metrics;
+    const w=wheel(),bm=benchmark(),fx=fixed(),m=w.metrics;
+    const key=r=>r.strategy+':'+r.fill_model,common=research.common_observations[$('model').value];
+    const capital=research.accounts[key(w)].capital,prefix=research.accounts[key(w)].prefix;
     const sharpe=x=>x==null?'—':x.toFixed(2),sample=m=>`${m.valid_daily_returns} / ${m.daily_return_session_count}`;
     const cards=[['Wheel total return',pct(m.total_return),m.empirical_strategy_supported?'Net equity, including open positions':'Unavailable: no supported option fills'],['Wheel ending equity',money(m.ending_equity),'Net account value, not cash or profit'],['Observed-NAV max drawdown',pct(m.observed_max_drawdown),!m.empirical_strategy_supported?'Unavailable: no supported option fills':m.valuation_gap_dates.length?'Lower bound on full-sample drawdown magnitude':'Complete NAV path; equals full-sample MDD'],['Available daily-return Sharpe',sharpe(m.available_daily_return_sharpe),!m.empirical_strategy_supported?'Unavailable: no supported option fills':`${sample(m)} one-session returns; ${m.excluded_daily_return_count?'not full-sample Sharpe':'complete sample'}`]];
     $('metrics').innerHTML=cards.map(([k,v,n])=>`<div class="metric"><div class="metric-label">${esc(k)}</div><div class="metric-value">${esc(v)}</div><div class="metric-note">${esc(n)}</div></div>`).join('');
-    table('comparison',[w,bm].map(r=>({account:title[r.strategy],return_sample:sample(r.metrics),...r.metrics})),[['account','Account'],['ending_equity','Ending equity',money],['net_pnl','Net P&L',money],['total_return','Return',pct],['observed_max_drawdown','Observed-NAV drawdown',pct],['available_daily_return_sharpe','Available daily-return Sharpe',sharpe],['return_sample','Valid daily returns / sessions'],['benchmark_excess_return','Excess return',pct],['option_entries','Options sold'],['put_assignments','Put assigns'],['call_assignments','Call assigns'],['total_costs','Costs',money],['gross_premiums','Gross premiums (not profit)',money],['net_premiums_after_option_costs','Net premium cash',money],['days_with_shares','Sessions with shares'],['days_without_shares','Without shares']]);
+    table('comparison',[w,bm,fx].map(r=>({account:title[r.strategy],return_sample:sample(r.metrics),...r.metrics})),[['account','Account'],['ending_equity','Ending equity',money],['net_pnl','Net P&L',money],['total_return','Return',pct],['observed_max_drawdown','Observed-NAV drawdown',pct],['available_daily_return_sharpe','Available daily-return Sharpe',sharpe],['return_sample','Valid daily returns / sessions'],['benchmark_excess_return','Excess return',pct],['option_entries','Options sold'],['put_assignments','Put assigns'],['call_assignments','Call assigns'],['total_costs','Costs',money],['gross_premiums','Gross premiums (not profit)',money],['net_premiums_after_option_costs','Net premium cash',money],['days_with_shares','Sessions with shares'],['days_without_shares','Without shares']]);
     $('sharpe-note').textContent=`Available daily-return Sharpe: ${sample(m)} one-session returns; 252-period annualization, ${pct(b.config.risk_free_rate)} annual risk-free rate. `+(m.excluded_daily_return_count?`Excluded return dates: ${m.excluded_daily_return_dates.join(', ')}; no return bridges the NAV gap. Missing returns may bias the estimate either way; unequal samples do not establish risk-adjusted outperformance.`:'No return dates excluded; this equals full-sample Sharpe when defined.');
     $('valuation-note').textContent=!m.empirical_strategy_supported?'No supported Wheel fills; full-path performance is not reported.':m.valuation_gap_dates.length?'Missing verified valuation: '+m.valuation_gap_dates.join(', ')+'. Full-sample MDD and Sharpe are not reported; observed-NAV drawdown is only a lower bound on full-sample drawdown magnitude.':'No missing daily NAV in this account; observed-NAV drawdown equals full-sample MDD. Full-path statistics remain available in the downloads.';
-    const supported=[w,bm].filter(r=>r.metrics.empirical_strategy_supported);
+    table('capital-comparison',[w,bm,fx].map(r=>({account:title[r.strategy],...research.accounts[key(r)].capital,
+      share_sessions:pct(research.accounts[key(r)].capital.share_session_fraction)+' / '+pct(research.accounts[key(r)].capital.no_share_session_fraction)})),
+      [['account','Account'],['account_return','Account return',pct],['average_committed','Avg session-peak committed',money],['return_on_average_committed','Return / avg committed',pct],['utilization','Capital utilization',pct],['average_unreserved_cash','Avg EOD unreserved cash',money],['share_sessions','EOD shares / no shares']]);
+    $('capital-note-summary').textContent=`Wheel EOD cash averages ${money(capital.average_cash)} = ${money(capital.average_reserved_cash)} reserved for puts + ${money(capital.average_unreserved_cash)} unreserved. Reserved cash is committed, not idle. Shares are held at ${capital.sessions_with_shares} / ${capital.sessions} daily closes; ${capital.sessions_without_shares} no-share closes can still have put exposure.`;
+    $('common-sharpe').textContent=`Common-observation Sharpe · exactly ${common.dates.length} matching adjacent-session return dates: Wheel ${num(common.accounts[key(w)].sharpe)}; full-capital buy and hold ${num(common.accounts[key(bm)].sharpe)}; fixed-100-share buy and hold ${num(common.accounts[key(fx)].sharpe)}. Excluded: ${common.excluded_dates.join(', ')||'none'}. Daily returns, sample SD (ddof=1), ×√252, annual RF ${pct(b.config.risk_free_rate)}. Not a recovered full-period Sharpe or proof of superiority.`;
+    const supported=[w,bm,fx].filter(r=>r.metrics.empirical_strategy_supported);
     plot('equity-chart',supported.map(r=>trace(r,'equity',title[r.strategy],color[r.strategy])),'Equity · USD');
     plot('drawdown-chart',supported.map(r=>trace(r,'drawdown',title[r.strategy],color[r.strategy])),'Drawdown','.1%');
     $('drawdown-note').textContent=!m.empirical_strategy_supported?'No supported Wheel fills: no flat cash curve is substituted for empirical performance.':m.valuation_gap_dates.length?'Wheel strict drawdown stops at the first missing NAV ('+m.valuation_gap_dates[0]+'); no gaps are filled. The observed-NAV card uses available marks across the sample and is only a magnitude lower bound.':'Complete observed-account NAV paths; drawdown uses each account’s running equity peak, including initial cash.';
+    const analysis=$('analysis-content');
+    try {
+      const paragraphs=window.WheelAnalysis.paragraphs(b,$('model').value,research);
+      analysis.replaceChildren(...paragraphs.map(text=>{const p=document.createElement('p');p.textContent=text;return p;}));
+    } catch(error) {
+      // Fail closed on changed/unreconciled results without disabling the dashboard.
+      analysis.textContent='Analysis unavailable: the saved results need reconciliation. Charts and audit downloads remain unchanged.';
+      console.error(error);
+    }
+    $('prefix-note').textContent=`Complete-data prefix only: ${prefix.start} through ${prefix.end}, ${prefix.sessions} sessions; MDD ${pct(prefix.max_drawdown)}. This shorter-period statistic is not full-period MDD. The Aug 13 daily BID is null; the 15:58:36 record is a trade, not a verified synchronized quote, and minute aggregates do not establish both quote-leg times. Full-period MDD remains unavailable; observed-NAV drawdown remains a magnitude lower bound. The detailed evidence review is downloadable below.`;
     account();
   }
   $('status').textContent=b.status==='unsupported_missing_wheel_fills'?'WHEEL NOT YET EMPIRICALLY SUPPORTED':'OBSERVED-UNIVERSE RESEARCH';$('status').classList.toggle('blocked',b.status==='unsupported_missing_wheel_fills');
   $('sample').textContent=`${b.config.stock_ric} · ${b.config.start} — ${b.config.end} · ${money(b.config.initial_cash)} each`;
-  $('finding').textContent=b.conclusion;$('thesis').textContent=b.thesis;$('conclusion').textContent=b.conclusion;
+  $('finding').textContent=b.conclusion;
   const a=b.audit,missing=a.missing_candidate_weeks.filter(w=>w.cp==='P');
   $('coverage-summary').textContent=`Short-dated historical contracts: ${a.contract_counts.P} puts / ${a.contract_counts.C} calls. ${missing.length} weekly put-candidate gaps; the historical chain is still incomplete. Missing cache coverage is NOT evidence that the market had no contracts. `+(a.acquisition?.connection_error?'LSEG acquisition: '+a.acquisition.connection_error:'')+(a.mark_repair?.requests?.length?' Closing-mark recheck: '+a.mark_repair.requests.map(x=>`${x.date} ${x.id} — ${x.recovered?'recovered from real closing quote':'no eligible final-minute BBO; missing mark retained'}`).join('; ')+'.':'');
   $('quote-quality').innerHTML=[['Observed BBOs',num(a.quoted_observations)],['Median spread/share',money(a.median_spread)],['Median relative spread',pct(a.median_relative_spread)],['Historical delta rows',num(a.historical_delta_rows)]].map(([k,v])=>`<span>${esc(k)}<strong>${esc(v)}</strong></span>`).join('');
@@ -72,7 +92,7 @@
   $('candidate-note').textContent=a.candidate_universe;$('timing').textContent=b.timing;$('capital-note').textContent=b.capital_note;
   table('parameters',Object.entries(b.config).map(([parameter,value])=>({parameter,value})),[['parameter','Parameter'],['value','Fixed value']]);
   $('cost-note').textContent=`Option commission ${money(b.config.option_commission)} per executed contract/side; stock execution cost ${b.config.stock_slippage_bps} bp per executed share-side; assignment fee ${money(b.config.assignment_fee)} per event. Strike transfers incur no stock-market spread. Bid/ask cost is already in fills and is not deducted a second time. No financing or borrow; idle cash earns 0%.`;
-  $('accounting-note').textContent=b.accounting;$('assignment-note').textContent=b.assignment;$('limitations').innerHTML=b.limitations.map(t=>'<li>'+esc(t)+'</li>').join('');
+  $('accounting-note').textContent=b.accounting+' '+research.methodology.timestamps;$('assignment-note').textContent=b.assignment;$('limitations').innerHTML=b.limitations.map(t=>'<li>'+esc(t)+'</li>').join('');
   $('config-editor').value=JSON.stringify(b.config,null,2);$('provenance').textContent=JSON.stringify({input_sha256:b.input_sha256,python:b.python,code_hashes:b.code_hashes},null,2);
   $('download-config').onclick=()=>{try{const cfg=JSON.parse($('config-editor').value);if(!cfg||Array.isArray(cfg)||typeof cfg!=='object')throw Error('Expected an object');const url=URL.createObjectURL(new Blob([JSON.stringify(cfg,null,2)+'\n'],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='wheel-custom-config.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('config-message').textContent='Downloaded; Python validates settings before rerunning. Published results unchanged.';}catch(e){$('config-message').textContent='Invalid JSON: '+e.message;}};
   $('date').onchange=dateChange;$('snapshot').onchange=snapshot;$('account').onchange=account;$('model').onchange=performance;$('search').oninput=events;$('event-type').onchange=events;

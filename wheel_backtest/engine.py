@@ -64,6 +64,9 @@ class Account:
         elif phase=='modeled_after_close':timestamp=(pd.Timestamp(timestamp)+pd.Timedelta(microseconds=1)).isoformat()
         ident=f'{self.strategy}-{self.model}-{len(self.events)+1:04d}'
         after=self.snapshot(day,'after_event',mark_day)
+        # These are event states, not EOD valuations. Preserve mark_date, which
+        # identifies the price observation date independently of processing time.
+        before['timestamp']=after['timestamp']=timestamp
         record=dict(event_id=ident,timestamp=timestamp,timestamp_is_modeled=True,date=day,event_type=event_type,phase=phase,
             strategy=self.strategy,fill_model=self.model,underlying=self.cfg.stock_ric,contract=c['id'] if c else None,
             cp=c['cp'] if c else None,expiry=c['expiry'] if c else None,strike=c['strike'] if c else None,

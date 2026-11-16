@@ -4,6 +4,7 @@ from pathlib import Path
 from .acquire import digest
 from .config import Config
 from .engine import run
+from .research import build_research
 
 
 def equal(a,b):assert math.isclose(a,b,abs_tol=1e-6),(a,b)
@@ -52,7 +53,8 @@ def validate(input_path,output):
                     assert e['before']['shares']==100 if e['cp']=='C' else e['before']['cash']>=100*e['strike']+cfg.option_commission+cfg.assignment_fee
             for side in ('before','after'):
                 s=e[side];snapshot=next(x for x in r['snapshots'] if x['snapshot_id']==e['event_id']+'-'+side)
-                for field in ('cash','shares','option','equity','reserved_cash'):assert s[field]==snapshot[field]
+                assert s['timestamp']==snapshot['timestamp']==e['timestamp'],'Event-state processing time mismatch'
+                for field in ('cash','shares','option','equity','reserved_cash','mark_date'):assert s[field]==snapshot[field]
         for s in r['snapshots']:
             assert s['cash']>=-1e-7 and 0<=s['reserved_cash']<=s['cash']+1e-7 and s['shares']>=0
             equal(s['buying_power'],s['cash']-s['reserved_cash'])
@@ -79,7 +81,8 @@ def validate(input_path,output):
                 elif isinstance(v,bool):assert value==str(v)
                 elif isinstance(v,(int,float)):equal(float(value),v)
                 else:assert value==str(v)
-    print(json.dumps({'validated':summaries,'csv_reconciled':True,'event_snapshots_reconciled':True},indent=2))
+    assert json.loads((output/'research.json').read_text())==build_research(book),'Supplemental research differs'
+    print(json.dumps({'validated':summaries,'csv_reconciled':True,'event_snapshots_reconciled':True,'supplemental_research_reconciled':True},indent=2))
 
 
 if __name__=='__main__':

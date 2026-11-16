@@ -62770,16 +62770,19 @@
     "pmcc_backtest/repair_coverage.py": "14cbb875e05c33f7b65c358273c45a5094aaf0bcdfe652e19da3aeb8b2d913d5",
     "wheel_backtest/__init__.py": "9da20f08cf0a63e12d60a0393233c91fbea9041d2ae5fbec9bf144b3b0086a50",
     "wheel_backtest/acquire.py": "4cad4e6c148ba902881916c7e56137adce4cbb16bed3621de35a1e8ace2227fd",
-    "wheel_backtest/build.py": "a9c8f9929b4f5e6d285f0d01f7dd3c045a5a40ff07dcc69f493824b44cc6ed6c",
+    "wheel_backtest/build.py": "4c5e523a8264def57e43f2b73187848d939a7d6a49127270c1921eadeb0d64db",
     "wheel_backtest/config.py": "82d7e26dcccade8b874f1fb78905282e6231b5ab7571e5363eb30276b0dc6eb4",
     "wheel_backtest/data.py": "1f85602b2587efb93fc6ed33647e11653b57833b8ba4c79eb6d3ae7514591752",
-    "wheel_backtest/engine.py": "142920832d9925b93a7071cff0708bba995e1aafcbd3f631016df0ecdc4453d4",
+    "wheel_backtest/engine.py": "39ed7f95b32f1459216d1bcefc7535f73830f1dccfc38e74c65d3279796b8398",
     "wheel_backtest/metrics.py": "aeef761cb34ea5a24668f2a8e7036770b1b2e2ab19e5fc24178f835f11deb9d4",
     "wheel_backtest/repair_marks.py": "c18860977175ed5e69aaf039d224417a18ff3d7cdcab1b3fb040fd4f2c1ba0da",
+    "wheel_backtest/research.py": "5f1f3f40b6993e7bd6a25c94a2aef6c20c05edbf42a6c4c31d12f31a7cdded20",
+    "wheel_backtest/review_gap.py": "a8afa4a04a27f5c30a0babace4560a979a614f8c70f05c60f562601ef9a876f1",
     "wheel_backtest/test_engine.py": "bbc01817685145e2a348e96bfacd27242b46840dfbc34159687347b45675a139",
     "wheel_backtest/test_metrics.py": "8e3c5aa5b72d51db215efb3b63f1a764b8fcf4f1040b84cb1dad7fe0aa57834e",
     "wheel_backtest/test_pipeline.py": "687e576aaba8a5b99ef9fa071a2e87e5318d56bb0e7e72203721d72555cb846c",
-    "wheel_backtest/validate.py": "788cca006c9e6317f68186dc3892d627d11d0aeb523d3c842d684481144377cf"
+    "wheel_backtest/test_research.py": "7c87504ff3b6ccf58c0a29f772e9d404f85138c7e8d6a38d01b4fc1999f7c185",
+    "wheel_backtest/validate.py": "3987d120964096f9e8d8e52196426aa2de08d93f33907f5d39072a2b3141bef1"
   },
   "conclusion": "Bid/ask baseline: observed-subset Wheel return 3.73% versus buy-and-hold 6.55%; excess -2.82%. Risk-adjusted-return thesis not established: complete-path Sharpe comparison unavailable. Incomplete historical candidate coverage and the short single-stock sample limit inference. IV versus subsequent realized volatility is not tested.",
   "config": {
@@ -63164,7 +63167,7 @@
             "stock_mark": 315.32,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-10T16:00:00-04:00",
+            "timestamp": "2026-07-10T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63216,7 +63219,7 @@
             "stock_mark": 315.32,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-10T16:00:00-04:00",
+            "timestamp": "2026-07-10T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63410,7 +63413,7 @@
             "stock_mark": 333.74,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-17T16:00:00-04:00",
+            "timestamp": "2026-07-17T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63462,7 +63465,7 @@
             "stock_mark": 333.74,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-17T16:00:00-04:00",
+            "timestamp": "2026-07-17T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63656,7 +63659,7 @@
             "stock_mark": 333.02,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-24T16:00:00-04:00",
+            "timestamp": "2026-07-24T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63708,7 +63711,7 @@
             "stock_mark": 333.02,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-24T16:00:00-04:00",
+            "timestamp": "2026-07-24T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -63902,7 +63905,7 @@
             "stock_mark": 308.91,
             "stock_value": 30891.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-07-31T16:00:00-04:00",
+            "timestamp": "2026-07-31T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1358.9999999999964,
             "unresolved": false
@@ -63954,7 +63957,7 @@
             "stock_mark": 308.91,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-31T16:00:00-04:00",
+            "timestamp": "2026-07-31T16:00:00.000001-04:00",
             "unrealized_option_pnl": -1183.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -64148,7 +64151,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-07T16:00:00-04:00",
+            "timestamp": "2026-08-07T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -64200,7 +64203,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-07T16:00:00-04:00",
+            "timestamp": "2026-08-07T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -64271,7 +64274,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -64311,7 +64314,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -64517,7 +64520,7 @@
             "stock_mark": 302.25,
             "stock_value": 30225.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 19.0,
             "unrealized_stock_pnl": -2025.0,
             "unresolved": false
@@ -64569,7 +64572,7 @@
             "stock_mark": 302.25,
             "stock_value": 30225.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 19.0,
             "unrealized_stock_pnl": -2025.0,
             "unresolved": false
@@ -64640,7 +64643,7 @@
             "stock_mark": 305.93,
             "stock_value": 30593.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-14T16:00:00-04:00",
+            "timestamp": "2026-08-14T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1657.0,
             "unresolved": false
@@ -64692,7 +64695,7 @@
             "stock_mark": 305.93,
             "stock_value": 30593.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-14T16:00:00-04:00",
+            "timestamp": "2026-08-14T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -1657.0,
             "unresolved": false
@@ -64886,7 +64889,7 @@
             "stock_mark": 319.7,
             "stock_value": 31970.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-28T16:00:00-04:00",
+            "timestamp": "2026-08-28T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -280.0,
             "unresolved": false
@@ -64938,7 +64941,7 @@
             "stock_mark": 319.7,
             "stock_value": 31970.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-28T16:00:00-04:00",
+            "timestamp": "2026-08-28T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -280.0,
             "unresolved": false
@@ -65132,7 +65135,7 @@
             "stock_mark": 319.97,
             "stock_value": 31997.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-09-04T16:00:00-04:00",
+            "timestamp": "2026-09-04T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -252.99999999999636,
             "unresolved": false
@@ -65184,7 +65187,7 @@
             "stock_mark": 319.97,
             "stock_value": 31997.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-09-04T16:00:00-04:00",
+            "timestamp": "2026-09-04T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -252.99999999999636,
             "unresolved": false
@@ -65378,7 +65381,7 @@
             "stock_mark": 336.13,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-18T16:00:00-04:00",
+            "timestamp": "2026-09-18T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -65430,7 +65433,7 @@
             "stock_mark": 336.13,
             "stock_value": 33613.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-18T16:00:00-04:00",
+            "timestamp": "2026-09-18T16:00:00.000001-04:00",
             "unrealized_option_pnl": -204.5,
             "unrealized_stock_pnl": 1363.0,
             "unresolved": false
@@ -65624,7 +65627,7 @@
             "stock_mark": 341.07,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-25T16:00:00-04:00",
+            "timestamp": "2026-09-25T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -65676,7 +65679,7 @@
             "stock_mark": 341.07,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-25T16:00:00-04:00",
+            "timestamp": "2026-09-25T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -73826,7 +73829,7 @@
             "stock_mark": 315.32,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-10T16:00:00-04:00",
+            "timestamp": "2026-07-10T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -73878,7 +73881,7 @@
             "stock_mark": 315.32,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-10T16:00:00-04:00",
+            "timestamp": "2026-07-10T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74072,7 +74075,7 @@
             "stock_mark": 333.74,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-17T16:00:00-04:00",
+            "timestamp": "2026-07-17T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74124,7 +74127,7 @@
             "stock_mark": 333.74,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-17T16:00:00-04:00",
+            "timestamp": "2026-07-17T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74318,7 +74321,7 @@
             "stock_mark": 333.02,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-24T16:00:00-04:00",
+            "timestamp": "2026-07-24T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74370,7 +74373,7 @@
             "stock_mark": 333.02,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-24T16:00:00-04:00",
+            "timestamp": "2026-07-24T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74564,7 +74567,7 @@
             "stock_mark": 308.91,
             "stock_value": 30891.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-07-31T16:00:00-04:00",
+            "timestamp": "2026-07-31T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1358.9999999999964,
             "unresolved": false
@@ -74616,7 +74619,7 @@
             "stock_mark": 308.91,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-07-31T16:00:00-04:00",
+            "timestamp": "2026-07-31T16:00:00.000001-04:00",
             "unrealized_option_pnl": -1174.5,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -74810,7 +74813,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-07T16:00:00-04:00",
+            "timestamp": "2026-08-07T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -74862,7 +74865,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-07T16:00:00-04:00",
+            "timestamp": "2026-08-07T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -74933,7 +74936,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -74973,7 +74976,7 @@
             "stock_mark": 313.33,
             "stock_value": 31333.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -917.0,
             "unresolved": false
@@ -75179,7 +75182,7 @@
             "stock_mark": 302.25,
             "stock_value": 30225.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 21.0,
             "unrealized_stock_pnl": -2025.0,
             "unresolved": false
@@ -75231,7 +75234,7 @@
             "stock_mark": 302.25,
             "stock_value": 30225.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 21.0,
             "unrealized_stock_pnl": -2025.0,
             "unresolved": false
@@ -75302,7 +75305,7 @@
             "stock_mark": 305.93,
             "stock_value": 30593.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-14T16:00:00-04:00",
+            "timestamp": "2026-08-14T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1657.0,
             "unresolved": false
@@ -75354,7 +75357,7 @@
             "stock_mark": 305.93,
             "stock_value": 30593.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-14T16:00:00-04:00",
+            "timestamp": "2026-08-14T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -1657.0,
             "unresolved": false
@@ -75548,7 +75551,7 @@
             "stock_mark": 319.7,
             "stock_value": 31970.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-28T16:00:00-04:00",
+            "timestamp": "2026-08-28T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -280.0,
             "unresolved": false
@@ -75600,7 +75603,7 @@
             "stock_mark": 319.7,
             "stock_value": 31970.0,
             "strategy": "wheel",
-            "timestamp": "2026-08-28T16:00:00-04:00",
+            "timestamp": "2026-08-28T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -280.0,
             "unresolved": false
@@ -75794,7 +75797,7 @@
             "stock_mark": 319.97,
             "stock_value": 31997.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-09-04T16:00:00-04:00",
+            "timestamp": "2026-09-04T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -252.99999999999636,
             "unresolved": false
@@ -75846,7 +75849,7 @@
             "stock_mark": 319.97,
             "stock_value": 31997.000000000004,
             "strategy": "wheel",
-            "timestamp": "2026-09-04T16:00:00-04:00",
+            "timestamp": "2026-09-04T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": -252.99999999999636,
             "unresolved": false
@@ -76040,7 +76043,7 @@
             "stock_mark": 336.13,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-18T16:00:00-04:00",
+            "timestamp": "2026-09-18T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -76092,7 +76095,7 @@
             "stock_mark": 336.13,
             "stock_value": 33613.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-18T16:00:00-04:00",
+            "timestamp": "2026-09-18T16:00:00.000001-04:00",
             "unrealized_option_pnl": -195.0,
             "unrealized_stock_pnl": 1363.0,
             "unresolved": false
@@ -76286,7 +76289,7 @@
             "stock_mark": 341.07,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-25T16:00:00-04:00",
+            "timestamp": "2026-09-25T16:00:00.000001-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -76338,7 +76341,7 @@
             "stock_mark": 341.07,
             "stock_value": 0.0,
             "strategy": "wheel",
-            "timestamp": "2026-09-25T16:00:00-04:00",
+            "timestamp": "2026-09-25T16:00:00.000001-04:00",
             "unrealized_option_pnl": null,
             "unrealized_stock_pnl": 0.0,
             "unresolved": false
@@ -84293,7 +84296,7 @@
             "stock_mark": 313.33,
             "stock_value": 49819.469999999994,
             "strategy": "buy_hold",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 106.52999999999156,
             "unresolved": false
@@ -84333,7 +84336,7 @@
             "stock_mark": 313.33,
             "stock_value": 49819.469999999994,
             "strategy": "buy_hold",
-            "timestamp": "2026-08-10T16:00:00-04:00",
+            "timestamp": "2026-08-10T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": 106.52999999999156,
             "unresolved": false
@@ -84404,7 +84407,7 @@
             "stock_mark": 302.25,
             "stock_value": 48057.75,
             "strategy": "buy_hold",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1655.1900000000023,
             "unresolved": false
@@ -84444,7 +84447,7 @@
             "stock_mark": 302.25,
             "stock_value": 48057.75,
             "strategy": "buy_hold",
-            "timestamp": "2026-08-13T16:00:00-04:00",
+            "timestamp": "2026-08-13T09:30:00-04:00",
             "unrealized_option_pnl": 0.0,
             "unrealized_stock_pnl": -1655.1900000000023,
             "unresolved": false

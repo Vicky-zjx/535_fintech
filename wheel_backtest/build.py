@@ -7,6 +7,7 @@ from .acquire import read_config,digest
 from .config import Config
 from .data import Market,finite,mid
 from .engine import run
+from .research import build_research
 
 THESIS=('A systematic cash-secured put and covered-call wheel may generate income and potentially improve risk-adjusted returns relative to buy-and-hold in sideways or moderately bullish markets, particularly when implied volatility exceeds subsequent realized volatility. However, the strategy gives up some upside in strong rallies and retains substantial downside exposure during market declines.')
 
@@ -103,6 +104,9 @@ def publish(book,output,template=None):
     for file,value in [('results.json',book),('config.json',book['config']),('data_audit.json',book['audit'])]:
         (output/file).write_text(json.dumps(value,sort_keys=True,indent=2,allow_nan=False)+'\n')
     (output/'book.js').write_text('window.WHEEL_BOOK = '+json.dumps(book,sort_keys=True,allow_nan=False).replace('<','\\u003c')+';\n')
+    research=build_research(book)
+    (output/'research.json').write_text(json.dumps(research,sort_keys=True,indent=2,allow_nan=False)+'\n')
+    (output/'research.js').write_text('window.WHEEL_RESEARCH = '+json.dumps(research,sort_keys=True,allow_nan=False).replace('<','\\u003c')+';\n')
     page=template or Path(__file__).with_name('page.html')
     (output/'index.html').write_text(page.read_text())
     print(json.dumps(dict(status=book['status'],accounts=len(book['runs']),events=len(events),daily_rows=len(ledger),snapshots=len(snapshots),contract_counts=book['audit']['contract_counts']),indent=2))

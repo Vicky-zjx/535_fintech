@@ -1,0 +1,232 @@
+{
+  "action": "Retain NAV null; retain both adjacent return gaps and full-period MDD/Sharpe unavailable. This review makes no new API request.",
+  "contract": "AAPLH142632250.U^H26",
+  "daily_quote": {
+    "ask": 0.01,
+    "available_at": null,
+    "bid": null,
+    "date": "2026-08-13",
+    "delta": 0.0027,
+    "delta_source": "historical",
+    "id": "AAPLH142632250.U^H26",
+    "precision": "daily",
+    "quote_time_synchronization": "unknown at daily precision",
+    "source_snapshot_sha256": "faa96dd21248223ff8313efd048018ac4c8d95622df06fd600bf75e67b4db1c3",
+    "source_timestamp": null,
+    "trade": 0.01,
+    "vendor_mid": null,
+    "vendor_mid_definition_verified": false
+  },
+  "date": "2026-08-13",
+  "evidence": [
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_recheck_20261027_v2/daily_all_fields.json",
+      "parameters": {
+        "end": "2026-08-14",
+        "interval": "P1D",
+        "sessions": "normal",
+        "start": "2026-08-12",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 3,
+      "selected_rows": [
+        {
+          "ASK": 0.01,
+          "BID": null,
+          "DATE": "2026-08-13",
+          "MID_PRICE": null,
+          "TRDPRC_1": 0.01
+        }
+      ],
+      "sha256": "b383fa5f5a9e0d42ea84f2128298befe415bb651dc12e14ea136c7f72c67c4a7",
+      "status": null
+    },
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_recheck_20261027_v2/minute_regular_session.json",
+      "parameters": {
+        "count": 10000,
+        "end": "2026-08-13T20:00:00Z",
+        "extended_params": {
+          "summaryTimestampLabel": "endPeriod"
+        },
+        "interval": "PT1M",
+        "sessions": "normal",
+        "start": "2026-08-13T13:30:00Z",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 132,
+      "selected_rows": [
+        {
+          "ASK": 0.01,
+          "ASK_NUMMOV": 1,
+          "BID": 0,
+          "BID_NUMMOV": null,
+          "DATE_TIME": "2026-08-13T19:59:00.000000000Z",
+          "TRDPRC_1": 0.01
+        },
+        {
+          "ASK": null,
+          "ASK_NUMMOV": null,
+          "BID": null,
+          "BID_NUMMOV": null,
+          "DATE_TIME": "2026-08-13T19:55:00.000000000Z",
+          "TRDPRC_1": 0.03
+        },
+        {
+          "ASK": null,
+          "ASK_NUMMOV": null,
+          "BID": null,
+          "BID_NUMMOV": null,
+          "DATE_TIME": "2026-08-13T19:52:00.000000000Z",
+          "TRDPRC_1": 0.01
+        },
+        {
+          "ASK": 0.01,
+          "ASK_NUMMOV": 1,
+          "BID": 0,
+          "BID_NUMMOV": null,
+          "DATE_TIME": "2026-08-13T19:44:00.000000000Z",
+          "TRDPRC_1": 0.01
+        },
+        {
+          "ASK": 0.01,
+          "ASK_NUMMOV": 2,
+          "BID": 0,
+          "BID_NUMMOV": 1,
+          "DATE_TIME": "2026-08-13T19:27:00.000000000Z",
+          "TRDPRC_1": null
+        },
+        {
+          "ASK": null,
+          "ASK_NUMMOV": null,
+          "BID": null,
+          "BID_NUMMOV": null,
+          "DATE_TIME": "2026-08-13T19:16:00.000000000Z",
+          "TRDPRC_1": 0.01
+        }
+      ],
+      "sha256": "3f1f56481c80d491a6d5fa2ee9cc55a683c0dbb4bdbac884d833db5925f129fc",
+      "status": null
+    },
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_recheck_20261027_v2/quote_final_60s.json",
+      "parameters": {
+        "count": 10000,
+        "end": "2026-08-13T20:00:00Z",
+        "eventTypes": "quote",
+        "start": "2026-08-13T19:59:00Z",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 0,
+      "selected_rows": [],
+      "sha256": "7135323979509f1c8d5ea94136049b368b947f6c28e5305275ca234d0670e1fc",
+      "status": null
+    },
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_recheck_20261027_v2/quote_final_30m.json",
+      "parameters": {
+        "count": 10000,
+        "end": "2026-08-13T20:00:00Z",
+        "eventTypes": "quote",
+        "start": "2026-08-13T19:30:00Z",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 0,
+      "selected_rows": [],
+      "sha256": "4e67942e3f7ca150eed6901eefefc4cb2c450251c5f0e3a2570831707f0888db",
+      "status": null
+    },
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_event_verification_20261027_v1/quote_field_timestamps.json",
+      "parameters": {
+        "adjustments": [
+          "exchangeCorrection",
+          "manualCorrection"
+        ],
+        "count": 10000,
+        "end": "2026-08-13T20:00:00Z",
+        "fields": [
+          "BID",
+          "ASK",
+          "BIDSIZE",
+          "ASKSIZE",
+          "SOURCE_DATETIME",
+          "BID_TIM_NS",
+          "ASK_TIM_NS",
+          "QUOTIM",
+          "QUOTE_DATE",
+          "BID_COND_N",
+          "ASK_COND_N",
+          "QUALIFIERS"
+        ],
+        "start": "2026-08-13T19:55:00Z",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 1,
+      "selected_rows": [
+        {
+          "ASK": 0.01,
+          "BID": 0,
+          "DATE_TIME": "2026-08-13T19:58:36.702000000Z",
+          "EVENT_TYPE": "trade",
+          "SOURCE_DATETIME": "2026-08-13T19:58:36.647000000Z"
+        }
+      ],
+      "sha256": "f0a3bff7f95b663ec4152c88b3a9e8400fc0c10bd1afc57b7c4286e128802f2f",
+      "status": {
+        "code": "TS.Intraday.UserRequestError.90006",
+        "message": "The universe does not support the following fields: [BID_TIM_NS, ASK_TIM_NS, QUOTIM, QUOTE_DATE, BID_COND_N, ASK_COND_N]."
+      }
+    },
+    {
+      "eligible_under_current_rule": false,
+      "file": "gap_event_verification_20261027_clock_v1/quote_clock_variants.json",
+      "parameters": {
+        "adjustments": [
+          "exchangeCorrection",
+          "manualCorrection"
+        ],
+        "count": 10000,
+        "end": "2026-08-13T20:00:00Z",
+        "fields": [
+          "BID",
+          "ASK",
+          "BIDSIZE",
+          "ASKSIZE",
+          "SOURCE_DATETIME",
+          "QUOTIM_NS",
+          "QUOTIM_MS",
+          "BID_TIM_MS",
+          "ASK_TIM_MS",
+          "QUALIFIERS"
+        ],
+        "start": "2026-08-13T19:55:00Z",
+        "universe": "AAPLH142632250.U^H26"
+      },
+      "row_count": 1,
+      "selected_rows": [
+        {
+          "ASK": 0.01,
+          "BID": 0,
+          "DATE_TIME": "2026-08-13T19:58:36.702000000Z",
+          "EVENT_TYPE": "trade",
+          "SOURCE_DATETIME": "2026-08-13T19:58:36.647000000Z"
+        }
+      ],
+      "sha256": "3158dd8bdb4db54096b2777b6705dc52c385ccea8179c66a91537aa1fe5ac9a6",
+      "status": {
+        "code": "TS.Intraday.UserRequestError.90006",
+        "message": "The universe does not support the following fields: [QUOTIM_NS, QUOTIM_MS, BID_TIM_MS, ASK_TIM_MS]."
+      }
+    }
+  ],
+  "input_sha256": "062df6a818222958ff18577eedc825a662bcf362f90227c90d729cdb1bbfeb0d",
+  "reason": "Daily BID and MID_PRICE are null. Quote-only requests return no event in the final 60 seconds (also none in the final 30 minutes). The 15:58:36 record is a trade event with BID=0 / ASK=0.01, but individual quote timestamps were unsupported; its trade timestamp does not establish freshness of both quote legs. The 15:59 endPeriod minute bar has BID=0 / ASK=0.01 and ASK_NUMMOV=1, but BID_NUMMOV is null and synchronized leg times are unknown. It is an aggregate, not the required complete quote event. Zero bid itself is valid. No change to the valuation rule, no trade-price/theoretical-price substitution, no prior/future-price fill.",
+  "source": "https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing",
+  "status": "unresolved_existing_valuation_rule"
+}

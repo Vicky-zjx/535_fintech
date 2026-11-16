@@ -7,6 +7,72 @@ and final-minute quote validator, not their position or leverage rules.
 
 ## Measured result
 
+### Supplemental capital and matched-observation comparisons
+
+The locally revised five-paragraph Analysis is preserved. `research.py` builds
+`wheel/research.json` / `research.js` separately from the original three runs.
+The secondary fixed-100-share account is selectable in the Portfolio Viewer;
+its events and daily states are in the supplemental JSON. Original CSVs still
+describe the original accounts, not a silently replaced benchmark.
+
+- State commitment = reserved put strike × multiplier × quantity + shares ×
+  gross acquisition cost. Covered calls add zero collateral. Fees are expenses,
+  not capitalized stock cost; market value is used for NAV, not this denominator.
+- Daily commitment is the maximum across recorded before/after/EOD states.
+  Average all 62 sessions, including expiry-day capital before release. This is
+  a **modeled-state session peak**, not continuous intraday observation. EOD-only
+  commitment is also exported for reconciliation, but is not the primary denominator.
+- Capital return = endpoint net P&L / average session-peak commitment; utilization
+  = that average / $50,000. Neither capital return is annualized. This descriptive
+  ratio is not time-weighted return and is not the denominator of Sharpe.
+- Cash averages and 34/62 share-holding sessions use EOD states. Cash = reserved
+  + unreserved cash. No-share days can still have short puts; collateral is not idle.
+- Fixed-100-share buy-and-hold uses the same $312.66 entry print, 1bp stock cost
+  ($3.1266), unadjusted stock marks, $27 dividend and zero cash interest. Same
+  $50,000 start and dates, no forced sale. It is not matched delta or holding time.
+- Common-observation Sharpe uses the exact 60 dates where all compared accounts
+  have genuine adjacent-session returns. Aug 13 and 14 are excluded, never bridged.
+  Formula: `(mean(r) - ((1 + annual_RF) ** (1/252) - 1)) / sample_sd(r) * sqrt(252)`;
+  RF is 0, daily frequency, ddof=1. It is not recovered full-period Sharpe.
+
+Baseline average committed capital is $32,108.87 (64.22% utilization); capital
+return is 5.81% (midpoint 5.97%), versus unchanged account returns 3.73% / 3.83%.
+Fixed-100-share account return is 4.12%, net P&L $2,059.8734, full MDD −7.12%.
+Full-capital buy-and-hold remains 6.55%. Common-date Sharpe is 1.2130 / 0.9335 /
+0.8866 for baseline Wheel / full-capital BH / fixed-100-share BH respectively.
+The uninterrupted Jul 6–Aug 12 prefix has 28 sessions and MDD −3.63%; it does
+not resolve the unknown full-period MDD.
+
+`review_gap.py` rechecks the retained raw responses offline. Daily BID is null;
+quote-only requests found no final-minute quote. The 15:58:36 event is classified
+as a trade; its attached BID/ASK have no separately verified quote timestamps.
+The 15:59 minute aggregate has a null BID_NUMMOV and no proven synchronous leg
+times. Zero BID itself is valid, but these records do not qualify under the
+unchanged complete-quote-event valuation rule. Evidence, hashes and exclusions
+are in `wheel/valuation_review.json`. No source data or missing NAV was changed.
+
+Event `timestamp` now consistently means modeled processing time in embedded
+and independent before/after states: dividend entitlement and payment at 09:30
+ET; expiries/assignments immediately after close; EOD after booked events.
+`mark_date` is separate: opening dividend events use prior-close observations.
+The correction also aligns post-close event microseconds; cash flows, economic
+ordering, marks, EOD states and P&L are unchanged. It is not a claim about actual
+broker dividend-payment timing.
+
+Reproduce without a new API pull:
+
+```sh
+python -m wheel_backtest.review_gap --input wheel_backtest/local_data/input_v2.json --output wheel/valuation_review.json
+python -m wheel_backtest.build --input wheel_backtest/local_data/input_v2.json --config wheel/config.json
+python -m wheel_backtest.validate --input wheel_backtest/local_data/input_v2.json
+python -m unittest wheel_backtest.test_engine wheel_backtest.test_pipeline wheel_backtest.test_metrics wheel_backtest.test_research -v
+node --test wheel_backtest/test_analysis.cjs
+```
+
+The external event-type reference is [LSEG Historical Pricing](https://developers.lseg.com/en/api-catalog/lseg-data-platform/lseg-data-library-for-python/tutorials/content-tutorials/historical-pricing).
+
+### Original account results (unchanged)
+
 Real LSEG inputs, **2026-07-06–2026-09-30**, 62 trading sessions, $50,000 per
 account. Rules were fixed before inspecting Wheel P&L. The suggested $10,000
 cannot secure a put on approximately $300 AAPL. One contract is permitted;

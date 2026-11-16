@@ -16,6 +16,7 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
     assert.equal(await page.locator('nav.course-navigation a').last().getAttribute('href'),base+'docs/');
   }
   const book=await page.evaluate(()=>window.WHEEL_BOOK);assert.equal(book.synthetic,false);assert.equal(book.runs.length,3);
+  const research=await page.evaluate(()=>window.WHEEL_RESEARCH),runs=[...book.runs,research.fixed_benchmark];
   const money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(x);
   const pct=x=>(x*100).toFixed(2)+'%';
   let checks=0;
@@ -27,8 +28,8 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
     assert.equal((await page.locator('#comparison thead').innerText()).includes('Available daily-return Sharpe'),true);
     assert.ok((await page.locator('#metrics .metric-note').nth(3).innerText()).includes(`${m.valid_daily_returns} / ${m.daily_return_session_count}`));
     for(const day of m.excluded_daily_return_dates)assert.ok((await page.locator('#sharpe-note').innerText()).includes(day));
-    for(const r of [wheelRun,book.runs.find(r=>r.strategy==='buy_hold')]){
-      const row=page.locator('#comparison tbody tr').nth(r.strategy==='wheel'?0:1);
+    for(const r of [wheelRun,book.runs.find(r=>r.strategy==='buy_hold'),research.fixed_benchmark]){
+      const row=page.locator('#comparison tbody tr').nth(['wheel','buy_hold','buy_hold_100'].indexOf(r.strategy));
       assert.equal(await row.locator('td').nth(5).innerText(),r.metrics.available_daily_return_sharpe.toFixed(2));
       assert.equal(await row.locator('td').nth(6).innerText(),`${r.metrics.valid_daily_returns} / ${r.metrics.daily_return_session_count}`);
     }
@@ -40,9 +41,9 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
       for(const gap of m.valuation_gap_dates)assert.ok(note.includes(gap));
       assert.match(note,/Full-sample MDD and Sharpe are not reported/);
     }
-    for(const strategy of ['wheel','buy_hold']){
+    for(const strategy of ['wheel','buy_hold','buy_hold_100']){
       await page.selectOption('#account',strategy);
-      const r=book.runs.find(r=>r.strategy===strategy&&(strategy==='buy_hold'||r.fill_model===model));
+      const r=runs.find(r=>r.strategy===strategy&&(strategy!=='wheel'||r.fill_model===model));
       for(const day of r.ledger.map(s=>s.date)){
         await page.selectOption('#date',day);
         const states=r.snapshots.filter(s=>s.date===day);
@@ -66,12 +67,12 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
       }
     }
     const plotted=await page.locator('#equity-chart').evaluate(el=>el.data);
-    for(const t of plotted){const r=book.runs.find(r=>(t.name==='Buy and hold'?r.strategy==='buy_hold':r.strategy==='wheel'&&r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.equity));assert.equal(t.connectgaps,false);}
+    for(const t of plotted){const strategy=t.name==='Full-capital buy and hold'?'buy_hold':t.name==='Fixed-100-share buy and hold'?'buy_hold_100':'wheel';const r=runs.find(r=>r.strategy===strategy&&(strategy!=='wheel'||r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.equity));assert.equal(t.connectgaps,false);}
     const drawdowns=await page.locator('#drawdown-chart').evaluate(el=>el.data);
-    for(const t of drawdowns){const r=book.runs.find(r=>(t.name==='Buy and hold'?r.strategy==='buy_hold':r.strategy==='wheel'&&r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.drawdown));assert.equal(t.connectgaps,false);}
+    for(const t of drawdowns){const strategy=t.name==='Full-capital buy and hold'?'buy_hold':t.name==='Fixed-100-share buy and hold'?'buy_hold_100':'wheel';const r=runs.find(r=>r.strategy===strategy&&(strategy!=='wheel'||r.fill_model===model));assert.deepEqual(t.y,r.ledger.map(x=>x.drawdown));assert.equal(t.connectgaps,false);}
     assert.equal((await page.locator('body').innerText()).includes('N/A'),false);
   }
-  for(const file of ['results.json','config.json','data_audit.json','metrics.csv','blotter.csv','ledger.csv','snapshots.csv','decisions.csv','coverage.csv','quote_issues.csv'])assert.equal((await context.request.get(base+'wheel/'+file)).status(),200);
+  for(const file of ['results.json','config.json','data_audit.json','metrics.csv','blotter.csv','ledger.csv','snapshots.csv','decisions.csv','coverage.csv','quote_issues.csv','research.json','valuation_review.json'])assert.equal((await context.request.get(base+'wheel/'+file)).status(),200);
   await page.selectOption('#model','quoted_side');await page.selectOption('#account','wheel');
   const gap=book.runs[0].metrics.valuation_gap_dates[0];
   if(gap){
@@ -93,6 +94,6 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Mobile overflow');
   await page.screenshot({path:path.join(out,'wheel-mobile.png'),fullPage:true});
   await page.locator('#portfolio').screenshot({path:path.join(out,'wheel-portfolio-mobile.png')});
-  assert.deepEqual(errors,[]);console.log(JSON.stringify({routes:5,navigationLinks:25,downloads:10,snapshotChecks:checks,browserErrors:errors,screenshots:out},null,2));
+  assert.deepEqual(errors,[]);console.log(JSON.stringify({routes:5,navigationLinks:25,downloads:12,snapshotChecks:checks,browserErrors:errors,screenshots:out},null,2));
   await browser.close();
 })().catch(e=>{console.error(e);process.exit(1);});
