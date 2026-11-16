@@ -1,477 +1,197 @@
-# Multi-Asset Risk-Managed Weekly Wheel
+# FIN 535 — Multi-Asset Risk-Managed Weekly Wheel
 
-Simulation-only Final Project for FIN 535. Website: [Final Project](https://vicky-zjx.github.io/535_fintech/docs/).
-Earlier assignments and their real caches are independent and unchanged.
+[English website](https://vicky-zjx.github.io/535_fintech/docs/) ·
+[Nightly workflow](https://github.com/Vicky-zjx/535_fintech/actions/workflows/nightly_orders.yaml)
 
-### Verified publication — 2026-11-16
+## Assignment output: proposed orders, not an executed account
 
-[Real retrieval / publication run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43969760293)
-queried LSEG at 22:25 UTC. Study window **2023-11-16–2026-11-16**, 752 expected
-sessions plus 50 earlier warm-up closes (query starts 2023-09-07).
+The nightly job runs the model and manages root `open_orders.json`, with an
+identical `mkt/open_orders.json` compatibility copy. The professor's clarification
+does not require an active Sanji resolver or completed fills to generate proposals.
+Nothing is submitted to Canvas by this code.
 
-| Stock | Observed sample closes | Eligible weekly entries | Combined pass rate |
-| --- | ---: | ---: | ---: |
-| BAC | 751 / 752 | 101 / 157 | 64.3% |
-| KO | 752 / 752 | 91 / 157 | 58.0% |
-| PFE | 752 / 752 | 58 / 157 | 36.9% |
-| F | 751 / 752 | 66 / 157 | 42.0% |
+### Account modes
 
-All four have all 50 warm-up closes. BAC/F lack November 16: both the full-window
-response and the exact-day recheck returned the older November 13 date, which is
-**not** relabeled or carried forward. Coverage remains partial. These two latest
-daily gaps do not invalidate the 157 weekly entries ending November 16, whose last
-entry signal uses the preceding Friday. Current November 17 planning and current
-demonstrations remain blocked by missing valid prices; production also lacks the account.
+- **Course mode (default, `--mode course`):** if no official account file exists,
+  use explicitly hypothetical USD 40,000 starting cash, zero shares, zero short
+  options and no leverage. These are course assumptions, not actual balances.
+  All normal filters, contract selection, capital limits and position checks apply.
+- If `mkt/positions.json` exists, course mode automatically uses the strict
+  authoritative adapter instead. Invalid, stale, null or unfamiliar official
+  records BLOCK; they never trigger a silent hypothetical fallback.
+- **Authoritative-only (`--mode authoritative`):** requires the official book.
+  No starting cash is assumed. A previously used official account cannot disappear
+  and reset the planner to hypothetical cash.
+- **Isolated demonstrations:** `demo.py` replays retained real market observations
+  with separate hypothetical books. Their `fin535-demo-` IDs are forbidden in
+  the managed queue. The assumed-inventory example is NOT a way to invent covered
+  holdings in course mode.
 
-Across 628 stock–entry-date pairs, 316 pass all three screens. Trend alone rejects
-300 (279 exclusive); HV20 rejects 26 (11 exclusive, all F); R5 rejects 11 (zero
-exclusive). There are 107/157 (68.2%) dates with two or more eligible names, and six
-with all four. These count opportunities, not historical trades or profits. BAC
-combined eligibility was 79.2% in 2024 versus 45.7% in the observed 2026 period;
-PFE was 24.5% versus 60.9%. Fixed screens have materially different exposure
-opportunities across time; unequal-length year slices are not investment-return comparisons.
+No code creates an official positions file, fills, assignments, premiums, profits
+or NAV history. Course proposals have `fin535-course-` IDs; proposals from an
+authoritative book use `fin535-wheel-` IDs. Neither is a claim of execution.
 
-The archived November 16 target example still produces two valid puts (KO/PFE)
-and, in a separate assumed-inventory book, three valid calls (BAC/PFE/F). These are
-separately dated historical demonstrations, not the current blocked batch.
-Both production arrays remain unchanged `[]`, SHA256
-`37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570`.
+### Unconfirmed proposal lifecycle
 
-Validation: **123 checks** (89 Python engine/provider/history/demo, four site layout,
-30 JavaScript), plus independent publication validation. Browser checked at desktop
-and 390px: no page overflow, seven course links, interactive stock selection, no
-console errors; the existing SVG remains unchanged. Live workflow retrieval,
-demonstrations, analysis, validation, artifact commit and Pages request passed; its
-final step deliberately fails to report the missing production inputs honestly.
-Initial integration failures and their fixes remain visible in Git/Actions history.
-This is **not** a claim that the assignment's actual-account order output is complete.
+`course/proposal_state.json` is a durable **commitment record**, not an account.
+It stores assumptions and unconfirmed course proposals, never hypothetical fills.
 
-## Current implementation — three-year analysis and verified identities
+1. Reserve strike × 100 for each proposed put; lock its ticker.
+2. Repeat runs for the same session retain the same ID and terms without reserving twice.
+3. Once an order's target session has passed, remove it from the active dated queue,
+   but KEEP the ticker lock and collateral in the commitment record.
+4. Do not infer non-fill, expiry or assignment from elapsed time. Even a proposal
+   whose option expiry passed remains uncertain until reconciled.
+5. An authoritative, reconciled book with the corresponding `resolved_order_ids`
+   can retire those commitments. Stock holdings and cost bases must then support
+   any covered call. Merely receiving a book without resolving conflicting
+   proposals does not establish that they were unfilled.
+6. No manual reset button or automatic nightly reinitialization releases capital.
+   Unknown existing queue entries or changed terms under an existing ID block.
 
-**Production is not complete:** no authoritative account was found. The root and
-`mkt/open_orders.json` remain byte-identical and unchanged. No Canvas submission.
+Other tickers can still qualify if their data and remaining capital allow it.
+If every ticker is locked, the report says `awaiting_order_confirmation`, not
+“the market had no opportunities.” This necessarily limits repeated operation
+without execution feedback, but does not block initial course proposals.
 
-Configured static IDs: **BAC 10098, KO 8894, PFE 11031, F 9599491**. Official IBKR
-public search/security definitions independently verify ticker, issuer, NYSE, USD,
-US common stock. `resolve_identifiers` checks the static mapping against retained
-official evidence and rejects conflicting course mappings. No nightly IBKR login.
-The accessible course history only identifies Apple: course execution coverage for
-these IDs remains unconfirmed, not their stock identity. This does not block literal
-strike/expiry JSON generation when a valid account exists, but prevents claiming
-that Sanji can resolve/fill it. `sanji_input_audit.json` lists sources inspected.
+## Unchanged trading rules
 
-Account dependency is conditional: all orders need actual dated cash, equity and
-complete positions. Calls need shares and actual bases; held shorts require terms,
-marks and collateral. Reconcile pending/resolved orders where applicable. A confirmed
-flat book needs no fictional bases or historical fills. The professor must provide
-the native account schema/book and update-complete timing. Resolver activation is an
-execution requirement, not a JSON-generation requirement.
+Universe: BAC, KO, PFE and F. Each ticker is evaluated independently, with at most
+one Wheel option per ticker and multiple simultaneous names when capital permits.
 
-`historical.py` requests a rolling three years ending at the latest completed XNYS
-session, plus 50 earlier exchange sessions. Real `TR.PriceClose.date`/`TR.PriceClose`
-responses remain in the source snapshot. No synthetic data, interpolation or missing
-session compression. The analysis writes `docs/data/historical_signals.json` and
-`historical_signals.csv`, including source hash, actual coverage, null dates, rolling
-indicators, daily/weekly pass rates, yearly counts and joint eligibility. Warm-up
-rows do not count in the analysis. A historical weekly entry uses the previous
-completed session, never its own closing price; XNYS holidays are respected.
-Only fully observed four-stock dates enter the multi-stock denominator. Standalone
-rejection counts overlap; exclusive counts measure the incremental effect of one gate.
-Partial data stays partial. Float recomputation tolerates 1e-12 CPU roundoff only;
-dates, decisions, counts, IDs and nulls must match exactly.
+New puts only target the first actual XNYS session of the week. Use the preceding
+completed session's close, SMA20, SMA50, HV20 and five-day return:
 
-This tests **technical eligibility**, not options P&L. Current fixed survivors and
-as-retrieved adjusted closes are not a vintage universe. Corporate-action revisions
-and survivorship remain limitations. Thresholds have not been retuned. No historical
-premiums, fills, assignments, profits, Sharpe or drawdowns are invented.
+- Close >= SMA50 and SMA20 >= SMA50.
+- HV20 <= 45%; five-day return >= -8%.
+- Target put delta approximately -0.25; call delta approximately +0.25.
+- Observed standard-contract expiry 3–10 calendar DTE, nearest 7; earlier expiry
+  breaks a tie. Not necessarily Friday of the entry week.
+- Missing/incomplete same-session Greeks: observed put strike nearest 3% OTM;
+  calls exactly two observed strikes above ATM, subject to both call floors.
+  This fallback is NOT a 25-delta estimate. No invented strike grid or Greek.
+- Covered calls require confirmed 100 unencumbered shares, strike >=1.01× verified
+  stock basis and >=1.02× latest close. They can target any next trading session.
+- Exposure <=30% per name, <=70% total; uncommitted cash >=30% of equity.
+  No leverage or naked calls. Pending puts count in collateral/exposure. Calls
+  add no second stock exposure. Premiums not received cannot finance orders.
+- Competing puts are allocated by ascending HV20, then ticker. Calls require no
+  additional put collateral. All limits remain enforced.
+- **No earnings filter or earnings API requests.** Earnings-related price gaps
+  remain a disclosed risk.
 
-The unchanged real November 13 snapshot targeting November 16 is separately retained
-as `entry_example_market.json`. `demo --weekly-entry-example` writes `entry_demo_*`
-outputs: two cash-start puts (KO 96/PFE 28, November 20 expiry) and three calls in a
-separate assumed-stock account. These are dated historical proposals, not today's
-orders. Current examples continue to read the latest real response; a midweek flat
-book can legitimately generate zero puts. Missing closes block an example instead
-of assigning stale stock marks. The published website distinguishes these states.
+## Market inputs and identity
 
-The hypothesis is explicit but unproven: technical screens may reduce downside at
-the cost of premiums/capital utilization. The page tests rejection frequency, overlap
-and variation across stocks/years. The IV–RV premium remains untested: HV20 is not IV.
-Future Sharpe should use a dated short-term Treasury reference converted to daily
-units, with 0% RF only a labeled sensitivity; actual credited cash interest belongs
-in P&L. Any simulated idle-cash yield needs a stated source/accrual rule and zero-yield
-sensitivity. No such performance calculations are claimed here.
+The existing licensed LSEG Data Platform connection uses repository Secrets:
+`LSEG_APP_KEY`, `LSEG_USERNAME`, `LSEG_PASSWORD`. No secret is in source or public
+outputs; no Workspace dependency is added; no session takeover is forced.
 
-Additional reproduction after the fresh API query (using existing GitHub Secrets):
+Official IBKR evidence independently verifies BAC **10098**, KO **8894**,
+PFE **11031**, F **9599491**, NYSE / USD common stocks. Static mappings must match
+`docs/data/conid_verification.json`; conflicting course mappings block.
+Identity validity is separate from course database enrollment or option-open
+coverage. Apple-only sample history does NOT narrow the strategy universe.
+
+Each ticker needs 50 consecutive completed XNYS closes with actual returned dates.
+No stale-date relabeling, interpolation or forward fill. The exact-day close
+recheck uses the same `TR.PriceClose.date` / `TR.PriceClose` definition. A successful
+API login does not guarantee all requested fields are present. Required missing
+market inputs block the batch and preserve prior orders, rather than writing [].
+Contract discovery is an observed candidate set, not a complete historical chain.
+Current survivors and revised historical closes imply survivorship/revision risks.
+
+## Output contract and failure behavior
+
+The Sanji subset is: stable `id`, dated `for`, `order_type:mkt`, `action:SHT`,
+`qty:1`, numeric verified `underlying`, `contract:put|call`, explicit observed
+`expiry` and `strike`, `ref:prev_close`. No limit field on a market order.
+Sanji's documented market execution reference is the resolved contract's open,
+not the signal close or a guaranteed midpoint.
+
+Per-file writes use a flushed/fsynced temporary file and atomic replace. The
+commitment record is written before the two queues; in-process failure restores
+exact prior bytes. A process crash can leave a conservative lock or disagreeing
+mirrors, which the next run rejects; it cannot silently spend unrecorded collateral.
+One Git commit publishes the files together. No claim of a multi-file filesystem
+atomic transaction is made.
+
+`strategy_status.json` records account mode/assumptions, source hash, input
+commitments, per-stock decisions, capital checks, evaluated order array, queue
+hash, whether the writer ran and whether content changed. The publication
+validator independently reruns successful course decisions from the real snapshot
+and requires exact order/decision agreement (1e-12 tolerance only for floating
+roundoff), correct target dates and durable commitments.
+
+Distinct outcomes: proposals available, valid no-eligible-trade [], prior proposals
+awaiting confirmation, and required-input failure. An unchanged empty array is
+not by itself proof of a successful model run.
+
+## Nightly Actions and reproducibility
+
+Schedule: `0 22 * * *`, timezone `America/New_York`; manual dispatch supported.
+The shared Platform concurrency group avoids overlapping logins. Each run tests,
+queries LSEG, plans all four stocks, validates outputs, commits changed public
+artifacts and explicitly requests a Pages rebuild. GitHub may delay cron jobs.
+Blocked evaluations publish diagnostics and end nonzero; they do not clear orders.
+
+From the repository root, using the project environment:
 
 ```sh
+python -m pip install -r final_project/requirements.txt
+python -m unittest final_project.test_strategy final_project.test_course final_project.test_demo final_project.test_historical lseg_chart.test_update -b
+python -m unittest discover -s tests -p 'test_site_layout.py'
+node --test lseg_chart/test_page.cjs final_project/test_page.cjs final_project/test_history_page.cjs
+python -m final_project.run --mode course
 python -m final_project.demo
 python -m final_project.demo --weekly-entry-example
 python -m final_project.historical
 python -m final_project.validate_publication
-python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo final_project.test_historical lseg_chart.test_update -q
-python -m unittest discover -s tests -p test_site_layout.py -q
-node --test final_project/test_page.cjs final_project/test_history_page.cjs lseg_chart/test_page.cjs
 ```
 
-Nightly 10 PM America/New_York, direct LSEG integration, Secrets, all remaining
-trading/capital rules and prior assignment navigation remain unchanged. A red final
-workflow can mean missing account inputs while retrieval/analysis/publication succeed;
-inspect individual steps. Test fixtures are synthetic only inside temporary tests,
-never published as real observations. No production positions/fills are created.
+`python -m final_project.run --mode course --replay` is a clearly labeled retained
+snapshot audit: no API request and NO order/commitment writes, even if successful.
+Do not substitute an archived week-start snapshot for the current target session.
+Unit fixture accounts/prices exist only in tests/temp directories; retained real
+LSEG data is used separately for integration checks. Tests never publish fixture
+orders as market results.
 
-## Intentional strategy revision — no earnings filter
+## Evidence and performance boundaries
 
-Revision `no-earnings-filter-v1` removes earnings screening as a strategy design
-decision, not an unavailable-data workaround. The provider no longer requests any
-earnings/event fields or alternate calendars. Missing, upcoming or unknown earnings
-do not gate entries. The strategy may be exposed to earnings-related price gaps;
-remaining technical, capital and position checks do not eliminate that risk.
-All other rules, Sanji schema, production account validation and nightly schedule
-remain unchanged. Legacy event responses in the retained raw snapshot are unused
-historical evidence, not current diagnostics or inputs. The obsolete standalone
-calendar investigation is removed; its history remains in Git.
+`historical.py` studies three years of real daily closes plus 50 warm-up sessions,
+with previous-close weekly signals, explicit missing dates and valid denominators.
+It generates JSON/CSV and the existing charts. This is technical eligibility
+analysis, NOT a historical option backtest or verified investment performance.
 
-Use `python -m final_project.run --replay` to audit the saved real snapshot under
-the new rule without any API requests or production-order publication, even if
-an account later becomes available. The report records `retained_market_replay`,
-its evaluation time, the original market retrieval time and original session dates.
-This mode is explicit, never a fallback after a failed live query. Run
-`python -m final_project.demo` separately to rebuild the hypothetical examples.
+The retained November 13 signal / November 16 target real-market integration
+produces KO 96 and PFE 28 puts, November 20 expiry, under $40,000 course assumptions:
+$12,400 collateral and $27,600 uncommitted cash. This is a **dated historical
+integration check**, not today's active queue or actual fills. Current outcomes
+come only from the latest workflow's diagnostics; a midweek flat book can rightly
+produce zero puts.
 
-Historical verification for the earlier earnings-only revision: 74 Python engine/provider/demo tests, four site
-layout tests and 24 JavaScript tests pass (102 total), plus publication validation.
-Browser verification confirms two cash-start put proposals, three unchanged
-covered-inventory call proposals, all seven course-navigation links and no console
-errors or horizontal page overflow. Production queues, the original raw snapshot,
-portfolio validation, Sanji serialization and nightly schedule remain byte-identical.
-No fresh LSEG request was made for this replay; the close is 2026-11-13 and the
-original target remains 2026-11-16, not a new order for the current clock time.
+The archived [pre-course-mode run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43969760293)
+demonstrated working LSEG retrieval but was blocked by the former official-book
+requirement and two latest-close gaps. Its status is historical, not the current
+course policy. Current website design, editable workflow SVG geometry, prior
+assignment navigation and earlier backtest caches are preserved.
 
-## Financial discussion and evidence boundaries
+## What still needs the professor
 
-The English page separates **currently supported market analysis**, **explicitly
-hypothetical accounts**, and **performance evaluation pending Sanji history**.
-`docs/assets/analysis.js` interprets the latest engine-validated published status;
-dates, filter outcomes and 100-share reference values are not fixed narrative
-numbers. It cross-checks indicator flags and dates and withholds interpretation
-when inputs do not reconcile. This is presentation code, not another strategy
-engine. An unavailable order download no longer hides available market diagnostics.
+Initial course proposal generation no longer depends on official account access.
+Authoritative operation and performance measurement still need:
 
-The capital illustration reads and reconciles the isolated covered-inventory
-example: stock market value plus cash equals its hypothetical equity. It is a
-single dated stock allocation, not actual Sanji holdings, average deployed capital
-or investment performance. Production allocation remains unmeasured without the
-account. The real saved 2026-11-13 close (retrieved 2026-11-16) has BAC/F failing
-trend and KO/PFE passing all three technical gates; all four pass HV20/R5. Missing
-account data and course execution coverage are separate dependencies.
+- Native Sanji account schema/sample, confirmed initial balances/complete positions,
+  and update-complete timing; a verified read-only adapter to the internal schema.
+- Resolution/fill IDs for outstanding proposals; confirmed holdings and bases for
+  covered calls; terms and marks for existing option positions.
+- Course contract-opening-price coverage and active resolver outputs before claiming
+  execution. Public documentation currently says Sanji does not resolve orders yet.
 
-The proposed future measurement convention uses EOD stock market value plus
-filled-put strike collateral, without double-counting covered calls. Average all
-sessions, including cash days; report pending-order reservations separately.
-Account return = net portfolio P&L / starting equity (no external flows); capital
-return = net strategy P&L / average deployed capital; utilization = deployed /
-equity. Net P&L includes realized/unrealized positions, dividends and credited
-interest after actual costs. Flow adjustment is required if external flows occur.
-Capital return is descriptive and non-annualized. Daily Sharpe would use sample
-SD, sqrt(252) and a dated risk-free reference (0% only a sensitivity); complete drawdown needs a complete
-flow-adjusted wealth path. No performance values are calculated from signals.
+The internal account adapter expects schema_version 1, source Sanji, dated USD cash,
+equity, complete positions and optional resolved_order_ids. Stocks require integer
+quantity and a verified basis for calls; short options require quantity -1,
+multiplier 100, standard_verified terms, strike, expiry and actual mark. NAV must
+reconcile within $1. This is NOT asserted to be Sanji's unprovided native schema.
 
-The evaluation discussion proposes a future comparison with the same four-name
-Wheel without the three technical entry filters, keeping account validation,
-capital, periods, contract access and costs consistent. It is **not an executed
-backtest**. Actual strategy fills cannot supply counterfactual baseline fills.
-
-Offline checks (no API pull, no production or demo output writes):
-
-```sh
-node --test final_project/test_page.cjs
-python -m final_project.validate_publication
-python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo lseg_chart.test_update -q
-```
-
-Only the declared earnings policy and associated queries/diagnostics were removed;
-the order schema and nightly schedule are unchanged. The existing SVG layout is
-preserved with updated labels. OIC references on the page support general option
-risk mechanics; saved LSEG diagnostics and example JSON support the dated findings.
-
-## Run and reproduce
-
-From the repository root, use Python 3.11+:
-
-```sh
-python -m pip install -r final_project/requirements.txt
-python -W ignore::DeprecationWarning -m unittest final_project.test_strategy lseg_chart.test_update -v
-python -m final_project.validate_publication
-python -m http.server 8768 --bind 127.0.0.1
-# Open http://127.0.0.1:8768/docs/
-```
-
-The test suite performs a dry run into a temporary directory before any network use.
-Fixtures deliberately use TEST-prefixed contract IDs and artificial conids. They are
-never production inputs or published results. No full historical backtest or equity
-curve is asserted for this new strategy.
-
-For a fresh live evaluation, set `LSEG_APP_KEY`, `LSEG_USERNAME` and `LSEG_PASSWORD`
-securely in the process environment (or use the existing GitHub Actions Secrets), then:
-
-```sh
-python -m final_project.run
-python -m final_project.validate_publication
-```
-
-Do not put credentials in source, shell history, public JSON, or a tracked `.env`.
-The runner reuses `lseg_chart.update.query_lseg` and its guarded direct Platform
-GrantPassword session, without force takeover, retries or desktop fallback. The
-existing single-stock query remains the default operation and has regression tests.
-No broker library is used. Exit 0 = validated evaluation, exit 2 = blocked; a blocked
-run preserves both order files and updates diagnostics. API failures never become `[]`.
-
-## Inputs and the unresolved Sanji account adapter
-
-The public Sanji specification documents orders and the read-only role of
-`mkt/positions.json`, **not its exact account object schema**. No positions file exists
-in this checkout. The planner therefore cannot assert actual equity, cash or holdings.
-Production must not initialize a $40,000 account. That amount is used only by the
-separate, explicitly hypothetical demonstration described below.
-
-`portfolio.validate_account` defines the following **internal adapter contract**, not
-an invented claim about Sanji's native format:
-
-- `schema_version: 1`, `source: "Sanji"`, `currency: "USD"`, `as_of: "YYYY-MM-DD"`
-- `cash`, `equity`: finite actual balances; cash cannot be negative.
-- `positions`: complete list, aggregated per ticker and kind; no unsupported holdings
-  may be omitted. Each entry has `ticker`, `kind` (`stock`, `put`, `call`), `quantity`.
-- Stock quantity is positive; optional `cost_basis` is actual per-share basis. Missing
-  basis blocks calls, not guessed from market value.
-- Short option quantity is -1; require actual `strike`, `expiry`, `mark`, `multiplier:100`,
-  `terms_status:"standard_verified"`. Unknown/adjusted obligations block the account.
-- `resolved_order_ids`: optional list of IDs already resolved by Sanji.
-
-The current strict loader accepts that envelope at `mkt/positions.json` only if the
-course producer actually supplies it. When Sanji supplies its native sample, implement
-and test a read-only format adapter here; **do not rewrite its file to make it match**.
-Sanji must finish the preceding session's fills/assignment before this script runs.
-Stale books and a NAV reconciliation error over $1 block new orders. Unknown outside-
-universe positions are rejected rather than silently ignored in risk calculations.
-
-Conids are verified static configuration cross-checked with official IBKR evidence.
-Any course numeric key with an explicit `symbol`, `ticker`, or `ric` binding must agree.
-The current file identifies Apple only. That leaves execution coverage unconfirmed,
-not identity unknown. No conids are guessed from issuer names or unrelated examples.
-
-### Production versus isolated demonstration (2026-11-16 audit)
-
-The actual control flow is `run.run -> read_orders -> fetch_market ->
-resolve_identifiers -> strategy.evaluate -> validate_account -> pending obligations
--> per-name filters/contract selection -> capital_check -> publish_orders`.
-Account validation is the **first current failure**, so subsequent gates have not
-passed merely because they did not appear in the top-level error. The retained
-four-ticker LSEG price and option responses are real; the missing book is not an
-authentication failure. `run.py` now records these independent dependencies in
-`pipeline_audit` even when the account blocks the batch.
-
-- `portfolio.validate_account`: missing schema/account, stale date, non-USD book,
-  unrecognized source, negative cash, invalid quantities, unsupported/unverified
-  obligations, expired unresolved positions, NAV mismatch over $1, uncovered calls
-  or conflicting Wheel phases block the account. Cost basis is essential for a call.
-- `strategy.evaluate`: source must match the mode; pending orders must be valid,
-  identified, nonconflicting and covered. A held short option prevents a new order.
-  Partial stock holdings cannot back a call or start another put.
-- For puts: first weekly session, close >= SMA50, SMA20 >= SMA50, HV20 <=45%,
-  R5 >=-8%. There is no earnings screen or blackout window.
-- Both branches need verified conids, actual observed standard contracts and the
-  unchanged expiry/strike rules. Expiry is selected first: 3–10 calendar DTE,
-  nearest seven days, earlier tie. Same-session delta missing => existing fallback,
-  **not** an additional hard block. Calls' two-observed-strikes fallback must still
-  satisfy both price floors. Trend/volatility/sudden-drop gates remain new-put
-  gates; they are not newly waived to obtain covered-call examples.
-- Every new order must satisfy per-name exposure <=30%, total exposure <=70%,
-  free cash >=30% of equity. Existing obligations and pending puts consume capacity;
-  expected premiums do not fund collateral. No margin or fabricated positions.
-- Missing required identity/account/chain inputs block the batch and preserve the
-  production queue. Individual strategy rejections can finish evaluation
-  with zero orders. This is not the same as passing every input gate.
-
-IBKR's public search and security definitions were independently queried on
-2026-11-16: BAC **10098**, KO **8894**, PFE **11031**, F **9599491**; all NYSE, USD,
-US common stock. `docs/data/conid_verification.json` retains request URLs, selected
-search responses and complete security definitions. `verify_conids.py` checks
-ticker, issuer, conid, exchange, currency and asset class. It does not log into IBKR
-or place orders. These identifiers are now also validated for production; course
-mapping conflicts still block publication. The remaining execution issue is course-feed
-enrollment/coverage, **not unknown stock identity**.
-
-`python -m final_project.demo` reads the real retained LSEG response, not new prices,
-and calls the identical engine with `mode:demonstration` and
-`source:HYPOTHETICAL_DEMONSTRATION`. It creates two independent example books:
-
-1. $40,000 cash, no stock/options/pending orders. In the separately archived 2026-11-13 signals targeting
-   2026-11-16, BAC/F fail trend. Under the revised policy, KO and PFE generate
-   one put proposal each: strikes $96 and $28, expiry 2026-11-20 (four DTE).
-   They use the unchanged observed-strike fallback, not verified 25-delta Greeks.
-   Total collateral/exposure is $12,400 (31%), with $27,600 uncommitted cash
-   above the $12,000 reserve; each name is below the $12,000 per-name limit.
-2. $40,000 marked equity, 100 shares of each name with explicitly assumed basis
-   equal to the real close, $20,893 residual cash, no short options/pending orders.
-   This is **not** a claimed assignment or purchase history. Exposure $19,107
-   (47.7675%), each name below $12,000, free cash $20,893 above the $12,000 reserve.
-   The original rules generate one call each: BAC $52.50, PFE $30, F $13, all
-   expiring 2026-11-20 (four calendar DTE). KO's two-strike fallback fails the 2%
-   above-close floor, so no KO call. Numeric strikes reference actually discovered
-   contracts, not fabricated strike grids. No option premium or fill is invented.
-
-The downloadable example arrays are `docs/data/demo_cash_start_orders.json` and
-`docs/data/demo_covered_inventory_orders.json`. Full example books, rejection reasons
-and capital checks are in `docs/data/demo_status.json`. Their `fin535-demo-*` IDs
-cannot be published by the production writer. Demonstration records never change
-the production status, either `open_orders.json`, or `mkt/positions.json`. A failed
-demo has a null proposal, not a stale example array. Unit-test fixtures remain
-separate synthetic TEST data and are not presented as real-market examples.
-
-The professor-specific dependencies are:
-
-1. Authoritative end-of-session book and its **native schema/sample** (actual balances,
-   complete positions, stock bases, option terms/marks, resolution IDs/fills), plus
-   the upstream completion signal/timing. We must adapt read-only, not write his book.
-2. For execution: enrollment of BAC/KO/PFE/F in the course price/option feed and explicit conid bindings,
-   consistent with the independently verified IDs. Provider identity does not prove
-   Robin contains the contract-open bars needed for resolution.
-3. Resolver activation and outputs only for **actual course execution**, not for
-   producing schema-valid example JSON: his current spec explicitly says Sanji does
-   not resolve orders yet. These proposals are therefore not claimed fills.
-
-No earnings-calendar dependency remains. Greek entitlement is optional because
-the original fallback exists. Neither a broker connection nor
-a fabricated starting production account is needed or permitted.
-
-Reproduction (from repository root):
-
-```bash
-python -m final_project.verify_conids   # public IBKR read-only lookup; no credentials
-python -m final_project.run --replay    # audit saved real inputs; never publishes orders; exit 2 if blocked
-python -m final_project.demo            # isolated real-response replay
-python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo lseg_chart.test_update -q
-python -m unittest discover -s tests -p test_site_layout.py -q
-node --test final_project/test_page.cjs lseg_chart/test_page.cjs
-python -m final_project.validate_publication
-python -m final_project.run             # fresh LSEG; env secrets; exit 2 if production blocked
-python -m final_project.demo            # refresh isolated examples after fresh response
-```
-
-The nightly workflow runs production and demonstration separately; its final blocked
-production status can remain red while the LSEG requests and isolated examples pass.
-That status must not be misreported as an API authentication failure.
-
-Historical, pre-revision run: https://github.com/Vicky-zjx/535_fintech/actions/runs/43822857009 .
-All **90** regression checks passed (73 Python engine/provider tests, four site-layout
-tests and 13 JavaScript DOM tests). Fresh real inputs reproduced the same 0/3 example
-orders under the previous policy, not the revised 2/3 proposals. Both production files retain their original byte hash
-`37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570`.
-GitHub Pages deployed the generated evidence at commit `6b5a3b7`; the red final
-workflow step is the intentionally reported missing production-account dependency.
-
-## Rules and conventions
-
-- Universe BAC/KO/PFE/F. Lookup RICs are validated against `TR.TickerSymbol` before use.
-  Closing prices use the NYSE listings (`.N`); US option discovery uses independently
-  validated consolidated underlyings (`BAC`, `KO`, `PFE`, `F`). They are not interchangeable
-  search filters: `.N` can return foreign derivatives rather than US OPRA contracts.
-- XNYS calendar; latest completed close; next session must not already have opened.
-  Puts only the first actual weekly session; calls any next session after confirmed
-  assignment. No future close or missing-session compression in indicators.
-- Close ≥ SMA50, SMA20 ≥ SMA50, sample-HV20 ≤45%, R5 ≥-8% for new puts. HV20 uses 20
-  log returns (21 prices), ddof=1 and 252 annualization. Prices use LSEG's `TR.PriceClose`
-  adjustment convention, retrieved afresh; this forward planner does not claim a
-  point-in-time historical backtest. Null closes are retained and block validation.
-- Current discovery candidates only, 3–10 calendar DTE from the **target session**,
-  observed expiry closest to7 (earlier tie), chosen before the strike test. If that
-  expiry has no qualifying strike, skip rather than silently changing the tenor.
-  No synthetic RIC construction/strike grid.
-- Ordinary zero-padded-day OPRA RICs are parsed and compared to discovery descriptions.
-  LotSize100, USD, Standard, American and underlying identity must agree. Exclusions
-  are saved. This is current reference verification, not proof of historical listing.
-- Same-session `DELTA_EXCH`, if present for the full eligible slice, targets absolute
-  .25. Missing/partial dated Greeks triggers nearest observed 3% OTM put fallback.
-  Call fallback is exactly two observed strikes above ATM (lower ATM on tie), then both
-  strike floors checked. No relative Sanji tokens are needed; no guessed Greeks.
-- No earnings-announcement screen. No event queries or blackout restrictions.
-- Calls require 100 unencumbered shares, known cost, strike ≥1.01×cost AND ≥1.02×close.
-- At most one short option per ticker; no borrowing, naked calls, rolls or stop-loss.
-- Exposure = stock MV + existing/pending/new put strike×100. Calls do not double-count
-  stock. Per-name≤30%, portfolio≤70%, cash less put obligations≥30% of current equity.
-  Expected premium is excluded. Rank competing puts by ascending HV20 then ticker.
-- Same-session pending orders are retained and reserved, not regenerated. Old dated
-  orders cannot fill a later date; a current reconciled account is required before
-  their obligations are released. IDs already resolved are never issued again.
-- On required-input failure the batch is blocked. Preliminary per-name candidates
-  are not published as orders. Successful no-trade runs may write valid empty arrays.
-
-## Outputs and automation
-
-`open_orders.json` and `mkt/open_orders.json` are byte-identical from one serializer.
-Only the documented Sanji subset is used: stable `id`, dated `for`, `mkt`, `SHT`, qty1,
-numeric underlying conid, `put`/`call`, explicit listed expiry/strike, `ref:prev_close`.
-No `lmt_prc`. Sanji fills market orders at the contract open, not our signal close or
-a claimed midpoint. Real fill/assignment support remains controlled by the professor;
-the reviewed public spec still states that resolution is not enabled yet.
-
-`docs/data/market_snapshot.json` retains API response tables, normalized observations,
-timestamps and exclusions; `strategy_status.json` contains its SHA256, decisions,
-capital checks and blocked reasons. Account identifiers and raw positions/fills are
-not published. Missing outputs do not conceal the last attempt's failure.
-
-`.github/workflows/nightly_orders.yaml` runs `0 22 * * *` with IANA timezone
-`America/New_York` and supports `workflow_dispatch`. It tests offline first, fetches
-live data, validates JSON, commits only allowlisted outputs and calls the Pages
-build API explicitly. A blocked evaluation publishes diagnostics but ends red rather
-than claiming a successful strategy run. There is no push trigger/commit loop.
-Both LSEG workflows share a concurrency group to avoid overlapping Platform sessions.
-Existing main/root Pages publishing is retained, including previous navigation.
-
-## Sources inspected
-
-- [Sanji order specification](https://jakevestal.github.io/server-logic-533/order.html):
-  orders, conids, supported fields, price tokens, idempotency and assignment.
-- [Professor's nightly_refresh.py](https://github.com/JakeVestal/server-logic-533/blob/main/nightly_refresh.py):
-  current LSEG discovery pattern; reused, not its broad price-guessing fallbacks.
-- Actual example filenames are [`oi-plots.yml`](https://github.com/JakeVestal/server-logic-533/blob/main/.github/workflows/oi-plots.yml)
-  and [`deploy.yml`](https://github.com/JakeVestal/server-logic-533/blob/main/.github/workflows/deploy.yml),
-  not the underscored `.yaml` names. The latter deploys to a private course host;
-  it is not copied and no Tailscale/SSH credentials are introduced.
-- [OI reference page](https://jakevestal.github.io/server-logic-533/oi-clusters.html).
-- [GitHub timezone-aware schedule](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule).
-- [LSEG dated delta example](https://community.developers.lseg.com/discussion/68876/how-to-retrieve-historical-delta-of-one-specific-option).
-- [LSEG consolidated versus exchange-specific option underlyings](https://community.developers.lseg.com/discussion/71956/how-to-retrieve-the-list-of-live-option-contracts-for-a-given-equity-or-equity-index).
-- [OCC equity option terms](https://www.theocc.com/clearance-and-settlement/clearing/equity-options-product-specifications).
-
-## Review
-
-No promised performance, historical returns, premiums, fills or illustrative account
-balances are displayed as actual. Evaluate a future baseline using identical data,
-window, costs and fill assumptions. Track total return, MDD, Sharpe, receipts versus
-P&L, assignment, exposure and costs only once real supporting history exists.
-
-## Historical implementation run — before the no-earnings revision
-
-The [third live verification](https://github.com/Vicky-zjx/535_fintech/actions/runs/43815983908)
-opened the direct Platform session without Workspace, retrieved 86 actual close
-observations per ticker through 2026-11-13, and verified 84 BAC, 92 KO, 80 PFE and
-80 F standard OPRA candidates (336 total). The raw discovery also contained 54
-nonstandard/foreign identifiers, all excluded with reasons. NYSE listing versus
-consolidated-underlying search and display-name header differences were found in
-real responses and fixed, with regression tests.
-
-The proposed target session was 2026-11-16. BAC and F failed the trend screen;
-KO and PFE passed the three price-based filters. This is **not** an order approval:
-the account file and all four course conids were missing, and dated DELTA_EXCH
-retrieval was unavailable. The former event-field queries also failed; the revised
-strategy removes those queries and their dependency entirely. The documented
-listed-strike fallback for missing Greeks remains unchanged. Orders were not changed; both initial arrays remain
-empty. The workflow tested and published diagnostics successfully but deliberately
-ended with a failed/blocked evaluation, not a claimed successful trading run.
-
-Local verification: 45 Final Project Python tests, 20 existing LSEG Python tests,
-4 site-layout tests, 7 Final Project DOM tests and 4 existing chart DOM tests passed
-(80 total). Publication JSON/SVG/link checks and YAML parsing passed separately.
-Browser checks at 390px and desktop width confirmed the SVG, four ticker rows,
-seven navigation links, no horizontal page overflow and no console errors.
+No returns, realized premium income, Sharpe or drawdown are claimed without
+verified fills and complete account NAV. [Sanji specification](https://jakevestal.github.io/server-logic-533/order.html).

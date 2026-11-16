@@ -137,8 +137,11 @@
         "Account exposure, put collateral and uncommitted cash in USD. Collateral is included in exposure, not added again.",
       );
     } else {
-      text("capital-chart", "Production capital cannot be measured without the reconciled Sanji book. No cash balance or zero exposure is assumed; the separate hypothetical illustration appears under Measurement.");
+      text("capital-chart", "Capital checks unavailable for this attempt. No cash balance or zero exposure is assumed beyond the explicitly selected course mode; see the input diagnostics.");
     }
+    text("capital-note", s.account_mode === "course_proposal"
+      ? "Course proposal budget only: hypothetical $40,000 starting cash, not actual Sanji NAV. Exposure includes reserved put collateral, including past proposals with unknown outcomes. No premiums or fills are credited."
+      : "Authoritative account mode: stock market value plus put strike collateral, versus uncommitted cash. Collateral is included in exposure, not added twice. Missing account data is not zero.");
   }
   function renderDiscussion(s) {
     let evidence = null;
@@ -160,7 +163,7 @@
     const missingIds = tickers.filter(t => !Number.isInteger(s.conid_status?.[t]));
     const blocked = s.status !== "success";
     text("pipeline-discussion", blocked
-      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, verified stock identifiers and available collateral must be validated before publication. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
+      ? `The order evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Required market inputs, existing obligations, verified stock identifiers and available collateral must be validated. Missing official account data alone does not block the explicit course proposal mode. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
       : "The planner completed its input evaluation. Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
     const rows = [
       ["LSEG market retrieval", s.market_data_retrieved_at ? "Response received "+s.market_data_retrieved_at : "No successful market response attached to this attempt",
@@ -168,12 +171,14 @@
       ["Technical screen", evidence ? evidence.passed.length+" of 4 pass; "+evidence.rows.filter(d=>!d.technical).map(d=>d.ticker+": "+d.failed.join(", ")).join("; ") : "Complete validated comparison unavailable",
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
       ["Sanji account", s.account_status || "No verified account status",
-        "Need authoritative cash, equity and all positions; bases, option marks and resolution IDs when relevant to held positions or prior orders. An assumed $40,000 account cannot establish production capacity."],
+        s.account_mode === "course_proposal"
+          ? "Not required for initial course proposals: explicit $40,000 cash-only assumptions and durable commitment reservations are used. Covered calls require confirmed holdings; no positions or executions are invented."
+          : "Authoritative mode needs dated cash, equity and complete positions, plus bases, marks and resolution IDs when relevant. An invalid existing book never silently falls back to assumptions."],
       ["Stock identifiers", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four static conids validated against official IBKR evidence",
         "Literal strike/expiry proposals use verified stock identities. Course conflicts block publication; no nightly IBKR login is required."],
       ["Course execution coverage", (s.pipeline_audit?.course_coverage_unconfirmed || []).length ? "Course binding unconfirmed for "+s.pipeline_audit.course_coverage_unconfirmed.join(", ") : "Inspect the separate course coverage audit",
         "Identity verification does not prove Robin contains the contract-opening prices. Coverage and resolver readiness affect execution, not whether the JSON names the correct stock."],
-      ["Production orders", blocked ? "Blocked/not run; retained queue is not a new result" : "Validated proposal evaluation completed",
+      ["Proposed course orders", blocked ? "Blocked/not run; retained queue is not a new result" : "Validated proposal evaluation completed",
         "An empty queue while blocked is not a successful no-trade run. Only completed evaluation can establish no valid proposals; neither state establishes executions."],
       ["Trading performance", "Pending verified Sanji execution and NAV histories",
         "Returns, net P&L, realized premiums, Sharpe, MDD and assignment frequency cannot be inferred from signals or example orders. No missing metric is replaced with zero."],
@@ -183,11 +188,12 @@
   }
   function render(s, orders, ordersAvailable = true) {
     const good = s.status === "success";
+    const course = s.account_mode === "course_proposal";
     const observed = s.market_data_retrieved_at;
     text(
       "run-state",
       good
-        ? "Validated evaluation"
+        ? "Validated evaluation · " + (course ? "course proposals" : "authoritative account")
         : observed
           ? "Market data retrieved · orders blocked"
           : "Live data not yet available",
@@ -209,13 +215,20 @@
       observed
         ? "Signals use completed session " +
             s.calendar.as_of +
-            ". Orders require a fresh, reconciled account and verified identifiers." +
+            (course ? ". Course proposals use explicit $40,000 cash-only assumptions, not an official account."
+              : ". Authoritative mode requires a fresh, reconciled account and verified identifiers.") +
             (s.evaluation_kind === "retained_market_replay" ? " This is a replay of the original LSEG response, not a new API query; production orders cannot be published by replay." : "")
         : "Only validated inputs appear here. Missing data is not a no-trade signal.",
     );
     const issues = [...(s.errors || [])];
-    if (s.account_status && s.account_status !== "Available")
+    if (!course && s.account_status && s.account_status !== "Available")
       issues.push(s.account_status);
+    text("account-mode", course
+      ? "COURSE PROPOSAL MODE · Hypothetical starting cash $40,000; initial stocks 0; initial short options 0; no leverage. Official Sanji account unavailable. " +
+        (s.unconfirmed_proposal_count ?? 0) + " unconfirmed proposal(s); past proposals keep their ticker locks and collateral reservations. These are proposals, not fills or actual balances."
+      : s.account_mode === "authoritative"
+        ? "AUTHORITATIVE ACCOUNT MODE · " + s.account_status + ". The planner reads the book; it never writes positions or assumes executions."
+        : "Account mode has not been validated for this attempt. Retained orders are not a new result.");
     if (s.conid_status) {
       const missing = tickers.filter((t) => !s.conid_status[t]);
       if (missing.length)
@@ -237,7 +250,7 @@
       cell(
         tr,
         p
-          ? `${p.shares} shares / ${p.put} put / ${p.call} call`
+          ? `${p.shares} shares / ${p.put} put / ${p.call} call${course ? " (assumed initial state)" : ""}`
           : "Account unavailable",
       );
       cell(
@@ -258,8 +271,11 @@
         ? "Order files were not changed by this retained-data replay. The displayed queue is retained, not newly published proposals; original session dates are preserved."
         : good
         ? orders.length
-          ? "Proposed simulated orders; not verified fills."
-          : "Valid no-trade evaluation: no qualifying new or pending orders."
+          ? (course ? "Proposed course orders under explicit hypothetical assumptions; not actual Sanji account orders or fills."
+            : "Proposals based on the authoritative book; not verified fills.")
+          : s.outcome === "awaiting_order_confirmation"
+            ? "No active dated orders. Earlier proposals have unknown outcomes: affected tickers and collateral remain locked, not assumed filled or released. See the commitment record."
+            : "Valid no-trade evaluation: no qualifying new or pending orders."
         : s.status === "not_run"
           ? "Initial empty queue; not yet a successful no-trade evaluation."
           : "Order files were not changed by this attempt. Any displayed orders are retained from an earlier run; their dated sessions govern eligibility.",

@@ -440,7 +440,7 @@ class PublicationTests(unittest.TestCase):
         m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
         paths = [self.root/p for p in ('open_orders.json', 'mkt/open_orders.json')]
         before = [p.read_bytes() for p in paths]
-        self.assertEqual(run(self.root, datetime(2026, 11, 16, 3, tzinfo=timezone.utc), provider=lambda *args:m), 2)
+        self.assertEqual(run(self.root, datetime(2026, 11, 16, 3, tzinfo=timezone.utc), provider=lambda *args:m, mode='authoritative'), 2)
         self.assertEqual(before, [p.read_bytes() for p in paths])
         s = json.loads((self.root/'docs/data/strategy_status.json').read_text())
         self.assertIn('Authoritative Sanji account unavailable', str(s['errors']))

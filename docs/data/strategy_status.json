@@ -2,15 +2,14 @@
   "schema_version": 1,
   "mode": "live",
   "status": "blocked",
-  "attempted_at": "2026-11-16T22:25:33.494543+00:00",
+  "attempted_at": "2026-11-16T23:13:10.543848+00:00",
   "successful_at": null,
   "market_data_retrieved_at": "2026-11-16T22:25:33.494543+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": false,
   "errors": [
     "BAC: Missing/stale close: require 50 consecutive completed exchange sessions",
-    "F: Missing/stale close: require 50 consecutive completed exchange sessions",
-    "Authoritative Sanji account unavailable: cash, equity and complete positions required"
+    "F: Missing/stale close: require 50 consecutive completed exchange sessions"
   ],
   "decisions": [
     {
@@ -18,16 +17,21 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Missing/stale close: require 50 consecutive completed exchange sessions",
-        "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
-      ]
+        "Missing/stale close: require 50 consecutive completed exchange sessions"
+      ],
+      "position": {
+        "shares": 0,
+        "put": 0,
+        "call": 0,
+        "cost_basis": null
+      }
     },
     {
       "ticker": "KO",
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+        "Next session is not the first trading session of the week"
       ],
       "close": 99.48,
       "price_date": "2026-11-16",
@@ -39,6 +43,12 @@
         "trend": true,
         "volatility": true,
         "sudden_drop": true
+      },
+      "position": {
+        "shares": 0,
+        "put": 0,
+        "call": 0,
+        "cost_basis": null
       }
     },
     {
@@ -46,7 +56,7 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
+        "Next session is not the first trading session of the week"
       ],
       "close": 28.86,
       "price_date": "2026-11-16",
@@ -58,6 +68,12 @@
         "trend": true,
         "volatility": true,
         "sudden_drop": true
+      },
+      "position": {
+        "shares": 0,
+        "put": 0,
+        "call": 0,
+        "cost_basis": null
       }
     },
     {
@@ -65,12 +81,31 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "Missing/stale close: require 50 consecutive completed exchange sessions",
-        "Account/pending-order validation blocked: Authoritative Sanji account unavailable: cash, equity and complete positions required"
-      ]
+        "Missing/stale close: require 50 consecutive completed exchange sessions"
+      ],
+      "position": {
+        "shares": 0,
+        "put": 0,
+        "call": 0,
+        "cost_basis": null
+      }
     }
   ],
-  "capital": null,
+  "capital": {
+    "passed": true,
+    "reasons": [],
+    "equity": 40000.0,
+    "cash": 40000.0,
+    "exposure": 0.0,
+    "put_collateral": 0.0,
+    "uncommitted_cash": 40000.0,
+    "by_ticker": {
+      "BAC": 0.0,
+      "KO": 0.0,
+      "PFE": 0.0,
+      "F": 0.0
+    }
+  },
   "calendar": {
     "as_of": "2026-11-16",
     "target_session": "2026-11-17",
@@ -79,8 +114,23 @@
     "close_time": "2026-11-16T21:00:00+00:00"
   },
   "strategy_revision": "no-earnings-filter-v1",
-  "evaluation_kind": "fresh_api",
+  "requested_mode": "course",
+  "account_mode": "course_proposal",
+  "outcome": "missing_inputs",
+  "evaluated_orders": null,
+  "evaluation_kind": "retained_market_replay",
   "market_snapshot_sha256": "195f601858ac237df9e033878e7d2bd8aa42f59f37bf26c2bc1aacb0785abb00",
+  "authoritative_account_available": false,
+  "account_status": "Unavailable; explicit course proposal assumptions used, not an official account",
+  "account_assumptions": {
+    "starting_cash": 40000,
+    "currency": "USD",
+    "initial_stock_holdings": 0,
+    "initial_short_options": 0,
+    "leverage": false
+  },
+  "pending_orders_before": [],
+  "course_state_before_sha256": "56ad70200f1333bd793e1749363b11a6348830a9cf37e0cbf6e62cd94fc377c7",
   "conid_status": {
     "BAC": 10098,
     "KO": 8894,
@@ -114,9 +164,25 @@
     }
   },
   "identifier_verified_at": "2026-11-16T22:00:10.475449+00:00",
-  "account_status": "Missing mkt/positions.json; no account balance assumed",
+  "capital_before": {
+    "passed": true,
+    "reasons": [],
+    "equity": 40000.0,
+    "cash": 40000.0,
+    "exposure": 0.0,
+    "put_collateral": 0.0,
+    "uncommitted_cash": 40000.0,
+    "by_ticker": {
+      "BAC": 0.0,
+      "KO": 0.0,
+      "PFE": 0.0,
+      "F": 0.0
+    }
+  },
+  "unconfirmed_proposal_count": 0,
+  "past_unconfirmed_proposal_count": 0,
   "pipeline_audit": {
-    "first_blocking_stage": "account/pending validation",
+    "first_blocking_stage": "market/identifier validation",
     "account_present": false,
     "course_coverage_unconfirmed": [
       "BAC",

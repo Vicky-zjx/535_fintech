@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "mode": "course_proposal_commitments",
+  "assumptions": {
+    "starting_cash": 40000,
+    "currency": "USD",
+    "initial_stock_holdings": 0,
+    "initial_short_options": 0,
+    "leverage": false
+  },
+  "authoritative_account_seen": false,
+  "unconfirmed_orders": []
+}

@@ -8,12 +8,15 @@
     "https://github.com/JakeVestal/server-logic-533/blob/main/host_files/update_price_history.sh"
   ],
   "account_found": false,
+  "course_proposal_policy": "Official account access is not required for initial course proposals. Default course mode uses explicit $40,000 cash, zero stocks/options and no leverage, with durable unconfirmed commitments. No fake positions.json or executions are created. An existing official book must validate and never silently falls back.",
+  "repository_connection": {"connected_in_latest_published_probe": true, "probed_at": "2026-11-13T21:01:47Z", "last_server_price_push": "2026-11-13T21:00:43Z", "source": "https://jakevestal.github.io/server-logic-533/status.json", "limitation": "Published probe, not a real-time private-host connection test. Price sync does not supply positions or fills."},
   "positions_file_found": false,
   "fills_file_found": false,
   "course_price_history": {"identifiers_present": [265598], "reported_name": "APPLE INC", "wheel_ticker_bindings_present": []},
   "verified_static_conids": {"BAC": 10098, "KO": 8894, "PFE": 11031, "F": 9599491},
   "identity_evidence": "conid_verification.json; official IBKR product search and security definitions; US / NYSE / USD common stock",
   "production_requirements": {
+    "scope": "These requirements apply to authoritative account operation, not the initial course proposal mode.",
     "all_entries": "Authoritative completed-session cash, equity and a complete position inventory, with account date and source. Absence of a positions file is not evidence of an empty account.",
     "cash_start": "An explicitly confirmed flat account needs no invented cost basis or option marks. Cash, equity, existing orders and completeness must still reconcile.",
     "covered_call": "At least 100 unencumbered actual shares and actual per-share cost basis; existing short calls and pending commitments checked.",
@@ -27,5 +30,5 @@
     "Confirm BAC/KO/PFE/F enrollment and required contract-open prices in Robin before claiming executable course fills. Identity verification alone does not establish coverage.",
     "Enable resolver outputs only when course execution/performance is required; the documented inactive resolver does not prevent JSON generation."
   ],
-  "submission_status": "Not submitted. Production order generation remains blocked without authoritative account state. Demonstration proposals are separately labeled and are not production orders."
+  "submission_status": "Not submitted. Course proposal generation may use the explicit assumptions; authoritative account operation still requires the official book. Isolated demonstrations never populate the managed order queue."
 }

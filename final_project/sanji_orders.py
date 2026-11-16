@@ -66,18 +66,31 @@ def read_orders(root):
     return validate(json.loads(paths[0].read_text()))
 
 
-def publish_orders(root, orders):
+def publish_orders(root, orders, *, course_state=None):
     validate(orders)  # Validate the complete batch BEFORE either write.
     if any(o['id'].startswith('fin535-demo-') for o in orders):
         raise ValueError('Demonstration orders must never enter the production queue')
     # Git commits publish both together. In-process write failure restores both.
     paths = [Path(root)/'open_orders.json', Path(root)/'mkt/open_orders.json']
-    old = [p.read_text() for p in paths]
+    payloads = [orders, orders]
+    if course_state is not None:
+        from .course import STATE_PATH
+        # Write commitments FIRST. A process crash can lock excess capital, but
+        # cannot publish an unrecorded proposal and then spend its collateral again.
+        paths.insert(0, Path(root)/STATE_PATH)
+        payloads.insert(0, course_state)
+    old = [p.read_bytes() if p.exists() else None for p in paths]
     try:
-        for p in paths:
-            atomic_json(p, orders)
+        for p, payload in zip(paths, payloads):
+            atomic_json(p, payload)
         read_orders(root)
     except Exception:
         for p, s in zip(paths, old):
-            atomic_json(p, json.loads(s))
+            if s is None:
+                p.unlink(missing_ok=True)  # Only this transaction's newly created file.
+            else:
+                # Restore exact prior bytes, including noncanonical whitespace.
+                with tempfile.NamedTemporaryFile(dir=p.parent, delete=False) as f:
+                    f.write(s); f.flush(); os.fsync(f.fileno()); backup = f.name
+                os.replace(backup, p)
         raise

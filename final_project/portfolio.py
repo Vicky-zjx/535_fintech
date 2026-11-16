@@ -16,8 +16,12 @@ def validate_account(account, as_of, closes):
         raise ValueError('Account adapter schema unavailable; raw Sanji format must be verified')
     if account.get('as_of') != as_of or account.get('currency') != 'USD':
         raise ValueError('Missing/stale account date or non-USD account')
-    if account.get('source') not in ('Sanji', 'TEST_FIXTURE', 'HYPOTHETICAL_DEMONSTRATION'):
+    if account.get('source') not in ('Sanji', 'TEST_FIXTURE', 'HYPOTHETICAL_DEMONSTRATION', 'COURSE_PROPOSAL'):
         raise ValueError('Account source is not identified')
+    if account.get('source') == 'COURSE_PROPOSAL':
+        from .course import initial_account
+        if account != initial_account(as_of):
+            raise ValueError('Course assumptions must be exactly $40,000 cash with zero positions; no invented fills')
     cash = number(account.get('cash'), 'cash (no borrowing)')
     equity = number(account.get('equity'), 'equity', .01)
     positions = account.get('positions')

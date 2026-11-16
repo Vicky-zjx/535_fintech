@@ -71,7 +71,7 @@ def select_contract(contracts, phase, session, close, cost_basis, as_of):
     return dict(chosen, selection_method=method), None
 
 
-def evaluate(market, account, conids, pending):
+def evaluate(market, account, conids, pending, *, course_proposal=False):
     ctx = market['calendar']
     as_of, session = ctx['as_of'], ctx['target_session']
     decisions = []
@@ -92,6 +92,10 @@ def evaluate(market, account, conids, pending):
         states, cash, equity = validate_account(account, as_of, {d['ticker']: d.get('close') for d in decisions})
         expected = {'live': 'Sanji', 'test': 'TEST_FIXTURE',
                     'demonstration': 'HYPOTHETICAL_DEMONSTRATION'}.get(market.get('mode'))
+        if course_proposal:
+            if market.get('mode') not in ('live', 'test'):
+                raise ValueError('Course proposal requires real market inputs (or an isolated unit fixture)')
+            expected = 'COURSE_PROPOSAL'
         if expected is None or account.get('source') != expected:
             raise ValueError('Test account is forbidden in a live run; market/account modes must match')
         resolved = account.get('resolved_order_ids', [])
@@ -104,8 +108,11 @@ def evaluate(market, account, conids, pending):
         keep = []
         pending_tickers = set()
         for o in pending:
-            if o['id'] in resolved or o['for'] <= as_of:
-                continue  # Dated Sanji orders cannot fill in a later session.
+            if o['id'] in resolved:
+                continue
+            uncertain_course = o['id'].startswith('fin535-course-')
+            if o['for'] <= as_of and not uncertain_course:
+                continue  # A reconciled authoritative book includes prior-session changes.
             t = inverse.get(o['underlying'])
             if t is None or t in pending_tickers:
                 raise ValueError('Unknown/duplicate pending obligation')
@@ -117,7 +124,8 @@ def evaluate(market, account, conids, pending):
                 s['exposure'] += 100*o['strike']
             elif s['shares'] < 100 or s['call'] or s['put']:
                 raise ValueError('Pending call lacks unencumbered coverage')
-            keep.append(o)
+            if o['for'] > as_of:
+                keep.append(o)
             pending_tickers.add(t)
     except (ValueError, TypeError, KeyError) as e:
         errors.append(str(e))
@@ -130,7 +138,7 @@ def evaluate(market, account, conids, pending):
         t = d['ticker']; s = states[t]; data = market['tickers'].get(t, {})
         d['position'] = {k: s[k] for k in ('shares', 'put', 'call', 'cost_basis')}
         if t in pending_tickers:
-            d['reasons'].append('Existing pending order retained; no duplicate')
+            d['reasons'].append('Unconfirmed proposal/active pending order: ticker locked and collateral reserved; no duplicate or assumed fill')
             continue
         if s['put'] or s['call']:
             d['reasons'].append('Existing short option; wait for Sanji expiry/assignment')
@@ -161,6 +169,8 @@ def evaluate(market, account, conids, pending):
             continue
         d['candidate'] = chosen
         order = make_order(t, phase, session, conids[t], chosen)
+        if course_proposal:
+            order['id'] = order['id'].replace('fin535-wheel-', 'fin535-course-')
         if market.get('mode') == 'demonstration':
             order['id'] = order['id'].replace('fin535-wheel-', 'fin535-demo-')
         if order['id'] in resolved:

@@ -36,7 +36,7 @@ def check(root):
     orders = read_orders(root)
     status = json.loads((root/'docs/data/strategy_status.json').read_text())
     evidence = json.loads((root/'docs/data/conid_verification.json').read_text())
-    resolve_identifiers(evidence, json.loads((root/'price_history.json').read_text()) if (root/'price_history.json').exists() else {})
+    verified_ids, _ = resolve_identifiers(evidence, json.loads((root/'price_history.json').read_text()) if (root/'price_history.json').exists() else {})
     if status.get('strategy_revision') != STRATEGY_REVISION:
         raise ValueError('Re-evaluate diagnostics under the current strategy revision')
     if ('earnings_unreliable' in status.get('pipeline_audit', {}) or
@@ -50,8 +50,35 @@ def check(root):
         raise ValueError('A blocked run must not claim updated orders')
     if status['order_count'] != len(orders):
         raise ValueError('Displayed order count disagrees with canonical file')
+    if status.get('orders_sha256') != digest(orders):
+        raise ValueError('Order content hash disagrees with published diagnostics')
     if any(o['id'].startswith('fin535-demo-') for o in orders):
         raise ValueError('Demonstration order in production queue')
+    if status.get('account_mode') == 'course_proposal' and status['status'] == 'success':
+        from .course import initial_account, read_state, ASSUMPTIONS
+        from .strategy import evaluate
+        market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+        if status.get('conid_status') != verified_ids:
+            raise ValueError('Published proposal conids differ from verified stock identities')
+        if (market.get('source') != 'LSEG Data Platform' or market.get('mode') != 'live'
+                or digest(market) != status.get('market_snapshot_sha256')
+                or status.get('account_assumptions') != ASSUMPTIONS):
+            raise ValueError('Course proposal provenance/assumptions do not match')
+        recomputed = evaluate(market, initial_account(market['calendar']['as_of']),
+                             status['conid_status'], status['pending_orders_before'], course_proposal=True)
+        for key in ('status', 'decisions', 'capital', 'capital_before'):
+            if not equivalent_observations(status.get(key), recomputed.get(key)):
+                raise ValueError('Course decisions/capital do not independently reproduce: '+key)
+        if recomputed['orders'] != status.get('evaluated_orders'):
+            raise ValueError('Proposed JSON differs from actual model decisions')
+        if status.get('orders_updated'):
+            if orders != recomputed['orders'] or any(o['for'] != market['calendar']['target_session'] for o in orders):
+                raise ValueError('Published course queue differs from evaluated upcoming-session proposals')
+            state = read_state(root)
+            if any(o not in state['unconfirmed_orders'] for o in orders):
+                raise ValueError('Published course proposal has no durable commitment record')
+            if status.get('unconfirmed_proposal_count') != len(state['unconfirmed_orders']):
+                raise ValueError('Unconfirmed commitment count disagrees with state')
     demo_path = root/'docs/data/demo_status.json'
     if demo_path.exists():
         demo = json.loads(demo_path.read_text())

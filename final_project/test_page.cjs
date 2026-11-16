@@ -188,3 +188,30 @@ test('A successful retained-data audit never labels an unchanged queue as new or
   assert.match(e.get('order-rows').textContent,/replay does not publish orders/);
   assert.doesNotMatch(e.get('order-note').textContent,/Valid no-trade/);
 });
+
+test('Course mode labels hypothetical budget separately from unavailable official account',async()=>{
+  const s={...baseline,status:'success',errors:[],account_mode:'course_proposal',
+    account_status:'Unavailable; course assumptions used',unconfirmed_proposal_count:2,
+    capital:{equity:40000,cash:40000,exposure:12400,put_collateral:12400,uncommitted_cash:27600}};
+  const e=await render(s,[{id:'fin535-course-test',for:'2026-11-16',underlying:8894,action:'SHT',contract:'put',expiry:'2026-11-20',strike:96,qty:1}]);
+  assert.match(e.get('account-mode').textContent,/COURSE PROPOSAL MODE/);
+  assert.match(e.get('capital-note').textContent,/not actual Sanji NAV/);
+  assert.match(e.get('order-note').textContent,/not actual Sanji account orders/);
+  assert.equal(e.get('issues').textContent,'');
+  assert.match(e.get('run-state').textContent,/Validated evaluation/);
+});
+
+test('Unconfirmed prior outcomes are not mislabeled as a no-opportunity result',async()=>{
+  const e=await render({...baseline,status:'success',errors:[],account_mode:'course_proposal',
+    outcome:'awaiting_order_confirmation',unconfirmed_proposal_count:2});
+  assert.match(e.get('order-note').textContent,/unknown outcomes/);
+  assert.doesNotMatch(e.get('order-note').textContent,/Valid no-trade/);
+  assert.match(e.get('account-mode').textContent,/2 unconfirmed/);
+});
+
+test('Course market-input failure remains blocked and never clears retained queue in UI',async()=>{
+  const e=await render({...baseline,status:'blocked',account_mode:'course_proposal',errors:['BAC: missing close']});
+  assert.match(e.get('order-note').textContent,/not changed/);
+  assert.match(e.get('issues').textContent,/missing close/);
+  assert.match(e.get('account-mode').textContent,/not fills or actual balances/);
+});
