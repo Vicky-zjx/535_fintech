@@ -10,6 +10,28 @@ identical `mkt/open_orders.json` compatibility copy. The professor's clarificati
 does not require an active Sanji resolver or completed fills to generate proposals.
 Nothing is submitted to Canvas by this code.
 
+### Verified run — November 16, 2026, 23:16 UTC
+
+[Live Actions run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43977705993)
+used the new course mode and successfully retrieved LSEG responses. The missing
+official book was **not** a blocking condition. BAC/F still returned November 13
+closes in both the main history and exact-November-16 recheck; neither was relabeled.
+Planning for November 17 therefore remained blocked by missing market inputs.
+KO/PFE were independently rejected for new puts because Tuesday is not this week's
+first trading session. No filters were relaxed to manufacture an order.
+
+This real run did **not** replace either order array: `orders_updated:false`,
+`evaluated_orders:null`; the retained [] is NOT a successful no-trade claim.
+It automatically committed the new real snapshot/diagnostics and rebuilt Pages;
+the job's final failure correctly exposes missing prices. Official account access,
+conids or authentication were not the failure. Next valid scheduled/manual runs
+use the same writer and persistent commitment checks.
+
+Validation: 146 checks (109 Python engine/provider/history/mode tests, 4 layout,
+33 JavaScript), plus publication reproduction. The retained real week-start
+integration exercises both JSON writes and commitment persistence in a temporary
+directory; those historical proposals are not published as today's orders.
+
 ### Account modes
 
 - **Course mode (default, `--mode course`):** if no official account file exists,

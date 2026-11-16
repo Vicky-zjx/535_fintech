@@ -7,7 +7,7 @@ import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
-from .course import initial_account, read_state, STATE_PATH
+from .course import initial_account, read_state, next_state, STATE_PATH
 from .run import run
 from .sanji_orders import read_orders, atomic_json, publish_orders
 from .strategy import evaluate
@@ -213,4 +213,12 @@ class CourseTests(unittest.TestCase):
         self.assertEqual([(o['underlying'],o['strike'],o['expiry']) for o in r['orders']],
                          [(8894,96.,'2026-11-20'),(11031,28.,'2026-11-20')])
         self.assertEqual(r['capital']['put_collateral'],12400)
-        self.assertEqual(read_orders(self.root),[])  # Historical integration is not today's published queue.
+        # Exercise the real writer with these REAL observations, but only in this
+        # temp integration directory. Historical proposals never enter today's queue.
+        account=initial_account(real['calendar']['as_of'])
+        state=next_state(read_state(self.root),r['orders'],account,hypothetical=True)
+        publish_orders(self.root,r['orders'],course_state=state)
+        self.assertEqual(read_orders(self.root),r['orders'])
+        self.assertEqual((self.root/'open_orders.json').read_bytes(),(self.root/'mkt/open_orders.json').read_bytes())
+        self.assertEqual(read_state(self.root)['unconfirmed_orders'],r['orders'])
+        self.assertFalse((self.root/'mkt/positions.json').exists())
