@@ -37,7 +37,7 @@ class DemoTests(unittest.TestCase):
         self.assertEqual(r['status'], 'blocked')
 
     def test_demo_keeps_all_put_checks_and_idempotence(self):
-        # These synthetic prices/earnings exist ONLY in unit tests, never on the site.
+        # These synthetic prices exist ONLY in unit tests, never on the site.
         m, a, ids = fixture()
         m['mode'] = 'demonstration'; a['source'] = 'HYPOTHETICAL_DEMONSTRATION'
         r = evaluate(m, a, ids, [])
@@ -45,10 +45,10 @@ class DemoTests(unittest.TestCase):
         self.assertTrue(all(o['id'].startswith('fin535-demo-') for o in r['orders']))
         repeated = evaluate(m, a, ids, r['orders'])
         self.assertEqual(repeated['orders'], r['orders'])
-        m['tickers']['BAC']['earnings']['reliable'] = False
+        m['tickers']['BAC']['history'][-1]['close'] = 45
         r = evaluate(m, a, ids, [])
         self.assertNotIn(ids['BAC'], [o['underlying'] for o in r['orders']])
-        self.assertIn('Earnings calendar unknown', str(r['decisions']))
+        self.assertIn('trend filter failed', str(r['decisions']))
 
     def test_demo_does_not_bypass_capital(self):
         m, a, ids = fixture()
@@ -81,6 +81,14 @@ class DemoTests(unittest.TestCase):
                 self.assertEqual(s['account']['source'], 'HYPOTHETICAL_DEMONSTRATION')
                 if s['proposed_orders'] is not None:
                     validate(s['proposed_orders'])
+            if result['market_retrieved_at'] == '2026-11-16T07:21:13.214133+00:00':
+                flat, held = result['scenarios']
+                self.assertEqual([(o['underlying'], o['strike']) for o in flat['proposed_orders']],
+                                 [(8894, 96.), (11031, 28.)])
+                self.assertEqual(flat['capital']['put_collateral'], 12400.)
+                self.assertEqual(flat['capital']['uncommitted_cash'], 27600.)
+                self.assertEqual(held['order_count'], 3)
+            self.assertNotIn('earnings', json.dumps(result['scenarios']))
             market = json.loads((root/'docs/data/market_snapshot.json').read_text())
             market['mode'] = 'test'
             (root/'docs/data/market_snapshot.json').write_text(json.dumps(market))

@@ -3,11 +3,12 @@ from copy import deepcopy
 from datetime import datetime, timezone
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 from .calendar import context, required_sessions
-from .data_provider import conids_from_course, normalize_closes, normalize_contracts, earnings_calendar, named
+from .data_provider import conids_from_course, normalize_closes, normalize_contracts, fetch_market, named
 from .portfolio import validate_account
 from .run import run
 from .sanji_orders import validate, publish_orders, read_orders
@@ -25,8 +26,7 @@ def fixture():
                           delta=(-.25 if cp == 'put' else .25), delta_date=ctx['as_of'])
                      for cp, k in [('put', .97), ('call', 1.), ('call', 1.02), ('call', 1.04)]]
         market['tickers'][t] = dict(identity_verified=True, history=history, contracts=contracts,
-            options_status='observed', earnings={'reliable': True, 'known_on': ctx['as_of'],
-                                                'through': '2027-01-01', 'dates': ['2026-12-01']})
+            options_status='observed')
     account = dict(schema_version=1, source='TEST_FIXTURE', as_of=ctx['as_of'], currency='USD',
                    cash=40000., equity=40000., positions=[], resolved_order_ids=[])
     # Deliberately artificial IDs, only in this named test fixture.
@@ -66,14 +66,16 @@ class StrategyTests(unittest.TestCase):
         self.m['tickers']['BAC']['history'][-1]['close'] = 40
         self.assertIn('sudden_drop filter failed', self.decision(self.go())['reasons'])
 
-    def test_earnings_inclusive(self):
-        for day in ('2026-11-16', '2026-11-20'):
-            self.m['tickers']['BAC']['earnings']['dates'] = [day]
-            self.assertIn('Earnings blackout', ' '.join(self.decision(self.go())['reasons']))
-
-    def test_unknown_earnings_blocks_put(self):
-        self.m['tickers']['BAC']['earnings']['reliable'] = False
-        self.assertFalse(self.decision(self.go())['eligible'])
+    def test_earnings_absent_unknown_or_upcoming_never_affects_puts(self):
+        baseline = self.go()  # No calendar field is required.
+        self.assertEqual(len(baseline['orders']), 4)
+        for legacy in (None, {}, {'reliable': False},
+                       {'reliable': True, 'known_on': '2026-11-13',
+                        'through': '2027-01-01', 'dates': ['2026-11-16', '2026-11-20']},
+                       {'dates': 'invalid legacy value'}):
+            with self.subTest(legacy=legacy):
+                self.m['tickers']['BAC']['earnings'] = legacy
+                self.assertEqual(self.go(), baseline)
 
     def test_existing_put_blocks_duplicate(self):
         self.a['positions'] = [dict(ticker='BAC', kind='put', quantity=-1, multiplier=100,
@@ -84,7 +86,6 @@ class StrategyTests(unittest.TestCase):
     def test_stock_transitions_to_call_without_put_filters(self):
         self.stock()
         self.m['calendar']['first_session_of_week'] = False
-        self.m['tickers']['BAC']['earnings']['reliable'] = False
         self.assertEqual(self.decision(self.go())['decision'], 'Sell Covered Call')
 
     def test_existing_call_no_duplicate(self):
@@ -244,10 +245,12 @@ class StrategyTests(unittest.TestCase):
             c['terms_verified'] = False
         self.assertFalse(self.decision(self.go())['eligible'])
 
-    def test_earnings_filter_not_required_for_call(self):
+    def test_legacy_earnings_does_not_affect_calls(self):
         self.stock()
+        baseline = self.go()
         self.m['tickers']['BAC']['earnings'] = {'reliable': False}
-        self.assertEqual(self.decision(self.go())['decision'], 'Sell Covered Call')
+        self.assertEqual(self.go(), baseline)
+        self.assertEqual(self.decision(baseline)['decision'], 'Sell Covered Call')
 
 
 class DataTests(unittest.TestCase):
@@ -275,12 +278,39 @@ class DataTests(unittest.TestCase):
         self.assertEqual(len(normalize_contracts(df, 'BAC', 'BAC', '2026-11-13')[0]), 1)
         self.assertEqual(normalize_contracts(df, 'BAC', 'BAC.N', '2026-11-13')[0], [])
 
-    def test_earnings_status_false_means_confirmed(self):
-        df = pd.DataFrame([['BAC.N', '2027-01-15', 'RES', False]],
-                          columns=['Instrument', 'TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'])
-        self.assertTrue(earnings_calendar(df, 'BAC.N', '2026-11-13', '2027-05-01')['reliable'])
-        df.iloc[0, 3] = True
-        self.assertFalse(earnings_calendar(df, 'BAC.N', '2026-11-13', '2027-05-01')['reliable'])
+    def test_provider_only_requests_identity_prices_contracts_and_deltas(self):
+        market, _, _ = fixture()
+        def get_data(universe, fields, **kwargs):
+            ric = universe[0]; ticker = ric.split('.')[0]
+            if fields == ['TR.TickerSymbol']:
+                return pd.DataFrame([[ric, ticker]], columns=['Instrument']+fields)
+            if fields == ['TR.PriceClose.date', 'TR.PriceClose']:
+                return pd.DataFrame([[ric, r['date'], r['close']] for r in market['tickers'][ticker]['history']],
+                                    columns=['Instrument']+fields)
+            raise AssertionError('Unexpected API fields: '+str(fields))
+        def search(**kwargs):
+            ticker = kwargs['filter'].split("'")[1]
+            return pd.DataFrame([dict(RIC=f'{ticker}W202604850.U', StrikePrice=48.5,
+                ExpiryDate='2026-11-20', CallPutOption='Put', UnderlyingQuoteRIC=[ticker],
+                LotSize=100, Currency='USD', ContractType='Standard', ExerciseStyle='A')])
+        ld = SimpleNamespace(get_data=Mock(side_effect=get_data), get_history=Mock(return_value=pd.DataFrame()),
+            HeaderType=SimpleNamespace(NAME='NAME'), discovery=SimpleNamespace(
+                Views=SimpleNamespace(EQUITY_DERIVATIVE_QUOTES='options'), search=Mock(side_effect=search)))
+        with patch('final_project.data_provider.query_lseg', side_effect=lambda *a, operation: operation(ld)), \
+             patch('final_project.data_provider.time.sleep'):
+            result = fetch_market(market['calendar'], '2026-11-16T03:00:00+00:00')
+        self.assertEqual(ld.get_data.call_count, 12)  # Two identity checks + closes per ticker.
+        self.assertEqual(ld.discovery.search.call_count, 4)
+        self.assertEqual(ld.get_history.call_count, 4)
+        for call in ld.get_data.call_args_list:
+            self.assertIn(call.args[1], (['TR.TickerSymbol'], ['TR.PriceClose.date', 'TR.PriceClose']))
+            self.assertNotIn('EventType', call.kwargs.get('parameters', {}))
+        for call in ld.get_history.call_args_list:
+            self.assertEqual(call.kwargs['fields'], ['DELTA_EXCH'])
+        for t, d in result['tickers'].items():
+            self.assertTrue(d['identity_verified']); self.assertEqual(d['options_status'], 'observed')
+            self.assertEqual(d['errors'], [])
+            self.assertNotIn('earnings', d); self.assertNotIn('earnings', result['raw'][t])
 
 
 class PublicationTests(unittest.TestCase):
@@ -314,6 +344,41 @@ class PublicationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             publish_orders(self.root, [{'id': 'invalid'}])
         self.assertEqual(read_orders(self.root), [])
+
+    def test_replay_preserves_snapshot_and_orders_even_with_valid_account(self):
+        m, a, ids = fixture()
+        m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
+        a['source'] = 'Sanji'  # Unit-test-only adapter fixture, not a real account.
+        data = self.root/'docs/data'; data.mkdir(parents=True)
+        snapshot = json.dumps(m).encode()
+        (data/'market_snapshot.json').write_bytes(snapshot)
+        (self.root/'mkt/positions.json').write_text(json.dumps(a))
+        (self.root/'price_history.json').write_text(json.dumps({str(v): {'ticker': t} for t, v in ids.items()}))
+        provider = Mock(side_effect=AssertionError('Replay must not query an API'))
+        with patch('final_project.run.publish_orders') as publisher:
+            # Even an intraday audit must retain its historical signal/target dates, not issue stale orders.
+            rc = run(self.root, datetime(2026, 11, 16, 16, tzinfo=timezone.utc), provider=provider, replay=True)
+        provider.assert_not_called(); publisher.assert_not_called()
+        self.assertEqual(rc, 0); self.assertEqual(read_orders(self.root), [])
+        self.assertEqual((data/'market_snapshot.json').read_bytes(), snapshot)
+        s = json.loads((data/'strategy_status.json').read_text())
+        self.assertEqual(s['evaluation_kind'], 'retained_market_replay')
+        self.assertEqual(s['proposed_order_count'], 4)
+        self.assertFalse(s['orders_updated'])
+        self.assertEqual(s['market_data_retrieved_at'], m['retrieved_at'])
+        self.assertEqual(s['calendar'], m['calendar'])
+        self.assertNotIn('earnings', json.dumps(s).replace('no-earnings-filter-v1', ''))
+
+    def test_fresh_run_still_publishes_validated_production_orders(self):
+        m, a, ids = fixture()
+        m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
+        a['source'] = 'Sanji'
+        (self.root/'mkt/positions.json').write_text(json.dumps(a))
+        (self.root/'price_history.json').write_text(json.dumps({str(v): {'ticker': t} for t, v in ids.items()}))
+        rc = run(self.root, datetime(2026, 11, 16, 3, tzinfo=timezone.utc), provider=lambda *args: m)
+        self.assertEqual(rc, 0); self.assertEqual(len(read_orders(self.root)), 4)
+        s = json.loads((self.root/'docs/data/strategy_status.json').read_text())
+        self.assertTrue(s['orders_updated']); self.assertEqual(s['evaluation_kind'], 'fresh_api')
 
     def test_mirror_mismatch_preserved(self):
         (self.root/'mkt/open_orders.json').write_text('[{"bad": true}]\n')

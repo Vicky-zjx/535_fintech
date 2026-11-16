@@ -1,4 +1,5 @@
 """Predeclared research settings; not optimized from realized returns."""
+STRATEGY_REVISION = 'no-earnings-filter-v1'
 UNIVERSE = {
     'BAC': {'ric': 'BAC.N', 'name': 'Bank of America', 'sector': 'Financials'},
     'KO': {'ric': 'KO.N', 'name': 'Coca-Cola', 'sector': 'Consumer Staples'},

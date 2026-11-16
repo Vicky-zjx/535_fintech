@@ -9,30 +9,39 @@ from .calendar import context
 from .data_provider import fetch_market, conids_from_course, digest
 from .sanji_orders import atomic_json, read_orders, publish_orders
 from .strategy import evaluate
-from .strategy_config import UNIVERSE
+from .strategy_config import UNIVERSE, STRATEGY_REVISION
 from .verify_conids import verified_mapping
 from lseg_chart.update import safe_failure_detail
 
 
-def run(root, now, provider=fetch_market):
+def run(root, now, provider=fetch_market, *, replay=False):
     root = Path(root)
     stamp = now.isoformat()
     report = {'schema_version': 1, 'mode': 'live', 'status': 'blocked', 'attempted_at': stamp,
               'successful_at': None, 'market_data_retrieved_at': None,
               'source': 'LSEG Data Platform', 'orders_updated': False, 'errors': [],
-              'decisions': [], 'capital': None, 'calendar': None}
+              'decisions': [], 'capital': None, 'calendar': None,
+              'strategy_revision': STRATEGY_REVISION,
+              'evaluation_kind': 'retained_market_replay' if replay else 'fresh_api'}
     status_path = root/'docs/data/strategy_status.json'
     if status_path.exists():
         report['successful_at'] = json.loads(status_path.read_text()).get('successful_at')
     try:
-        report['calendar'] = context(now)
         old = read_orders(root)
-        market = provider(report['calendar'], stamp)
-        if market.get('mode') != 'live':
+        if replay:
+            # Explicit audit only: preserve the original dates, raw response and
+            # production queue. Never silently use a snapshot after an API error.
+            market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+            report['calendar'] = market['calendar']
+        else:
+            report['calendar'] = context(now)
+            market = provider(report['calendar'], stamp)
+        if market.get('mode') != 'live' or market.get('source') != 'LSEG Data Platform':
             raise ValueError('Non-live provider forbidden in production publication')
-        report['market_data_retrieved_at'] = stamp
+        report['market_data_retrieved_at'] = market['retrieved_at']
         report['market_snapshot_sha256'] = digest(market)
-        atomic_json(root/'docs/data/market_snapshot.json', market)
+        if not replay:
+            atomic_json(root/'docs/data/market_snapshot.json', market)
         account_path = root/'mkt/positions.json'
         account = json.loads(account_path.read_text()) if account_path.exists() else None
         course_path = root/'price_history.json'
@@ -51,17 +60,18 @@ def run(root, now, provider=fetch_market):
             'first_blocking_stage': 'account/pending validation' if result['capital'] is None else None,
             'account_present': account_path.exists(),
             'course_conids_missing': [t for t in UNIVERSE if t not in conids],
-            'earnings_unreliable': [t for t, d in market['tickers'].items() if not d.get('earnings', {}).get('reliable')],
             'resolver_status': 'Professor documentation: Sanji does not resolve orders yet. This is not a JSON-generation requirement.',
             'production_account_assumed': False,
         }
         report['data_quality'] = {t: {k: v for k, v in d.items() if k in (
-            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'earnings', 'exclusions')}
+            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'exclusions')}
                                  for t, d in market['tickers'].items()}
         if result['status'] == 'success':
-            publish_orders(root, result['orders'])
-            report['orders_updated'] = True
-            report['successful_at'] = stamp
+            report['proposed_order_count'] = len(result['orders'])
+            if not replay:
+                publish_orders(root, result['orders'])
+                report['orders_updated'] = True
+                report['successful_at'] = stamp
     except Exception as e:
         report['errors'].append(safe_failure_detail(e, os.environ))
     # No raw account positions/fills or private account IDs are published.
@@ -82,8 +92,10 @@ def run(root, now, provider=fetch_market):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
+    p.add_argument('--replay', action='store_true',
+                   help='Audit the retained real snapshot; no API calls or production-order writes')
     args = p.parse_args()
-    return run(args.root, datetime.now(timezone.utc))
+    return run(args.root, datetime.now(timezone.utc), replay=args.replay)
 
 
 if __name__ == '__main__':

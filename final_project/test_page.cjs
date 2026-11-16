@@ -147,3 +147,26 @@ test('English methodology and formulas are visible without a fabricated performa
   assert.ok(html.indexOf('assets/analysis.js')<html.indexOf('assets/app.js'));
   assert.doesNotMatch(html+script+analysisScript,/[\u4e00-\u9fff]/);
 });
+
+test('Earnings policy is removed from current diagnostics, with an explicit gap-risk disclosure',async()=>{
+  const e=await render(realStatus,[],false,realDemo);
+  for(const id of ['availability-rows','data-quality','pipeline-discussion','demo-results'])
+    assert.doesNotMatch(e.get(id).textContent,/earnings|blackout|calendar confirmation/i);
+  assert.match(html,/does not screen around earnings announcements/);
+  assert.match(html,/exposed to earnings-related price gaps/);
+  assert.match(html,/intentionally removed/);
+  assert.doesNotMatch(html,/Unknown earnings still block|earnings validation|No earnings from entry|earnings_investigation\.json|event filters/);
+  const flow=fs.readFileSync(path.join(__dirname,'../docs/assets/strategy-workflow.svg'),'utf8');
+  assert.doesNotMatch(flow,/earnings/i);
+  assert.match(flow,/Five-day return ≥ −8%/);
+});
+
+test('A successful retained-data audit never labels an unchanged queue as new orders',async()=>{
+  const s={...realStatus,status:'success',errors:[],evaluation_kind:'retained_market_replay',orders_updated:false,proposed_order_count:2};
+  const e=await render(s,[],false,realDemo);
+  assert.match(e.get('run-time').textContent,/Retained-data re-evaluation/);
+  assert.match(e.get('decision-note').textContent,/not a new API query/);
+  assert.match(e.get('order-note').textContent,/not changed/);
+  assert.match(e.get('order-rows').textContent,/replay does not publish orders/);
+  assert.doesNotMatch(e.get('order-note').textContent,/Valid no-trade/);
+});

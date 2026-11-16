@@ -160,14 +160,6 @@ def evaluate(market, account, conids, pending):
             d['reasons'].append(reason)
             continue
         d['candidate'] = chosen
-        if phase == 'put':
-            earnings = data.get('earnings', {})
-            if earnings.get('reliable') is not True or earnings.get('known_on') != as_of or earnings.get('through', '') < chosen['expiry']:
-                d['reasons'].append('Earnings calendar unknown/unreliable; put blocked')
-                continue
-            if any(session <= e <= chosen['expiry'] for e in earnings.get('dates', [])):
-                d['reasons'].append('Earnings blackout includes entry through expiry')
-                continue
         order = make_order(t, phase, session, conids[t], chosen)
         if market.get('mode') == 'demonstration':
             order['id'] = order['id'].replace('fin535-wheel-', 'fin535-demo-')

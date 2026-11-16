@@ -27,14 +27,12 @@
       const q = s.data_quality?.[ticker] || {};
       return {...d, technical: failed.length === 0, failed,
         distance: d.close / d.sma50 - 1,
-        earningsVerified: q.earnings?.reliable === true,
         candidateCount: Number.isInteger(q.candidate_count) ? q.candidate_count : null};
     });
     return {asOf: s.calendar.as_of, retrievedAt: s.market_data_retrieved_at,
       target: s.calendar.target_session, rows,
       passed: rows.filter(d => d.technical).map(d => d.ticker),
       trendFailed: rows.filter(d => !d.filters.trend).map(d => d.ticker),
-      earningsUnknown: rows.filter(d => !d.earningsVerified).map(d => d.ticker),
       allVolatilityPass: rows.every(d => d.filters.volatility),
       allDropPass: rows.every(d => d.filters.sudden_drop)};
   }

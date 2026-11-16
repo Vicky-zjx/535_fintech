@@ -47,7 +47,7 @@
           <h2>Premium is income.<br />It is not protection.</h2>
           <p>
             This strategy diversifies the traditional Wheel across financials,
-            staples, healthcare and autos. Trend, volatility and event filters
+            staples, healthcare and autos. Trend, volatility and sudden-drop filters
             limit new exposure; they do not eliminate equity losses.
           </p>
           <dl>
@@ -173,7 +173,7 @@
             An unavailable input is not a negative trading signal.</p>
         </div>
         <p id="pipeline-discussion">Final order eligibility also requires the authoritative
-          account, course identifiers, a usable option contract and the applicable earnings checks.</p>
+          account, course identifiers, a usable option contract and sufficient reserved capital.</p>
         <h3>Different missing inputs have different consequences</h3>
         <div class="table-wrap" tabindex="0" aria-label="Evidence availability and its implications">
           <table><thead><tr><th>Layer</th><th>Current evidence</th><th>What it permits — or prevents</th></tr></thead>
@@ -183,7 +183,7 @@
         <h3>What these decisions establish</h3>
         <p>The screen makes the willingness to take new bullish exposure conditional on observable
           inputs. It can reject a stock for weak trend alignment even when its recent volatility
-          is acceptable. Refusing an order when the account or earnings calendar cannot be checked
+          is acceptable. Refusing an order when the account cannot be checked
           is a separate control: it prevents an unverified obligation rather than predicting a loss.
           Neither kind of refusal tells us what an executed trade would have earned.</p>
         <p>The present evidence supports a working decision policy and an auditable separation of
@@ -195,7 +195,7 @@
       <section id="demonstration" aria-labelledby="demo-title">
         <p class="eyebrow">ISOLATED DEMONSTRATION / NOT AN ACTUAL ACCOUNT</p>
         <h2 id="demo-title">Real market inputs. Hypothetical $40,000 books.</h2>
-        <p>These independent examples use the same Wheel engine and unchanged risk checks.
+        <p>These independent examples use the same current Wheel engine and remaining risk checks.
           They are not actual Sanji orders, fills, assignments, or a performance backtest.
           Production still requires the authoritative account; no example writes to either production order file.</p>
         <p class="notice" id="demo-summary">Demonstration results have not loaded.</p>
@@ -210,16 +210,18 @@
             authoritative balances, complete positions, cost bases, marks, and resolution history must come
             from the course producer. Its update must finish before nightly planning.
             The professor documents that Sanji does not yet resolve orders; generating a valid JSON proposal does not require an active resolver.</p>
-          <p>Unknown earnings still block new puts. A company-confirmed future release from an official investor-relations
-            source can be an authorized alternative; an empty event page or estimated date cannot certify a clear window.
-            See the dated investigation below. Missing same-session Greeks use only the existing listed-strike fallback.</p>
+          <p>Earnings screening was intentionally removed from the strategy, not temporarily bypassed for missing data.
+            No earnings dates are requested or used. Account, technical, capital and position checks remain in force.
+            Missing same-session Greeks use only the existing listed-strike fallback.</p>
           <p><a href="data/conid_verification.json">IBKR verification evidence</a> ·
-            <a href="data/earnings_investigation.json">Earnings-source investigation</a> ·
             <a href="data/demo_status.json">Example accounts and full decision audit</a> ·
             <a href="data/demo_cash_start_orders.json">Cash-start example JSON</a> ·
             <a href="data/demo_covered_inventory_orders.json">Covered-inventory example JSON</a></p>
           <p><code>python -m final_project.demo</code> reproduces these isolated examples from the retained real LSEG response.
+            <code>python -m final_project.run --replay</code> re-evaluates production dependencies without querying APIs or writing orders.
             <code>python -m final_project.run</code> queries fresh data and plans production orders only from an authoritative account.</p>
+          <p class="muted">The retained raw response is unchanged audit evidence from before this policy revision;
+            any legacy event-field responses in it are unused, not current strategy inputs or blockers.</p>
         </details>
       </section>
 
@@ -288,7 +290,7 @@
             These are different business risks, not four independent bets. Interest rates, a recession
             or a broad equity sell-off can affect several names at once; no correlation reduction has
             been estimated from this one evaluation.</p>
-          <p>Four names keep contract selection, earnings checks and account reconciliation manageable
+          <p>Four names keep contract selection and account reconciliation manageable
             while reducing reliance on one issuer. Standard 100-share contracts make sizing indivisible:
             one contract per ticker is not an equal-dollar or equal-risk portfolio. A lower share price
             reduces the dollar obligation of a comparable put strike, not the probability of a severe loss.</p>
@@ -428,7 +430,7 @@
         <p class="muted">
           These initial thresholds are risk-motivated, not statistically
           optimized. Fifty consecutive valid session closes are required. Put
-          trend, volatility and earnings filters are not automatic call-entry
+          trend, volatility and sudden-drop filters are not automatic call-entry
           requirements.
         </p>
         <div class="selection-grid">
@@ -448,10 +450,6 @@
               <li>
                 Incomplete Greeks: nearest observed strike to 97% of the closing
                 price. This fallback is not a 25-delta estimate.
-              </li>
-              <li>
-                No earnings from entry through expiry, inclusive. Unknown, empty
-                or provisional earnings information blocks a new put.
               </li>
             </ul>
           </article>
@@ -515,10 +513,8 @@
           </p>
           <p>
             Historical DELTA_EXCH must carry the signal-session date. An undated
-            Option Watch delta is not relabeled as historical. Earnings releases
-            use LSEG RES events and require a company-confirmed next reported
-            event; an empty response is not evidence of no earnings. Calendar
-            coverage and exclusions appear in the diagnostics.
+            Option Watch delta is not relabeled as historical. Observed candidate
+            coverage and contract exclusions appear in the diagnostics.
           </p>
         </details>
       </section>
@@ -793,7 +789,7 @@
             statistic would have its own dates and explicit limitations.</p>
           <h3>A comparison to run, not a result already obtained</h3>
           <p>The proposed baseline is a weekly Wheel on the same four names, retaining cash security,
-            account limits, earnings validation and contract-selection rules but omitting the three
+            account limits and contract-selection rules but omitting the three
             technical entry screens. Compare it with this risk-managed version using identical market
             periods, initial equity, observed contract access, transaction costs, assignment treatment
             and execution assumptions. This isolates the screens without granting either strategy
@@ -807,22 +803,25 @@
           <p>Current LSEG discovery is an observed candidate set, not a complete historical chain.
             A fallback is reproducible within that set but can select differently as coverage changes.
             Missing dated Greeks prevent a claim that demonstrated proposals are 25-delta trades.
-            A replay needs archived point-in-time chains, earnings announcements and exclusions, so
+            A replay needs archived point-in-time chains and contract exclusions, so
             later discoveries cannot establish earlier availability. Different regimes, correlated
             declines and parameter sensitivity also remain untested.</p>
           <p>The professor must supply the native Sanji account schema, authoritative balances and
             complete positions, stock bases, option marks, fill/resolution histories, and an update-complete
             signal. The course feed must enroll all four tickers with explicit conids and contract-open
             coverage. Resolver activation is needed to observe course executions, not to validate a
-            proposal's JSON. Confirmed earnings coverage is a separate licensing or issuer-source
-            dependency: an authorized, dated company announcement can be reviewed, but an empty
-            calendar cannot certify that the entry-to-expiry window is clear.</p>
+            proposal's JSON. No earnings-calendar entitlement or alternative event feed is required.</p>
           <p>These records can feed a separate, read-only performance report alongside the existing
             market, decision and order artifacts. That preserves the planner and page layout while
             adding auditable account evidence; no production balance or fill needs to be invented
             to make the current website look complete.</p>
         </div>
         <div class="limitations">
+          <p>
+            <strong>Earnings-event risk.</strong> The strategy does not screen around earnings announcements
+            and may therefore be exposed to earnings-related price gaps. Trend, volatility and cash-reserve
+            checks do not eliminate this risk.
+          </p>
           <p>
             <strong>Equity risk.</strong> Four stocks can decline together. Put
             assignment can create losses larger than premium income; calls cap
@@ -835,7 +834,7 @@
           </p>
           <p>
             <strong>Data risk.</strong> Observed option coverage may be
-            incomplete. Greeks and earnings can be missing or revised. A
+            incomplete. Greeks can be missing or revised. A
             fallback changes selection—not the facts—and historical replay would
             need point-in-time snapshots.
           </p>
@@ -852,9 +851,6 @@
           ><a
             href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#onschedule"
             >GitHub scheduling</a
-          ><a
-            href="https://developers.lseg.com/en/article-catalog/article/workspace-corporate-actions-content-set-guide"
-            >LSEG event definitions</a
           >
         </div>
       </footer>

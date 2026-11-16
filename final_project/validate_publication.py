@@ -6,6 +6,7 @@ from urllib.parse import urlsplit, unquote
 import xml.etree.ElementTree as ET
 from .sanji_orders import read_orders, validate
 from .data_provider import digest
+from .strategy_config import STRATEGY_REVISION
 
 
 class Links(HTMLParser):
@@ -19,6 +20,13 @@ def check(root):
     root = Path(root)
     orders = read_orders(root)
     status = json.loads((root/'docs/data/strategy_status.json').read_text())
+    if status.get('strategy_revision') != STRATEGY_REVISION:
+        raise ValueError('Re-evaluate diagnostics under the current strategy revision')
+    if ('earnings_unreliable' in status.get('pipeline_audit', {}) or
+            any('earnings' in d for d in status.get('data_quality', {}).values())):
+        raise ValueError('Removed earnings inputs must not appear as current diagnostics')
+    if status.get('evaluation_kind') == 'retained_market_replay' and status.get('orders_updated'):
+        raise ValueError('Historical replay must not publish production orders')
     if status['mode'] != 'live' or status['status'] not in ('not_run', 'blocked', 'success'):
         raise ValueError('Public site cannot publish test-mode strategy decisions')
     if status.get('orders_updated') and status['status'] != 'success':
@@ -30,6 +38,8 @@ def check(root):
     demo_path = root/'docs/data/demo_status.json'
     if demo_path.exists():
         demo = json.loads(demo_path.read_text())
+        if demo.get('strategy_revision') != STRATEGY_REVISION:
+            raise ValueError('Rebuild demonstrations under the current strategy revision')
         if demo['mode'] != 'demonstration' or demo['production_orders_changed'] is not False:
             raise ValueError('Demonstration isolation/label missing')
         market = json.loads((root/'docs/data/market_snapshot.json').read_text())

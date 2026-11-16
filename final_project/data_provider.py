@@ -19,9 +19,7 @@ def named(frame, fields):
     if frame is None or frame.empty:
         raise ValueError('Empty LSEG response')
     names = [str(x).casefold() for x in frame.columns]
-    aliases = {'ticker symbol': 'tr.tickersymbol', 'price close': 'tr.priceclose',
-               'event start date': 'tr.eventstartdate', 'event type': 'tr.eventtype',
-               'event status': 'tr.eventstatus'}
+    aliases = {'ticker symbol': 'tr.tickersymbol', 'price close': 'tr.priceclose'}
     if fields == ['TR.PriceClose.date', 'TR.PriceClose']:
         aliases['date'] = 'tr.priceclose.date'
     names = [aliases.get(n, n) for n in names]
@@ -91,31 +89,6 @@ def normalize_contracts(frame, ticker, ric, as_of):
             raise ValueError('Conflicting option metadata')
         unique[c['ric']] = c
     return list(unique.values()), exclusions
-
-
-def earnings_calendar(frame, ric, as_of, through):
-    fields = ['TR.EventStartDate', 'TR.EventType', 'TR.EventStatus']
-    frame = named(frame, fields)
-    events = []
-    for _, r in frame.iterrows():
-        if r['Instrument'] != ric:
-            raise ValueError('Unexpected earnings instrument')
-        if pd.isna(r[fields[0]]):
-            continue
-        d = str(pd.Timestamp(r[fields[0]]).date())
-        if d <= as_of or str(r[fields[1]]).casefold() not in ('res', 'earnings release', 'earnings releases'):
-            continue
-        estimated = r[fields[2]]
-        confirmed = (estimated is False or str(estimated).lower() in ('false', '0'))
-        events.append({'date': d, 'confirmed': confirmed})
-    events.sort(key=lambda e: e['date'])
-    # An empty reply is not proof that there are no earnings. Require the next
-    # reported release to be company-confirmed; estimated/unknown => blocked.
-    reliable = bool(events and events[0]['confirmed'])
-    return {'reliable': reliable, 'known_on': as_of, 'through': through,
-            'dates': [e['date'] for e in events], 'events': events,
-            'source': 'LSEG RES events; TR.EventStatus False = company-confirmed',
-            'limitation': 'Next reported event required; estimated/empty calendar blocks new puts'}
 
 
 def add_deltas(ld, contracts, as_of):
@@ -207,26 +180,6 @@ def fetch_market(ctx, retrieved_at):
             except Exception as e:
                 d['options_status'] = 'unavailable'
                 d['errors'].append('Contract discovery/terms validation failed: '+safe_failure_detail(e, os.environ))
-            try:
-                through = str(date.fromisoformat(session)+timedelta(days=180))
-                events = paced(ld.get_data, [ric], ['TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'],
-                    parameters={'SDate': session, 'EDate': through, 'EventType': 'RES'}, header_type=ld.HeaderType.NAME)
-                raw['earnings'] = table(events)
-                d['earnings'] = earnings_calendar(events, ric, as_of, through)
-            except Exception as e:
-                d['earnings'] = {'reliable': False, 'reason': 'Earnings query/validation unavailable: '+safe_failure_detail(e, os.environ)}
-                # Diagnose ordinary entitled field requests independently. Do not
-                # join separate rows or turn a date without confirmation into a
-                # reliable calendar. No entitlement bypass or substitute vendor.
-                raw['earnings_field_probe'] = {}
-                for field in ('TR.EventStartDate', 'TR.EventType', 'TR.EventStatus'):
-                    try:
-                        probe = paced(ld.get_data, [ric], [field],
-                            parameters={'SDate': session, 'EDate': through, 'EventType': 'RES'},
-                            header_type=ld.HeaderType.NAME)
-                        raw['earnings_field_probe'][field] = {'response': table(probe)}
-                    except Exception as probe_error:
-                        raw['earnings_field_probe'][field] = {'error': safe_failure_detail(probe_error, os.environ)}
         return out
     return query_lseg(date.fromisoformat(start), date.fromisoformat(as_of), operation=operation)
 

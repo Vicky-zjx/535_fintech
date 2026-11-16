@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-16T07:21:34.934617+00:00",
+  "generated_at": "2026-11-16T19:51:00.611350+00:00",
+  "strategy_revision": "no-earnings-filter-v1",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
   "market_retrieved_at": "2026-11-16T07:21:13.214133+00:00",
@@ -64,10 +65,10 @@
         },
         {
           "ticker": "KO",
-          "decision": "No Trade",
-          "eligible": false,
+          "decision": "Sell Put",
+          "eligible": true,
           "reasons": [
-            "Earnings calendar unknown/unreliable; put blocked"
+            "Fallback: observed strike nearest 3% OTM; not 25-delta"
           ],
           "close": 99.25,
           "price_date": "2026-11-13",
@@ -98,14 +99,29 @@
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
             "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 40000.0,
+            "exposure": 9600.0,
+            "put_collateral": 9600.0,
+            "uncommitted_cash": 30400.0,
+            "by_ticker": {
+              "BAC": 0.0,
+              "KO": 9600.0,
+              "PFE": 0.0,
+              "F": 0.0
+            }
           }
         },
         {
           "ticker": "PFE",
-          "decision": "No Trade",
-          "eligible": false,
+          "decision": "Sell Put",
+          "eligible": true,
           "reasons": [
-            "Earnings calendar unknown/unreliable; put blocked"
+            "Fallback: observed strike nearest 3% OTM; not 25-delta"
           ],
           "close": 28.89,
           "price_date": "2026-11-13",
@@ -136,6 +152,21 @@
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
             "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 40000.0,
+            "exposure": 12400.0,
+            "put_collateral": 12400.0,
+            "uncommitted_cash": 27600.0,
+            "by_ticker": {
+              "BAC": 0.0,
+              "KO": 9600.0,
+              "PFE": 2800.0,
+              "F": 0.0
+            }
           }
         },
         {
@@ -169,13 +200,13 @@
         "reasons": [],
         "equity": 40000.0,
         "cash": 40000.0,
-        "exposure": 0.0,
-        "put_collateral": 0.0,
-        "uncommitted_cash": 40000.0,
+        "exposure": 12400.0,
+        "put_collateral": 12400.0,
+        "uncommitted_cash": 27600.0,
         "by_ticker": {
           "BAC": 0.0,
-          "KO": 0.0,
-          "PFE": 0.0,
+          "KO": 9600.0,
+          "PFE": 2800.0,
           "F": 0.0
         }
       },
@@ -194,8 +225,33 @@
           "F": 0.0
         }
       },
-      "proposed_orders": [],
-      "order_count": 0
+      "proposed_orders": [
+        {
+          "id": "fin535-demo-ko-put-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 8894,
+          "contract": "put",
+          "expiry": "2026-11-20",
+          "strike": 96.0,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-pfe-put-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 11031,
+          "contract": "put",
+          "expiry": "2026-11-20",
+          "strike": 28.0,
+          "ref": "prev_close"
+        }
+      ],
+      "order_count": 2
     },
     {
       "id": "covered_inventory",

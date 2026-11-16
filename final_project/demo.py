@@ -8,7 +8,7 @@ from pathlib import Path
 from .data_provider import digest
 from .sanji_orders import atomic_json, validate
 from .strategy import evaluate, indicators
-from .strategy_config import UNIVERSE, ILLUSTRATIVE_CAPITAL
+from .strategy_config import UNIVERSE, ILLUSTRATIVE_CAPITAL, STRATEGY_REVISION
 from .verify_conids import verified_mapping
 
 
@@ -38,6 +38,7 @@ def build(root, now):
     ids = verified_mapping(evidence)
     cases = examples(market)
     report = dict(schema_version=1, mode='demonstration', generated_at=now.isoformat(),
+                  strategy_revision=STRATEGY_REVISION,
                   label='DEMONSTRATION ONLY — hypothetical accounts, not actual Sanji account orders',
                   market_source='Retained real LSEG API response replay; not a new query or backtest',
                   market_retrieved_at=market['retrieved_at'], market_snapshot_sha256=digest(market),

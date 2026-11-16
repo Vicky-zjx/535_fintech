@@ -158,19 +158,15 @@
       text("analysis-source", "No complete, reconciled four-stock interpretation for this attempt. Refer to the dated diagnostics; no older observation is silently presented as current.");
     }
     const missingIds = tickers.filter(t => !Number.isInteger(s.conid_status?.[t]));
-    const unknownEarnings = tickers.filter(t => s.data_quality?.[t]?.earnings?.reliable !== true);
-    const earningsDenied = tickers.filter(t => /access.*denied/i.test(s.data_quality?.[t]?.earnings?.reason || ""));
     const blocked = s.status !== "success";
     text("pipeline-discussion", blocked
-      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, course mappings and available collateral must be verified before publication; earnings coverage also gates each new put. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
+      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, course mappings and available collateral must be verified before publication. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
       : "The planner completed its input evaluation. Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
     const rows = [
       ["LSEG market retrieval", s.market_data_retrieved_at ? "Response received "+s.market_data_retrieved_at : "No successful market response attached to this attempt",
         "Market retrieval and individual field entitlements are separate from Sanji account availability. Completed-session indicators can be studied when validated."],
       ["Technical screen", evidence ? evidence.passed.length+" of 4 pass; "+evidence.rows.filter(d=>!d.technical).map(d=>d.ticker+": "+d.failed.join(", ")).join("; ") : "Complete validated comparison unavailable",
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
-      ["Earnings", (unknownEarnings.length ? "Unverified for "+unknownEarnings.join(", ") : "Reliable calendar reported; verify each entry-to-expiry window") + (earningsDenied.length ? ". LSEG event-field access denied for "+earningsDenied.join(", ") : ""),
-        "Unknown/provisional events block puts, not the stock-signal analysis. Current field errors are in Data quality; require licensed coverage or a dated, company-confirmed alternative."],
       ["Sanji account", s.account_status || "No verified account status",
         "Need authoritative cash, equity, all positions, bases, option marks and resolved IDs. An assumed $40,000 account cannot establish production capacity."],
       ["Course identifier mapping", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four numeric mappings reported",
@@ -198,7 +194,7 @@
     text(
       "run-time",
       s.attempted_at
-        ? "Latest attempt: " +
+        ? (s.evaluation_kind === "retained_market_replay" ? "Retained-data re-evaluation: " : "Latest attempt: ") +
             s.attempted_at.replace("T", " ").replace("+00:00", " UTC")
         : "No verified live evaluation yet",
     );
@@ -211,7 +207,8 @@
       observed
         ? "Signals use completed session " +
             s.calendar.as_of +
-            ". Orders require a fresh, reconciled account and verified identifiers."
+            ". Orders require a fresh, reconciled account and verified identifiers." +
+            (s.evaluation_kind === "retained_market_replay" ? " This is a replay of the original LSEG response, not a new API query; production orders cannot be published by replay." : "")
         : "Only validated inputs appear here. Missing data is not a no-trade signal.",
     );
     const issues = [...(s.errors || [])];
@@ -255,7 +252,9 @@
     }
     text(
       "order-note",
-      good
+      s.evaluation_kind === "retained_market_replay"
+        ? "Order files were not changed by this retained-data replay. The displayed queue is retained, not newly published proposals; original session dates are preserved."
+        : good
         ? orders.length
           ? "Proposed simulated orders; not verified fills."
           : "Valid no-trade evaluation: no qualifying new or pending orders."
@@ -287,7 +286,9 @@
       empty(
         orderRows,
         8,
-        good
+        s.evaluation_kind === "retained_market_replay"
+          ? "Empty retained production queue; replay does not publish orders."
+          : good
           ? "No proposed orders for this valid evaluation."
           : "Empty queue; no successful order-generation run is asserted.",
       );
@@ -314,10 +315,6 @@
         (d.options_status || "unavailable") +
         ". " +
         (d.delta_status || "Greeks unavailable") +
-        ". Earnings: " +
-        (d.earnings?.reliable
-          ? "confirmed next reported event"
-          : "unknown/provisional; blocks puts") +
         ". " +
         (d.errors || []).join("; ");
       q.append(p);
