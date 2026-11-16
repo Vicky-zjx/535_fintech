@@ -164,7 +164,7 @@
     const blocked = s.status !== "success";
     text("pipeline-discussion", blocked
       ? `The order evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Required market inputs, existing obligations, verified stock identifiers and available collateral must be validated. Missing official account data alone does not block the explicit course proposal mode. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
-      : "The planner completed its input evaluation. Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
+      : "The planner evaluated each stock independently. " + (s.warnings?.length ? "Some inputs remain unavailable; this does not invalidate other stocks with verified inputs and sufficient capital. " : "") + "Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
     const rows = [
       ["LSEG market retrieval", s.market_data_retrieved_at ? "Response received "+s.market_data_retrieved_at : "No successful market response attached to this attempt",
         "Market retrieval and individual field entitlements are separate from Sanji account availability. Completed-session indicators can be studied when validated."],
@@ -220,7 +220,7 @@
             (s.evaluation_kind === "retained_market_replay" ? " This is a replay of the original LSEG response, not a new API query; production orders cannot be published by replay." : "")
         : "Only validated inputs appear here. Missing data is not a no-trade signal.",
     );
-    const issues = [...(s.errors || [])];
+    const issues = [...(s.errors || []), ...(s.warnings || [])];
     if (!course && s.account_status && s.account_status !== "Available")
       issues.push(s.account_status);
     text("account-mode", course
@@ -243,7 +243,10 @@
         reasons: ["Live data not yet available"],
       };
       const tr = document.createElement("tr");
-      cell(tr, ticker, d.price_date || "No validated close");
+      const w = d.observation_window;
+      const pairs = w?.hv20_return_pairs || [];
+      const coverage = w ? `${w.valid_closes} valid closes / ${w.expected_sessions} sessions; missing: ${w.missing_dates.join(", ") || "none"}. HV: ${pairs.length} adjacent-session returns${pairs.length ? " from "+pairs[0][0]+" to "+pairs.at(-1)[1] : ""}.` : "";
+      cell(tr, ticker, (d.price_date || "No validated close") + (coverage ? ". "+coverage : ""));
       for (const k of ["close", "sma20", "sma50", "hv20", "r5"])
         cell(tr, fmt(d[k], k === "hv20" || k === "r5"));
       const p = d.position;
@@ -260,9 +263,9 @@
               .map(([k, v]) => k + ": " + (v ? "pass" : "fail"))
               .join(" · ")
           : "Not evaluated",
-        d.eligible ? "Final eligibility passed" : s.status === "blocked" ? "Final eligibility not established" : "Not eligible / not evaluated",
+        (d.technical_status ? d.technical_status+". " : "") + (d.eligible ? "Final eligibility passed" : s.status === "blocked" ? "Final eligibility not established" : "Not eligible / not evaluated"),
       );
-      cell(tr, s.status === "blocked" ? "Evaluation blocked" : d.decision || "Not evaluated", (d.reasons || []).join("; "));
+      cell(tr, s.status === "blocked" ? "Evaluation blocked" : d.category === "Proposed order" ? d.decision : d.category || d.decision || "Not evaluated", (d.reasons || []).join("; "));
       rows.append(tr);
     }
     text(
@@ -275,7 +278,9 @@
             : "Proposals based on the authoritative book; not verified fills.")
           : s.outcome === "awaiting_order_confirmation"
             ? "No active dated orders. Earlier proposals have unknown outcomes: affected tickers and collateral remain locked, not assumed filled or released. See the commitment record."
-            : "Valid no-trade evaluation: no qualifying new or pending orders."
+            : s.warnings?.length
+              ? "No proposals from evaluable stocks. Other tickers have unavailable inputs; this is not evidence that the whole universe has no opportunities."
+              : "Valid no-trade evaluation: no qualifying new or pending orders."
         : s.status === "not_run"
           ? "Initial empty queue; not yet a successful no-trade evaluation."
           : "Order files were not changed by this attempt. Any displayed orders are retained from an earlier run; their dated sessions govern eligibility.",

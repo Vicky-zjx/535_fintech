@@ -65,7 +65,8 @@ def check(root):
                 or status.get('account_assumptions') != ASSUMPTIONS):
             raise ValueError('Course proposal provenance/assumptions do not match')
         recomputed = evaluate(market, initial_account(market['calendar']['as_of']),
-                             status['conid_status'], status['pending_orders_before'], course_proposal=True)
+                             status['conid_status'], status['pending_orders_before'], course_proposal=True,
+                             put_history=status['put_proposal_history_before'])
         for key in ('status', 'decisions', 'capital', 'capital_before'):
             if not equivalent_observations(status.get(key), recomputed.get(key)):
                 raise ValueError('Course decisions/capital do not independently reproduce: '+key)

@@ -31,7 +31,7 @@ class HistoricalTests(unittest.TestCase):
         self.assertEqual(r['status'], 'complete')
         self.assertEqual(r['window']['analysis_start'], '2023-11-13')
         for d in r['tickers'].values():
-            self.assertEqual(d['coverage']['observed_warmup_closes'], 50)
+            self.assertEqual(d['coverage']['observed_warmup_closes'], 55)
             self.assertEqual(d['daily']['evaluated_dates'], r['window']['expected_sample_sessions'])
             self.assertEqual(d['weekly']['pass_rates']['combined'], 1.)
         self.assertEqual(r['joint_weekly']['distribution']['4'], r['joint_weekly']['evaluated_dates'])
@@ -84,7 +84,7 @@ class HistoricalTests(unittest.TestCase):
         for t in ('BAC','KO'):
             self.assertIn(bad, r['tickers'][t]['coverage']['missing_dates'])
             invalid = [x for x in r['tickers'][t]['daily_rows'] if not x['valid']]
-            self.assertEqual(len(invalid), 50)
+            self.assertEqual(len(invalid), 2)  # Missing current close and missing R5 anchor five sessions later.
             self.assertTrue(all(x['eligible'] is None for x in invalid))
 
     def test_overlapping_rejections_and_denominators(self):

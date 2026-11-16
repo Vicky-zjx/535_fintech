@@ -1,5 +1,5 @@
 """Predeclared research settings; not optimized from realized returns."""
-STRATEGY_REVISION = 'no-earnings-filter-v1'
+STRATEGY_REVISION = 'gap-aware-flexible-weekly-v2'
 # Static identity mapping, verified against the official IBKR evidence file.
 # Identity is NOT a claim of enrollment or contract-open coverage in Robin.
 VERIFIED_CONIDS = {'BAC': 10098, 'KO': 8894, 'PFE': 11031, 'F': 9599491}

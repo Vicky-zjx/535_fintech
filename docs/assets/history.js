@@ -27,7 +27,7 @@
   function findings(h) {
     check(h);
     const n = names.reduce((a,t)=>a+h.tickers[t].weekly.evaluated_dates,0);
-    if (!n) return ['Insufficient observed history for weekly eligibility. Missing dates are excluded, not counted as failed filters.'];
+    if (!n) return ['Insufficient observed history for next-session eligibility. Missing dates are excluded, not counted as failed filters.'];
     const totals = filters.slice(0,3).map((k,i)=>({k,label:labels[i],fail:names.reduce((a,t)=>a+h.tickers[t].weekly.standalone_rejections[k],0),exclusive:names.reduce((a,t)=>a+h.tickers[t].weekly.exclusive_rejections[k],0)})).sort((a,b)=>b.fail-a.fail);
     const eligible = names.reduce((a,t)=>a+h.tickers[t].weekly.pass_counts.combined,0);
     const j = h.joint_weekly, top = totals[0];
@@ -35,9 +35,9 @@
     return [
       `Across ${n} evaluable stock–entry-date pairs, ${eligible} (${pct(eligible/n)}) pass all three screens; ${n-eligible} otherwise possible stock-date opportunities are excluded before option or account checks. This measures reduced eligibility, not avoided losses or foregone dollar premiums.`,
       `${top.label} is the largest standalone restriction: ${top.fail} rejected stock-dates. It alone excludes ${top.exclusive}; removing only that filter, while leaving the others fixed, would restore those ${top.exclusive} opportunities. Standalone counts overlap and must not be added. ${totals.slice(1).map(x=>`${x.label}: ${x.fail} standalone / ${x.exclusive} exclusive rejections`).join('; ')}.`,
-      `${j.multiple_eligible_dates} of ${j.evaluated_dates} fully observed weekly entry dates (${pct(j.evaluated_dates ? j.multiple_eligible_dates/j.evaluated_dates : null)}) have at least two eligible stocks. The engine can propose several names, subject to real option availability and account limits; lower HV20 wins only when cash or capacity is scarce. ${j.excluded_dates} dates lack a complete four-stock evaluation and are excluded from this comparison.`,
-      `${names.map(t=>`${t}: ${countRate(h.tickers[t].weekly,'combined')}`).join('; ')}. Differences reflect this fixed universe and observed period, not proof that one company is a better investment. The year-by-year chart shows how often the same unchanged rules admitted exposure; partial calendar years are not full-year estimates.`,
-      `From ${earlier} to the observed part of ${later}, combined weekly eligibility changed as follows: ${names.map(t=>`${t} ${pct(h.tickers[t].by_year[earlier].pass_rates.combined)} → ${pct(h.tickers[t].by_year[later].pass_rates.combined)}`).join('; ')}. Thus the rules do not impose a constant allocation across stocks or time. This is descriptive period variation, not evidence of forecasting skill or a comparison of equal-length investment returns.`
+      `${j.multiple_eligible_dates} of ${j.evaluated_dates} fully observed next-session opportunities (${pct(j.evaluated_dates ? j.multiple_eligible_dates/j.evaluated_dates : null)}) have at least two eligible stocks. The engine can propose several names, subject to real option availability and account limits; lower HV20 wins only when cash or capacity is scarce. ${j.excluded_dates} dates lack a complete four-stock evaluation and are excluded from this comparison.`,
+      `${names.map(t=>`${t}: ${countRate(h.tickers[t].weekly,'combined')}`).join('; ')}. Differences reflect this fixed universe and observed period, not proof that one company is a better investment. The year-by-year chart shows how often the current technical rules passed before weekly locks and capital allocation; partial calendar years are not full-year estimates.`,
+      `From ${earlier} to the observed part of ${later}, combined next-session eligibility changed as follows: ${names.map(t=>`${t} ${pct(h.tickers[t].by_year[earlier].pass_rates.combined)} → ${pct(h.tickers[t].by_year[later].pass_rates.combined)}`).join('; ')}. Thus the rules do not impose a constant allocation across stocks or time. This is descriptive period variation, not evidence of forecasting skill or a comparison of equal-length investment returns.`
     ];
   }
   const api = {check, findings, countRate};
@@ -69,8 +69,8 @@
     const years=Object.keys(h.tickers.BAC.by_year);
     rows('history-years',years.map(y=>[y,...names.map(t=>countRate(h.tickers[t].by_year[y],'combined'))]));
     const narrative=byId('history-findings'); narrative.replaceChildren();findings(h).forEach(s=>paragraph(narrative,s));
-    plot('history-filter-chart',filters.map((k,i)=>({type:'bar',name:labels[i],x:names,y:names.map(t=>h.tickers[t].weekly.pass_rates[k]===null?null:h.tickers[t].weekly.pass_rates[k]*100),marker:{color:colors[i]},hovertemplate:'%{x}: %{y:.1f}%<extra>'+labels[i]+'</extra>'})),{barmode:'group',yaxis:{title:'Weekly pass rate (%)',range:[0,100]}});
-    plot('history-year-chart',names.map((t,i)=>({type:'bar',name:t,x:years,y:years.map(y=>{const r=h.tickers[t].by_year[y].pass_rates.combined;return r===null?null:r*100;}),marker:{color:colors[i]},hovertemplate:'%{x}: %{y:.1f}%<extra>'+t+'</extra>'})),{barmode:'group',xaxis:{type:'category'},yaxis:{title:'Combined weekly pass rate (%)',range:[0,100]}});
+    plot('history-filter-chart',filters.map((k,i)=>({type:'bar',name:labels[i],x:names,y:names.map(t=>h.tickers[t].weekly.pass_rates[k]===null?null:h.tickers[t].weekly.pass_rates[k]*100),marker:{color:colors[i]},hovertemplate:'%{x}: %{y:.1f}%<extra>'+labels[i]+'</extra>'})),{barmode:'group',yaxis:{title:'Next-session pass rate (%)',range:[0,100]}});
+    plot('history-year-chart',names.map((t,i)=>({type:'bar',name:t,x:years,y:years.map(y=>{const r=h.tickers[t].by_year[y].pass_rates.combined;return r===null?null:r*100;}),marker:{color:colors[i]},hovertemplate:'%{x}: %{y:.1f}%<extra>'+t+'</extra>'})),{barmode:'group',xaxis:{type:'category'},yaxis:{title:'Combined next-session pass rate (%)',range:[0,100]}});
     const drawSeries = () => {
       const t=byId('history-ticker').value,d=h.tickers[t].daily_rows,x=d.map(r=>r.signal_date);
       const trace=(key,name,axis,color)=>({type:'scatter',mode:'lines',name,x,y:d.map(r=>r[key]),yaxis:axis,connectgaps:false,line:{width:1.6,color},hovertemplate:'%{x}<br>%{y:.3f}<extra>'+name+'</extra>'});

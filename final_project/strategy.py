@@ -1,15 +1,16 @@
 """Pure deterministic strategy. No IO, fabricated quotes, or simulated fills."""
 from datetime import date
 import math
-import statistics
 from .calendar import required_sessions
+from .indicators import compute, IndicatorUnavailable
+from .course import trading_week, proposal_history
 from .portfolio import validate_account, capital_check
 from .sanji_orders import validate, make_order
-from .strategy_config import UNIVERSE, MAX_HV, MIN_R5
+from .strategy_config import UNIVERSE
 
 
 def indicators(history, as_of):
-    expected = required_sessions(as_of)
+    expected = required_sessions(as_of, 55)
     observed = {}
     for row in history:
         d, c = row['date'], row['close']
@@ -18,16 +19,7 @@ def indicators(history, as_of):
         if d in observed and observed[d] != c:
             raise ValueError('Conflicting duplicate closing prices')
         observed[d] = c
-    values = [observed.get(d) for d in expected]
-    if len(values) != 50 or any(type(x) not in (int, float) or not math.isfinite(x) or x <= 0 for x in values):
-        raise ValueError('Missing/stale close: require 50 consecutive completed exchange sessions')
-    logs = [math.log(b/a) for a, b in zip(values[-21:-1], values[-20:])]
-    result = dict(close=values[-1], price_date=as_of, sma20=statistics.mean(values[-20:]),
-                  sma50=statistics.mean(values), hv20=statistics.stdev(logs)*math.sqrt(252),
-                  r5=values[-1]/values[-6]-1)
-    result['filters'] = {'trend': result['close'] >= result['sma50'] and result['sma20'] >= result['sma50'],
-                         'volatility': result['hv20'] <= MAX_HV, 'sudden_drop': result['r5'] >= MIN_R5}
-    return result
+    return compute(observed, expected)
 
 
 def select_contract(contracts, phase, session, close, cost_basis, as_of):
@@ -71,21 +63,27 @@ def select_contract(contracts, phase, session, close, cost_basis, as_of):
     return dict(chosen, selection_method=method), None
 
 
-def evaluate(market, account, conids, pending, *, course_proposal=False):
+def evaluate(market, account, conids, pending, *, course_proposal=False, put_history=None):
     ctx = market['calendar']
     as_of, session = ctx['as_of'], ctx['target_session']
     decisions = []
     errors = []
+    warnings = []
     for t in UNIVERSE:
-        d = {'ticker': t, 'decision': 'No Trade', 'eligible': False, 'reasons': []}
+        d = {'ticker': t, 'decision': 'No Trade', 'eligible': False, 'reasons': [],
+             'category': 'Data unavailable', 'technical_status': 'Data unavailable'}
         data = market['tickers'].get(t, {})
         try:
             if data.get('identity_verified') is not True:
                 raise ValueError('RIC-to-ticker identity not verified by LSEG')
             d.update(indicators(data.get('history', []), as_of))
+            d['technical_status'] = 'Technical filter passed' if all(d['filters'].values()) else 'Technical filter failed'
+            d['category'] = d['technical_status']
         except ValueError as e:
+            if isinstance(e, IndicatorUnavailable):
+                d.update(e.diagnostics)
             d['reasons'].append(str(e))
-            errors.append(f'{t}: {e}')
+            warnings.append(f'{t}: {e}')
         decisions.append(d)
     by_ticker = {d['ticker']: d for d in decisions}
     try:
@@ -102,6 +100,7 @@ def evaluate(market, account, conids, pending, *, course_proposal=False):
         if not isinstance(resolved, list) or any(not isinstance(i, str) for i in resolved):
             raise ValueError('Invalid resolved order IDs')
         validate(pending)
+        issued = proposal_history(put_history or [], pending)
         inverse = {v: t for t, v in conids.items()}
         if len(inverse) != len(conids):
             raise ValueError('Duplicate conid mappings')
@@ -133,38 +132,50 @@ def evaluate(market, account, conids, pending, *, course_proposal=False):
             d['reasons'].append('Account/pending-order validation blocked: '+str(e))
         return {'status': 'blocked', 'errors': errors, 'decisions': decisions, 'orders': None, 'capital': None}
     base = capital_check(states, cash, equity)
+    if not base['passed']:
+        errors += ['Existing portfolio/commitments: '+r for r in base['reasons']]
+    if all(d['technical_status'] == 'Data unavailable' for d in decisions):
+        errors.append('All stock indicators unavailable; prior order files preserved')
     candidates = []
     for d in decisions:
         t = d['ticker']; s = states[t]; data = market['tickers'].get(t, {})
         d['position'] = {k: s[k] for k in ('shares', 'put', 'call', 'cost_basis')}
         if t in pending_tickers:
+            d['category'] = 'Already proposed'
             d['reasons'].append('Unconfirmed proposal/active pending order: ticker locked and collateral reserved; no duplicate or assumed fill')
             continue
         if s['put'] or s['call']:
+            d['category'] = 'Position protection'
             d['reasons'].append('Existing short option; wait for Sanji expiry/assignment')
             continue
         phase = 'call' if s['shares'] >= 100 else 'put'
         if s['shares'] and s['shares'] < 100:
+            d['category'] = 'Position protection'
             d['reasons'].append('Partial share position: no new put and insufficient call coverage')
             continue
         if d['reasons']:
             continue
         if phase == 'put':
-            if not ctx['first_session_of_week']:
-                d['reasons'].append('Next session is not the first trading session of the week')
+            if any(p['underlying'] == conids.get(t) and p['week'] == trading_week(session) for p in issued):
+                d['category'] = 'Already proposed'
+                d['reasons'].append('A put was already proposed for this ticker/trading week; resolution does not reset the weekly cap')
+                continue
             d['reasons'] += [f'{k} filter failed' for k, ok in d['filters'].items() if not ok]
             if d['reasons']:
                 continue
         if type(conids.get(t)) is not int or conids[t] <= 0:
+            d['category'] = 'Data unavailable'
             d['reasons'].append('Course conid mapping missing/unverified')
-            errors.append(f'{t}: Course conid mapping missing/unverified')
+            warnings.append(f'{t}: Course conid mapping missing/unverified')
             continue
         if data.get('options_status') != 'observed':
+            d['category'] = 'Option unavailable'
             d['reasons'].append('Option candidate data unavailable; not evidence that no options exist')
-            errors.append(f'{t}: Option candidate data unavailable')
+            warnings.append(f'{t}: Option candidate data unavailable')
             continue
         chosen, reason = select_contract(data['contracts'], phase, session, d['close'], s['cost_basis'], as_of)
         if reason:
+            d['category'] = 'Option unavailable'
             d['reasons'].append(reason)
             continue
         d['candidate'] = chosen
@@ -174,6 +185,7 @@ def evaluate(market, account, conids, pending, *, course_proposal=False):
         if market.get('mode') == 'demonstration':
             order['id'] = order['id'].replace('fin535-wheel-', 'fin535-demo-')
         if order['id'] in resolved:
+            d['category'] = 'Already proposed'
             d['reasons'].append('This deterministic order ID was already resolved by Sanji')
             continue
         candidates.append((phase, d['hv20'], t, chosen, order))
@@ -184,12 +196,14 @@ def evaluate(market, account, conids, pending, *, course_proposal=False):
         check = capital_check(states, cash, equity, t, c['strike']*100 if phase == 'put' else 0.)
         d['capital_check'] = check
         if not check['passed']:
+            d['category'] = 'Capital limit reached'
             d['reasons'] += check['reasons']
             continue
         if phase == 'put':
             states[t]['collateral'] += c['strike']*100
             states[t]['exposure'] += c['strike']*100
         d['eligible'] = True
+        d['category'] = 'Proposed order'
         d['decision'] = 'Sell Put' if phase == 'put' else 'Sell Covered Call'
         d['reasons'].append(c['selection_method'])
         orders.append(o)
@@ -198,6 +212,6 @@ def evaluate(market, account, conids, pending, *, course_proposal=False):
             if d['eligible']:
                 d['decision'] = 'No Trade'; d['eligible'] = False
                 d['reasons'].append('Batch blocked by missing inputs; prior order files unchanged')
-    return {'status': 'blocked' if errors else 'success', 'errors': errors,
+    return {'status': 'blocked' if errors else 'success', 'errors': errors, 'warnings': warnings,
             'decisions': decisions, 'orders': None if errors else validate(orders),
             'capital': base if errors else capital_check(states, cash, equity), 'capital_before': base}

@@ -100,7 +100,8 @@ class CourseTests(unittest.TestCase):
 
     def test_bad_market_preserves_orders(self):
         self.go(); before = read_orders(self.root)
-        self.market['tickers']['KO']['history'].pop()
+        for data in self.market['tickers'].values():
+            data['history'].pop()
         self.assertEqual(self.go(), 2)
         self.assertEqual(read_orders(self.root), before)
         self.assertEqual(self.report()['outcome'], 'missing_inputs')

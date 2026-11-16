@@ -59,7 +59,7 @@
             </div>
             <div>
               <dt>New puts</dt>
-              <dd>First weekly session</dd>
+              <dd>Any session · once/week</dd>
             </div>
             <div>
               <dt>Option tenor</dt>
@@ -128,8 +128,8 @@
                 <strong>Put assignment → shares</strong>
                 <p>
                   If assigned, buy 100 shares at the strike. If the put expires
-                  without assignment, wait for the next weekly put-entry
-                  session.
+                  without assignment, consider the next eligible session only after
+                  confirmation and subject to the once-per-ticker/week proposal cap.
                 </p>
               </li>
               <li>
@@ -242,8 +242,9 @@
         <p class="eyebrow">04 / ENTRY &amp; CONTRACT SELECTION</p>
         <h2>Explicit rules. Observable inputs.</h2>
         <p>
-          New puts are planned only for the first actual XNYS session of the
-          week, including holiday-adjusted Tuesdays. Calls may be planned for
+          New puts may target any eligible XNYS session, at most once per ticker
+          per trading week. Issued proposals keep their weekly slot even after resolution.
+          Unconfirmed proposals also retain their collateral and ticker lock. Calls may be planned for
           any next session after confirmed assignment. All signals use the
           latest completed session; a run during an open session is blocked.
         </p>
@@ -253,7 +254,7 @@
             <h3>Trend alignment</h3>
             <p class="formula">Close ≥ SMA50<br />SMA20 ≥ SMA50</p>
             <p>
-              SMA<sub>n</sub> = mean of the last n completed-session closes.
+              SMA<sub>n</sub> = mean of the latest n valid closing observations within 55 completed sessions.
               Avoid initiating bullish exposure against a weakening trend;
               recoveries may be missed.
             </p>
@@ -270,8 +271,8 @@
             <h3>Volatility ceiling</h3>
             <p class="formula">HV20 ≤ 45%</p>
             <p>
-              Sample standard deviation (ddof = 1) of 20 daily log returns ×
-              √252. Requires 21 closes. Historical volatility is not implied
+              Sample standard deviation (ddof = 1) of the latest 20 valid adjacent-session log returns ×
+              √252, within 55 sessions. A gap can extend the span; no return crosses it. Historical volatility is not implied
               volatility.
             </p>
             <p>The 45% ceiling limits new exposure when recent realized price variability is high.
@@ -301,7 +302,12 @@
         </div>
         <p class="muted">
           These initial thresholds are risk-motivated, not statistically
-          optimized. Fifty consecutive valid session closes are required. Put
+          optimized. At least 50 valid closes within the latest 55 completed sessions and
+          a valid latest-session close are required. SMA20/SMA50 use the latest 20/50
+          valid observations. HV20 uses the latest 20 valid adjacent-session log returns
+          within that window, never a multi-day gap as one day. Five-day return still uses
+          the close five exchange sessions earlier. Missing dates and actual HV spans
+          are disclosed below; no prices are filled. Put
           trend, volatility and sudden-drop filters are not automatic call-entry
           requirements.
         </p>
@@ -476,29 +482,30 @@
         <p class="eyebrow">06 / OBSERVED MARKET DATA / NOT A THREE-YEAR OPTIONS BACKTEST</p>
         <h2 id="history-title">Three-Year Historical Signal Analysis</h2>
         <p id="history-status" class="notice">Historical evidence has not loaded; no results assumed.</p>
-        <p>Each weekly entry uses the preceding completed-session close, usually Friday for Monday,
-          with XNYS holidays respected. Daily indicators use only that date and earlier closes.
-          Each valid evaluation requires 50 consecutive observed sessions; missing windows are excluded,
-          never filled or counted as a rejection. Option availability and capital constraints are not
-          simulated in these technical counts.</p>
+        <p>Every next-session opportunity uses the preceding completed-session close, with XNYS
+          holidays respected. Indicators use only that date and earlier closes: 50 valid observations
+          within 55 sessions, current close and 20 adjacent-session returns. Unavailable indicators
+          are excluded, never filled or counted as filter failures. These counts are daily technical
+          opportunities, not weekly trades: option availability, weekly proposal locks and capital
+          allocation are not simulated here.</p>
         <div class="table-wrap" tabindex="0" aria-label="Observed price coverage">
-          <table><thead><tr><th>Stock</th><th>Observed sample dates</th><th>Observed / expected closes</th><th>Earlier warm-up closes</th><th>Evaluable / sample days</th><th>Evaluable / weekly entries</th></tr></thead>
+          <table><thead><tr><th>Stock</th><th>Observed sample dates</th><th>Observed / expected closes</th><th>Earlier warm-up closes</th><th>Evaluable / sample days</th><th>Evaluable / next-session opportunities</th></tr></thead>
             <tbody id="history-coverage"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
         </div>
-        <h3>How often do the screens allow a weekly entry?</h3>
-        <div class="table-wrap" tabindex="0" aria-label="Weekly filter pass rates">
+        <h3>How often do the technical screens pass?</h3>
+        <div class="table-wrap" tabindex="0" aria-label="Next-session filter pass rates">
           <table><thead><tr><th>Stock</th><th>Trend</th><th>HV20 ≤ 45%</th><th>R5 ≥ −8%</th><th>All three</th><th>Excluded dates</th></tr></thead>
             <tbody id="history-weekly"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
         </div>
         <div class="chart-grid">
-          <figure><h3>Weekly eligibility by filter</h3><div id="history-filter-chart" class="history-plot"></div>
-            <figcaption>Passes / evaluable weekly entry dates. Individual filters overlap; their pass rates are not additive.</figcaption></figure>
+          <figure><h3>Next-session eligibility by filter</h3><div id="history-filter-chart" class="history-plot"></div>
+            <figcaption>Passes / evaluable next-session opportunities, before weekly locks. Filter pass rates are not additive.</figcaption></figure>
           <figure><h3>Combined eligibility across calendar years</h3><div id="history-year-chart" class="history-plot"></div>
             <figcaption>Same rules, different periods. First and last calendar years cover only the stated rolling sample dates.</figcaption></figure>
         </div>
         <div id="history-findings" class="discussion" aria-live="polite"><p>Interpretation awaits observed historical counts.</p></div>
         <details><summary>Daily rates, overlapping rejections and yearly denominators</summary>
-          <p>Every cell reports count / evaluated dates (rate). Daily dates are not all permissible put-entry dates.</p>
+          <p>Every cell reports count / evaluated dates (rate). Passing a daily screen is not an approved order or a new weekly allocation.</p>
           <div class="table-wrap" tabindex="0"><table><thead><tr><th>Stock</th><th>Daily trend</th><th>Daily HV20</th><th>Daily R5</th><th>Daily combined</th><th>Excluded days</th></tr></thead><tbody id="history-daily"></tbody></table></div>
           <p>Rejections below are standalone / exclusive. Exclusive means this filter fails while both others pass;
             it is the number of opportunities restored by removing only that filter, not a profit estimate.</p>
@@ -654,7 +661,7 @@
         <details>
           <summary>First-weekly-session example — separately dated historical replay</summary>
           <div id="weekly-entry-demo">Archived example has not loaded.</div>
-          <p>A current midweek cash-only book can correctly produce zero new puts. This saved week-start
+          <p>A current book can produce zero new puts when filters, weekly locks or other checks fail. Midweek dates alone do not block entry. This saved week-start
             example proves the same engine can generate puts without relaxing the entry schedule.</p>
           <p><a href="data/entry_demo_cash_start_orders.json">Archived cash-start orders</a> ·
             <a href="data/entry_demo_status.json">Dated example account and audit</a> ·
@@ -888,10 +895,10 @@
             <h3>Failure is visible</h3>
             <p>
               Missing official account data alone does not block course mode.
-              Invalid required market data, identifiers or commitments block
-              publication. Earlier files are preserved and labeled
-              stale/unchanged. Only a validated no-trade run can write an empty
-              queue.
+              Missing inputs for a flat stock block that ticker, not validated peers.
+              Invalid accounts or commitments, missing held-position marks, or an
+              API-wide failure preserve prior orders. An empty result with partial
+              data is not called a full-universe no-opportunity result.
             </p>
           </article>
         </div>

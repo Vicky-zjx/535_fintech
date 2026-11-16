@@ -21,7 +21,7 @@ def fixture():
     ctx = context(datetime(2026, 11, 16, 3, tzinfo=timezone.utc))
     market = {'mode': 'test', 'calendar': ctx, 'tickers': {}}
     for i, (t, close) in enumerate([('BAC', 50), ('KO', 60), ('PFE', 30), ('F', 10)]):
-        history = [{'date': d, 'close': close*(.9+.1*j/49)} for j, d in enumerate(required_sessions(ctx['as_of']))]
+        history = [{'date': d, 'close': close*(.9+.1*j/54)} for j, d in enumerate(required_sessions(ctx['as_of'], 55))]
         contracts = [dict(ric=f'TEST-{t}-{cp}-{k}', type=cp, strike=round(close*k, 2), expiry='2026-11-20',
                           multiplier=100, terms_verified=True, observed_on=ctx['as_of'],
                           delta=(-.25 if cp == 'put' else .25), delta_date=ctx['as_of'])
@@ -133,15 +133,19 @@ class StrategyTests(unittest.TestCase):
         self.assertEqual(first['orders'], second['orders'])
         self.assertAlmostEqual(first['capital']['exposure'], second['capital']['exposure'])
 
-    def test_no_put_midweek_valid_empty(self):
+    def test_put_allowed_midweek(self):
         self.m['calendar']['first_session_of_week'] = False
-        self.assertEqual(self.go()['orders'], [])
+        self.m['calendar']['target_session'] = '2026-11-17'
+        self.assertEqual(len(self.go()['orders']), 4)
 
-    def test_stale_or_missing_price_blocks_batch(self):
+    def test_stale_or_missing_flat_stock_does_not_block_other_stocks(self):
         self.m['tickers']['BAC']['history'].pop()
         r = self.go()
-        self.assertEqual(r['status'], 'blocked')
-        self.assertIsNone(r['orders'])
+        self.assertEqual(r['status'], 'success')
+        self.assertEqual(len(r['orders']), 3)
+        self.assertEqual(self.decision(r)['category'], 'Data unavailable')
+        self.stock()
+        self.assertEqual(self.go()['status'], 'blocked')  # A held stock needs a current NAV mark.
 
     def test_account_missing_stale_and_nav_mismatch(self):
         self.assertEqual(evaluate(self.m, None, self.ids, [])['status'], 'blocked')
@@ -156,7 +160,8 @@ class StrategyTests(unittest.TestCase):
 
     def test_no_conid_guessing(self):
         self.ids.pop('BAC')
-        self.assertEqual(self.go()['status'], 'blocked')
+        self.assertEqual(self.decision(self.go())['category'], 'Data unavailable')
+        self.assertFalse(self.decision(self.go())['eligible'])
         self.assertEqual(conids_from_course({'265598': {'name': 'APPLE INC'}}), {})
 
     def test_schema_exact_no_limit_market(self):
@@ -239,7 +244,8 @@ class StrategyTests(unittest.TestCase):
 
     def test_future_close_rejected(self):
         self.m['tickers']['BAC']['history'].append({'date': '2026-11-16', 'close': 100})
-        self.assertEqual(self.go()['status'], 'blocked')
+        self.assertFalse(self.decision(self.go())['eligible'])
+        self.assertEqual(self.decision(self.go())['category'], 'Data unavailable')
 
     def test_unknown_terms_and_observation_date_excluded(self):
         for c in self.m['tickers']['BAC']['contracts']:

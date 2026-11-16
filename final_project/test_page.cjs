@@ -39,6 +39,20 @@ test('Initial state is not a successful no-trade run',async()=>{
 test('Validated empty array is explicitly a legitimate no-trade result',async()=>{
   const e=await render({...baseline,status:'success',errors:[]});assert.match(e.get('order-note').textContent,/Valid no-trade/);
 });
+test('Partial-data success names unavailable stocks rather than claiming no opportunities',async()=>{
+  const e=await render({...baseline,status:'success',errors:[],warnings:['BAC latest close unavailable'],outcome:'partial_data_no_proposals',decisions:[{ticker:'BAC',category:'Data unavailable',technical_status:'Data unavailable',reasons:['Latest completed close missing']}]});
+  assert.match(e.get('issues').textContent,/BAC latest close unavailable/);
+  assert.match(e.get('decision-rows').textContent,/Data unavailable/);
+  assert.match(e.get('order-note').textContent,/not evidence.*whole universe/);
+});
+test('Observation-window gaps and actual adjacent-return span are disclosed',async()=>{
+  const d={ticker:'KO',category:'Already proposed',technical_status:'Technical filter passed',reasons:['Weekly cap'],observation_window:{valid_closes:54,expected_sessions:55,missing_dates:['2026-10-20'],hv20_return_pairs:[['2026-10-15','2026-10-16'],['2026-11-12','2026-11-13']]}};
+  const e=await render({...baseline,status:'success',decisions:[d]});
+  assert.match(e.get('decision-rows').textContent,/54 valid closes \/ 55 sessions/);
+  assert.match(e.get('decision-rows').textContent,/missing: 2026-10-20/);
+  assert.match(e.get('decision-rows').textContent,/adjacent-session returns from 2026-10-15 to 2026-11-13/);
+  assert.match(e.get('decision-rows').textContent,/Already proposed/);
+});
 test('Blocked attempt labels retained prior orders',async()=>{
   const o={id:'TEST-only',for:'2026-11-16',underlying:90000001,action:'SHT',contract:'put',expiry:'2026-11-20',strike:48.5,qty:1};
   const e=await render({...baseline,status:'blocked'},[o]);assert.match(e.get('order-note').textContent,/not changed/);assert.match(e.get('order-rows').textContent,/TEST-only/);

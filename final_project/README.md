@@ -10,7 +10,14 @@ identical `mkt/open_orders.json` compatibility copy. The professor's clarificati
 does not require an active Sanji resolver or completed fills to generate proposals.
 Nothing is submitted to Canvas by this code.
 
-### Verified run — November 16, 2026, 23:16 UTC
+### Current policy — gap-aware flexible weekly entry
+
+Revision `gap-aware-flexible-weekly-v2` intentionally changes the observation window
+and put-entry schedule. It does not relax technical thresholds, option selection,
+cash security, position protection or exposure limits. Current real outcomes are
+in `docs/data/strategy_status.json`; the older run below describes superseded rules.
+
+### Archived run — November 16, 2026, 23:16 UTC (superseded policy)
 
 [Live Actions run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43977705993)
 used the new course mode and successfully retrieved LSEG responses. The missing
@@ -76,12 +83,18 @@ If every ticker is locked, the report says `awaiting_order_confirmation`, not
 “the market had no opportunities.” This necessarily limits repeated operation
 without execution feedback, but does not block initial course proposals.
 
-## Unchanged trading rules
+## Trading rules
 
 Universe: BAC, KO, PFE and F. Each ticker is evaluated independently, with at most
 one Wheel option per ticker and multiple simultaneous names when capital permits.
 
-New puts only target the first actual XNYS session of the week. Use the preceding
+New puts can target any next XNYS trading session, at most once per ticker per
+trading week (Monday-based exchange week, including holiday-shortened weeks).
+`course/proposal_state.json` retains `put_proposal_history` for both account modes:
+an issued put consumes its week even when later resolved. Unconfirmed course
+orders also reserve collateral and lock the ticker beyond that week/expiry;
+only authoritative reconciliation releases those obligations. Never infer fills.
+Use the preceding
 completed session's close, SMA20, SMA50, HV20 and five-day return:
 
 - Close >= SMA50 and SMA20 >= SMA50.
@@ -114,11 +127,37 @@ PFE **11031**, F **9599491**, NYSE / USD common stocks. Static mappings must mat
 Identity validity is separate from course database enrollment or option-open
 coverage. Apple-only sample history does NOT narrow the strategy universe.
 
-Each ticker needs 50 consecutive completed XNYS closes with actual returned dates.
-No stale-date relabeling, interpolation or forward fill. The exact-day close
-recheck uses the same `TR.PriceClose.date` / `TR.PriceClose` definition. A successful
-API login does not guarantee all requested fields are present. Required missing
-market inputs block the batch and preserve prior orders, rather than writing [].
+Retrieve three years plus 55 warm-up exchange sessions. Each ticker needs at least
+50 valid closes within the latest 55 completed XNYS sessions, including the latest
+completed close. SMA20/50 use the most recent 20/50 valid observations; diagnostics
+list their dates and missing sessions. HV20 uses the latest 20 valid adjacent-session
+log returns within those 55 sessions (sample standard deviation, annualized by sqrt(252));
+its actual span can exceed 20 sessions. R5 still compares the current close with
+the close exactly five exchange sessions earlier, which must exist.
+
+Recovery first queries the original RIC over the recent 55 sessions and individually
+missing dates. If still missing, the independently identity-verified consolidated
+RIC is queried using the SAME `TR.PriceClose.date` / `TR.PriceClose`, USD fields.
+It must have at least five overlapping closes, and all overlaps must match within
+1e-8 USD. Only genuinely returned missing dates are added; existing valid prices
+are never overwritten. Raw replies, requests and per-date source RICs are retained
+under `price_recovery`. Previous dates returned for an exact-day query are not redated.
+No forward fill, interpolation, zero fill or substitution of last trade for close.
+
+An unavailable flat ticker is isolated: other validated stocks may proceed. A
+missing mark needed to reconcile held positions, an invalid account, unknown pending
+obligations, or an API-wide failure still blocks publication. If all stock indicators
+are unavailable, preserve prior orders. Partial coverage is not reported as proof
+that the entire market has no opportunities. Diagnostics distinguish technical
+pass/fail, data unavailable, option unavailable, capital limits and already proposed.
+
+Alternative-source investigation: [Alpha Vantage's official documentation](https://www.alphavantage.co/documentation/)
+offers raw and adjusted daily series but requires its own API key; no such authorized
+key is configured here. No alternative prices are mixed into the LSEG series.
+Adjustment definitions must be reconciled before any future alternative is used;
+[LSEG's content guidance](https://community.developers.lseg.com/discussion/133456/tr-priceclose-field-always-returns-adjusted-stock-prices)
+also directs field-definition questions to its content helpdesk. An unverified
+alternative does not satisfy the latest-close requirement.
 Contract discovery is an observed candidate set, not a complete historical chain.
 Current survivors and revised historical closes imply survivorship/revision risks.
 
@@ -160,7 +199,7 @@ From the repository root, using the project environment:
 
 ```sh
 python -m pip install -r final_project/requirements.txt
-python -m unittest final_project.test_strategy final_project.test_course final_project.test_demo final_project.test_historical lseg_chart.test_update -b
+python -m unittest final_project.test_strategy final_project.test_course final_project.test_demo final_project.test_historical final_project.test_flexible_entry lseg_chart.test_update -b
 python -m unittest discover -s tests -p 'test_site_layout.py'
 node --test lseg_chart/test_page.cjs final_project/test_page.cjs final_project/test_history_page.cjs
 python -m final_project.run --mode course
@@ -179,8 +218,12 @@ orders as market results.
 
 ## Evidence and performance boundaries
 
-`historical.py` studies three years of real daily closes plus 50 warm-up sessions,
-with previous-close weekly signals, explicit missing dates and valid denominators.
+`historical.py` studies three years of real daily closes plus 55 warm-up sessions,
+with previous-close signals for every next-session opportunity, explicit missing
+dates and valid denominators. It shares the exact nightly indicator implementation.
+Legacy JSON keys `weekly`, `weekly_rows`, `joint_weekly` now contain daily next-session
+opportunities, explicitly declared in `entry_sampling`, not independent weekly trades.
+Weekly proposal locks are enforced in the planner, not inferred in technical counts.
 It generates JSON/CSV and the existing charts. This is technical eligibility
 analysis, NOT a historical option backtest or verified investment performance.
 
@@ -188,8 +231,8 @@ The retained November 13 signal / November 16 target real-market integration
 produces KO 96 and PFE 28 puts, November 20 expiry, under $40,000 course assumptions:
 $12,400 collateral and $27,600 uncommitted cash. This is a **dated historical
 integration check**, not today's active queue or actual fills. Current outcomes
-come only from the latest workflow's diagnostics; a midweek flat book can rightly
-produce zero puts.
+come only from the latest workflow's diagnostics. A midweek date by itself no
+longer rejects an eligible put.
 
 The archived [pre-course-mode run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43969760293)
 demonstrated working LSEG retrieval but was blocked by the former official-book

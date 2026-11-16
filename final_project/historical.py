@@ -9,6 +9,7 @@ from pathlib import Path
 import exchange_calendars as xcals
 import pandas as pd
 from .strategy_config import UNIVERSE, MAX_HV, MIN_R5, STRATEGY_REVISION
+from .indicators import compute, IndicatorUnavailable
 
 FILTERS = ('trend', 'volatility', 'sudden_drop')
 
@@ -23,8 +24,8 @@ def history_window(as_of):
         raise ValueError('Historical endpoint must be a completed XNYS session')
     first = cal.sessions.get_loc(sample[0])
     return {'analysis_start': str(start.date()), 'analysis_end': str(end.date()),
-            'query_start': str(cal.sessions[first-50].date()),
-            'warmup_sessions_requested': 50, 'expected_sample_sessions': len(sample)}
+            'query_start': str(cal.sessions[first-55].date()),
+            'warmup_sessions_requested': 55, 'expected_sample_sessions': len(sample)}
 
 
 def summarize(rows):
@@ -66,23 +67,26 @@ def analyze(market):
             observed[day] = value
         extra = sorted(d for d in observed if pd.Timestamp(d) not in sessions)
         series = pd.Series([observed.get(str(d.date())) for d in sessions], index=sessions, dtype=float)
-        sma20, sma50 = series.rolling(20).mean(), series.rolling(50).mean()
-        log_returns = (series/series.shift()).map(lambda x: math.log(x) if pd.notna(x) else float('nan'))
-        hv = log_returns.rolling(20).std(ddof=1)*math.sqrt(252)
-        r5 = series/series.shift(5)-1
+        session_dates = [str(day.date()) for day in sessions]
         rows = []; weekly = []
         for i, day in enumerate(sessions):
             target = cal.next_session(day)
             monday = target-pd.Timedelta(days=target.weekday())
             first = cal.date_to_session(monday, direction='next')
-            valid = pd.notna(sma50.iloc[i])
-            vals = [sma20.iloc[i], sma50.iloc[i], hv.iloc[i], r5.iloc[i]]
-            valid = bool(valid and all(pd.notna(v) for v in vals))
+            try:
+                signal = compute(observed, session_dates[max(0, i-54):i+1])
+                valid, reason = True, None
+            except IndicatorUnavailable as e:
+                signal, valid, reason = e.diagnostics, False, str(e)
             row = {'ticker': ticker, 'signal_date': str(day.date()), 'entry_session': str(target.date()),
                    'first_weekly_session': bool(target == first), 'valid': valid,
-                   'exclusion': None if valid else ('warmup' if i < 49 else 'missing_50_session_window'),
+                   'exclusion': reason,
                    'close': None if pd.isna(series.iloc[i]) else float(series.iloc[i]),
-                   **{k: float(v) if valid else None for k, v in zip(('sma20', 'sma50', 'hv20', 'r5'), vals)}}
+                   **{k: signal[k] if valid else None for k in ('sma20', 'sma50', 'hv20', 'r5')},
+                   'valid_closes_in_window': signal['observation_window']['valid_closes'],
+                   'missing_dates_in_window': '|'.join(signal['observation_window']['missing_dates']),
+                   'hv_return_start': signal['observation_window']['hv20_return_pairs'][0][0] if valid else None,
+                   'hv_return_end': signal['observation_window']['hv20_return_pairs'][-1][1] if valid else None}
             row.update({k: None for k in FILTERS}); row['eligible'] = None
             if valid:
                 row.update(trend=row['close'] >= row['sma50'] and row['sma20'] >= row['sma50'],
@@ -91,9 +95,9 @@ def analyze(market):
             if day in sample:
                 rows.append(row)
                 prices.append({'ticker': ticker, 'date': row['signal_date'], 'close': row['close']})
-            # A Monday entry uses the preceding completed session (usually Friday),
-            # never Monday's close. Holidays are determined by XNYS, not weekdays.
-            if target == first and window['analysis_start'] <= row['entry_session'] <= window['analysis_end']:
+            # Every upcoming session is an opportunity. This technical-only
+            # analysis does NOT assume an order/fill or consume a weekly slot.
+            if window['analysis_start'] <= row['entry_session'] <= window['analysis_end']:
                 weekly.append(row)
         observed_sample = [r for r in rows if r['close'] is not None]
         missing = [r['signal_date'] for r in rows if r['close'] is None]
@@ -128,7 +132,8 @@ def analyze(market):
                 'candidate_dates': len(joint), 'excluded_dates': len(joint)-len(valid_joint), 'rows': joint,
                 'by_year': {year: joint_summary([r for r in valid_joint if r['entry_session'][:4] == year])
                             for year in sorted({r['entry_session'][:4] for r in joint})}},
-            'scope': 'Technical eligibility only; no historical option selection, cash allocation, fills, NAV or returns. Current fixed universe; adjusted closes as retrieved, not vintage unrevised data.'}
+            'entry_sampling': 'Every eligible next XNYS session; legacy weekly keys now contain daily entry opportunities, not orders or independent weekly trades. The live planner applies the durable once-per-ticker/week cap.',
+            'scope': 'Technical eligibility only; no historical option selection, cash allocation, fills, NAV or returns. Current fixed universe; closes as retrieved, not vintage unrevised data. SMA uses latest valid observations within 55 sessions; HV uses only adjacent-session returns.'}
 
 
 def build(root, now):

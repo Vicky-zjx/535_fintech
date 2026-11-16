@@ -11,7 +11,7 @@ from .sanji_orders import atomic_json, read_orders, publish_orders
 from .strategy import evaluate
 from .strategy_config import UNIVERSE, STRATEGY_REVISION
 from .verify_conids import resolve_identifiers
-from .course import initial_account, read_state, pending_orders, next_state, ASSUMPTIONS
+from .course import initial_account, read_state, pending_orders, next_state, proposal_history, ASSUMPTIONS
 from lseg_chart.update import safe_failure_detail
 
 
@@ -65,6 +65,8 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
         if any(o['for'] > market['calendar']['target_session'] for o in pending):
             raise ValueError('Future-dated queue beyond the upcoming session requires review')
         report['pending_orders_before'] = pending
+        state['put_proposal_history'] = proposal_history(state['put_proposal_history'], pending)
+        report['put_proposal_history_before'] = state['put_proposal_history']
         report['course_state_before_sha256'] = digest(state)
         course_path = root/'price_history.json'
         verification = root/'docs/data/conid_verification.json'
@@ -74,7 +76,8 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
         report['conid_status'] = conids
         report['identifier_audit'] = coverage
         report['identifier_verified_at'] = evidence['retrieved_at']
-        result = evaluate(market, account, conids, pending, course_proposal=hypothetical)
+        result = evaluate(market, account, conids, pending, course_proposal=hypothetical,
+                          put_history=state['put_proposal_history'])
         report.update({k: v for k, v in result.items() if k != 'orders'})
         report['evaluated_orders'] = result['orders']
         unresolved = [o for o in pending if o['id'].startswith('fin535-course-')
@@ -91,13 +94,14 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
             'production_account_assumed': False,
         }
         report['data_quality'] = {t: {k: v for k, v in d.items() if k in (
-            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'exclusions', 'close_recheck_status')}
+            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'exclusions', 'close_recheck_status', 'price_recovery')}
                                  for t, d in market['tickers'].items()}
         if result['status'] == 'success':
             report['proposed_order_count'] = len(result['orders'])
             report['new_order_ids'] = [o['id'] for o in result['orders'] if o['id'] not in {p['id'] for p in pending}]
             report['outcome'] = ('proposals_available' if result['orders'] else
-                                 'awaiting_order_confirmation' if unresolved else 'no_eligible_trades')
+                                 'awaiting_order_confirmation' if unresolved else
+                                 'partial_data_no_proposals' if result.get('warnings') else 'no_eligible_trades')
             if not replay:
                 updated = next_state(state, result['orders'], account, hypothetical=hypothetical)
                 publish_orders(root, result['orders'], course_state=updated)

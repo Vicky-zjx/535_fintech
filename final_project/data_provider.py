@@ -10,6 +10,8 @@ import pandas as pd
 from lseg_chart.update import query_lseg, safe_failure_detail
 from .strategy_config import UNIVERSE
 from .historical import history_window
+from .calendar import required_sessions
+from .indicators import valid_close
 
 
 def table(frame):
@@ -92,6 +94,70 @@ def normalize_contracts(frame, ticker, ric, as_of):
     return list(unique.values()), exclusions
 
 
+def merge_recovered(history, incoming, expected, *, alternate=False):
+    """Only fill absent valid dates; never replace genuine observations or redates.
+
+    Alternate RICs need independent ticker verification at the call site AND at
+    least five matching overlapping closes. Same TR field/currency in all calls.
+    """
+    def index(rows):
+        result = {}
+        for row in rows:
+            day, value = row['date'], row['close']
+            if valid_close(value):
+                if day in result and not math.isclose(result[day], value, rel_tol=0, abs_tol=1e-8):
+                    raise ValueError('Conflicting dated closing observations')
+                result[day] = value
+        return result
+    old, new = index(history), index(incoming)
+    overlap = set(old) & set(new)
+    if any(not math.isclose(old[d], new[d], rel_tol=0, abs_tol=1e-8) for d in overlap):
+        raise ValueError('Recovery overlaps disagree; no prices substituted')
+    if alternate and len(overlap) < 5:
+        raise ValueError('Alternate RIC requires at least five matching overlapping closes')
+    recovered = sorted(d for d in new if d in expected and d not in old)
+    rows = [r for r in history if r['date'] not in recovered]
+    rows += [{'date': d, 'close': new[d]} for d in recovered]
+    return sorted(rows, key=lambda r: r['date']), recovered
+
+
+def recover_closes(ld, paced, ticker, d, raw, as_of, *, alternate_verified=False):
+    """Bounded additional LSEG queries for the indicator window; auditable raw IO."""
+    expected = required_sessions(as_of, 55)
+    audit = d.setdefault('price_recovery', dict(window_start=expected[0], window_end=as_of,
+        field='TR.PriceClose', currency='USD', recovered=[], attempts=[], remaining_missing_dates=[]))
+    def missing():
+        valid = {r['date'] for r in d['history'] if valid_close(r['close'])}
+        return [day for day in expected if day not in valid]
+    def attempt(ric, start, end, label, alternate=False):
+        entry = dict(kind=label, ric=ric, start=start, end=end)
+        audit['attempts'].append(entry)
+        try:
+            frame = paced(ld.get_data, [ric], ['TR.PriceClose.date', 'TR.PriceClose'],
+                parameters={'SDate': start, 'EDate': end, 'Frq': 'D', 'Curn': 'USD'},
+                header_type=ld.HeaderType.NAME)
+            raw.setdefault('price_recovery', []).append(dict(request=entry.copy(), response=table(frame)))
+            # Providers sometimes return the preceding close even for exact-day
+            # requests. Keep its true date and never use it for the missing date.
+            rows = normalize_closes(frame, ric, expected[0], as_of)
+            d['history'], recovered = merge_recovered(d['history'], rows, expected, alternate=alternate)
+            entry['recovered_dates'] = recovered
+            entry['returned_dates'] = sorted({r['date'] for r in rows if valid_close(r['close'])})
+            audit['recovered'] += [dict(date=day, ric=ric, field='TR.PriceClose', currency='USD', method=label) for day in recovered]
+        except Exception as e:
+            entry['error'] = safe_failure_detail(e, os.environ)
+    if missing():
+        if alternate_verified:
+            attempt(ticker, expected[0], as_of, 'verified_consolidated_RIC_same_field', alternate=True)
+        else:
+            attempt(d['ric'], expected[0], as_of, 'recent_55_session_requery')
+            for day in missing():
+                attempt(d['ric'], day, day, 'exact_missing_session_requery')
+    audit['remaining_missing_dates'] = missing()
+    audit['latest_completed_close_valid'] = as_of not in missing()
+    audit['policy'] = 'No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap.'
+
+
 def add_deltas(ld, contracts, as_of):
     """Dated exchange Greeks, never undated TR.OPW snapshots relabeled as history."""
     if not contracts:
@@ -166,6 +232,8 @@ def fetch_market(ctx, retrieved_at):
                         d['close_recheck_status'] = 'Same-day recheck unavailable: '+safe_failure_detail(error, os.environ)
             except Exception as e:
                 d['errors'].append('Price/identity query or validation failed: '+safe_failure_detail(e, os.environ))
+            if d['identity_verified']:
+                recover_closes(ld, paced, ticker, d, raw, as_of)
             try:
                 lo = str(date.fromisoformat(session)+timedelta(days=3))
                 hi = str(date.fromisoformat(session)+timedelta(days=10))
@@ -180,6 +248,8 @@ def fetch_market(ctx, retrieved_at):
                 if len(checked) != 1 or checked.iloc[0]['Instrument'] != option_underlying or checked.iloc[0]['TR.TickerSymbol'] != ticker:
                     raise ValueError('Consolidated option-underlying identity mismatch')
                 d['option_underlying_ric'] = option_underlying
+                if d['identity_verified']:
+                    recover_closes(ld, paced, ticker, d, raw, as_of, alternate_verified=True)
                 fields = 'RIC,StrikePrice,ExpiryDate,CallPutOption,UnderlyingQuoteRIC,LotSize,Currency,ContractType,ExerciseStyle'
                 # The derivative view exposes the lot/contract metadata already
                 # used by the repository's real PMCC capability audit.

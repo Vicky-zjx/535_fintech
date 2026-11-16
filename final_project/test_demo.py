@@ -128,9 +128,11 @@ class DemoTests(unittest.TestCase):
         flat, held = examples(m)
         self.assertEqual(flat[2]['cash'], 40000.)
         self.assertIsNone(held[2])
-        self.assertIn('Missing/stale close', held[1])
+        self.assertIn('close is missing/stale', held[1])
         m['mode'] = 'demonstration'
-        for _, _, account in (flat, held):
-            result = evaluate(m, account, ids, [])
-            self.assertEqual(result['status'], 'blocked')
-            self.assertIsNone(result['orders'])
+        result = evaluate(m, flat[2], ids, [])
+        self.assertEqual(result['status'], 'success')
+        self.assertEqual(len(result['orders']), 3)
+        result = evaluate(m, held[2], ids, [])
+        self.assertEqual(result['status'], 'blocked')
+        self.assertIsNone(result['orders'])
