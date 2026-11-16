@@ -92,8 +92,12 @@ class DemoTests(unittest.TestCase):
             for p in ('open_orders.json', 'mkt/open_orders.json'):
                 self.assertEqual((root/p).read_bytes(), b'[  ]\n')
             for s in result['scenarios']:
-                self.assertEqual(s['account']['equity'], 40000.)
-                self.assertEqual(s['account']['source'], 'HYPOTHETICAL_DEMONSTRATION')
+                if s['account'] is not None:
+                    self.assertEqual(s['account']['equity'], 40000.)
+                    self.assertEqual(s['account']['source'], 'HYPOTHETICAL_DEMONSTRATION')
+                else:
+                    self.assertEqual(s['status'], 'blocked')
+                    self.assertIsNone(s['proposed_orders'])
                 if s['proposed_orders'] is not None:
                     validate(s['proposed_orders'])
             if result['market_retrieved_at'] == '2026-11-16T07:21:13.214133+00:00':
@@ -117,3 +121,16 @@ class DemoTests(unittest.TestCase):
             marked = sum(p['quantity']*p['cost_basis'] for p in account['positions'])
             self.assertEqual(account['cash'] + marked, account['equity'])
             self.assertEqual(account['resolved_order_ids'], [])
+
+    def test_missing_price_does_not_crash_demo_or_fabricate_stock_account(self):
+        m, _, ids = fixture()
+        m['tickers']['BAC']['history'][-1]['close'] = None
+        flat, held = examples(m)
+        self.assertEqual(flat[2]['cash'], 40000.)
+        self.assertIsNone(held[2])
+        self.assertIn('Missing/stale close', held[1])
+        m['mode'] = 'demonstration'
+        for _, _, account in (flat, held):
+            result = evaluate(m, account, ids, [])
+            self.assertEqual(result['status'], 'blocked')
+            self.assertIsNone(result['orders'])

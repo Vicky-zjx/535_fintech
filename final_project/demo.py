@@ -14,10 +14,15 @@ from .verify_conids import verified_mapping
 
 def examples(market):
     as_of = market['calendar']['as_of']
-    closes = {t: indicators(market['tickers'][t]['history'], as_of)['close'] for t in UNIVERSE}
     flat = dict(schema_version=1, source='HYPOTHETICAL_DEMONSTRATION', as_of=as_of,
                 currency='USD', cash=float(ILLUSTRATIVE_CAPITAL), equity=float(ILLUSTRATIVE_CAPITAL),
                 positions=[], resolved_order_ids=[])
+    try:
+        closes = {t: indicators(market['tickers'][t]['history'], as_of)['close'] for t in UNIVERSE}
+    except ValueError as error:
+        # Still audit the cash-only book. Never mark assumed stock using a stale close.
+        return [('cash_start', 'Hypothetical $40,000 cash-only starting book', flat),
+                ('covered_inventory', 'Covered-inventory demonstration unavailable: '+str(error), None)]
     held = deepcopy(flat)
     held['positions'] = [dict(ticker=t, kind='stock', quantity=100, cost_basis=c) for t, c in closes.items()]
     held['cash'] -= sum(100*c for c in closes.values())
