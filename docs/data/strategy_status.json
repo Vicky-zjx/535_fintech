@@ -1,15 +1,123 @@
 {
   "schema_version": 1,
   "mode": "live",
-  "status": "not_run",
-  "attempted_at": null,
+  "status": "blocked",
+  "attempted_at": "2026-11-16T06:14:11.598967+00:00",
   "successful_at": null,
-  "market_data_retrieved_at": null,
+  "market_data_retrieved_at": "2026-11-16T06:14:11.598967+00:00",
   "source": "LSEG Data Platform",
-  "calendar": null,
-  "capital": null,
   "orders_updated": false,
+  "errors": [
+    "BAC: RIC-to-ticker identity not verified by LSEG",
+    "KO: RIC-to-ticker identity not verified by LSEG",
+    "PFE: RIC-to-ticker identity not verified by LSEG",
+    "F: RIC-to-ticker identity not verified by LSEG",
+    "Account adapter schema unavailable; raw Sanji format must be verified"
+  ],
+  "decisions": [
+    {
+      "ticker": "BAC",
+      "decision": "No Trade",
+      "eligible": false,
+      "reasons": [
+        "RIC-to-ticker identity not verified by LSEG",
+        "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
+      ]
+    },
+    {
+      "ticker": "KO",
+      "decision": "No Trade",
+      "eligible": false,
+      "reasons": [
+        "RIC-to-ticker identity not verified by LSEG",
+        "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
+      ]
+    },
+    {
+      "ticker": "PFE",
+      "decision": "No Trade",
+      "eligible": false,
+      "reasons": [
+        "RIC-to-ticker identity not verified by LSEG",
+        "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
+      ]
+    },
+    {
+      "ticker": "F",
+      "decision": "No Trade",
+      "eligible": false,
+      "reasons": [
+        "RIC-to-ticker identity not verified by LSEG",
+        "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
+      ]
+    }
+  ],
+  "capital": null,
+  "calendar": {
+    "as_of": "2026-11-13",
+    "target_session": "2026-11-16",
+    "first_session_of_week": true,
+    "exchange": "XNYS",
+    "close_time": "2026-11-13T21:00:00+00:00"
+  },
+  "market_snapshot_sha256": "e6d777724bdb353ce4528a6f25de3ba3046354ad8ed1b6710b8f5a14f7b83448",
+  "account_status": "Missing mkt/positions.json; no account balance assumed",
+  "conid_status": {
+    "BAC": null,
+    "KO": null,
+    "PFE": null,
+    "F": null
+  },
+  "data_quality": {
+    "BAC": {
+      "ric": "BAC.N",
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "KO": {
+      "ric": "KO.N",
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "PFE": {
+      "ric": "PFE.N",
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "F": {
+      "ric": "F.N",
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    }
+  },
   "order_count": 0,
-  "errors": ["Live data not yet available. Account state and course conid mappings have not been supplied."],
-  "decisions": []
+  "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
 }

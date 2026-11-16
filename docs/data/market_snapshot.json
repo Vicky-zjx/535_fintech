@@ -1,0 +1,164 @@
+{
+  "mode": "live",
+  "source": "LSEG Data Platform",
+  "retrieved_at": "2026-11-16T06:14:11.598967+00:00",
+  "calendar": {
+    "as_of": "2026-11-13",
+    "target_session": "2026-11-16",
+    "first_session_of_week": true,
+    "exchange": "XNYS",
+    "close_time": "2026-11-13T21:00:00+00:00"
+  },
+  "tickers": {
+    "BAC": {
+      "ric": "BAC.N",
+      "identity_verified": false,
+      "history": [],
+      "contracts": [],
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "KO": {
+      "ric": "KO.N",
+      "identity_verified": false,
+      "history": [],
+      "contracts": [],
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "PFE": {
+      "ric": "PFE.N",
+      "identity_verified": false,
+      "history": [],
+      "contracts": [],
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    },
+    "F": {
+      "ric": "F.N",
+      "identity_verified": false,
+      "history": [],
+      "contracts": [],
+      "errors": [
+        "Price/identity query or validation failed: ValueError",
+        "Contract discovery/terms validation failed: ValueError"
+      ],
+      "options_status": "unavailable",
+      "earnings": {
+        "reliable": false,
+        "reason": "Earnings query/validation unavailable: LDError"
+      }
+    }
+  },
+  "raw": {
+    "BAC": {
+      "identity": {
+        "columns": [
+          "Instrument",
+          "Ticker Symbol"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
+          [
+            "BAC.N",
+            "BAC"
+          ]
+        ]
+      },
+      "discovery": {
+        "columns": [],
+        "index": [],
+        "data": []
+      }
+    },
+    "KO": {
+      "identity": {
+        "columns": [
+          "Instrument",
+          "Ticker Symbol"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
+          [
+            "KO.N",
+            "KO"
+          ]
+        ]
+      },
+      "discovery": {
+        "columns": [],
+        "index": [],
+        "data": []
+      }
+    },
+    "PFE": {
+      "identity": {
+        "columns": [
+          "Instrument",
+          "Ticker Symbol"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
+          [
+            "PFE.N",
+            "PFE"
+          ]
+        ]
+      },
+      "discovery": {
+        "columns": [],
+        "index": [],
+        "data": []
+      }
+    },
+    "F": {
+      "identity": {
+        "columns": [
+          "Instrument",
+          "Ticker Symbol"
+        ],
+        "index": [
+          0
+        ],
+        "data": [
+          [
+            "F.N",
+            "F"
+          ]
+        ]
+      },
+      "discovery": {
+        "columns": [],
+        "index": [],
+        "data": []
+      }
+    }
+  }
+}
