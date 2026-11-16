@@ -109,7 +109,8 @@ def normalize(frame: pd.DataFrame, start: date, end: date) -> list[dict]:
     return records
 
 
-def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
+def query_lseg(start: date, end: date, environ=os.environ, *, operation=None):
+    """Reuse the guarded Platform session; optional operation receives the SDK only."""
     missing = [name for name in SECRET_NAMES if not environ.get(name)]
     if missing:
         raise ValueError("Missing environment variable(s): " + ", ".join(missing))
@@ -185,6 +186,9 @@ def query_lseg(start: date, end: date, environ=os.environ) -> pd.DataFrame:
             if getattr(session.open(), "name", "") != "Opened":
                 raise RuntimeError("Platform session did not open")
             ld.session.set_default(session)
+            if operation is not None:
+                stage = 'Final Project market-data queries'
+                return operation(ld)
             stage = f"{RIC} historical price query"
             return ld.get_data(
                 universe=[RIC], fields=FIELDS, parameters=parameters(start, end),

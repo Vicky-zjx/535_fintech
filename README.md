@@ -237,3 +237,10 @@ The new page includes real LSEG hourly BID/ASK data, simulated midpoint fills,
 an event blotter, a reconciled Reg T ledger, interactive NAV/margin charts,
 and midpoint-versus-print regression. See [covered_call/README.md](covered_call/README.md)
 for the strategy, documented assumptions, source provenance, and reproduction commands.
+
+## Final Project
+
+The independent [Multi-Asset Risk-Managed Weekly Wheel](https://vicky-zjx.github.io/535_fintech/docs/)
+uses BAC, KO, PFE and F. See [final_project/README.md](final_project/README.md) for the
+engine, account integration, real-data provenance, tests and nightly order generation.
+Previous assignments above remain separate; their results are not reused as Final Project performance.

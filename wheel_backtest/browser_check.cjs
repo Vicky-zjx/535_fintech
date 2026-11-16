@@ -12,8 +12,8 @@ const base=(process.argv[2]||'http://127.0.0.1:8769/535_fintech/').replace(/\/?$
     // deferred navigation runs only once HTML parsing has completed.
     assert.equal((await page.goto(base+route,{waitUntil:'domcontentloaded',timeout:60000})).status(),200);
     await page.waitForSelector('nav.course-navigation');
-    assert.equal(await page.locator('nav.course-navigation a').count(),5);
-    assert.equal(await page.locator('nav.course-navigation a').last().getAttribute('href'),base+'wheel/');
+    assert.equal(await page.locator('nav.course-navigation a').count(),7);
+    assert.equal(await page.locator('nav.course-navigation a').last().getAttribute('href'),base+'docs/');
   }
   const book=await page.evaluate(()=>window.WHEEL_BOOK);assert.equal(book.synthetic,false);assert.equal(book.runs.length,3);
   const money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(x);

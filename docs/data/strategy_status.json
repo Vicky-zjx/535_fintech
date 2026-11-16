@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "mode": "live",
+  "status": "not_run",
+  "attempted_at": null,
+  "successful_at": null,
+  "market_data_retrieved_at": null,
+  "source": "LSEG Data Platform",
+  "calendar": null,
+  "capital": null,
+  "orders_updated": false,
+  "order_count": 0,
+  "errors": ["Live data not yet available. Account state and course conid mappings have not been supplied."],
+  "decisions": []
+}
