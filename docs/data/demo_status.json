@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-16T06:51:02.682865+00:00",
+  "generated_at": "2026-11-16T07:21:34.934617+00:00",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
-  "market_retrieved_at": "2026-11-16T06:20:18.285201+00:00",
-  "market_snapshot_sha256": "f0e91b6b12763963f289ac07b1cde6b4bcb301b69b91f3798c59bda964c1135e",
+  "market_retrieved_at": "2026-11-16T07:21:13.214133+00:00",
+  "market_snapshot_sha256": "46a5025d54b4e57ce686a29a86d028f74ddf49082ad5b2b7d90bbf190a4f2ea3",
   "calendar": {
     "as_of": "2026-11-13",
     "target_session": "2026-11-16",

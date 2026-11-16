@@ -1,7 +1,7 @@
 {
   "mode": "live",
   "source": "LSEG Data Platform",
-  "retrieved_at": "2026-11-16T06:20:18.285201+00:00",
+  "retrieved_at": "2026-11-16T07:21:13.214133+00:00",
   "calendar": {
     "as_of": "2026-11-13",
     "target_session": "2026-11-16",
@@ -7677,7 +7677,18 @@
           ]
         ]
       },
-      "delta": []
+      "delta": [],
+      "earnings_field_probe": {
+        "TR.EventStartDate": {
+          "error": "The access to field(s) denied. Requested universes: ['BAC.N']. Requested fields: ['TR.EVENTSTARTDATE']"
+        },
+        "TR.EventType": {
+          "error": "The access to field(s) denied. Requested universes: ['BAC.N']. Requested fields: ['TR.EVENTTYPE']"
+        },
+        "TR.EventStatus": {
+          "error": "The access to field(s) denied. Requested universes: ['BAC.N']. Requested fields: ['TR.EVENTSTATUS']"
+        }
+      }
     },
     "KO": {
       "identity": {
@@ -9892,7 +9903,18 @@
           ]
         ]
       },
-      "delta": []
+      "delta": [],
+      "earnings_field_probe": {
+        "TR.EventStartDate": {
+          "error": "The access to field(s) denied. Requested universes: ['KO.N']. Requested fields: ['TR.EVENTSTARTDATE']"
+        },
+        "TR.EventType": {
+          "error": "The access to field(s) denied. Requested universes: ['KO.N']. Requested fields: ['TR.EVENTTYPE']"
+        },
+        "TR.EventStatus": {
+          "error": "The access to field(s) denied. Requested universes: ['KO.N']. Requested fields: ['TR.EVENTSTATUS']"
+        }
+      }
     },
     "PFE": {
       "identity": {
@@ -11743,7 +11765,18 @@
           ]
         ]
       },
-      "delta": []
+      "delta": [],
+      "earnings_field_probe": {
+        "TR.EventStartDate": {
+          "error": "The access to field(s) denied. Requested universes: ['PFE.N']. Requested fields: ['TR.EVENTSTARTDATE']"
+        },
+        "TR.EventType": {
+          "error": "The access to field(s) denied. Requested universes: ['PFE.N']. Requested fields: ['TR.EVENTTYPE']"
+        },
+        "TR.EventStatus": {
+          "error": "The access to field(s) denied. Requested universes: ['PFE.N']. Requested fields: ['TR.EVENTSTATUS']"
+        }
+      }
     },
     "F": {
       "identity": {
@@ -13482,7 +13515,18 @@
           ]
         ]
       },
-      "delta": []
+      "delta": [],
+      "earnings_field_probe": {
+        "TR.EventStartDate": {
+          "error": "The access to field(s) denied. Requested universes: ['F.N']. Requested fields: ['TR.EVENTSTARTDATE']"
+        },
+        "TR.EventType": {
+          "error": "The access to field(s) denied. Requested universes: ['F.N']. Requested fields: ['TR.EVENTTYPE']"
+        },
+        "TR.EventStatus": {
+          "error": "The access to field(s) denied. Requested universes: ['F.N']. Requested fields: ['TR.EVENTSTATUS']"
+        }
+      }
     }
   }
 }

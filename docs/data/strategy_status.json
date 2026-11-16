@@ -2,9 +2,9 @@
   "schema_version": 1,
   "mode": "live",
   "status": "blocked",
-  "attempted_at": "2026-11-16T06:20:18.285201+00:00",
+  "attempted_at": "2026-11-16T07:21:13.214133+00:00",
   "successful_at": null,
-  "market_data_retrieved_at": "2026-11-16T06:20:18.285201+00:00",
+  "market_data_retrieved_at": "2026-11-16T07:21:13.214133+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": false,
   "errors": [
@@ -96,13 +96,37 @@
     "exchange": "XNYS",
     "close_time": "2026-11-13T21:00:00+00:00"
   },
-  "market_snapshot_sha256": "f0e91b6b12763963f289ac07b1cde6b4bcb301b69b91f3798c59bda964c1135e",
+  "market_snapshot_sha256": "46a5025d54b4e57ce686a29a86d028f74ddf49082ad5b2b7d90bbf190a4f2ea3",
   "account_status": "Missing mkt/positions.json; no account balance assumed",
   "conid_status": {
     "BAC": null,
     "KO": null,
     "PFE": null,
     "F": null
+  },
+  "ibkr_verified_conids": {
+    "BAC": 10098,
+    "KO": 8894,
+    "PFE": 11031,
+    "F": 9599491
+  },
+  "pipeline_audit": {
+    "first_blocking_stage": "account/pending validation",
+    "account_present": false,
+    "course_conids_missing": [
+      "BAC",
+      "KO",
+      "PFE",
+      "F"
+    ],
+    "earnings_unreliable": [
+      "BAC",
+      "KO",
+      "PFE",
+      "F"
+    ],
+    "resolver_status": "Professor documentation: Sanji does not resolve orders yet. This is not a JSON-generation requirement.",
+    "production_account_assumed": false
   },
   "data_quality": {
     "BAC": {
