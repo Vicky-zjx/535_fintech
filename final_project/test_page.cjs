@@ -6,6 +6,10 @@ const vm=require('node:vm');
 const path=require('node:path');
 const html=fs.readFileSync(path.join(__dirname,'../docs/index.html'),'utf8');
 const script=fs.readFileSync(path.join(__dirname,'../docs/assets/app.js'),'utf8');
+const analysisScript=fs.readFileSync(path.join(__dirname,'../docs/assets/analysis.js'),'utf8');
+const analysis=require('../docs/assets/analysis.js');
+const realStatus=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/strategy_status.json'),'utf8'));
+const realDemo=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/data/demo_status.json'),'utf8'));
 class Element {
   constructor(tag='div'){this.tag=tag;this.children=[];this.attributes={};this.value='';this.hidden=false;this.classList={add(){}};}
   set textContent(v){this.value=String(v);this.children=[];}
@@ -18,7 +22,8 @@ class Element {
 async function render(status,orders=[],fail=false,demo=null){
   const elements=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const document={getElementById:id=>{assert.ok(elements.has(id),'Real HTML ID '+id);return elements.get(id);},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),querySelector:()=>new Element()};
-  vm.runInNewContext(script,{document,Intl,Date,fetch:async url=>({ok:!fail,json:async()=>url.includes('demo_status')?demo:url.includes('strategy_status')?status:orders})});
+  const context=vm.createContext({document,Intl,Date,window:{},fetch:async url=>({ok:typeof fail==='function'?!fail(url):!fail,json:async()=>url.includes('demo_status')?demo:url.includes('strategy_status')?status:orders})});
+  vm.runInContext(analysisScript,context);vm.runInContext(script,context);
   await new Promise(resolve=>setImmediate(resolve));
   return elements;
 }
@@ -63,4 +68,82 @@ test('Malformed demonstration cannot change production rendering',async()=>{
   const e=await render({...baseline,status:'success',errors:[]},[],false,{mode:'live'});
   assert.match(e.get('demo-summary').textContent,/unavailable/);
   assert.match(e.get('order-note').textContent,/Valid no-trade/);
+});
+
+test('Published live evidence produces dated commentary, not realized performance',async()=>{
+  const e=await render(realStatus,[],false,realDemo);
+  const evidence=analysis.signalEvidence(realStatus);
+  assert.match(e.get('analysis-source').textContent,new RegExp(evidence.asOf));
+  assert.equal(e.get('signal-discussion').children.length,6);
+  assert.match(e.get('signal-discussion').textContent,/not approved orders/);
+  assert.match(e.get('signal-discussion').textContent,/cannot show.*redundant/);
+  assert.match(e.get('availability-rows').textContent,/Pending verified Sanji execution and NAV histories/);
+  if(!realStatus.capital)assert.match(e.get('capital-chart').textContent,/No cash balance or zero exposure is assumed/);
+  else assert.equal(e.get('capital-chart').children[0].tag,'svg');
+  assert.equal(e.get('demo-capital-chart').children.length,2);
+  assert.equal(e.get('demo-capital-chart').children[0].children[1].attributes.role,'img');
+  assert.match(e.get('demo-capital-note').textContent,/neither actual Sanji capital nor a period-average/);
+  assert.doesNotMatch(e.get('signal-discussion').textContent,/NaN|undefined|N\/A/);
+});
+test('Missing order download does not erase a successful market response',async()=>{
+  const e=await render(realStatus,[],url=>url.includes('open_orders'));
+  assert.match(e.get('run-state').textContent,/Market data retrieved|Validated evaluation/);
+  assert.match(e.get('order-note').textContent,/queue contents are unknown/);
+  assert.match(e.get('analysis-source').textContent,/Latest verified/);
+});
+test('Missing diagnostics do not masquerade as a zero portfolio or successful empty queue',async()=>{
+  const e=await render(realStatus,[],url=>url.includes('strategy_status'),realDemo);
+  assert.match(e.get('issues').textContent,/Do not interpret/);
+  assert.equal(e.get('capital-chart').children.length,0);
+  assert.equal(e.get('signal-discussion').children.length,0);
+  assert.match(e.get('demo-summary').textContent,/DEMONSTRATION ONLY/);
+});
+test('New dated evidence changes interpretation; November findings are not hardcoded',()=>{
+  const s=structuredClone(realStatus);
+  s.calendar.as_of='2030-01-07';s.market_data_retrieved_at='2030-01-08T03:00:00Z';
+  s.calendar.target_session='2030-01-08';
+  // Explicit offline fixture, never published or supplied to the trading engine.
+  for(const d of s.decisions){d.price_date=s.calendar.as_of;d.close=60;d.sma20=55;d.sma50=50;d.hv20=.46;d.r5=-.09;d.filters={trend:true,volatility:false,sudden_drop:false};}
+  const result=analysis.signalParagraphs(analysis.signalEvidence(s)).join(' ');
+  assert.match(result,/2030-01-07/);assert.match(result,/46\.00% \(failed/);
+  assert.doesNotMatch(result,/All four stocks passed|Trend was the separating|2026-11-13/);
+});
+test('Missing, stale and inconsistent indicators withhold financial interpretation',()=>{
+  for(const mutate of [s=>s.decisions[0].close=null,s=>s.decisions[0].price_date='2000-01-01',s=>s.decisions[0].filters.trend=!s.decisions[0].filters.trend,s=>s.mode='test',s=>s.market_snapshot_sha256=null]){
+    const s=structuredClone(realStatus);mutate(s);assert.throws(()=>analysis.signalEvidence(s));
+  }
+});
+test('Technical eligibility is not production order eligibility',()=>{
+  const blocked=structuredClone(realStatus);blocked.status='blocked';
+  blocked.decisions.forEach(d=>{d.eligible=false;d.decision='No Trade';});
+  const e=analysis.signalEvidence(blocked);
+  for(const d of e.rows)assert.equal(d.technical,Object.values(d.filters).every(Boolean));
+  assert.ok(e.rows.every(d=>d.eligible===false));
+});
+test('Hypothetical capital reconciles and never computes a return',()=>{
+  const c=analysis.hypotheticalCapital(realDemo);
+  const account=realDemo.scenarios.find(s=>s.id==='covered_inventory').account;
+  assert.ok(Math.abs(c.exposure+c.cash-account.equity)<1e-8);
+  assert.equal(c.utilization,c.exposure/c.equity);
+  assert.equal(c.cashFraction,c.cash/c.equity);
+  for(const k of ['pnl','return','sharpe','nav_history','drawdown'])assert.equal(c[k],undefined);
+  for(const mutate of [d=>d.mode='live',d=>d.production_orders_changed=true,d=>d.scenarios[1].capital.cash+=1,d=>d.scenarios[1].capital.exposure=null,d=>d.scenarios[1].account.positions[0].quantity=0]){
+    const d=structuredClone(realDemo);mutate(d);assert.throws(()=>analysis.hypotheticalCapital(d));
+  }
+});
+test('Interpretation leaves all source and example records unchanged',()=>{
+  const before=JSON.stringify([realStatus,realDemo]);
+  analysis.signalParagraphs(analysis.signalEvidence(realStatus));analysis.hypotheticalCapital(realDemo);
+  assert.equal(JSON.stringify([realStatus,realDemo]),before);
+});
+test('English methodology and formulas are visible without a fabricated performance chart',()=>{
+  assert.match(html,/Capital Utilization and Return Measurement/);
+  assert.match(html,/Account Return = Net Portfolio P&amp;L \/ Starting Portfolio Equity/);
+  assert.match(html,/Return on Deployed Capital = Net Strategy P&amp;L \/ Average Deployed Capital/);
+  assert.match(html,/Capital Utilization = Deployed Capital \/ Portfolio Equity/);
+  assert.match(html,/Performance Evaluation Pending Sanji Data/);
+  assert.match(html,/comparison has not run/);
+  assert.match(html,/strategy-workflow\.svg/);
+  assert.ok(html.indexOf('assets/analysis.js')<html.indexOf('assets/app.js'));
+  assert.doesNotMatch(html+script+analysisScript,/[\u4e00-\u9fff]/);
 });

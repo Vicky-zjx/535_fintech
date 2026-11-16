@@ -89,7 +89,7 @@
   }
   function charts(s) {
     const valid = s.decisions.filter(
-      (d) => Number.isFinite(d.close) && Number.isFinite(d.sma50),
+      (d) => [d.close,d.sma20,d.sma50].every(v => Number.isFinite(v) && v > 0),
     );
     barChart(
       "signal-chart",
@@ -136,9 +136,54 @@
         ],
         "Account exposure, put collateral and uncommitted cash in USD. Collateral is included in exposure, not added again.",
       );
+    } else {
+      text("capital-chart", "Production capital cannot be measured without the reconciled Sanji book. No cash balance or zero exposure is assumed; the separate hypothetical illustration appears under Measurement.");
     }
   }
-  function render(s, orders) {
+  function renderDiscussion(s) {
+    let evidence = null;
+    const paragraphs = $("signal-discussion");
+    paragraphs.replaceChildren();
+    try {
+      evidence = window.FinalAnalysis.signalEvidence(s);
+      text("analysis-source", `Latest verified published evaluation: close ${evidence.asOf}; LSEG response ${evidence.retrievedAt}; target session ${evidence.target}. Retained observations, not a streaming quote or a new API query.`);
+      for (const value of window.FinalAnalysis.signalParagraphs(evidence)) {
+        const p = document.createElement("p"); p.textContent = value; paragraphs.append(p);
+      }
+      text("lot-size-note", `At the ${evidence.asOf} close, 100-share reference values were ${evidence.rows.map(d => d.ticker+" "+fmt(d.close*100)).join("; ")}. These compare lot sizes, not actual purchases or selected-put collateral, which depends on strike.`);
+      const missing = tickers.filter(t => /unavailable|fallback/i.test(s.data_quality?.[t]?.delta_status || "unavailable"));
+      text("selection-evidence", `${evidence.asOf} diagnostics: ${missing.length ? "dated Greeks unavailable or fallback reported for "+missing.join(", ") : "see each ticker's dated Greek diagnostics"}. Incomplete Greek coverage invokes the existing observed-strike fallback, not an estimated delta: nearest 3% OTM put or exactly two observed call strikes above ATM, still subject to both call floors. Changing the selection basis changes the risk comparison; it is not evidence of a 25-delta execution.`);
+    } catch (error) {
+      const p = document.createElement("p"); p.textContent = "Signal interpretation withheld: " + error.message; paragraphs.append(p);
+      text("analysis-source", "No complete, reconciled four-stock interpretation for this attempt. Refer to the dated diagnostics; no older observation is silently presented as current.");
+    }
+    const missingIds = tickers.filter(t => !Number.isInteger(s.conid_status?.[t]));
+    const unknownEarnings = tickers.filter(t => s.data_quality?.[t]?.earnings?.reliable !== true);
+    const earningsDenied = tickers.filter(t => /access.*denied/i.test(s.data_quality?.[t]?.earnings?.reason || ""));
+    const blocked = s.status !== "success";
+    text("pipeline-discussion", blocked
+      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, course mappings and available collateral must be verified before publication; earnings coverage also gates each new put. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
+      : "The planner completed its input evaluation. Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
+    const rows = [
+      ["LSEG market retrieval", s.market_data_retrieved_at ? "Response received "+s.market_data_retrieved_at : "No successful market response attached to this attempt",
+        "Market retrieval and individual field entitlements are separate from Sanji account availability. Completed-session indicators can be studied when validated."],
+      ["Technical screen", evidence ? evidence.passed.length+" of 4 pass; "+evidence.rows.filter(d=>!d.technical).map(d=>d.ticker+": "+d.failed.join(", ")).join("; ") : "Complete validated comparison unavailable",
+        "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
+      ["Earnings", (unknownEarnings.length ? "Unverified for "+unknownEarnings.join(", ") : "Reliable calendar reported; verify each entry-to-expiry window") + (earningsDenied.length ? ". LSEG event-field access denied for "+earningsDenied.join(", ") : ""),
+        "Unknown/provisional events block puts, not the stock-signal analysis. Current field errors are in Data quality; require licensed coverage or a dated, company-confirmed alternative."],
+      ["Sanji account", s.account_status || "No verified account status",
+        "Need authoritative cash, equity, all positions, bases, option marks and resolved IDs. An assumed $40,000 account cannot establish production capacity."],
+      ["Course identifier mapping", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four numeric mappings reported",
+        "Public IBKR identity checks do not establish enrollment or contract-price coverage in the professor's course feed."],
+      ["Production orders", blocked ? "Blocked/not run; retained queue is not a new result" : "Validated proposal evaluation completed",
+        "An empty queue while blocked is not a successful no-trade run. Only completed evaluation can establish no valid proposals; neither state establishes executions."],
+      ["Trading performance", "Pending verified Sanji execution and NAV histories",
+        "Returns, net P&L, realized premiums, Sharpe, MDD and assignment frequency cannot be inferred from signals or example orders. No missing metric is replaced with zero."],
+    ];
+    const table = $("availability-rows"); table.replaceChildren();
+    for (const values of rows) {const tr = document.createElement("tr"); values.forEach(v=>cell(tr,v)); table.append(tr);}
+  }
+  function render(s, orders, ordersAvailable = true) {
     const good = s.status === "success";
     const observed = s.market_data_retrieved_at;
     text(
@@ -203,9 +248,9 @@
               .map(([k, v]) => k + ": " + (v ? "pass" : "fail"))
               .join(" · ")
           : "Not evaluated",
-        d.eligible ? "Eligible" : "Not eligible",
+        d.eligible ? "Final eligibility passed" : s.status === "blocked" ? "Final eligibility not established" : "Not eligible / not evaluated",
       );
-      cell(tr, d.decision || "Not evaluated", (d.reasons || []).join("; "));
+      cell(tr, s.status === "blocked" ? "Evaluation blocked" : d.decision || "Not evaluated", (d.reasons || []).join("; "));
       rows.append(tr);
     }
     text(
@@ -246,6 +291,10 @@
           ? "No proposed orders for this valid evaluation."
           : "Empty queue; no successful order-generation run is asserted.",
       );
+    if (!ordersAvailable) {
+      text("order-note", "Production order file could not be loaded; queue contents are unknown, not an empty no-trade result. Market diagnostics are shown independently.");
+      empty(orderRows, 8, "Order queue unavailable; no quantity or trade count inferred.");
+    }
     const q = $("data-quality");
     q.replaceChildren();
     const stamp = document.createElement("p");
@@ -261,8 +310,7 @@
       p.textContent =
         t +
         ": " +
-        (d.candidate_count ?? 0) +
-        " accepted candidates; " +
+        (Number.isInteger(d.candidate_count) ? d.candidate_count+" accepted candidates; " : "candidate count unverified; ") +
         (d.options_status || "unavailable") +
         ". " +
         (d.delta_status || "Greeks unavailable") +
@@ -276,6 +324,7 @@
     }
     $("snapshot-link").hidden = !s.market_snapshot_sha256;
     charts({ ...s, decisions: s.decisions || [] });
+    renderDiscussion(s);
   }
   async function get(url) {
     const r = await fetch(url, { cache: "no-store" });
@@ -314,14 +363,37 @@
       }
       container.append(block);
     }
+    try {
+      const c = window.FinalAnalysis.hypotheticalCapital(demo);
+      const allocation = $("demo-capital-chart"); allocation.replaceChildren();
+      allocation.classList.add("allocation-chart");
+      for (const [label,value,fraction] of [["Stock",c.exposure,c.utilization],["Uncommitted cash",c.cash,c.cashFraction]]) {
+        const row=document.createElement("div");row.className="allocation-row";
+        const line=document.createElement("p");line.className="allocation-label";
+        const name=document.createElement("span");name.textContent=label;
+        const number=document.createElement("strong");number.textContent=fmt(value)+" · "+fmt(fraction,true);
+        line.append(name,number);
+        const track=document.createElement("div");track.className="allocation-track";
+        track.setAttribute("role","img");track.setAttribute("aria-label",`Hypothetical ${label}: ${fmt(value)}, ${fmt(fraction,true)} of assumed equity; not a return.`);
+        const fill=document.createElement("span");fill.setAttribute("style",`width:${fraction*100}%`);
+        track.append(fill);row.append(line,track);allocation.append(row);
+      }
+      text("demo-capital-note", c.paragraph);
+      const largest = Object.entries(c.byTicker).sort((a,b)=>b[1]-a[1])[0];
+      text("demo-capital-interpretation", `In this assumed inventory, ${largest[0]} alone accounts for ${fmt(largest[1])}, or ${fmt(largest[1]/c.equity,true)} of equity. Equal contract counts do not mean equal dollar weights. Calls add no second stock exposure; no expected premium is credited. This dated example has no time series from which to calculate an average deployed amount, cash drag or profit.`);
+    } catch (error) {
+      text("demo-capital-chart", "Hypothetical allocation not shown: "+error.message);
+      text("demo-capital-note", "No invalid or missing example amount is substituted with zero or treated as production capital.");
+    }
   }
   get('data/demo_status.json').then(renderDemo).catch(() => {
     text('demo-summary', 'Demonstration unavailable. Production status and orders are shown independently above.');
   });
-  Promise.all([get("data/strategy_status.json"), get("../open_orders.json")])
-    .then(([s, o]) => {
-      if (!Array.isArray(o)) throw Error("Invalid orders");
-      render(s, o);
+  Promise.allSettled([get("data/strategy_status.json"), get("../open_orders.json")])
+    .then(([status, orders]) => {
+      if (status.status !== "fulfilled") throw Error("Diagnostics unavailable");
+      const loaded = orders.status === "fulfilled" && Array.isArray(orders.value);
+      render(status.value, loaded ? orders.value : [], loaded);
     })
     .catch(() => {
       text("run-state", "Live data not yet available");

@@ -10,6 +10,7 @@
     />
     <link rel="stylesheet" href="assets/style.css" />
     <script defer src="../course-nav.js"></script>
+    <script defer src="assets/analysis.js"></script>
     <script defer src="assets/app.js"></script>
   </head>
   <body>
@@ -77,8 +78,9 @@
       <nav class="section-nav" aria-label="On this page">
         <a href="#decisions">Monitor</a><a href="#demonstration">Demonstration</a><a href="#universe">Universe</a
         ><a href="#workflow">Process</a><a href="#rules">Rules</a
-        ><a href="#risk">Capital</a><a href="#orders">Orders</a
-        ><a href="#reproducibility">Reproduce</a>
+        ><a href="#risk">Capital</a><a href="#analysis">Analysis</a
+        ><a href="#measurement">Measurement</a><a href="#orders">Orders</a
+        ><a href="#reproducibility">Reproduce</a><a href="#evaluation">Evaluation plan</a>
       </nav>
 
       <section id="decisions">
@@ -144,8 +146,9 @@
               Awaiting a reconciled Sanji account.
             </div>
             <figcaption>
-              Stock market value + put strike collateral, versus uncommitted
-              cash. Values are not profit or option premium.
+              Production account only: stock market value + put strike collateral,
+              versus uncommitted cash. Collateral is included in exposure, not
+              added twice. No hypothetical balance is substituted.
             </figcaption>
           </figure>
         </div>
@@ -159,6 +162,34 @@
             >
           </p>
         </details>
+      </section>
+
+      <section id="analysis" class="discussion" aria-labelledby="analysis-title">
+        <p class="eyebrow">CURRENTLY SUPPORTED ANALYSIS / NOT PERFORMANCE</p>
+        <h2 id="analysis-title">What the market screen tells us.</h2>
+        <p id="analysis-source" class="muted">Waiting for dated, validated signal evidence.</p>
+        <div id="signal-discussion" aria-live="polite">
+          <p>Financial interpretation requires a verified saved market evaluation.
+            An unavailable input is not a negative trading signal.</p>
+        </div>
+        <p id="pipeline-discussion">Final order eligibility also requires the authoritative
+          account, course identifiers, a usable option contract and the applicable earnings checks.</p>
+        <h3>Different missing inputs have different consequences</h3>
+        <div class="table-wrap" tabindex="0" aria-label="Evidence availability and its implications">
+          <table><thead><tr><th>Layer</th><th>Current evidence</th><th>What it permits — or prevents</th></tr></thead>
+            <tbody id="availability-rows"><tr><td colspan="3">Published diagnostics have not loaded; no account state is assumed.</td></tr></tbody>
+          </table>
+        </div>
+        <h3>What these decisions establish</h3>
+        <p>The screen makes the willingness to take new bullish exposure conditional on observable
+          inputs. It can reject a stock for weak trend alignment even when its recent volatility
+          is acceptable. Refusing an order when the account or earnings calendar cannot be checked
+          is a separate control: it prevents an unverified obligation rather than predicting a loss.
+          Neither kind of refusal tells us what an executed trade would have earned.</p>
+        <p>The present evidence supports a working decision policy and an auditable separation of
+          inputs, filters and proposals. It does not test the hypothesis that premium collection
+          improves risk-adjusted returns. That requires actual executions or a separately specified,
+          point-in-time simulation, with the losses and missed opportunities included.</p>
       </section>
 
       <section id="demonstration" aria-labelledby="demo-title">
@@ -250,6 +281,19 @@
           equity-market risk. These are research choices, not a claim about the
           best-performing stocks.
         </p>
+        <div class="discussion">
+          <p>BAC exposes the portfolio to lending margins and the credit cycle; KO adds relatively
+            defensive consumer demand; PFE introduces healthcare demand alongside drug-development
+            and regulatory risk; F adds cyclical automobile demand and financing sensitivity.
+            These are different business risks, not four independent bets. Interest rates, a recession
+            or a broad equity sell-off can affect several names at once; no correlation reduction has
+            been estimated from this one evaluation.</p>
+          <p>Four names keep contract selection, earnings checks and account reconciliation manageable
+            while reducing reliance on one issuer. Standard 100-share contracts make sizing indivisible:
+            one contract per ticker is not an equal-dollar or equal-risk portfolio. A lower share price
+            reduces the dollar obligation of a comparable put strike, not the probability of a severe loss.</p>
+          <p id="lot-size-note" class="muted">Per-lot dollar comparisons await verified closing prices.</p>
+        </div>
       </section>
 
       <section id="workflow">
@@ -339,6 +383,10 @@
               Avoid initiating bullish exposure against a weakening trend;
               recoveries may be missed.
             </p>
+            <p>Twenty sessions react faster to recent direction; fifty provide a slower reference.
+              Requiring both alignment and a close above that reference avoids buying a weak trend
+              solely for its option premium. Both averages lag prices, so sharp recoveries can begin
+              before the screen allows entry, and sideways markets can produce repeated reversals.</p>
             <p class="example">
               Illustration only: close 50, SMA20 49 and SMA50 48 pass.
             </p>
@@ -352,6 +400,10 @@
               √252. Requires 21 closes. Historical volatility is not implied
               volatility.
             </p>
+            <p>The 45% ceiling limits new exposure when recent realized price variability is high.
+              It also removes some potentially richer-premium opportunities. HV measures the past;
+              it neither measures the option's implied volatility nor shows whether its premium is
+              attractive relative to future realized risk. The cutoff is a research choice, not a fitted optimum.</p>
             <p class="example">
               Illustration only: HV20 of 38% passes; 46% fails.
             </p>
@@ -364,6 +416,10 @@
               R5 = Close<sub>t</sub> / Close<sub>t−5</sub> − 1. Avoid opening
               puts after sharp declines; the rule can also miss a rebound.
             </p>
+            <p>The five-session horizon catches a fast decline that a 50-day average may absorb only
+              slowly. It is an entry gate, not a stop-loss on stock already assigned. The −8% boundary
+              deliberately postpones new downside obligations during a sharp fall, at the cost of
+              missing a possible reversal immediately afterward.</p>
             <p class="example">
               Illustration only: 50 → 46 is −8%, at the boundary.
             </p>
@@ -418,6 +474,34 @@
               </li>
             </ul>
           </article>
+        </div>
+        <div class="discussion">
+          <h3>Income, assignment and short-dated risk</h3>
+          <p>The −0.25 put and +0.25 call targets favor out-of-the-money contracts: the intent is to
+            collect premium while leaving room before assignment or the call's upside cap becomes
+            binding. Moving farther out generally sacrifices premium. Delta is a local price sensitivity;
+            using its absolute value as an assignment-probability shortcut is only an approximation,
+            not a guaranteed 25% frequency, especially with early exercise and changing volatility.
+            These signs describe the option, not the short position's delta.
+            <a href="https://www.optionseducation.org/advancedconcepts/delta">OIC: delta</a>.</p>
+          <p>A roughly seven-day target matches the weekly decision cycle; the 3–10 calendar-day
+            band accommodates the observed expirations without requiring a nonexistent exact tenor.
+            It does not mean every order expires the Friday of its entry week. Short maturity allows
+            frequent reassessment and time decay, but near-the-money gamma can rise sharply near
+            expiry. A small late stock move can therefore change exposure and assignment risk quickly.
+            Overnight market orders also face opening gaps and spreads.
+            <a href="https://www.optionseducation.org/advancedconcepts/gamma">OIC: gamma</a>.</p>
+          <p id="selection-evidence">Dated Greek availability is reported with the current market evidence.</p>
+          <h3>Why covered-call constraints can leave shares uncovered</h3>
+          <p>The 1%-above-basis floor expresses a willingness to sell the stock above its recorded
+            purchase cost; the 2%-above-close floor preserves some current upside. Both are enforced,
+            not preferences that the selector may trade away for premium. After a large decline, the
+            basis floor may sit far above spot, leaving little premium or no qualifying observed call.
+            The rule can prolong stock exposure; it does not make the combined position profitable.</p>
+          <p>Calls are evaluated only against confirmed, unencumbered shares. Existing short calls and
+            pending orders prevent double-selling that coverage. Premium can offset part of a decline,
+            but the call limits gains if the stock rallies; it is not a hedge against a large stock loss.
+            <a href="https://www.optionseducation.org/strategies/all-strategies/covered-call-buy-write">OIC: covered calls</a>.</p>
         </div>
         <details>
           <summary>What counts as a usable contract?</summary>
@@ -503,6 +587,56 @@
             </p>
           </div>
         </div>
+        <div class="discussion">
+          <p>The 30% single-name ceiling limits one issuer's claim on equity; the 70% total cap and
+            30% free-cash floor retain room for obligations and adverse marks. The cash test matters
+            independently of exposure because stock is not immediately available cash. One contract
+            per name further limits scale, so a fully eligible portfolio can still use substantially
+            less than the 70% ceiling. The $40,000 starting value belongs only to the examples.</p>
+          <p>These constraints reduce concentration and funding pressure, not equity risk. A funded put
+            can still require buying 100 shares well above their market value; reserved collateral
+            cannot also be described as idle cash. Waiting with uncommitted cash may soften exposure
+            during declines, but forgoes stock appreciation or other investment income. Expected option
+            premiums cannot fund new orders, and no leverage is used to offset that opportunity cost.
+            <a href="https://www.optionseducation.org/strategies/all-strategies/cash-secured-put">OIC: cash-secured puts</a>.</p>
+        </div>
+      </section>
+
+      <section id="measurement" class="discussion" aria-labelledby="measurement-title">
+        <p class="eyebrow">CAPITAL EFFICIENCY / MEASUREMENT CONVENTIONS</p>
+        <h2 id="measurement-title">Capital Utilization and Return Measurement</h2>
+        <p>Account return measures the change in the owner's full portfolio, including cash.
+          Return on deployed capital asks how much net strategy profit was earned relative to the
+          capital actually committed. Reporting both avoids praising a low-volatility account merely
+          because much of it remained in cash, or hiding that cash's effect on total wealth.</p>
+        <div class="measurement-formulas">
+          <p>Account Return = Net Portfolio P&amp;L / Starting Portfolio Equity</p>
+          <p>Return on Deployed Capital = Net Strategy P&amp;L / Average Deployed Capital</p>
+          <p>Capital Utilization = Deployed Capital / Portfolio Equity</p>
+        </div>
+        <p>The proposed convention uses each completed session's stock <strong>market value</strong>
+          plus gross strike × 100 for filled short puts; a covered call adds no second stock amount.
+          Average deployed capital will be the arithmetic mean across every trading session in the
+          evaluation period, including cash-only days. Pending puts are also reserved by the planner,
+          but their unfilled reservations will be disclosed separately from capital in executed positions.
+          A mark-based denominator can fall when stocks lose value, so it is not a leverage-adjusted
+          performance measure and must be read alongside account return and drawdown.</p>
+        <p>Evaluation will run between verified opening and closing account snapshots with complete
+          intervening records, not convenient endpoints chosen after seeing returns. Net P&amp;L will
+          include realized and unrealized stock/option gains and losses, dividends and reported cash
+          interest, less actual commissions and fees. Premium receipts are not profit while a short
+          option liability remains. External deposits and withdrawals must be reconciled; the simple
+          account-return formula assumes none, otherwise a flow-adjusted return is required. The
+          capital-return ratio is descriptive and non-annualized, not a time-weighted return or Sharpe.</p>
+        <figure id="demo-allocation" data-evidence-scope="hypothetical">
+          <h3>Hypothetical allocation — not Sanji capital</h3>
+          <div id="demo-capital-chart" class="chart-placeholder">Awaiting a reconciled, explicitly hypothetical example.</div>
+          <figcaption id="demo-capital-note">No actual account allocation is inferred from a demonstration.</figcaption>
+        </figure>
+        <p id="demo-capital-interpretation">The example illustrates a capital stock at one date, not investment performance.</p>
+        <p>Actual account return, return on deployed capital and time-average utilization remain
+          unmeasured until Sanji supplies the book and history. A single starting balance, a candidate
+          option or three valid JSON proposals cannot supply their missing numerators or denominators.</p>
       </section>
 
       <section id="orders">
@@ -617,19 +751,77 @@
 
       <section id="evaluation">
         <p class="eyebrow">08 / EVALUATION &amp; LIMITATIONS</p>
-        <h2>A testable policy, not a profitability claim.</h2>
-        <p>
-          No performance results are reported for this new four-stock strategy
-          yet. The existing single-stock backtests are separate assignments, not
-          evidence for this implementation.
-        </p>
-        <p>
-          A future matched-window comparison would run this policy against a
-          weekly Wheel without the extra filters, using the same initial
-          capital, contract universe, fill assumptions and costs. Proposed
-          metrics: total return, maximum drawdown, Sharpe ratio, premium income,
-          assignment frequency, capital utilization and transaction costs.
-        </p>
+        <h2>Performance Evaluation Pending Sanji Data</h2>
+        <div class="discussion">
+          <p id="performance-pending">Portfolio performance has not yet been calculated because
+            verified Sanji execution and account NAV histories are unavailable. The current analysis
+            concerns real market signals, risk checks and separately labeled hypothetical books.
+            This is a missing evidence dependency, not an unexplained calculation error or a zero return.</p>
+          <h3>The cost of conservative rules</h3>
+          <p>Fewer qualifying entries mean fewer chances to collect premium, while cash can miss a
+            rising market. A volatility cap may exclude precisely the contracts offering the largest
+            premiums; a trend or drop filter may postpone entry until a rebound is already underway.
+            The opposite possibility is that avoiding some entries reduces large losses. Today's
+            rejections establish neither result. Cash drag and avoided losses require an executed
+            or consistently simulated alternative path, not hindsight about rejected stocks.</p>
+          <h3>After assignment, the risk changes</h3>
+          <p>A put assignment exchanges reserved cash for 100 shares at the strike. The obligation
+            becomes direct stock exposure; it is not a new profit, and loss can already exist at the
+            assignment price. Subsequent covered calls exchange some upside for premium. These shares
+            remain exposed when no call satisfies the strike floors, and the new-put filters do not
+            trigger an automatic sale of existing stock. There are no stop-losses or rolls in this policy.</p>
+          <p>Sanji must confirm assignment and available shares before the planner can write a call.
+            American-option exercise can occur before expiry, and dividend-related call assignment
+            can alter both holdings and dividend entitlement. A simulator that simply assumes all
+            options expire on Friday would miss those account transitions. The current planner
+            delegates them to the authoritative book; the hypothetical inventory is not evidence
+            that any assignment occurred.</p>
+          <h3>What a valid performance record would contain</h3>
+          <p>Actual fills, realized premium receipts, net P&amp;L, account return, return on deployed
+            capital, Sharpe, maximum drawdown and assignment frequency are all pending. A current
+            account snapshot alone would not recover that history. Required records include fill
+            IDs, times, quantities and prices; costs; dividends and cash flows; option resolutions;
+            and daily reconciled cash, holdings, marks and NAV. Earlier single-stock assignments are
+            not performance evidence for this four-stock policy.</p>
+          <p>The planned daily Sharpe uses genuine adjacent-session, flow-adjusted account returns,
+            sample standard deviation and √252 annualization, with a disclosed 0% risk-free reference
+            for the course comparison. Actual credited cash interest still belongs in P&amp;L.
+            Maximum drawdown will use the entire flow-adjusted wealth path relative to its running peak,
+            including opening equity (the NAV path when there are no external flows).
+            Missing marks remain missing: full-period statistics will be withheld
+            rather than bridging returns, interpolating NAV or substituting zero. Any partial-sample
+            statistic would have its own dates and explicit limitations.</p>
+          <h3>A comparison to run, not a result already obtained</h3>
+          <p>The proposed baseline is a weekly Wheel on the same four names, retaining cash security,
+            account limits, earnings validation and contract-selection rules but omitting the three
+            technical entry screens. Compare it with this risk-managed version using identical market
+            periods, initial equity, observed contract access, transaction costs, assignment treatment
+            and execution assumptions. This isolates the screens without granting either strategy
+            leverage or better fills. It is a proposed research protocol; the comparison has not run.</p>
+          <p>Sanji history for only the selected strategy cannot reveal fills for the baseline's
+            counterfactual trades. Those would need a separately labeled, point-in-time simulation
+            or parallel course evaluation. Compare net account and deployed-capital returns, utilization,
+            drawdown, Sharpe and assignment frequency together. Keep the rules fixed, then test
+            sensitivity over other periods without selecting parameters on the evaluation sample.</p>
+          <h3>What remains uncertain — and how to resolve it</h3>
+          <p>Current LSEG discovery is an observed candidate set, not a complete historical chain.
+            A fallback is reproducible within that set but can select differently as coverage changes.
+            Missing dated Greeks prevent a claim that demonstrated proposals are 25-delta trades.
+            A replay needs archived point-in-time chains, earnings announcements and exclusions, so
+            later discoveries cannot establish earlier availability. Different regimes, correlated
+            declines and parameter sensitivity also remain untested.</p>
+          <p>The professor must supply the native Sanji account schema, authoritative balances and
+            complete positions, stock bases, option marks, fill/resolution histories, and an update-complete
+            signal. The course feed must enroll all four tickers with explicit conids and contract-open
+            coverage. Resolver activation is needed to observe course executions, not to validate a
+            proposal's JSON. Confirmed earnings coverage is a separate licensing or issuer-source
+            dependency: an authorized, dated company announcement can be reviewed, but an empty
+            calendar cannot certify that the entry-to-expiry window is clear.</p>
+          <p>These records can feed a separate, read-only performance report alongside the existing
+            market, decision and order artifacts. That preserves the planner and page layout while
+            adding auditable account evidence; no production balance or fill needs to be invented
+            to make the current website look complete.</p>
+        </div>
         <div class="limitations">
           <p>
             <strong>Equity risk.</strong> Four stocks can decline together. Put

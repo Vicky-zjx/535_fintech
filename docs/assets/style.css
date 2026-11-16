@@ -532,6 +532,34 @@ footer p {
 .fail {
   color: #825d32;
 }
+.discussion > p,
+.discussion > h3,
+#signal-discussion {
+  max-width: 980px;
+}
+.discussion h3 {
+  margin-top: 30px;
+}
+.measurement-formulas {
+  border-left: 2px solid var(--line);
+  padding-left: 20px;
+  margin: 26px 0;
+  font: 14px/1.8 ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+}
+#demo-allocation {
+  max-width: 820px;
+  margin: 26px 0;
+}
+#demo-allocation h3 { margin-top: 0; }
+.allocation-chart.chart-placeholder { display: block; min-height: 0; }
+.allocation-row + .allocation-row { margin-top: 22px; }
+.allocation-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; margin-bottom: 8px; font-size: 14px; }
+.allocation-label strong { color: var(--ink); font-weight: 600; }
+.allocation-track { height: 14px; background: #e2e9ef; }
+.allocation-track span { display: block; height: 100%; background: #32668f; }
+.allocation-row + .allocation-row .allocation-track span { background: #91adbf; }
+#availability-rows td { min-width: 190px; }
 @media (max-width: 1000px) {
   .hero {
     gap: 30px;

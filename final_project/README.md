@@ -3,6 +3,52 @@
 Simulation-only Final Project for FIN 535. Website: [Final Project](https://vicky-zjx.github.io/535_fintech/docs/).
 Earlier assignments and their real caches are independent and unchanged.
 
+## Financial discussion and evidence boundaries
+
+The English page separates **currently supported market analysis**, **explicitly
+hypothetical accounts**, and **performance evaluation pending Sanji history**.
+`docs/assets/analysis.js` interprets the latest engine-validated published status;
+dates, filter outcomes and 100-share reference values are not fixed narrative
+numbers. It cross-checks indicator flags and dates and withholds interpretation
+when inputs do not reconcile. This is presentation code, not another strategy
+engine. An unavailable order download no longer hides available market diagnostics.
+
+The capital illustration reads and reconciles the isolated covered-inventory
+example: stock market value plus cash equals its hypothetical equity. It is a
+single dated stock allocation, not actual Sanji holdings, average deployed capital
+or investment performance. Production allocation remains unmeasured without the
+account. The real saved 2026-11-13 close (retrieved 2026-11-16) has BAC/F failing
+trend and KO/PFE passing all three technical gates; all four pass HV20/R5. Missing
+account data, course mappings and unverified earnings are separate dependencies.
+
+The proposed future measurement convention uses EOD stock market value plus
+filled-put strike collateral, without double-counting covered calls. Average all
+sessions, including cash days; report pending-order reservations separately.
+Account return = net portfolio P&L / starting equity (no external flows); capital
+return = net strategy P&L / average deployed capital; utilization = deployed /
+equity. Net P&L includes realized/unrealized positions, dividends and credited
+interest after actual costs. Flow adjustment is required if external flows occur.
+Capital return is descriptive and non-annualized. Daily Sharpe would use sample
+SD, sqrt(252) and a disclosed 0% RF comparison; complete drawdown needs a complete
+flow-adjusted wealth path. No performance values are calculated from signals.
+
+The evaluation discussion proposes a future comparison with the same four-name
+Wheel without the three technical entry filters, keeping account/earnings safety,
+capital, periods, contract access and costs consistent. It is **not an executed
+backtest**. Actual strategy fills cannot supply counterfactual baseline fills.
+
+Offline checks (no API pull, no production or demo output writes):
+
+```sh
+node --test final_project/test_page.cjs
+python -m final_project.validate_publication
+python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_demo lseg_chart.test_update -q
+```
+
+Rules, provider integration, order schema and nightly workflow are unchanged.
+The SVG workflow is preserved. OIC references on the page support general option
+risk mechanics; saved LSEG diagnostics and example JSON support the dated findings.
+
 ## Run and reproduce
 
 From the repository root, use Python 3.11+:
