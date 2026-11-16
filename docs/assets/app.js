@@ -318,6 +318,7 @@
         ". " +
         (d.delta_status || "Greeks unavailable") +
         ". " +
+        (d.close_recheck_status ? d.close_recheck_status + '. ' : '') +
         (d.errors || []).join("; ");
       q.append(p);
     }
@@ -343,8 +344,8 @@
       const h = document.createElement('h3');
       h.textContent = s.id === 'cash_start' ? 'Example A — cash-only starting portfolio' : 'Example B — assumed covered inventory';
       const account = document.createElement('p');
-      account.textContent = s.description + (s.account ? ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) : ' No inventory or cash balance assumed.') +
-        '. Proposed orders: ' + (s.order_count ?? 'Blocked') + '. Evaluation completed is not a claim that every input passed.';
+      account.textContent = s.description + (s.account ? ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) : ' No inventory or cash balance assumed') +
+        '. Proposed orders: ' + (s.order_count ?? 'Blocked') + (s.status === 'success' ? '. Evaluation completed; individual tickers may still fail their entry rules.' : '. Blocked by missing or invalid inputs; no successful no-trade decision is claimed.');
       block.append(h, account);
       for (const d of s.decisions) {
         const p = document.createElement('p');

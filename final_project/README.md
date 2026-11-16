@@ -3,6 +3,49 @@
 Simulation-only Final Project for FIN 535. Website: [Final Project](https://vicky-zjx.github.io/535_fintech/docs/).
 Earlier assignments and their real caches are independent and unchanged.
 
+### Verified publication — 2026-11-16
+
+[Real retrieval / publication run](https://github.com/Vicky-zjx/535_fintech/actions/runs/43969760293)
+queried LSEG at 22:25 UTC. Study window **2023-11-16–2026-11-16**, 752 expected
+sessions plus 50 earlier warm-up closes (query starts 2023-09-07).
+
+| Stock | Observed sample closes | Eligible weekly entries | Combined pass rate |
+| --- | ---: | ---: | ---: |
+| BAC | 751 / 752 | 101 / 157 | 64.3% |
+| KO | 752 / 752 | 91 / 157 | 58.0% |
+| PFE | 752 / 752 | 58 / 157 | 36.9% |
+| F | 751 / 752 | 66 / 157 | 42.0% |
+
+All four have all 50 warm-up closes. BAC/F lack November 16: both the full-window
+response and the exact-day recheck returned the older November 13 date, which is
+**not** relabeled or carried forward. Coverage remains partial. These two latest
+daily gaps do not invalidate the 157 weekly entries ending November 16, whose last
+entry signal uses the preceding Friday. Current November 17 planning and current
+demonstrations remain blocked by missing valid prices; production also lacks the account.
+
+Across 628 stock–entry-date pairs, 316 pass all three screens. Trend alone rejects
+300 (279 exclusive); HV20 rejects 26 (11 exclusive, all F); R5 rejects 11 (zero
+exclusive). There are 107/157 (68.2%) dates with two or more eligible names, and six
+with all four. These count opportunities, not historical trades or profits. BAC
+combined eligibility was 79.2% in 2024 versus 45.7% in the observed 2026 period;
+PFE was 24.5% versus 60.9%. Fixed screens have materially different exposure
+opportunities across time; unequal-length year slices are not investment-return comparisons.
+
+The archived November 16 target example still produces two valid puts (KO/PFE)
+and, in a separate assumed-inventory book, three valid calls (BAC/PFE/F). These are
+separately dated historical demonstrations, not the current blocked batch.
+Both production arrays remain unchanged `[]`, SHA256
+`37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570`.
+
+Validation: **123 checks** (89 Python engine/provider/history/demo, four site layout,
+30 JavaScript), plus independent publication validation. Browser checked at desktop
+and 390px: no page overflow, seven course links, interactive stock selection, no
+console errors; the existing SVG remains unchanged. Live workflow retrieval,
+demonstrations, analysis, validation, artifact commit and Pages request passed; its
+final step deliberately fails to report the missing production inputs honestly.
+Initial integration failures and their fixes remain visible in Git/Actions history.
+This is **not** a claim that the assignment's actual-account order output is complete.
+
 ## Current implementation — three-year analysis and verified identities
 
 **Production is not complete:** no authoritative account was found. The root and

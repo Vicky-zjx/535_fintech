@@ -31,11 +31,13 @@
     const totals = filters.slice(0,3).map((k,i)=>({k,label:labels[i],fail:names.reduce((a,t)=>a+h.tickers[t].weekly.standalone_rejections[k],0),exclusive:names.reduce((a,t)=>a+h.tickers[t].weekly.exclusive_rejections[k],0)})).sort((a,b)=>b.fail-a.fail);
     const eligible = names.reduce((a,t)=>a+h.tickers[t].weekly.pass_counts.combined,0);
     const j = h.joint_weekly, top = totals[0];
+    const years=Object.keys(h.tickers.BAC.by_year), earlier=years[1] || years[0], later=years.at(-1);
     return [
       `Across ${n} evaluable stock–entry-date pairs, ${eligible} (${pct(eligible/n)}) pass all three screens; ${n-eligible} otherwise possible stock-date opportunities are excluded before option or account checks. This measures reduced eligibility, not avoided losses or foregone dollar premiums.`,
       `${top.label} is the largest standalone restriction: ${top.fail} rejected stock-dates. It alone excludes ${top.exclusive}; removing only that filter, while leaving the others fixed, would restore those ${top.exclusive} opportunities. Standalone counts overlap and must not be added. ${totals.slice(1).map(x=>`${x.label}: ${x.fail} standalone / ${x.exclusive} exclusive rejections`).join('; ')}.`,
       `${j.multiple_eligible_dates} of ${j.evaluated_dates} fully observed weekly entry dates (${pct(j.evaluated_dates ? j.multiple_eligible_dates/j.evaluated_dates : null)}) have at least two eligible stocks. The engine can propose several names, subject to real option availability and account limits; lower HV20 wins only when cash or capacity is scarce. ${j.excluded_dates} dates lack a complete four-stock evaluation and are excluded from this comparison.`,
-      `${names.map(t=>`${t}: ${countRate(h.tickers[t].weekly,'combined')}`).join('; ')}. Differences reflect this fixed universe and observed period, not proof that one company is a better investment. The year-by-year chart shows how often the same unchanged rules admitted exposure; partial calendar years are not full-year estimates.`
+      `${names.map(t=>`${t}: ${countRate(h.tickers[t].weekly,'combined')}`).join('; ')}. Differences reflect this fixed universe and observed period, not proof that one company is a better investment. The year-by-year chart shows how often the same unchanged rules admitted exposure; partial calendar years are not full-year estimates.`,
+      `From ${earlier} to the observed part of ${later}, combined weekly eligibility changed as follows: ${names.map(t=>`${t} ${pct(h.tickers[t].by_year[earlier].pass_rates.combined)} → ${pct(h.tickers[t].by_year[later].pass_rates.combined)}`).join('; ')}. Thus the rules do not impose a constant allocation across stocks or time. This is descriptive period variation, not evidence of forecasting skill or a comparison of equal-length investment returns.`
     ];
   }
   const api = {check, findings, countRate};
@@ -58,6 +60,8 @@
   function showHistory(h) {
     check(h);
     byId('history-status').textContent=`${h.status === 'complete' ? 'Complete observed-close coverage' : 'Partial observed-close coverage'} · ${h.window.analysis_start} to ${h.window.analysis_end}. ${h.window.warmup_sessions_requested} earlier exchange sessions requested for warm-up; excluded from reported sample counts. Retrieved ${h.market_retrieved_at}. ${h.matches_latest_market_attempt ? 'Matches the latest retained market evaluation.' : 'Retained evidence, not a successful update from the latest attempt.'}`;
+    const gaps=names.filter(t=>h.tickers[t].coverage.missing_dates.length).map(t=>{const d=h.tickers[t].coverage.missing_dates;return `${t}: ${d.length} missing (${d.slice(0,3).join(', ')}${d.length>3?', …; all dates in JSON':''})`;});
+    if(gaps.length)byId('history-status').textContent+=' No observed close on: '+gaps.join('; ')+'. Requested dates never replace the dates actually returned by LSEG.';
     rows('history-coverage',names.map(t=>{const d=h.tickers[t],c=d.coverage;return[t,`${c.first_observed ?? 'None'} → ${c.last_observed ?? 'None'}`,`${c.observed_sessions} / ${c.expected_sessions}`,`${c.observed_warmup_closes} / ${c.requested_warmup_closes}`,`${d.daily.evaluated_dates} / ${d.daily.candidate_dates}`,`${d.weekly.evaluated_dates} / ${d.weekly.candidate_dates}`];}));
     rows('history-weekly',names.map(t=>[t,...filters.map(k=>countRate(h.tickers[t].weekly,k)),h.tickers[t].weekly.excluded_dates]));
     rows('history-daily',names.map(t=>[t,...filters.map(k=>countRate(h.tickers[t].daily,k)),h.tickers[t].daily.excluded_dates]));
