@@ -2,16 +2,12 @@
   "schema_version": 1,
   "mode": "live",
   "status": "blocked",
-  "attempted_at": "2026-11-16T06:14:11.598967+00:00",
+  "attempted_at": "2026-11-16T06:17:31.176437+00:00",
   "successful_at": null,
-  "market_data_retrieved_at": "2026-11-16T06:14:11.598967+00:00",
+  "market_data_retrieved_at": "2026-11-16T06:17:31.176437+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": false,
   "errors": [
-    "BAC: RIC-to-ticker identity not verified by LSEG",
-    "KO: RIC-to-ticker identity not verified by LSEG",
-    "PFE: RIC-to-ticker identity not verified by LSEG",
-    "F: RIC-to-ticker identity not verified by LSEG",
     "Account adapter schema unavailable; raw Sanji format must be verified"
   ],
   "decisions": [
@@ -20,36 +16,76 @@
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "RIC-to-ticker identity not verified by LSEG",
         "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
-      ]
+      ],
+      "close": 51.02,
+      "price_date": "2026-11-13",
+      "sma20": 50.506,
+      "sma50": 54.0708,
+      "hv20": 0.24777861499347337,
+      "r5": 0.032375556454876664,
+      "filters": {
+        "trend": false,
+        "volatility": true,
+        "sudden_drop": true
+      }
     },
     {
       "ticker": "KO",
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "RIC-to-ticker identity not verified by LSEG",
         "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
-      ]
+      ],
+      "close": 99.25,
+      "price_date": "2026-11-13",
+      "sma20": 94.759,
+      "sma50": 90.82,
+      "hv20": 0.20648052188200483,
+      "r5": 0.037420298944287556,
+      "filters": {
+        "trend": true,
+        "volatility": true,
+        "sudden_drop": true
+      }
     },
     {
       "ticker": "PFE",
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "RIC-to-ticker identity not verified by LSEG",
         "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
-      ]
+      ],
+      "close": 28.89,
+      "price_date": "2026-11-13",
+      "sma20": 29.7925,
+      "sma50": 28.8018,
+      "hv20": 0.25284984861362597,
+      "r5": -0.01701258931609395,
+      "filters": {
+        "trend": true,
+        "volatility": true,
+        "sudden_drop": true
+      }
     },
     {
       "ticker": "F",
       "decision": "No Trade",
       "eligible": false,
       "reasons": [
-        "RIC-to-ticker identity not verified by LSEG",
         "Account/pending-order validation blocked: Account adapter schema unavailable; raw Sanji format must be verified"
-      ]
+      ],
+      "close": 11.91,
+      "price_date": "2026-11-13",
+      "sma20": 12.1515,
+      "sma50": 12.5594,
+      "hv20": 0.30399345421011414,
+      "r5": -0.042604501607717005,
+      "filters": {
+        "trend": false,
+        "volatility": true,
+        "sudden_drop": true
+      }
     }
   ],
   "capital": null,
@@ -60,7 +96,7 @@
     "exchange": "XNYS",
     "close_time": "2026-11-13T21:00:00+00:00"
   },
-  "market_snapshot_sha256": "e6d777724bdb353ce4528a6f25de3ba3046354ad8ed1b6710b8f5a14f7b83448",
+  "market_snapshot_sha256": "02077da36fbf676f4c5494e51cfae417ded94b99ac0cdcd8515828be3d35d2be",
   "account_status": "Missing mkt/positions.json; no account balance assumed",
   "conid_status": {
     "BAC": null,
@@ -72,49 +108,45 @@
     "BAC": {
       "ric": "BAC.N",
       "errors": [
-        "Price/identity query or validation failed: ValueError",
-        "Contract discovery/terms validation failed: ValueError"
+        "Contract discovery/terms validation failed: Missing option identification/standard-terms metadata"
       ],
       "options_status": "unavailable",
       "earnings": {
         "reliable": false,
-        "reason": "Earnings query/validation unavailable: LDError"
+        "reason": "Earnings query/validation unavailable: The access to field(s) denied. Requested universes: ['BAC.N']. Requested fields: ['TR.EVENTSTARTDATE', 'TR.EVENTTYPE', 'TR.EVENTSTATUS']"
       }
     },
     "KO": {
       "ric": "KO.N",
       "errors": [
-        "Price/identity query or validation failed: ValueError",
-        "Contract discovery/terms validation failed: ValueError"
+        "Contract discovery/terms validation failed: Missing option identification/standard-terms metadata"
       ],
       "options_status": "unavailable",
       "earnings": {
         "reliable": false,
-        "reason": "Earnings query/validation unavailable: LDError"
+        "reason": "Earnings query/validation unavailable: The access to field(s) denied. Requested universes: ['KO.N']. Requested fields: ['TR.EVENTSTARTDATE', 'TR.EVENTTYPE', 'TR.EVENTSTATUS']"
       }
     },
     "PFE": {
       "ric": "PFE.N",
       "errors": [
-        "Price/identity query or validation failed: ValueError",
-        "Contract discovery/terms validation failed: ValueError"
+        "Contract discovery/terms validation failed: Missing option identification/standard-terms metadata"
       ],
       "options_status": "unavailable",
       "earnings": {
         "reliable": false,
-        "reason": "Earnings query/validation unavailable: LDError"
+        "reason": "Earnings query/validation unavailable: The access to field(s) denied. Requested universes: ['PFE.N']. Requested fields: ['TR.EVENTSTARTDATE', 'TR.EVENTTYPE', 'TR.EVENTSTATUS']"
       }
     },
     "F": {
       "ric": "F.N",
       "errors": [
-        "Price/identity query or validation failed: ValueError",
-        "Contract discovery/terms validation failed: ValueError"
+        "Contract discovery/terms validation failed: Missing option identification/standard-terms metadata"
       ],
       "options_status": "unavailable",
       "earnings": {
         "reliable": false,
-        "reason": "Earnings query/validation unavailable: LDError"
+        "reason": "Earnings query/validation unavailable: The access to field(s) denied. Requested universes: ['F.N']. Requested fields: ['TR.EVENTSTARTDATE', 'TR.EVENTTYPE', 'TR.EVENTSTATUS']"
       }
     }
   },
