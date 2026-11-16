@@ -3,7 +3,7 @@
   "kind": "historical_technical_signal_analysis",
   "strategy_revision": "no-earnings-filter-v1",
   "source": "LSEG Data Platform",
-  "market_retrieved_at": "2026-11-16T22:25:33.494543+00:00",
+  "market_retrieved_at": "2026-11-16T23:16:16.755402+00:00",
   "window": {
     "analysis_start": "2023-11-16",
     "analysis_end": "2026-11-16",
@@ -64151,7 +64151,7 @@
     }
   },
   "scope": "Technical eligibility only; no historical option selection, cash allocation, fills, NAV or returns. Current fixed universe; adjusted closes as retrieved, not vintage unrevised data.",
-  "generated_at": "2026-11-16T22:25:53.145882+00:00",
-  "market_snapshot_sha256": "195f601858ac237df9e033878e7d2bd8aa42f59f37bf26c2bc1aacb0785abb00",
+  "generated_at": "2026-11-16T23:16:40.246752+00:00",
+  "market_snapshot_sha256": "3b0ea94e4e43584987edd35b92aaae6fdb7a495665f4f6b2a823faa7bfa2b71c",
   "matches_latest_market_attempt": true
 }
