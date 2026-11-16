@@ -13,6 +13,7 @@ from .portfolio import validate_account
 from .run import run
 from .sanji_orders import validate, publish_orders, read_orders
 from .strategy import indicators, evaluate, select_contract
+from .strategy_config import VERIFIED_CONIDS
 import pandas as pd
 
 
@@ -317,6 +318,9 @@ class PublicationTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.root = Path(self.tmp.name)
         (self.root/'mkt').mkdir()
+        (self.root/'docs/data').mkdir(parents=True)
+        (self.root/'docs/data/conid_verification.json').write_bytes(
+            (Path(__file__).resolve().parents[1]/'docs/data/conid_verification.json').read_bytes())
         for p in ['open_orders.json', 'mkt/open_orders.json']:
             (self.root/p).write_text('[]\n')
 
@@ -347,9 +351,10 @@ class PublicationTests(unittest.TestCase):
 
     def test_replay_preserves_snapshot_and_orders_even_with_valid_account(self):
         m, a, ids = fixture()
+        ids = VERIFIED_CONIDS
         m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
         a['source'] = 'Sanji'  # Unit-test-only adapter fixture, not a real account.
-        data = self.root/'docs/data'; data.mkdir(parents=True)
+        data = self.root/'docs/data'
         snapshot = json.dumps(m).encode()
         (data/'market_snapshot.json').write_bytes(snapshot)
         (self.root/'mkt/positions.json').write_text(json.dumps(a))
@@ -371,6 +376,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_fresh_run_still_publishes_validated_production_orders(self):
         m, a, ids = fixture()
+        ids = VERIFIED_CONIDS
         m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
         a['source'] = 'Sanji'
         (self.root/'mkt/positions.json').write_text(json.dumps(a))

@@ -10,7 +10,7 @@ from .data_provider import fetch_market, conids_from_course, digest
 from .sanji_orders import atomic_json, read_orders, publish_orders
 from .strategy import evaluate
 from .strategy_config import UNIVERSE, STRATEGY_REVISION
-from .verify_conids import verified_mapping
+from .verify_conids import resolve_identifiers
 from lseg_chart.update import safe_failure_detail
 
 
@@ -45,21 +45,21 @@ def run(root, now, provider=fetch_market, *, replay=False):
         account_path = root/'mkt/positions.json'
         account = json.loads(account_path.read_text()) if account_path.exists() else None
         course_path = root/'price_history.json'
-        conids = conids_from_course(json.loads(course_path.read_text())) if course_path.exists() else {}
+        verification = root/'docs/data/conid_verification.json'
+        evidence = json.loads(verification.read_text()) if verification.exists() else {}
+        conids, coverage = resolve_identifiers(evidence,
+            json.loads(course_path.read_text()) if course_path.exists() else {})
+        report['conid_status'] = conids
+        report['identifier_audit'] = coverage
+        report['identifier_verified_at'] = evidence['retrieved_at']
         result = evaluate(market, account, conids, old)
         report.update({k: v for k, v in result.items() if k != 'orders'})
         report['account_status'] = 'Available' if account else 'Missing mkt/positions.json; no account balance assumed'
-        report['conid_status'] = {t: conids.get(t) for t in UNIVERSE}
-        verification = root/'docs/data/conid_verification.json'
-        if verification.exists():
-            try:
-                report['ibkr_verified_conids'] = verified_mapping(json.loads(verification.read_text()))
-            except (ValueError, KeyError, TypeError):
-                report['ibkr_verified_conids'] = None
         report['pipeline_audit'] = {
             'first_blocking_stage': 'account/pending validation' if result['capital'] is None else None,
             'account_present': account_path.exists(),
-            'course_conids_missing': [t for t in UNIVERSE if t not in conids],
+            'course_coverage_unconfirmed': [t for t, d in coverage.items() if d['course_binding'] != 'confirmed'],
+            'course_coverage_role': 'Execution readiness, not stock-identity validation; no fill is claimed',
             'resolver_status': 'Professor documentation: Sanji does not resolve orders yet. This is not a JSON-generation requirement.',
             'production_account_assumed': False,
         }

@@ -10,12 +10,27 @@ from .demo import build, examples
 from .sanji_orders import publish_orders, validate
 from .strategy import evaluate
 from .test_strategy import fixture
-from .verify_conids import verified_mapping
+from .verify_conids import verified_mapping, resolve_identifiers
+from .strategy_config import VERIFIED_CONIDS
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
+    def test_static_identifiers_and_course_coverage_are_separate(self):
+        evidence = json.loads((ROOT/'docs/data/conid_verification.json').read_text())
+        ids, coverage = resolve_identifiers(evidence, {'265598': {'name': 'APPLE INC'}})
+        self.assertEqual(ids, VERIFIED_CONIDS)
+        self.assertTrue(all(v['course_binding'] == 'unconfirmed' for v in coverage.values()))
+        _, coverage = resolve_identifiers(evidence, {str(v): {'symbol': t} for t,v in ids.items()})
+        self.assertTrue(all(v['course_binding'] == 'confirmed' for v in coverage.values()))
+        for bad in ({}, dict(ids, BAC=1), dict(ids, BAC=True)):
+            with self.assertRaises(ValueError):
+                resolve_identifiers(evidence, {}, configured=bad)
+        for bad in ({'1': {'symbol': 'BAC'}}, {'10098': {'symbol': 'KO'}}, {'10098': {'ric': 'F.N'}}):
+            with self.assertRaises(ValueError):
+                resolve_identifiers(evidence, bad)
+
     def test_real_public_identifiers(self):
         evidence = json.loads((ROOT/'docs/data/conid_verification.json').read_text())
         self.assertEqual(verified_mapping(evidence), {'BAC': 10098, 'KO': 8894, 'PFE': 11031, 'F': 9599491})

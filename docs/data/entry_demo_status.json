@@ -1,0 +1,559 @@
+{
+  "schema_version": 1,
+  "mode": "demonstration",
+  "generated_at": "2026-11-16T22:05:05.868980+00:00",
+  "strategy_revision": "no-earnings-filter-v1",
+  "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
+  "market_source": "Retained real LSEG API response replay; not a new query or backtest",
+  "market_retrieved_at": "2026-11-16T07:21:13.214133+00:00",
+  "market_snapshot_sha256": "46a5025d54b4e57ce686a29a86d028f74ddf49082ad5b2b7d90bbf190a4f2ea3",
+  "calendar": {
+    "as_of": "2026-11-13",
+    "target_session": "2026-11-16",
+    "first_session_of_week": true,
+    "exchange": "XNYS",
+    "close_time": "2026-11-13T21:00:00+00:00"
+  },
+  "snapshot_file": "entry_example_market.json",
+  "starting_capital": 40000,
+  "conids": {
+    "BAC": 10098,
+    "KO": 8894,
+    "PFE": 11031,
+    "F": 9599491
+  },
+  "scenarios": [
+    {
+      "id": "cash_start",
+      "description": "Hypothetical $40,000 cash-only starting book",
+      "account": {
+        "schema_version": 1,
+        "source": "HYPOTHETICAL_DEMONSTRATION",
+        "as_of": "2026-11-13",
+        "currency": "USD",
+        "cash": 40000.0,
+        "equity": 40000.0,
+        "positions": [],
+        "resolved_order_ids": []
+      },
+      "status": "success",
+      "errors": [],
+      "decisions": [
+        {
+          "ticker": "BAC",
+          "decision": "No Trade",
+          "eligible": false,
+          "reasons": [
+            "trend filter failed"
+          ],
+          "close": 51.02,
+          "price_date": "2026-11-13",
+          "sma20": 50.506,
+          "sma50": 54.0708,
+          "hv20": 0.24777861499347337,
+          "r5": 0.032375556454876664,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 0,
+            "put": 0,
+            "call": 0,
+            "cost_basis": null
+          }
+        },
+        {
+          "ticker": "KO",
+          "decision": "Sell Put",
+          "eligible": true,
+          "reasons": [
+            "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          ],
+          "close": 99.25,
+          "price_date": "2026-11-13",
+          "sma20": 94.759,
+          "sma50": 90.82,
+          "hv20": 0.20648052188200483,
+          "r5": 0.037420298944287556,
+          "filters": {
+            "trend": true,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 0,
+            "put": 0,
+            "call": 0,
+            "cost_basis": null
+          },
+          "candidate": {
+            "ric": "KOW202609600.U",
+            "type": "put",
+            "strike": 96.0,
+            "expiry": "2026-11-20",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-13",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 40000.0,
+            "exposure": 9600.0,
+            "put_collateral": 9600.0,
+            "uncommitted_cash": 30400.0,
+            "by_ticker": {
+              "BAC": 0.0,
+              "KO": 9600.0,
+              "PFE": 0.0,
+              "F": 0.0
+            }
+          }
+        },
+        {
+          "ticker": "PFE",
+          "decision": "Sell Put",
+          "eligible": true,
+          "reasons": [
+            "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          ],
+          "close": 28.89,
+          "price_date": "2026-11-13",
+          "sma20": 29.7925,
+          "sma50": 28.8018,
+          "hv20": 0.25284984861362597,
+          "r5": -0.01701258931609395,
+          "filters": {
+            "trend": true,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 0,
+            "put": 0,
+            "call": 0,
+            "cost_basis": null
+          },
+          "candidate": {
+            "ric": "PFEW202602800.U",
+            "type": "put",
+            "strike": 28.0,
+            "expiry": "2026-11-20",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-13",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 40000.0,
+            "exposure": 12400.0,
+            "put_collateral": 12400.0,
+            "uncommitted_cash": 27600.0,
+            "by_ticker": {
+              "BAC": 0.0,
+              "KO": 9600.0,
+              "PFE": 2800.0,
+              "F": 0.0
+            }
+          }
+        },
+        {
+          "ticker": "F",
+          "decision": "No Trade",
+          "eligible": false,
+          "reasons": [
+            "trend filter failed"
+          ],
+          "close": 11.91,
+          "price_date": "2026-11-13",
+          "sma20": 12.1515,
+          "sma50": 12.5594,
+          "hv20": 0.30399345421011414,
+          "r5": -0.042604501607717005,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 0,
+            "put": 0,
+            "call": 0,
+            "cost_basis": null
+          }
+        }
+      ],
+      "capital": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 40000.0,
+        "exposure": 12400.0,
+        "put_collateral": 12400.0,
+        "uncommitted_cash": 27600.0,
+        "by_ticker": {
+          "BAC": 0.0,
+          "KO": 9600.0,
+          "PFE": 2800.0,
+          "F": 0.0
+        }
+      },
+      "capital_before": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 40000.0,
+        "exposure": 0.0,
+        "put_collateral": 0.0,
+        "uncommitted_cash": 40000.0,
+        "by_ticker": {
+          "BAC": 0.0,
+          "KO": 0.0,
+          "PFE": 0.0,
+          "F": 0.0
+        }
+      },
+      "proposed_orders": [
+        {
+          "id": "fin535-demo-ko-put-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 8894,
+          "contract": "put",
+          "expiry": "2026-11-20",
+          "strike": 96.0,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-pfe-put-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 11031,
+          "contract": "put",
+          "expiry": "2026-11-20",
+          "strike": 28.0,
+          "ref": "prev_close"
+        }
+      ],
+      "order_count": 2
+    },
+    {
+      "id": "covered_inventory",
+      "description": "Independent hypothetical $40,000 book: 100 shares of each ticker; basis equals its observed close; remaining funds held as cash. These are assumed holdings, not simulated purchases, actual assignments, or a continuation of the cash-start run.",
+      "account": {
+        "schema_version": 1,
+        "source": "HYPOTHETICAL_DEMONSTRATION",
+        "as_of": "2026-11-13",
+        "currency": "USD",
+        "cash": 20893.0,
+        "equity": 40000.0,
+        "positions": [
+          {
+            "ticker": "BAC",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 51.02
+          },
+          {
+            "ticker": "KO",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 99.25
+          },
+          {
+            "ticker": "PFE",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 28.89
+          },
+          {
+            "ticker": "F",
+            "kind": "stock",
+            "quantity": 100,
+            "cost_basis": 11.91
+          }
+        ],
+        "resolved_order_ids": []
+      },
+      "status": "success",
+      "errors": [],
+      "decisions": [
+        {
+          "ticker": "BAC",
+          "decision": "Sell Covered Call",
+          "eligible": true,
+          "reasons": [
+            "Fallback: two observed strikes above ATM; both price floors checked"
+          ],
+          "close": 51.02,
+          "price_date": "2026-11-13",
+          "sma20": 50.506,
+          "sma50": 54.0708,
+          "hv20": 0.24777861499347337,
+          "r5": 0.032375556454876664,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 51.02
+          },
+          "candidate": {
+            "ric": "BACK202605250.U",
+            "type": "call",
+            "strike": 52.5,
+            "expiry": "2026-11-20",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-13",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 20893.0,
+            "exposure": 19107.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 20893.0,
+            "by_ticker": {
+              "BAC": 5102.0,
+              "KO": 9925.0,
+              "PFE": 2889.0,
+              "F": 1191.0
+            }
+          }
+        },
+        {
+          "ticker": "KO",
+          "decision": "No Trade",
+          "eligible": false,
+          "reasons": [
+            "Two-strikes-OTM fallback fails cost-basis/2%-above-close constraints"
+          ],
+          "close": 99.25,
+          "price_date": "2026-11-13",
+          "sma20": 94.759,
+          "sma50": 90.82,
+          "hv20": 0.20648052188200483,
+          "r5": 0.037420298944287556,
+          "filters": {
+            "trend": true,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 99.25
+          }
+        },
+        {
+          "ticker": "PFE",
+          "decision": "Sell Covered Call",
+          "eligible": true,
+          "reasons": [
+            "Fallback: two observed strikes above ATM; both price floors checked"
+          ],
+          "close": 28.89,
+          "price_date": "2026-11-13",
+          "sma20": 29.7925,
+          "sma50": 28.8018,
+          "hv20": 0.25284984861362597,
+          "r5": -0.01701258931609395,
+          "filters": {
+            "trend": true,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 28.89
+          },
+          "candidate": {
+            "ric": "PFEK202603000.U",
+            "type": "call",
+            "strike": 30.0,
+            "expiry": "2026-11-20",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-13",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 20893.0,
+            "exposure": 19107.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 20893.0,
+            "by_ticker": {
+              "BAC": 5102.0,
+              "KO": 9925.0,
+              "PFE": 2889.0,
+              "F": 1191.0
+            }
+          }
+        },
+        {
+          "ticker": "F",
+          "decision": "Sell Covered Call",
+          "eligible": true,
+          "reasons": [
+            "Fallback: two observed strikes above ATM; both price floors checked"
+          ],
+          "close": 11.91,
+          "price_date": "2026-11-13",
+          "sma20": 12.1515,
+          "sma50": 12.5594,
+          "hv20": 0.30399345421011414,
+          "r5": -0.042604501607717005,
+          "filters": {
+            "trend": false,
+            "volatility": true,
+            "sudden_drop": true
+          },
+          "position": {
+            "shares": 100,
+            "put": 0,
+            "call": 0,
+            "cost_basis": 11.91
+          },
+          "candidate": {
+            "ric": "FK202601300.U",
+            "type": "call",
+            "strike": 13.0,
+            "expiry": "2026-11-20",
+            "multiplier": 100,
+            "terms_verified": true,
+            "observed_on": "2026-11-13",
+            "delta": null,
+            "delta_date": null,
+            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
+            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
+          },
+          "capital_check": {
+            "passed": true,
+            "reasons": [],
+            "equity": 40000.0,
+            "cash": 20893.0,
+            "exposure": 19107.0,
+            "put_collateral": 0.0,
+            "uncommitted_cash": 20893.0,
+            "by_ticker": {
+              "BAC": 5102.0,
+              "KO": 9925.0,
+              "PFE": 2889.0,
+              "F": 1191.0
+            }
+          }
+        }
+      ],
+      "capital": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 20893.0,
+        "exposure": 19107.0,
+        "put_collateral": 0.0,
+        "uncommitted_cash": 20893.0,
+        "by_ticker": {
+          "BAC": 5102.0,
+          "KO": 9925.0,
+          "PFE": 2889.0,
+          "F": 1191.0
+        }
+      },
+      "capital_before": {
+        "passed": true,
+        "reasons": [],
+        "equity": 40000.0,
+        "cash": 20893.0,
+        "exposure": 19107.0,
+        "put_collateral": 0.0,
+        "uncommitted_cash": 20893.0,
+        "by_ticker": {
+          "BAC": 5102.0,
+          "KO": 9925.0,
+          "PFE": 2889.0,
+          "F": 1191.0
+        }
+      },
+      "proposed_orders": [
+        {
+          "id": "fin535-demo-bac-call-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 10098,
+          "contract": "call",
+          "expiry": "2026-11-20",
+          "strike": 52.5,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-pfe-call-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 11031,
+          "contract": "call",
+          "expiry": "2026-11-20",
+          "strike": 30.0,
+          "ref": "prev_close"
+        },
+        {
+          "id": "fin535-demo-f-call-2026-11-16",
+          "for": "2026-11-16",
+          "order_type": "mkt",
+          "action": "SHT",
+          "qty": 1,
+          "underlying": 9599491,
+          "contract": "call",
+          "expiry": "2026-11-20",
+          "strike": 13.0,
+          "ref": "prev_close"
+        }
+      ],
+      "order_count": 3
+    }
+  ],
+  "production_orders_changed": false,
+  "production_order_hashes": [
+    "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  ]
+}

@@ -27,11 +27,13 @@ def examples(market):
              'not simulated purchases, actual assignments, or a continuation of the cash-start run.', held)]
 
 
-def build(root, now):
+def build(root, now, *, weekly_entry_example=False):
     root = Path(root)
     production = [root/'open_orders.json', root/'mkt/open_orders.json']
     before = [p.read_bytes() for p in production]
-    market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+    snapshot_name = 'entry_example_market.json' if weekly_entry_example else 'market_snapshot.json'
+    prefix = 'entry_demo' if weekly_entry_example else 'demo'
+    market = json.loads((root/'docs/data'/snapshot_name).read_text())
     if market.get('mode') != 'live' or market.get('source') != 'LSEG Data Platform':
         raise ValueError('Demonstration requires a retained real LSEG response, never synthetic fixtures')
     evidence = json.loads((root/'docs/data/conid_verification.json').read_text())
@@ -42,7 +44,7 @@ def build(root, now):
                   label='DEMONSTRATION ONLY — hypothetical accounts, not actual Sanji account orders',
                   market_source='Retained real LSEG API response replay; not a new query or backtest',
                   market_retrieved_at=market['retrieved_at'], market_snapshot_sha256=digest(market),
-                  calendar=market['calendar'], starting_capital=ILLUSTRATIVE_CAPITAL,
+                  calendar=market['calendar'], snapshot_file=snapshot_name, starting_capital=ILLUSTRATIVE_CAPITAL,
                   conids=ids, scenarios=[], production_orders_changed=False,
                   production_order_hashes=[hashlib.sha256(x).hexdigest() for x in before])
     demo_market = deepcopy(market)
@@ -58,10 +60,10 @@ def build(root, now):
     # Guard against accidental changes even if future helper code is modified.
     if [p.read_bytes() for p in production] != before:
         raise RuntimeError('Production orders changed during isolated demonstration')
-    atomic_json(root/'docs/data/demo_status.json', report)
+    atomic_json(root/f'docs/data/{prefix}_status.json', report)
     for s in report['scenarios']:
         # JSON null denotes blocked generation; never leave an older example queue.
-        atomic_json(root/f"docs/data/demo_{s['id']}_orders.json", s['proposed_orders'])
+        atomic_json(root/f"docs/data/{prefix}_{s['id']}_orders.json", s['proposed_orders'])
     print(json.dumps({'mode': report['mode'], 'production_orders_changed': False,
                       'scenarios': [{k: s[k] for k in ('id', 'status', 'order_count')} for s in report['scenarios']]}, indent=2))
     return report
@@ -70,5 +72,7 @@ def build(root, now):
 if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[1])
+    p.add_argument('--weekly-entry-example', action='store_true',
+                   help='Replay the separately retained first-weekly-session real snapshot; not a current order')
     args = p.parse_args()
-    build(args.root, datetime.now(timezone.utc))
+    build(args.root, datetime.now(timezone.utc), weekly_entry_example=args.weekly_entry_example)

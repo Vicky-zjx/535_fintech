@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from .sanji_orders import read_orders, validate
 from .data_provider import digest
 from .strategy_config import STRATEGY_REVISION
+from .verify_conids import resolve_identifiers
 
 
 class Links(HTMLParser):
@@ -20,6 +21,8 @@ def check(root):
     root = Path(root)
     orders = read_orders(root)
     status = json.loads((root/'docs/data/strategy_status.json').read_text())
+    evidence = json.loads((root/'docs/data/conid_verification.json').read_text())
+    resolve_identifiers(evidence, json.loads((root/'price_history.json').read_text()) if (root/'price_history.json').exists() else {})
     if status.get('strategy_revision') != STRATEGY_REVISION:
         raise ValueError('Re-evaluate diagnostics under the current strategy revision')
     if ('earnings_unreliable' in status.get('pipeline_audit', {}) or
@@ -57,6 +60,30 @@ def check(root):
                 raise ValueError('Demo orders need independent identifiers')
             if saved != proposed or len(proposed) != scenario['order_count']:
                 raise ValueError('Demonstration JSON/count mismatch')
+    entry_path = root/'docs/data/entry_demo_status.json'
+    if entry_path.exists():
+        entry = json.loads(entry_path.read_text())
+        snapshot = json.loads((root/'docs/data/entry_example_market.json').read_text())
+        if entry['mode'] != 'demonstration' or entry['production_orders_changed'] or entry['market_snapshot_sha256'] != digest(snapshot):
+            raise ValueError('Invalid isolated weekly-entry example provenance')
+        for s in entry['scenarios']:
+            saved = json.loads((root/f"docs/data/entry_demo_{s['id']}_orders.json").read_text())
+            if saved != s['proposed_orders'] or (saved is not None and len(saved) != s['order_count']):
+                raise ValueError('Weekly-entry example download mismatch')
+            if saved is not None:
+                validate(saved)
+                if any(not o['id'].startswith('fin535-demo-') for o in saved):
+                    raise ValueError('Entry example must not claim production IDs')
+    historical_path = root/'docs/data/historical_signals.json'
+    if historical_path.exists():
+        from .historical import analyze
+        market = json.loads((root/'docs/data/market_snapshot.json').read_text())
+        historical = json.loads(historical_path.read_text())
+        if historical['market_snapshot_sha256'] != digest(market):
+            raise ValueError('Historical analysis snapshot mismatch')
+        expected = analyze(market)
+        if any(historical.get(k) != v for k,v in expected.items()):
+            raise ValueError('Historical statistics do not reproduce from real observations')
     html = (root/'docs/index.html').read_text()
     if '<html lang="en">' not in html:
         raise ValueError('English page language required')

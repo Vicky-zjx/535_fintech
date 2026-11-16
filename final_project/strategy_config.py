@@ -1,5 +1,8 @@
 """Predeclared research settings; not optimized from realized returns."""
 STRATEGY_REVISION = 'no-earnings-filter-v1'
+# Static identity mapping, verified against the official IBKR evidence file.
+# Identity is NOT a claim of enrollment or contract-open coverage in Robin.
+VERIFIED_CONIDS = {'BAC': 10098, 'KO': 8894, 'PFE': 11031, 'F': 9599491}
 UNIVERSE = {
     'BAC': {'ric': 'BAC.N', 'name': 'Bank of America', 'sector': 'Financials'},
     'KO': {'ric': 'KO.N', 'name': 'Coca-Cola', 'sector': 'Consumer Staples'},

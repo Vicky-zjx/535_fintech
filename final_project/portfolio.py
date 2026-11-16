@@ -10,6 +10,8 @@ def number(value, name, minimum=0):
 
 
 def validate_account(account, as_of, closes):
+    if account is None:
+        raise ValueError('Authoritative Sanji account unavailable: cash, equity and complete positions required')
     if not isinstance(account, dict) or account.get('schema_version') != 1:
         raise ValueError('Account adapter schema unavailable; raw Sanji format must be verified')
     if account.get('as_of') != as_of or account.get('currency') != 'USD':

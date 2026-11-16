@@ -9,6 +9,7 @@ import time
 import pandas as pd
 from lseg_chart.update import query_lseg, safe_failure_detail
 from .strategy_config import UNIVERSE
+from .historical import history_window
 
 
 def table(frame):
@@ -113,9 +114,10 @@ def add_deltas(ld, contracts, as_of):
 
 def fetch_market(ctx, retrieved_at):
     as_of, session = ctx['as_of'], ctx['target_session']
-    start = str(date.fromisoformat(as_of)-timedelta(days=120))
+    window = history_window(as_of)
+    start = window['query_start']
     out = {'mode': 'live', 'source': 'LSEG Data Platform', 'retrieved_at': retrieved_at,
-           'calendar': ctx, 'tickers': {}, 'raw': {}}
+           'calendar': ctx, 'history_window': window, 'tickers': {}, 'raw': {}}
 
     def operation(ld):
         last_request = 0.

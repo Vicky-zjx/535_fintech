@@ -173,7 +173,7 @@
             An unavailable input is not a negative trading signal.</p>
         </div>
         <p id="pipeline-discussion">Final order eligibility also requires the authoritative
-          account, course identifiers, a usable option contract and sufficient reserved capital.</p>
+          account, verified stock identifiers, a usable option contract and sufficient reserved capital.</p>
         <h3>Different missing inputs have different consequences</h3>
         <div class="table-wrap" tabindex="0" aria-label="Evidence availability and its implications">
           <table><thead><tr><th>Layer</th><th>Current evidence</th><th>What it permits — or prevents</th></tr></thead>
@@ -205,7 +205,8 @@
           <p>IBKR public search and security definitions independently confirm NYSE / USD common stocks:
             BAC 10098; KO 8894; PFE 11031; F 9599491.
             This verifies identity, not enrollment or option-price coverage in the course database.
-            Production retains the professor's course-feed mapping requirement.</p>
+            Production validates the configured static conids against this evidence and rejects any conflicting course mapping.
+            No nightly IBKR login is required; missing course coverage remains an execution-readiness limitation.</p>
           <p>The account file is the first current production blocker. The native Sanji account format,
             authoritative balances, complete positions, cost bases, marks, and resolution history must come
             from the course producer. Its update must finish before nightly planning.

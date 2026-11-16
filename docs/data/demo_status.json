@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-16T19:51:00.611350+00:00",
+  "generated_at": "2026-11-16T22:05:05.563199+00:00",
   "strategy_revision": "no-earnings-filter-v1",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
@@ -14,6 +14,7 @@
     "exchange": "XNYS",
     "close_time": "2026-11-13T21:00:00+00:00"
   },
+  "snapshot_file": "market_snapshot.json",
   "starting_capital": 40000,
   "conids": {
     "BAC": 10098,

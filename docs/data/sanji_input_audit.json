@@ -1,0 +1,31 @@
+{
+  "review_date": "2026-11-16",
+  "scope": "Read-only inspection of this repository (including ignored account filenames), its course price_history.json, and accessible public professor repositories. No access to private course hosts or brokerage accounts was attempted.",
+  "sources": [
+    "https://jakevestal.github.io/server-logic-533/order.html",
+    "https://github.com/JakeVestal/server-logic-533",
+    "https://github.com/JakeVestal/535_fintech",
+    "https://github.com/JakeVestal/server-logic-533/blob/main/host_files/update_price_history.sh"
+  ],
+  "account_found": false,
+  "positions_file_found": false,
+  "fills_file_found": false,
+  "course_price_history": {"identifiers_present": [265598], "reported_name": "APPLE INC", "wheel_ticker_bindings_present": []},
+  "verified_static_conids": {"BAC": 10098, "KO": 8894, "PFE": 11031, "F": 9599491},
+  "identity_evidence": "conid_verification.json; official IBKR product search and security definitions; US / NYSE / USD common stock",
+  "production_requirements": {
+    "all_entries": "Authoritative completed-session cash, equity and a complete position inventory, with account date and source. Absence of a positions file is not evidence of an empty account.",
+    "cash_start": "An explicitly confirmed flat account needs no invented cost basis or option marks. Cash, equity, existing orders and completeness must still reconcile.",
+    "covered_call": "At least 100 unencumbered actual shares and actual per-share cost basis; existing short calls and pending commitments checked.",
+    "existing_short_options": "Actual strike, expiry, multiplier/deliverable and closing mark to reconcile NAV and collateral. A missing mark is not zero.",
+    "order_resolution": "Current pending orders are read from both identical order paths. Resolved IDs/fills or equivalent authoritative reconciled state are needed where relevant; no historical fill is inferred. Producer must finish its prior-session update before planning."
+  },
+  "resolved_independently": "Four static identifiers are validated locally against retained IBKR evidence; no nightly IBKR login. Conflicting course mappings are rejected. Unconfirmed course enrollment does not invalidate an explicit numerical stock identity or JSON proposal.",
+  "remaining_professor_dependencies": [
+    "Supply the authoritative starting/end-of-session Sanji account and native schema/sample or an approved read-only adapter contract, including confirmation that the inventory is complete.",
+    "Specify account update-complete timing and order/fill reconciliation interface.",
+    "Confirm BAC/KO/PFE/F enrollment and required contract-open prices in Robin before claiming executable course fills. Identity verification alone does not establish coverage.",
+    "Enable resolver outputs only when course execution/performance is required; the documented inactive resolver does not prevent JSON generation."
+  ],
+  "submission_status": "Not submitted. Production order generation remains blocked without authoritative account state. Demonstration proposals are separately labeled and are not production orders."
+}

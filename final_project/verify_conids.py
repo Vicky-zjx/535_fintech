@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from urllib.request import Request, urlopen
 from .sanji_orders import atomic_json
-from .strategy_config import UNIVERSE
+from .strategy_config import UNIVERSE, VERIFIED_CONIDS
 
 BASE = 'https://www.interactivebrokers.com/portal.proxy/v1/mkt'
 NAMES = {'BAC': 'BANK OF AMERICA CORP', 'KO': 'COCA-COLA CO/THE',
@@ -41,6 +41,39 @@ def request(url, payload=None):
                                          'User-Agent': 'FIN535-contract-verification/1.0'})
     with urlopen(req, timeout=30) as response:
         return json.load(response)
+
+
+def resolve_identifiers(evidence, course, configured=None):
+    """Validate static identity; audit course coverage without guessing enrollment.
+
+    Literal-strike/expiry JSON needs the stock identity, not a chain token resolver.
+    Missing course coverage is an execution dependency; any conflicting mapping is
+    a hard error. No nightly IBKR authentication or discovery request is needed.
+    """
+    from .data_provider import conids_from_course
+    configured = VERIFIED_CONIDS if configured is None else configured
+    verified = verified_mapping(evidence)
+    if set(configured) != set(UNIVERSE) or any(
+            type(configured[t]) is not int or configured[t] != verified[t] for t in UNIVERSE):
+        raise ValueError('Configured conids are missing or conflict with verified IBKR identities')
+    if not isinstance(course, dict):
+        raise ValueError('Invalid course identifier document')
+    observed = conids_from_course(course)
+    if any(observed[t] != configured[t] for t in observed):
+        raise ValueError('Course conid mapping conflicts with verified IBKR identity')
+    for t, conid in configured.items():
+        entry = course.get(str(conid), {})
+        if not isinstance(entry, dict):
+            raise ValueError('Invalid course security metadata')
+        for key in ('symbol', 'ticker'):
+            if entry.get(key) and entry[key] != t:
+                raise ValueError('Course security symbol conflicts with verified conid')
+        if entry.get('ric') and entry['ric'] != UNIVERSE[t]['ric']:
+            raise ValueError('Course security RIC conflicts with verified conid')
+    coverage = {t: {'conid': configured[t], 'identity': 'verified_static_IBKR',
+                    'course_binding': 'confirmed' if t in observed else 'unconfirmed',
+                    'contract_open_coverage': 'unverified'} for t in UNIVERSE}
+    return dict(configured), coverage
 
 
 def verify():

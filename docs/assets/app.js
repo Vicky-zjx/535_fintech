@@ -160,7 +160,7 @@
     const missingIds = tickers.filter(t => !Number.isInteger(s.conid_status?.[t]));
     const blocked = s.status !== "success";
     text("pipeline-discussion", blocked
-      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, course mappings and available collateral must be verified before publication. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
+      ? `The production evaluation is blocked${s.pipeline_audit?.first_blocking_stage ? " at "+s.pipeline_audit.first_blocking_stage : " or has not completed"}. Passing a technical screen is not final eligibility. Account holdings, existing obligations, verified stock identifiers and available collateral must be validated before publication. The saved “No Trade” labels do not establish a completed no-opportunity evaluation.`
       : "The planner completed its input evaluation. Proposed orders are not fills, and a successful run with no orders is not a claim of zero investment return. The proposal reasons remain in the monitor and downloadable audit.");
     const rows = [
       ["LSEG market retrieval", s.market_data_retrieved_at ? "Response received "+s.market_data_retrieved_at : "No successful market response attached to this attempt",
@@ -169,8 +169,10 @@
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
       ["Sanji account", s.account_status || "No verified account status",
         "Need authoritative cash, equity, all positions, bases, option marks and resolved IDs. An assumed $40,000 account cannot establish production capacity."],
-      ["Course identifier mapping", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four numeric mappings reported",
-        "Public IBKR identity checks do not establish enrollment or contract-price coverage in the professor's course feed."],
+      ["Stock identifiers", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four static conids validated against official IBKR evidence",
+        "Literal strike/expiry proposals use verified stock identities. Course conflicts block publication; no nightly IBKR login is required."],
+      ["Course execution coverage", (s.pipeline_audit?.course_coverage_unconfirmed || []).length ? "Course binding unconfirmed for "+s.pipeline_audit.course_coverage_unconfirmed.join(", ") : "Inspect the separate course coverage audit",
+        "Identity verification does not prove Robin contains the contract-opening prices. Coverage and resolver readiness affect execution, not whether the JSON names the correct stock."],
       ["Production orders", blocked ? "Blocked/not run; retained queue is not a new result" : "Validated proposal evaluation completed",
         "An empty queue while blocked is not a successful no-trade run. Only completed evaluation can establish no valid proposals; neither state establishes executions."],
       ["Trading performance", "Pending verified Sanji execution and NAV histories",
@@ -217,7 +219,7 @@
     if (s.conid_status) {
       const missing = tickers.filter((t) => !s.conid_status[t]);
       if (missing.length)
-        issues.push("Course conid mappings missing: " + missing.join(", "));
+        issues.push("Verified stock conid mappings missing: " + missing.join(", "));
     }
     text("issues", issues.join(" · "));
     const rows = $("decision-rows");
