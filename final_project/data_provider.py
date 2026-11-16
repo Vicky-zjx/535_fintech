@@ -144,6 +144,26 @@ def fetch_market(ctx, retrieved_at):
                                      header_type=ld.HeaderType.NAME)
                 raw['closes'] = table(prices)
                 d['history'] = normalize_closes(prices, ric, start, as_of)
+                if not any(r['date'] == as_of and r['close'] is not None for r in d['history']):
+                    # A long-window response can repeat the preceding session's date.
+                    # One exact-day query uses the SAME field/adjustment definition.
+                    # Never relabel an older observation as the requested date.
+                    try:
+                        recheck = paced(ld.get_data, [ric], ['TR.PriceClose.date', 'TR.PriceClose'],
+                            parameters={'SDate': as_of, 'EDate': as_of, 'Frq': 'D', 'Curn': 'USD'},
+                            header_type=ld.HeaderType.NAME)
+                        raw['close_recheck'] = table(recheck)
+                        observed = normalize_closes(recheck, ric, start, as_of)
+                        same_day = [r for r in observed if r['date'] == as_of and r['close'] is not None]
+                        if len({r['close'] for r in same_day}) > 1:
+                            raise ValueError('Conflicting same-day recheck prices')
+                        if same_day:
+                            d['history'] = [r for r in d['history'] if r['date'] != as_of] + same_day[:1]
+                            d['close_recheck_status'] = 'Verified same-day TR.PriceClose; same field and currency'
+                        else:
+                            d['close_recheck_status'] = 'Requested date still unavailable; older dated prices not substituted'
+                    except Exception as error:
+                        d['close_recheck_status'] = 'Same-day recheck unavailable: '+safe_failure_detail(error, os.environ)
             except Exception as e:
                 d['errors'].append('Price/identity query or validation failed: '+safe_failure_detail(e, os.environ))
             try:

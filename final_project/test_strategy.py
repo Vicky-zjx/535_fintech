@@ -306,6 +306,10 @@ class DataTests(unittest.TestCase):
         for call in ld.get_data.call_args_list:
             self.assertIn(call.args[1], (['TR.TickerSymbol'], ['TR.PriceClose.date', 'TR.PriceClose']))
             self.assertNotIn('EventType', call.kwargs.get('parameters', {}))
+            if call.args[1] == ['TR.PriceClose.date', 'TR.PriceClose']:
+                from .historical import history_window
+                self.assertEqual(call.kwargs['parameters']['SDate'], history_window(market['calendar']['as_of'])['query_start'])
+                self.assertLess(call.kwargs['parameters']['SDate'], '2023-11-13')
         for call in ld.get_history.call_args_list:
             self.assertEqual(call.kwargs['fields'], ['DELTA_EXCH'])
         for t, d in result['tickers'].items():
@@ -394,6 +398,31 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(rc, 2)
         provider.assert_not_called()
         self.assertEqual(before, [(self.root/p).read_bytes() for p in ('open_orders.json', 'mkt/open_orders.json')])
+
+    def test_verified_static_ids_generate_without_claiming_course_coverage(self):
+        # Synthetic test account ONLY, confined to a temporary directory.
+        m, a, _ = fixture()
+        m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
+        a['source'] = 'Sanji'
+        (self.root/'mkt/positions.json').write_text(json.dumps(a))
+        (self.root/'price_history.json').write_text('{}')
+        rc = run(self.root, datetime(2026, 11, 16, 3, tzinfo=timezone.utc), provider=lambda *args: m)
+        self.assertEqual(rc, 0)
+        self.assertEqual({o['underlying'] for o in read_orders(self.root)}, set(VERIFIED_CONIDS.values()))
+        s = json.loads((self.root/'docs/data/strategy_status.json').read_text())
+        self.assertTrue(s['orders_updated'])
+        self.assertEqual(set(s['pipeline_audit']['course_coverage_unconfirmed']), set(VERIFIED_CONIDS))
+
+    def test_real_market_without_account_preserves_production_bytes(self):
+        m, _, _ = fixture()
+        m.update(mode='live', source='LSEG Data Platform', retrieved_at='2026-11-16T03:00:00+00:00')
+        paths = [self.root/p for p in ('open_orders.json', 'mkt/open_orders.json')]
+        before = [p.read_bytes() for p in paths]
+        self.assertEqual(run(self.root, datetime(2026, 11, 16, 3, tzinfo=timezone.utc), provider=lambda *args:m), 2)
+        self.assertEqual(before, [p.read_bytes() for p in paths])
+        s = json.loads((self.root/'docs/data/strategy_status.json').read_text())
+        self.assertIn('Authoritative Sanji account unavailable', str(s['errors']))
+        self.assertFalse(s['orders_updated'])
 
 
 if __name__ == '__main__':

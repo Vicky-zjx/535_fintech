@@ -64,7 +64,7 @@ def run(root, now, provider=fetch_market, *, replay=False):
             'production_account_assumed': False,
         }
         report['data_quality'] = {t: {k: v for k, v in d.items() if k in (
-            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'exclusions')}
+            'ric', 'errors', 'candidate_count', 'options_status', 'delta_status', 'exclusions', 'close_recheck_status')}
                                  for t, d in market['tickers'].items()}
         if result['status'] == 'success':
             report['proposed_order_count'] = len(result['orders'])
