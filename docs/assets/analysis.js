@@ -61,31 +61,49 @@
     return [overview, ...paragraphs,
       "A single quiet snapshot cannot show that volatility and drop filters are redundant. The three-year section measures their incremental effect on historical eligibility and overlapping rejections. Whether that selectivity improves investment returns still requires comparable option trades and complete NAV histories; this observation is not proof of avoided losses or profitability."];
   }
-  function hypotheticalCapital(demo) {
+  function cashStartScenario(demo) {
     if (demo?.mode !== "demonstration" || demo.production_orders_changed !== false ||
         !demo.market_snapshot_sha256 || !demo.market_retrieved_at)
       throw Error("A labeled, isolated demonstration with real-market provenance is required.");
-    const s = demo.scenarios?.find(x => x.id === "covered_inventory");
+    const matches = Array.isArray(demo.scenarios) ? demo.scenarios.filter(x => x.id === "cash_start") : [];
+    if (matches.length !== 1)
+      throw Error("Exactly one cash-only starting scenario is required; no other account is substituted.");
+    return matches[0];
+  }
+  function hypotheticalCapital(demo) {
+    const s = cashStartScenario(demo);
     const c = s?.capital, a = s?.account;
     if (!c || !a || a.source !== "HYPOTHETICAL_DEMONSTRATION" || s.status !== "success" ||
         c.passed !== true || a.as_of !== demo.calendar?.as_of ||
         ![c.equity, c.cash, c.exposure, c.put_collateral, c.uncommitted_cash].every(finite) ||
-        c.equity <= 0 || c.put_collateral !== 0 || c.cash < 0 || c.exposure < 0 ||
-        a.positions?.length !== 4 || a.positions.some(p => p.kind !== "stock" || p.quantity !== 100) ||
-        new Set(a.positions.map(p => p.ticker)).size !== 4 ||
-        !tickers.every(t => a.positions.some(p => p.ticker === t)) ||
+        c.equity !== 40000 || c.put_collateral < 0 || c.uncommitted_cash < 0 ||
+        !Array.isArray(a.positions) || a.positions.length !== 0 || a.currency !== "USD" ||
         !closeEnough(c.equity, a.equity) || !closeEnough(c.cash, a.cash) ||
-        !closeEnough(c.cash, c.uncommitted_cash) || !closeEnough(c.exposure + c.cash, c.equity) ||
+        !closeEnough(c.cash, c.equity) || !closeEnough(c.exposure, c.put_collateral) ||
+        !closeEnough(c.put_collateral + c.uncommitted_cash, c.cash) ||
         !closeEnough(tickers.reduce((n,t) => n + c.by_ticker?.[t], 0), c.exposure) ||
         tickers.some(t => !finite(c.by_ticker[t]) || c.by_ticker[t] < 0 || c.by_ticker[t] > .3*c.equity+1e-8) ||
         c.exposure > .7*c.equity+1e-8 || c.uncommitted_cash < .3*c.equity-1e-8)
-      throw Error("The stock-only hypothetical allocation does not reconcile; no capital figure is inferred.");
+      throw Error("The cash-only hypothetical allocation does not reconcile; no capital figure is inferred.");
+    const reserved = Object.fromEntries(tickers.map(t => [t, 0]));
+    if (!Array.isArray(s.proposed_orders) || s.order_count !== s.proposed_orders.length)
+      throw Error("Cash-only proposal counts do not reconcile.");
+    for (const o of s.proposed_orders) {
+      const ticker = tickers.find(t => demo.conids?.[t] === o.underlying);
+      if (!ticker || reserved[ticker] !== 0 || o.contract !== "put" || o.action !== "SHT" ||
+          o.qty !== 1 || !finite(o.strike) || o.strike <= 0 || o.for !== demo.calendar.target_session)
+        throw Error("Cash-only proposed collateral requires dated, one-contract put proposals.");
+      reserved[ticker] = o.strike * 100;
+    }
+    if (tickers.some(t => !closeEnough(reserved[t], c.by_ticker[t])))
+      throw Error("Proposed put collateral disagrees with the saved capital allocation.");
     return {asOf: demo.calendar.as_of, retrievedAt: demo.market_retrieved_at,
-      exposure: c.exposure, cash: c.cash, equity: c.equity, reserve: .3*c.equity,
-      utilization: c.exposure/c.equity, cashFraction: c.cash/c.equity, byTicker: c.by_ticker,
-      paragraph: `Hypothetical covered inventory on ${demo.calendar.as_of}: ${money(c.exposure)} in stocks / ${money(c.equity)} equity = ${pct(c.exposure/c.equity)} utilization. Uncommitted cash is ${money(c.cash)} (${pct(c.cash/c.equity)}), above the ${money(.3*c.equity)} minimum reserve. The snapshot assumes 100 shares of each stock, no short options, and bases equal to observed closes. Quantities, bases and starting wealth are assumptions; prices are retained LSEG observations. This is neither actual Sanji capital nor a period-average denominator, and no return can be inferred.`};
+      exposure: c.exposure, collateral: c.put_collateral, cash: c.cash,
+      uncommittedCash: c.uncommitted_cash, equity: c.equity, reserve: .3*c.equity,
+      utilization: c.put_collateral/c.equity, cashFraction: c.uncommitted_cash/c.equity, byTicker: c.by_ticker,
+      paragraph: `Cash-only starting portfolio at the ${demo.calendar.as_of} signal close: ${money(c.equity)} is a course modeling assumption, with zero shares and zero open options. Proposed puts reserve ${money(c.put_collateral)} (${pct(c.put_collateral/c.equity)}); uncommitted cash is ${money(c.uncommitted_cash)} (${pct(c.uncommitted_cash/c.equity)}), against the ${money(.3*c.equity)} minimum reserve. Total cash remains ${money(c.cash)}: no premium or fill is assumed. This is neither actual Sanji capital nor a period-average denominator, and no return can be inferred.`};
   }
-  const api = {signalEvidence, signalParagraphs, hypotheticalCapital};
+  const api = {signalEvidence, signalParagraphs, cashStartScenario, hypotheticalCapital};
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof window !== "undefined") window.FinalAnalysis = api;
 })();

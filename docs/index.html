@@ -10,8 +10,8 @@
     />
     <link rel="stylesheet" href="assets/style.css" />
     <script defer src="../course-nav.js"></script>
-    <script defer src="assets/analysis.js"></script>
-    <script defer src="assets/app.js"></script>
+    <script defer src="assets/analysis.js?v=cash-only-1"></script>
+    <script defer src="assets/app.js?v=cash-only-1"></script>
     <script defer src="../covered-call/assets/plotly.min.js"></script>
     <script defer src="assets/history.js"></script>
   </head>
@@ -708,10 +708,11 @@
 
       <section id="demonstration" aria-labelledby="demo-title">
         <p class="eyebrow">09 / ISOLATED DEMONSTRATION / NOT AN ACTUAL ACCOUNT</p>
-        <h2 id="demo-title">Real market inputs. Hypothetical $40,000 books.</h2>
-        <p>These independent examples use the same current Wheel engine and remaining risk checks.
-          They are not actual Sanji orders, fills, assignments, or a performance backtest.
-          These isolated historical examples do not write either order file; the nightly course mode above does.</p>
+        <h2 id="demo-title">Real market inputs. A cash-only starting portfolio.</h2>
+        <p>This isolated example starts with no positions and $40,000 cash, a course modeling assumption.
+          It uses the same current Wheel engine and risk checks to evaluate all four stocks.
+          The results are proposed orders, not confirmed executions, assignments, or a performance backtest.
+          This retained-data demonstration does not write either order file; the nightly course mode above does.</p>
         <p class="notice" id="demo-summary">Demonstration results have not loaded.</p>
         <div id="demo-results"></div>
         <details>
@@ -720,7 +721,6 @@
           <p>A current book can produce zero new puts when filters, weekly locks or other checks fail. Midweek dates alone do not block entry. This saved week-start
             example proves the same engine can generate puts without relaxing the entry schedule.</p>
           <p><a href="data/entry_demo_cash_start_orders.json">Archived cash-start orders</a> ·
-            <a href="data/entry_demo_status.json">Dated example account and audit</a> ·
             <a href="data/entry_example_market.json">Unchanged real source snapshot</a></p>
         </details>
         <details>
@@ -740,10 +740,9 @@
             No earnings dates are requested or used. Account, technical, capital and position checks remain in force.
             Missing same-session Greeks use only the existing listed-strike fallback.</p>
           <p><a href="data/conid_verification.json">IBKR verification evidence</a> ·
-            <a href="data/demo_status.json">Example accounts and full decision audit</a> ·
-            <a href="data/demo_cash_start_orders.json">Cash-start example JSON</a> ·
-            <a href="data/demo_covered_inventory_orders.json">Covered-inventory example JSON</a></p>
-          <p><code>python -m final_project.demo</code> reproduces these isolated examples from the retained real LSEG response.
+            <a href="data/demo_cash_start_orders.json">Cash-only proposed orders JSON</a></p>
+          <p><code>python -m final_project.demo</code> reproduces the retained-data demonstration audit;
+            this page displays its cash-only starting scenario.
             <code>python -m final_project.run --replay</code> audits retained inputs without API calls or order writes.
             <code>python -m final_project.run --mode course</code> queries fresh LSEG data and manages the course queue.
             <code>--mode authoritative</code> instead requires the official account.</p>
@@ -779,14 +778,14 @@
           account-return formula assumes none, otherwise a flow-adjusted return is required. The
           capital-return ratio is descriptive and non-annualized, not a time-weighted return or Sharpe.</p>
         <figure id="demo-allocation" data-evidence-scope="hypothetical">
-          <h3>Hypothetical allocation — not Sanji capital</h3>
+          <h3>Cash-only starting allocation — proposed collateral and reserve</h3>
           <div id="demo-capital-chart" class="chart-placeholder">Awaiting a reconciled, explicitly hypothetical example.</div>
           <figcaption id="demo-capital-note">No actual account allocation is inferred from a demonstration.</figcaption>
         </figure>
         <p id="demo-capital-interpretation">The example illustrates a capital stock at one date, not investment performance.</p>
         <p>Actual account return, return on deployed capital and time-average utilization remain
           unmeasured until Sanji supplies the book and history. A single starting balance, a candidate
-          option or three valid JSON proposals cannot supply their missing numerators or denominators.</p>
+          option or valid JSON proposals cannot supply their missing numerators or denominators.</p>
       </section>
 
       <section id="analysis" class="discussion" aria-labelledby="analysis-title">

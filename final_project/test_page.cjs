@@ -160,16 +160,76 @@ test('Technical eligibility is not production order eligibility',()=>{
   for(const d of e.rows)assert.equal(d.technical,Object.values(d.filters).every(Boolean));
   assert.ok(e.rows.every(d=>d.eligible===false));
 });
-test('Hypothetical capital reconciles and never computes a return',()=>{
+test('Cash-only hypothetical capital reserves proposed puts without treating them as fills',()=>{
   const c=analysis.hypotheticalCapital(realDemo);
-  const account=realDemo.scenarios.find(s=>s.id==='covered_inventory').account;
-  assert.ok(Math.abs(c.exposure+c.cash-account.equity)<1e-8);
+  const scenario=analysis.cashStartScenario(realDemo), account=scenario.account;
+  assert.ok(Math.abs(c.collateral+c.uncommittedCash-account.equity)<1e-8);
+  assert.equal(c.cash,40000);
+  assert.equal(c.cash,account.cash);
+  assert.deepEqual(account.positions,[]);
+  assert.equal(c.collateral,scenario.capital.put_collateral);
+  assert.equal(c.uncommittedCash,scenario.capital.uncommitted_cash);
   assert.equal(c.utilization,c.exposure/c.equity);
-  assert.equal(c.cashFraction,c.cash/c.equity);
+  assert.equal(c.cashFraction,c.uncommittedCash/c.equity);
   for(const k of ['pnl','return','sharpe','nav_history','drawdown'])assert.equal(c[k],undefined);
-  for(const mutate of [d=>d.mode='live',d=>d.production_orders_changed=true,d=>d.scenarios[1].capital.cash+=1,d=>d.scenarios[1].capital.exposure=null,d=>d.scenarios[1].account.positions[0].quantity=0]){
+  for(const mutate of [d=>d.mode='live',d=>d.production_orders_changed=true,
+      d=>analysis.cashStartScenario(d).capital.cash+=1,
+      d=>analysis.cashStartScenario(d).capital.exposure=null,
+      d=>analysis.cashStartScenario(d).capital.uncommitted_cash+=1,
+      d=>analysis.cashStartScenario(d).account.positions.push({kind:'stock',ticker:'KO',quantity:100}),
+      d=>analysis.cashStartScenario(d).proposed_orders[0].strike+=1]){
     const d=structuredClone(realDemo);mutate(d);assert.throws(()=>analysis.hypotheticalCapital(d));
   }
+});
+test('Only the cash-start example is public, regardless of scenario order or unrelated inventory data',async()=>{
+  const d=structuredClone(realDemo), before=JSON.stringify(d);
+  const published=JSON.parse(fs.readFileSync(path.join(__dirname,'../open_orders.json'),'utf8'));
+  const expected=analysis.cashStartScenario(d);
+  const e=await render(realStatus,published,false,d);
+  assert.equal(e.get('demo-results').children.length,1);
+  assert.equal(e.get('demo-results').children[0].children[0].textContent,'Cash-Only Starting Portfolio');
+  for(const decision of expected.decisions) assert.ok(e.get('demo-results').textContent.includes(decision.ticker+' — '+decision.decision));
+  for(const order of expected.proposed_orders||[]) {
+    assert.ok(e.get('demo-results').textContent.includes(new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(order.strike)));
+  }
+  for(const order of published) assert.ok(e.get('order-rows').textContent.includes(order.id));
+  assert.match(e.get('demo-capital-chart').textContent,/Proposed put collateral/);
+  assert.match(e.get('demo-capital-note').textContent,/course modeling assumption/);
+  assert.match(e.get('demo-capital-note').textContent,/Total cash remains \$40,000\.00/);
+  assert.doesNotMatch(e.get('demo-results').textContent+e.get('demo-capital-note').textContent+e.get('demo-capital-interpretation').textContent,/Example [AB]\b|covered inventory|assumed inventory|100 shares of each/i);
+  assert.doesNotMatch(html+script+analysisScript,/Example [AB]\b|covered_inventory|covered.inventory|100 shares of each/i);
+  assert.doesNotMatch(html,/href="data\/(?:entry_)?demo_status\.json"/);
+  assert.match(html,/\$40,000 cash, a course modeling assumption/);
+  assert.equal(JSON.stringify(d),before);
+  const reversed=structuredClone(d); reversed.scenarios.reverse();
+  const other=reversed.scenarios.find(s=>s.id!=='cash_start');
+  if(other) {other.account=null;other.capital=null;other.description='MUST NOT DISPLAY';}
+  const second=await render(realStatus,published,false,reversed);
+  for(const id of ['demo-results','demo-capital-chart','demo-capital-note','demo-capital-interpretation','order-rows'])
+    assert.equal(second.get(id).textContent,e.get(id).textContent);
+});
+test('Missing or duplicate cash-start evidence never falls back to another portfolio',async()=>{
+  for(const kind of ['missing','duplicate']) {
+    const d=structuredClone(realDemo);
+    if(kind==='missing')d.scenarios=d.scenarios.filter(s=>s.id!=='cash_start');
+    else d.scenarios.push(structuredClone(analysis.cashStartScenario(d)));
+    assert.throws(()=>analysis.hypotheticalCapital(d));
+    const e=await render(realStatus,[],false,d);
+    assert.equal(e.get('demo-results').children.length,0);
+    assert.match(e.get('demo-summary').textContent,/unavailable/);
+  }
+});
+test('A validated cash-only no-order example keeps all cash free without fabricated holdings',async()=>{
+  const d=structuredClone(realDemo), s=analysis.cashStartScenario(d);
+  // Offline presentation fixture only; never written to any strategy/data artifact.
+  s.proposed_orders=[];s.order_count=0;
+  s.capital={...s.capital,exposure:0,put_collateral:0,uncommitted_cash:40000,by_ticker:{BAC:0,KO:0,PFE:0,F:0}};
+  s.decisions=s.decisions.map(r=>({...r,decision:'No Trade',reasons:['TEST ONLY: no qualifying observed option']}));
+  const c=analysis.hypotheticalCapital(d);
+  assert.equal(c.collateral,0);assert.equal(c.cash,40000);assert.equal(c.cashFraction,1);
+  const e=await render(realStatus,[],false,d);
+  assert.match(e.get('demo-capital-interpretation').textContent,/No proposed put collateral/);
+  assert.doesNotMatch(e.get('demo-capital-interpretation').textContent,/undefined|NaN/);
 });
 test('Interpretation leaves all source and example records unchanged',()=>{
   const before=JSON.stringify([realStatus,realDemo]);
@@ -183,7 +243,7 @@ test('Current incomplete market/demo evidence is explicitly withheld, not silent
     assert.match(e.get('signal-discussion').textContent,/withheld/);
     assert.match(e.get('analysis-source').textContent,/No complete/);
   }
-  if(currentDemo.scenarios.some(s=>s.account===null)) {
+  if(analysis.cashStartScenario(currentDemo).account===null) {
     assert.match(e.get('demo-results').textContent,/No inventory or cash balance assumed/);
     assert.match(e.get('demo-results').textContent,/Blocked/);
   }

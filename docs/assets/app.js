@@ -394,17 +394,16 @@
     return r.json();
   }
   function renderDemo(demo) {
-    if (demo.mode !== 'demonstration' || demo.production_orders_changed !== false)
-      throw Error('Invalid demonstration label');
+    const cashStart = window.FinalAnalysis.cashStartScenario(demo);
     text('demo-summary', 'DEMONSTRATION ONLY · Retained real LSEG response: ' + demo.market_retrieved_at +
       ' · Signal close: ' + demo.calendar.as_of + ' · Target: ' + demo.calendar.target_session +
       '. Production orders unchanged. Not a new market query.');
     const container = $('demo-results');
     container.replaceChildren();
-    for (const s of demo.scenarios) {
+    for (const s of [cashStart]) {
       const block = document.createElement('article');
       const h = document.createElement('h3');
-      h.textContent = s.id === 'cash_start' ? 'Example A — cash-only starting portfolio' : 'Example B — assumed covered inventory';
+      h.textContent = 'Cash-Only Starting Portfolio';
       const account = document.createElement('p');
       account.textContent = s.description + (s.account ? ' Cash: ' + fmt(s.account.cash) + '; equity: ' + fmt(s.account.equity) : ' No inventory or cash balance assumed') +
         '. Proposed orders: ' + (s.order_count ?? 'Blocked') + (s.status === 'success' ? '. Evaluation completed; individual tickers may still fail their entry rules.' : '. Blocked by missing or invalid inputs; no successful no-trade decision is claimed.');
@@ -429,7 +428,7 @@
       const c = window.FinalAnalysis.hypotheticalCapital(demo);
       const allocation = $("demo-capital-chart"); allocation.replaceChildren();
       allocation.classList.add("allocation-chart");
-      for (const [label,value,fraction] of [["Stock",c.exposure,c.utilization],["Uncommitted cash",c.cash,c.cashFraction]]) {
+      for (const [label,value,fraction] of [["Proposed put collateral",c.collateral,c.utilization],["Uncommitted cash",c.uncommittedCash,c.cashFraction]]) {
         const row=document.createElement("div");row.className="allocation-row";
         const line=document.createElement("p");line.className="allocation-label";
         const name=document.createElement("span");name.textContent=label;
@@ -441,8 +440,10 @@
         track.append(fill);row.append(line,track);allocation.append(row);
       }
       text("demo-capital-note", c.paragraph);
-      const largest = Object.entries(c.byTicker).sort((a,b)=>b[1]-a[1])[0];
-      text("demo-capital-interpretation", `In this assumed inventory, ${largest[0]} alone accounts for ${fmt(largest[1])}, or ${fmt(largest[1]/c.equity,true)} of equity. Equal contract counts do not mean equal dollar weights. Calls add no second stock exposure; no expected premium is credited. This dated example has no time series from which to calculate an average deployed amount, cash drag or profit.`);
+      const reservations = Object.entries(c.byTicker).filter(([,value])=>value>0)
+        .map(([ticker,value])=>`${ticker}: ${fmt(value)} (${fmt(value/c.equity,true)} of assumed equity)`);
+      text("demo-capital-interpretation", (reservations.length ? 'Proposed reservations — '+reservations.join('; ')+'. ' : 'No proposed put collateral in this evaluated scenario. ')+
+        'Collateral is reserved cash, not an executed position or a loss. No expected premium is credited. This dated example does not establish time-average capital utilization or investment performance.');
     } catch (error) {
       text("demo-capital-chart", "Hypothetical allocation not shown: "+error.message);
       text("demo-capital-note", "No invalid or missing example amount is substituted with zero or treated as production capital.");
