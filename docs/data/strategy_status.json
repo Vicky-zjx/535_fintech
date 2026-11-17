@@ -2,11 +2,11 @@
   "schema_version": 1,
   "mode": "live",
   "status": "success",
-  "attempted_at": "2026-11-17T03:38:32.012101+00:00",
-  "successful_at": "2026-11-16T23:42:40.614531+00:00",
-  "market_data_retrieved_at": "2026-11-16T23:42:40.614531+00:00",
+  "attempted_at": "2026-11-17T11:25:24.537391+00:00",
+  "successful_at": "2026-11-17T11:25:24.537391+00:00",
+  "market_data_retrieved_at": "2026-11-17T11:25:24.537391+00:00",
   "source": "LSEG Data Platform",
-  "orders_updated": false,
+  "orders_updated": true,
   "errors": [],
   "decisions": [
     {
@@ -843,8 +843,8 @@
       "ref": "prev_close"
     }
   ],
-  "evaluation_kind": "retained_market_replay",
-  "market_snapshot_sha256": "6e8bd2d9ba02dee0a31cc71d41796e0f08bc318258377a947826edbdb77852fa",
+  "evaluation_kind": "fresh_api",
+  "market_snapshot_sha256": "8f49d1d0cfd71a6b4356bbb4915f684890abf0c2858f3364bbd8c7ef845e8bd9",
   "authoritative_account_available": false,
   "account_status": "Sanji book unavailable; professor-confirmed initial zero inventory and student-authorized $40,000 simulated cash used, not an official balance",
   "account_assumptions": {
@@ -933,7 +933,7 @@
     "scope": "Initial-cycle selection/collateral audit only; the actual planner still reserves every pending proposal",
     "signal_date": "2026-11-16",
     "target_session": "2026-11-17",
-    "market_retrieved_at": "2026-11-16T23:42:40.614531+00:00",
+    "market_retrieved_at": "2026-11-17T11:25:24.537391+00:00",
     "starting_cash": 40000,
     "initial_inventory": {
       "shares": 0,
@@ -1445,6 +1445,7 @@
   },
   "proposed_order_count": 2,
   "new_order_ids": [],
+  "order_files_changed": false,
   "order_count": 2,
   "orders_sha256": "7d0a3742004a67f5b7517f836b5c178b498d4177624ca05d84e44b8abeaaf498"
 }
