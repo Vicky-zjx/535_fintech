@@ -564,7 +564,16 @@ footer p {
 #historical .chart-grid > figure { min-width: 0; padding: 18px 10px; }
 #history-findings { margin-top: 28px; }
 #historical td:last-child { min-width: 105px; }
-#history-ticker { padding: 6px 20px 6px 8px; margin: 0 0 18px 10px; color: var(--ink); background: white; border: 1px solid var(--line); }
+.history-controls { display: flex; align-items: end; flex-wrap: wrap; gap: 14px 24px; margin: 26px 0 14px; }
+.history-controls label { display: grid; gap: 5px; font-size: 13px; font-weight: 650; }
+.history-controls select { min-width: 105px; min-height: 44px; padding: 8px 28px 8px 12px; color: var(--ink); background: white; border: 1px solid var(--line); font: inherit; }
+.history-controls select:focus-visible { outline: 3px solid #528bbb; outline-offset: 3px; }
+.history-controls span { flex: 1 1 240px; font-size: 13px; padding-bottom: 8px; }
+.history-price-figure { padding: 18px 10px; min-width: 0; }
+.history-price-figure h3, .history-price-figure figcaption { margin-left: 8px; margin-right: 8px; }
+#historical .history-indicators { margin-top: 18px; }
+.history-comparison-title { margin-top: 30px; }
+#history-range-note, #history-alignment, #history-comparison-note { font-size: 13px; overflow-wrap: anywhere; }
 @media (max-width: 1000px) {
   .hero {
     gap: 30px;

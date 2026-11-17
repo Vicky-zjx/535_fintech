@@ -259,6 +259,18 @@ Weekly proposal locks are enforced in the planner, not inferred in technical cou
 It generates JSON/CSV and the existing charts. This is technical eligibility
 analysis, NOT a historical option backtest or verified investment performance.
 
+The English page's five historical charts read only `docs/data/historical_signals.json`
+through `docs/assets/history.js`. Stock and 1M/3M/1Y/3Y controls slice the saved closing-date
+rows for Close/SMA20/SMA50, HV20 and five-session returns; they never recalculate
+indicators, fill gaps or trim the stored sample. Both comparison charts and their tables
+retain the full next-session-opportunity sample, which uses the preceding close and
+therefore has different signal-date endpoints. Standalone/exclusive rejection counts
+are checked against individual saved rows. The source disclosure reconciles the
+snapshot hash, retrieval timestamp, strategy revision and latest four-stock indicators
+with `strategy_status.json`; disagreement is displayed rather than silently accepted.
+The chart-only update preserves the November 16, 2023–November 16, 2026 data and
+the existing KO/PFE proposals. No data fetch or historical rebuild is needed to preview it.
+
 The retained November 13 signal / November 16 target real-market integration
 produces KO 96 and PFE 28 puts, November 20 expiry, under $40,000 course assumptions:
 $12,400 collateral and $27,600 uncommitted cash. This is a **dated historical

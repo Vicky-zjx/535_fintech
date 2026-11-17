@@ -488,11 +488,40 @@
           are excluded, never filled or counted as filter failures. These counts are daily technical
           opportunities, not weekly trades: option availability, weekly proposal locks and capital
           allocation are not simulated here.</p>
+        <div class="history-controls" aria-label="Historical chart controls">
+          <label for="history-ticker">Stock
+            <select id="history-ticker"><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select>
+          </label>
+          <label for="history-range">Date range
+            <select id="history-range"><option>1M</option><option>3M</option><option>1Y</option><option selected>3Y</option></select>
+          </label>
+          <span class="muted">Changes the three time-series views only; indicators are not recalculated.</span>
+        </div>
+        <p id="history-range-note" class="muted" aria-live="polite">Waiting for validated historical observations.</p>
+        <figure class="history-price-figure">
+          <h3 id="history-price-title">Stock price and moving averages</h3>
+          <div id="history-price-chart" class="history-plot" role="img" aria-label="Historical close, SMA20 and SMA50 in US dollars"></div>
+          <figcaption>Observed LSEG Close, SMA20 and SMA50, in USD. Hover or tap for the date and values.
+            Missing values remain gaps; selecting a shorter range does not restart the averages.</figcaption>
+        </figure>
+        <div class="chart-grid history-indicators">
+          <figure><h3 id="history-hv-title">HV20 · realized volatility</h3>
+            <div id="history-hv-chart" class="history-plot" role="img" aria-label="HV20 history with a 45 percent ceiling"></div>
+            <figcaption>Annualized volatility from 20 valid adjacent-session log returns. A new put requires HV20 ≤ 45%.</figcaption></figure>
+          <figure><h3 id="history-r5-title">Five-day stock return</h3>
+            <div id="history-r5-chart" class="history-plot" role="img" aria-label="Five-day stock return with a minus 8 percent floor"></div>
+            <figcaption>Close relative to five exchange sessions earlier. A new put requires R5 ≥ −8%.
+              This is a stock-price change, not a Wheel strategy return.</figcaption></figure>
+        </div>
+        <details><summary>Source coverage and timestamp reconciliation</summary>
+        <p id="history-alignment">Latest-run agreement has not been checked.</p>
         <div class="table-wrap" tabindex="0" aria-label="Observed price coverage">
           <table><thead><tr><th>Stock</th><th>Observed sample dates</th><th>Observed / expected closes</th><th>Earlier warm-up closes</th><th>Evaluable / sample days</th><th>Evaluable / next-session opportunities</th></tr></thead>
             <tbody id="history-coverage"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
         </div>
-        <h3>How often do the technical screens pass?</h3>
+        </details>
+        <h3 class="history-comparison-title">How often do the technical screens pass?</h3>
+        <p id="history-comparison-note" class="muted">Full three-year sample; independent of the stock and range controls above.</p>
         <div class="table-wrap" tabindex="0" aria-label="Next-session filter pass rates">
           <table><thead><tr><th>Stock</th><th>Trend</th><th>HV20 ≤ 45%</th><th>R5 ≥ −8%</th><th>All three</th><th>Excluded dates</th></tr></thead>
             <tbody id="history-weekly"><tr><td colspan="6">Waiting for verified data.</td></tr></tbody></table>
@@ -503,6 +532,13 @@
           <figure><h3>Combined eligibility across calendar years</h3><div id="history-year-chart" class="history-plot"></div>
             <figcaption>Same rules, different periods. First and last calendar years cover only the stated rolling sample dates.</figcaption></figure>
         </div>
+        <h3 class="history-comparison-title">Which screen was most restrictive?</h3>
+        <p>Standalone counts include overlaps. Exclusive counts mean that only this screen failed;
+          removing it would restore technical eligibility, not prove a profitable trade.</p>
+        <div class="table-wrap" tabindex="0" aria-label="Full sample filter restrictions">
+          <table><thead><tr><th>Filter</th><th>Standalone rejections / evaluated stock-dates</th><th>Exclusive rejections</th></tr></thead>
+            <tbody id="history-restrictions"><tr><td colspan="3">Waiting for verified counts.</td></tr></tbody></table>
+        </div>
         <div id="history-findings" class="discussion" aria-live="polite"><p>Interpretation awaits observed historical counts.</p></div>
         <details><summary>Daily rates, overlapping rejections and yearly denominators</summary>
           <p>Every cell reports count / evaluated dates (rate). Passing a daily screen is not an approved order or a new weekly allocation.</p>
@@ -511,11 +547,6 @@
             it is the number of opportunities restored by removing only that filter, not a profit estimate.</p>
           <div class="table-wrap" tabindex="0"><table><thead><tr><th>Stock</th><th>Trend rejections</th><th>HV20 rejections</th><th>R5 rejections</th></tr></thead><tbody id="history-overlap"></tbody></table></div>
           <div class="table-wrap" tabindex="0"><table><thead><tr><th>Entry year</th><th>BAC combined</th><th>KO combined</th><th>PFE combined</th><th>F combined</th></tr></thead><tbody id="history-years"></tbody></table></div>
-        </details>
-        <details><summary>Inspect historical prices and indicators</summary>
-          <label for="history-ticker">Stock</label> <select id="history-ticker"><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select>
-          <figure><h3>Observed close, moving averages, HV20 and five-day return</h3><div id="history-series" class="history-plot"></div>
-            <figcaption>Dotted thresholds are 45% HV20 and −8% R5. No missing observations are connected.</figcaption></figure>
         </details>
         <p class="muted">This is a retrospective analysis of four currently selected survivors, not a point-in-time
           universe-selection test. LSEG adjusted closes are as retrieved, not archived vintage prices;
