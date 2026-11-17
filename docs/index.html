@@ -100,6 +100,15 @@
       <section id="workflow">
         <p class="eyebrow">02 / THE PROCESS</p>
         <h2>From the nightly book to the next session.</h2>
+        <aside class="note" id="assignment-scope">
+          <h3>Assignment scope: generate and manage proposed orders</h3>
+          <p><strong>My algorithm</strong> queries LSEG, evaluates the strategy and manages
+            <code>open_orders.json</code>. The <strong>Sanji specification</strong> defines its order format.
+            The <strong>Sanji backend</strong> may later resolve execution and update official account records.</p>
+          <p>Order-generation success does not require completed Sanji fills or positions.
+            The model starts cash-only with zero positions and a student-selected $40,000 simulation budget.
+            Pending proposals retain their collateral and weekly commitments; they are never assumed filled.</p>
+        </aside>
         <div class="workflow-layout">
           <figure class="workflow">
             <img
@@ -816,6 +825,9 @@
             verified Sanji execution and account NAV histories are unavailable. The current analysis
             concerns real market signals, risk checks and separately labeled hypothetical books.
             This is a missing evidence dependency, not an unexplained calculation error or a zero return.</p>
+          <p>Execution and performance reporting are separate from this assignment's deliverable:
+            an automated model that generates and manages valid proposed orders. Missing execution
+            records do not mean that the order-generation workflow failed.</p>
           <h3>The cost of conservative rules</h3>
           <p>Fewer qualifying entries mean fewer chances to collect premium, while cash can miss a
             rising market. A volatility cap may exclude precisely the contracts offering the largest
@@ -971,6 +983,20 @@
         </p>
         <details>
           <summary>Deployment and account integration</summary>
+          <div id="automation-evidence">
+            <h3>Verified run evidence — November 17, 2026 audit</h3>
+            <p><a href="https://github.com/Vicky-zjx/535_fintech/actions/runs/43981421173">Manual run 43981421173</a>
+              succeeded on November 16 and generated the KO/PFE proposals.
+              <a href="https://github.com/Vicky-zjx/535_fintech/actions/runs/44073688095">Scheduled run 44073688095</a>
+              has the actual <code>schedule</code> event and succeeded on November 17:
+              real LSEG retrieval, strategy evaluation, validation, output commit and Pages rebuild.</p>
+            <p>The scheduled run started at 06:24:09 America/New_York (11:24:09 UTC),
+              not the configured 22:00. This verifies scheduled execution, not punctual delivery;
+              the run metadata alone does not establish why it started late.
+              Its target remained the upcoming November 17 trading session. See the
+              <a href="https://github.com/Vicky-zjx/535_fintech/tree/main/final_project#assignment-audit--november-17-2026">dated audit and reproduction checks</a>.
+              These are historical run records, not a claim about every future run.</p>
+          </div>
           <p>
             Pages keeps the existing main-branch/root publishing source,
             preserving all previous assignments. The nightly job commits only

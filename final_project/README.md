@@ -10,6 +10,42 @@ identical `mkt/open_orders.json` compatibility copy. The professor's clarificati
 does not require an active Sanji resolver or completed fills to generate proposals.
 Nothing is submitted to Canvas by this code.
 
+### Assignment audit — November 17, 2026
+
+The algorithm generates proposals; the [Sanji specification](https://jakevestal.github.io/server-logic-533/order.html)
+defines their format; the course backend may later resolve execution and write official
+account records. Completing this order-generation assignment does **not** require
+implementing that backend or receiving fills/positions. No official records are created here.
+The zero-position starting state is confirmed; $40,000 remains the student's model assumption.
+
+| Requirement | Verified evidence |
+| --- | --- |
+| Real LSEG query, model, validation, commit and publication | [Manual run 43981421173](https://github.com/Vicky-zjx/535_fintech/actions/runs/43981421173) succeeded and generated the two proposals in commit `dc98e57`; [scheduled run 44073688095](https://github.com/Vicky-zjx/535_fintech/actions/runs/44073688095) repeated the pipeline successfully and committed updated evidence as `3c23e53`. Both used GitHub-hosted runners, not the Mac. |
+| Actual scheduled execution | GitHub reports `event: schedule`, `conclusion: success` for run 44073688095. The workflow config is `0 22 * * *`, `timezone: America/New_York`. The observed start was **2026-11-17 06:24:09 EST / 11:24:09 UTC**, not 22:00. Scheduled execution is verified; punctuality is not. Metadata alone does not explain the discrepancy. |
+| Compatible proposed orders | Both arrays are byte-identical and pass the strict published subset: `mkt`, `SHT`, quantity 1, integer stock conid, explicit listed strike/expiry, `prev_close`, unique ID and an actual upcoming session date. No `lmt_prc` or invented tokens. |
+| Genuine contract and identity evidence | LSEG raw discovery records contain `KOW272609600.U` (96 put) and `PFEW272602800.U` (28 put), expiry 2026-11-27, USD, Standard, American, lot 100. Retained official IBKR stock evidence verifies KO 8894 and PFE 11031, plus BAC 10098 and F 9599491. Course database enrollment is separate from stock identity. |
+| Algorithm provenance and capital | Independent initial-cycle evaluation of the saved real snapshot reproduces both proposals. KO reserves $9,600 (24%), PFE $2,800 (7%); total $12,400 (31%), free cash $27,600 (69%). Cash stays $40,000, with no assumed premium or fill. |
+| Session / selection | Completed close: 2026-11-16; target: Tuesday 2026-11-17; expiry: 2026-11-27, **10 calendar DTE** from the target. Incomplete dated Greeks invoke the existing nearest-observed-3%-OTM fallback, not verified 25-delta. BAC/F fail trend. |
+| Persistence / no duplicates | Deterministic IDs and durable proposal history preserve both commitments across repeat runs. Prior-session or expired unconfirmed proposals remain reserved in `course/proposal_state.json`; they cannot silently release collateral, turn into stock, or move to a later order date. Only upcoming-session proposals remain in the active queue. A validated `[]` is legal; unresolved commitments are disclosed separately. |
+| Evidence boundaries | The English site preserves historical signals, not claimed option returns. No current course order-generation dependency requires a Sanji backend. Later authoritative Wheel cycles and performance need actual order outcomes, positions, cash/equity, schema/timing and course execution coverage. |
+
+Reproduce the audit without a new market query or any order/state writes:
+
+```sh
+python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_course final_project.test_demo final_project.test_historical final_project.test_flexible_entry lseg_chart.test_update -b -v
+python -m unittest discover -s tests -p 'test_site_layout.py' -v
+node --test lseg_chart/test_page.cjs final_project/test_page.cjs final_project/test_history_page.cjs
+python -m final_project.validate_publication
+gh api 'repos/Vicky-zjx/535_fintech/actions/workflows/nightly_orders.yaml/runs?event=schedule&per_page=5' --jq '.workflow_runs[] | {id,event,conclusion,run_started_at,html_url}'
+gh run view 44073688095 --repo Vicky-zjx/535_fintech --json event,conclusion,jobs
+```
+
+Tests use temporary directories/in-memory fixtures for repeat-run, prior-session,
+post-expiry, empty-output and account-validation cases; they do not publish test prices.
+`validate_publication` independently recomputes saved real decisions, capital and
+historical statistics and compares them with the published artifacts. This dated
+audit is not a claim that all subsequent API queries or schedules will succeed.
+
 ### Current policy — gap-aware flexible weekly entry
 
 Revision `gap-aware-flexible-weekly-v2` intentionally changes the observation window

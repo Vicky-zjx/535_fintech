@@ -180,6 +180,27 @@ test('English methodology and formulas are visible without a fabricated performa
   assert.doesNotMatch(html+script+analysisScript,/[\u4e00-\u9fff]/);
 });
 
+test('Assignment scope separates proposed orders, schema and execution without inventing a balance',()=>{
+  const scope=html.match(/<aside class="note" id="assignment-scope">([\s\S]*?)<\/aside>/)?.[1];
+  assert.ok(scope);
+  for(const role of ['My algorithm','Sanji specification','Sanji backend']) assert.ok(scope.includes(role));
+  assert.match(scope,/does not require completed Sanji fills or positions/);
+  assert.match(scope,/student-selected \$40,000 simulation budget/);
+  assert.match(scope,/Pending proposals retain their collateral and weekly commitments/);
+  assert.match(html,/Missing execution\s+records do not mean that the order-generation workflow failed/);
+});
+
+test('Dated automation audit distinguishes actual schedule evidence from manual success and punctuality',()=>{
+  const evidence=html.match(/<div id="automation-evidence">([\s\S]*?)<\/div>/)?.[1];
+  assert.ok(evidence);
+  assert.match(evidence,/actions\/runs\/43981421173">Manual run/);
+  assert.match(evidence,/actions\/runs\/44073688095">Scheduled run/);
+  assert.match(evidence,/actual <code>schedule<\/code> event/);
+  assert.match(evidence,/06:24:09 America\/New_York \(11:24:09 UTC\)/);
+  assert.match(evidence,/not the configured 22:00/);
+  assert.match(evidence,/historical run records, not a claim about every future run/);
+});
+
 test('Earnings policy is removed from current diagnostics, with an explicit gap-risk disclosure',async()=>{
   const e=await render(realStatus,[],false,realDemo);
   for(const id of ['availability-rows','data-quality','pipeline-discussion','demo-results'])
