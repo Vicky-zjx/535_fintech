@@ -8,7 +8,19 @@
     "https://github.com/JakeVestal/server-logic-533/blob/main/host_files/update_price_history.sh"
   ],
   "account_found": false,
-  "course_proposal_policy": "Official account access is not required for initial course proposals. Default course mode uses explicit $40,000 cash, zero stocks/options and no leverage, with durable unconfirmed commitments. No fake positions.json or executions are created. An existing official book must validate and never silently falls back.",
+  "course_proposal_policy": "Official account access is not required for initial course proposals. The professor confirmed zero shares, zero puts and zero calls initially. The student selected and explicitly authorized $40,000 simulated cash; the amount is not professor-confirmed or an official balance. Durable unconfirmed commitments and all risk checks remain. No fake positions.json or executions are created. An existing official book must validate and never silently falls back.",
+  "initial_account_clarification": {
+    "source": "Professor clarification supplied by the student, followed by the student's explicit simulation-capital authorization",
+    "professor_statement": "You start with no positions. Yes, cash only initially.",
+    "initial_shares": 0,
+    "initial_open_puts": 0,
+    "initial_open_calls": 0,
+    "student_authorized_simulated_cash_usd": 40000,
+    "professor_confirmed_cash_amount": false,
+    "official_sanji_balance_confirmed": false,
+    "initial_positions_file_required": false,
+    "limitation": "Initial inventory only; not evidence that any later proposal filled, expired or was assigned. Earlier source-probe timestamps below remain historical."
+  },
   "repository_connection": {"connected_in_latest_published_probe": true, "probed_at": "2026-11-13T21:01:47Z", "last_server_price_push": "2026-11-13T21:00:43Z", "source": "https://jakevestal.github.io/server-logic-533/status.json", "limitation": "Published probe, not a real-time private-host connection test. Price sync does not supply positions or fills."},
   "positions_file_found": false,
   "fills_file_found": false,
@@ -17,15 +29,15 @@
   "identity_evidence": "conid_verification.json; official IBKR product search and security definitions; US / NYSE / USD common stock",
   "production_requirements": {
     "scope": "These requirements apply to authoritative account operation, not the initial course proposal mode.",
-    "all_entries": "Authoritative completed-session cash, equity and a complete position inventory, with account date and source. Absence of a positions file is not evidence of an empty account.",
-    "cash_start": "An explicitly confirmed flat account needs no invented cost basis or option marks. Cash, equity, existing orders and completeness must still reconcile.",
+    "all_entries": "For subsequent authoritative cycles: completed-session cash, equity and a complete position inventory, with account date and source. Absence of a later positions file is not evidence of an empty account.",
+    "cash_start": "Professor-confirmed initial zero inventory needs no positions file, cost basis or option marks. The student-authorized $40,000 applies only to course simulation. Pending commitments must still reconcile; no real Sanji cash amount is inferred.",
     "covered_call": "At least 100 unencumbered actual shares and actual per-share cost basis; existing short calls and pending commitments checked.",
     "existing_short_options": "Actual strike, expiry, multiplier/deliverable and closing mark to reconcile NAV and collateral. A missing mark is not zero.",
     "order_resolution": "Current pending orders are read from both identical order paths. Resolved IDs/fills or equivalent authoritative reconciled state are needed where relevant; no historical fill is inferred. Producer must finish its prior-session update before planning."
   },
   "resolved_independently": "Four static identifiers are validated locally against retained IBKR evidence; no nightly IBKR login. Conflicting course mappings are rejected. Unconfirmed course enrollment does not invalidate an explicit numerical stock identity or JSON proposal.",
   "remaining_professor_dependencies": [
-    "Supply the authoritative starting/end-of-session Sanji account and native schema/sample or an approved read-only adapter contract, including confirmation that the inventory is complete.",
+    "For subsequent account cycles, supply dated cash/equity, complete positions and the native Sanji schema/sample or an approved read-only adapter contract. Initial zero inventory and the student-selected simulation budget are no longer pending inputs.",
     "Specify account update-complete timing and order/fill reconciliation interface.",
     "Confirm BAC/KO/PFE/F enrollment and required contract-open prices in Robin before claiming executable course fills. Identity verification alone does not establish coverage.",
     "Enable resolver outputs only when course execution/performance is required; the documented inactive resolver does not prevent JSON generation."

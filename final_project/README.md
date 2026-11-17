@@ -73,9 +73,16 @@ directory; those historical proposals are not published as today's orders.
 
 ### Account modes
 
+- **Clarified initial state:** the professor confirmed: "You start with no positions.
+  Yes, cash only initially." Zero shares, zero open puts and zero open calls are
+  therefore established without creating or waiting for `positions.json`.
+  The student separately selected and explicitly authorized **$40,000 of simulated
+  starting cash**. This is a student-selected course assumption, not a
+  professor-confirmed amount or an official Sanji balance. `course.initial_policy()`
+  records these two authorities separately in each new diagnostic report.
 - **Course mode (default, `--mode course`):** if no official account file exists,
-  use explicitly hypothetical USD 40,000 starting cash, zero shares, zero short
-  options and no leverage. These are course assumptions, not actual balances.
+  use the student-authorized simulated USD 40,000 and professor-confirmed initial
+  zero inventory, with no leverage. These are not actual account balances.
   All normal filters, contract selection, capital limits and position checks apply.
 - If `mkt/positions.json` exists, course mode automatically uses the strict
   authoritative adapter instead. Invalid, stale, null or unfamiliar official
@@ -91,6 +98,17 @@ directory; those historical proposals are not published as today's orders.
 No code creates an official positions file, fills, assignments, premiums, profits
 or NAV history. Course proposals have `fin535-course-` IDs; proposals from an
 authoritative book use `fin535-wheel-` IDs. Neither is a claim of execution.
+
+`initial_cycle_review` reselects initial puts with the same real, dated snapshot
+and reconciles each proposed strike × 100 against all unchanged capital checks.
+It is a read-only check, not another order writer. It is withheld once earlier
+proposal dates or an authoritative book exist. The actual evaluation always
+includes durable pending commitments and weekly locks. A zero initial reference
+must not be mistaken for verified zero holdings after proposals could have filled.
+Reproduce without querying LSEG or changing either order file:
+`python -m final_project.run --mode course --replay`, followed by
+`python -m final_project.validate_publication`. Replay updates diagnostics only;
+fresh nightly course runs remain the sole API-driven proposal workflow.
 
 ### Unconfirmed proposal lifecycle
 
@@ -287,9 +305,12 @@ assignment navigation and earlier backtest caches are preserved.
 ## What still needs the professor
 
 Initial course proposal generation no longer depends on official account access.
-Authoritative operation and performance measurement still need:
+Initial empty inventory is professor-confirmed; the student-authorized $40,000
+simulation budget also resolves the classroom cash-setting dependency. The professor
+has **not** confirmed that specific amount. Subsequent authoritative operation and
+performance measurement still need:
 
-- Native Sanji account schema/sample, confirmed initial balances/complete positions,
+- Native Sanji account schema/sample, dated balances/complete subsequent positions,
   and update-complete timing; a verified read-only adapter to the internal schema.
 - Resolution/fill IDs for outstanding proposals; confirmed holdings and bases for
   covered calls; terms and marks for existing option positions.

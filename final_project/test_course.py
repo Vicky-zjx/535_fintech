@@ -7,7 +7,7 @@ import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
-from .course import initial_account, read_state, next_state, STATE_PATH
+from .course import initial_account, initial_policy, review_initial_proposals, read_state, next_state, STATE_PATH
 from .run import run
 from .sanji_orders import read_orders, atomic_json, publish_orders
 from .strategy import evaluate
@@ -37,6 +37,88 @@ class CourseTests(unittest.TestCase):
 
     def report(self):
         return json.loads((self.root/'docs/data/strategy_status.json').read_text())
+
+    def test_initial_inventory_and_capital_have_separate_authorities(self):
+        policy = initial_policy()
+        self.assertEqual(policy['initial_inventory'], {'shares': 0, 'open_puts': 0, 'open_calls': 0})
+        self.assertIn('Professor clarification', policy['inventory_authority'])
+        self.assertIn('Student-selected', policy['cash_authority'])
+        self.assertEqual(policy['starting_cash'], 40000)
+        self.assertFalse(policy['professor_confirmed_cash_amount'])
+        self.assertFalse(policy['official_sanji_balance'])
+        self.assertFalse(policy['initial_positions_file_required'])
+        policy['initial_inventory']['shares'] = 100
+        self.assertEqual(initial_policy()['initial_inventory']['shares'], 0)
+
+    def test_initial_audit_writes_no_positions_or_fills_and_matches_capital(self):
+        self.assertEqual(self.go(), 0)
+        s = self.report(); review = s['initial_cycle_review']
+        self.assertEqual(s['initial_account_policy'], initial_policy())
+        self.assertEqual(review['status'], 'validated')
+        self.assertEqual(review['proposals'], read_orders(self.root))
+        self.assertEqual(review['capital'], s['capital'])
+        self.assertFalse(review['orders_written'])
+        self.assertFalse(review['fills_inferred'])
+        self.assertTrue(all(o['contract'] == 'put' for o in review['proposals']))
+        self.assertFalse((self.root/'mkt/positions.json').exists())
+        self.assertFalse((self.root/'mkt/fills.json').exists())
+
+    def test_repeated_initial_replay_preserves_every_commitment_byte(self):
+        self.go()
+        paths = [self.root/p for p in ('open_orders.json', 'mkt/open_orders.json', STATE_PATH, 'docs/data/market_snapshot.json')]
+        before = [p.read_bytes() for p in paths]
+        def no_api(*args): raise AssertionError('Replay must not request data')
+        self.assertEqual(run(self.root, NOW, provider=no_api, replay=True), 0)
+        self.assertEqual([p.read_bytes() for p in paths], before)
+        self.assertEqual(self.report()['initial_cycle_review']['status'], 'validated')
+        self.assertFalse(self.report()['orders_updated'])
+        self.assertEqual(self.report()['capital']['cash'], 40000)
+
+    def test_initial_review_cannot_reset_earlier_cycle_or_authoritative_state(self):
+        state = read_state(self.root)
+        for change in ({'authoritative_account_seen': True}, {'put_proposal_history': [
+                {'id': 'earlier', 'underlying': 8894, 'for': '2026-11-09', 'week': '2026-11-09'}]}):
+            review = review_initial_proposals(self.market, VERIFIED_CONIDS, [], dict(state, **change))
+            self.assertEqual(review['status'], 'not_initial_cycle')
+            self.assertNotIn('proposals', review)
+            self.assertFalse(review['fills_inferred'])
+
+    def test_initial_review_rejects_changed_pending_strike_without_releasing_it(self):
+        self.go()
+        pending = read_orders(self.root); pending[0]['strike'] += 1
+        before = deepcopy(pending)
+        review = review_initial_proposals(self.market, VERIFIED_CONIDS, pending, read_state(self.root))
+        self.assertEqual(review['status'], 'blocked')
+        self.assertFalse(review['existing_proposals_match'])
+        self.assertEqual(pending, before)
+
+    def test_student_simulation_authority_does_not_create_official_balance(self):
+        self.assertEqual(self.go(mode='authoritative'), 2)
+        s = self.report()
+        self.assertIn('simulation only', s['account_status'])
+        self.assertIn('not an official balance', str(s['errors']))
+        self.assertIsNone(s['account_assumptions'])
+        self.assertEqual(read_orders(self.root), [])
+
+    def test_latest_real_initial_puts_reproduce_when_available_without_inferred_fills(self):
+        real = json.loads((ROOT/'docs/data/market_snapshot.json').read_text())
+        retained = read_orders(ROOT)
+        before = deepcopy(real)
+        review = review_initial_proposals(real, VERIFIED_CONIDS, retained, read_state(ROOT))
+        if review['status'] != 'validated':
+            # Later nightly snapshots may be incomplete or have legitimately changed
+            # candidates. Preflight must still permit the next real recovery query.
+            self.assertIn(review['status'], ('not_initial_cycle', 'blocked'))
+            self.assertFalse(review['orders_written'])
+            self.assertFalse(review['fills_inferred'])
+            self.assertEqual(real, before)
+            return
+        self.assertEqual(review['status'], 'validated')
+        self.assertTrue(review['existing_proposals_match'])
+        self.assertEqual(sum(r['collateral'] for r in review['collateral_by_proposal']), review['capital']['put_collateral'])
+        self.assertEqual(review['capital']['cash'], 40000)
+        self.assertEqual(review['capital']['uncommitted_cash'], 40000-review['capital']['put_collateral'])
+        self.assertEqual(real, before)
 
     def test_missing_sanji_generates_four_puts_without_fake_positions(self):
         self.assertEqual(self.go(), 0)

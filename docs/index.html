@@ -151,8 +151,9 @@
             <aside class="note">
               <h3>Proposals are not positions</h3>
               <p>
-                Without an official book, course mode starts with hypothetical
-                $40,000 cash and zero holdings. Sanji alone confirms fills,
+                The professor confirmed a cash-only start with zero shares, puts and calls.
+                The student selected and authorized $40,000 of simulated capital;
+                this is not a professor-confirmed amount or an official Sanji balance. Sanji confirms fills,
                 expiry and assignment. Unconfirmed proposals reserve collateral
                 and lock their ticker; the planner never edits positions or invents fills.
               </p>
@@ -411,8 +412,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Illustrative starting capital</td>
-                  <td>$40,000 — not an assumed live balance</td>
+                  <td>Student-authorized simulated starting capital</td>
+                  <td>$40,000 — not a professor-confirmed amount or live balance</td>
                 </tr>
                 <tr>
                   <td>Exposure per ticker</td>
@@ -439,8 +440,8 @@
           </div>
           <div>
             <p>
-              In course mode, check the disclosed $40,000 cash-only starting
-              assumptions and all unconfirmed commitments. When an authoritative
+              In course mode, check the student-authorized $40,000 simulated starting
+              cash, professor-confirmed initial zero inventory and all unconfirmed commitments. When an authoritative
               book exists, validate its date and reconcile equity to cash plus
               marked positions. An invalid existing book never triggers a hypothetical reset.
             </p>
@@ -645,6 +646,22 @@
           <a class="text-link" href="../open_orders.json">Download JSON ↗</a>
         </div>
         <p class="notice" id="account-mode">Course assumptions and official account status are reported separately.</p>
+        <div class="note">
+          <h3>Confirmed starting state, separate capital authority</h3>
+          <p id="initial-account-summary">The professor confirmed zero shares, zero open puts and zero open calls at the start.
+            The student selected $40,000 of simulated cash. No initial positions file is needed;
+            neither statement establishes subsequent fills or a real account balance.</p>
+          <details><summary>Initial-cycle selection and collateral audit</summary>
+            <p id="initial-collateral-note">A dated, reproducible initial-cycle audit has not loaded.</p>
+            <div class="table-wrap" tabindex="0" aria-label="Initial proposed put collateral">
+              <table><thead><tr><th>Ticker / conid</th><th>Strike</th><th>Contracts</th><th>Cash reserved</th></tr></thead>
+                <tbody id="initial-collateral-rows"><tr><td colspan="4">No verified collateral audit.</td></tr></tbody></table>
+            </div>
+          </details>
+          <p class="muted">After proposals are issued, their outcomes remain unknown until reconciled.
+            They do not create shares, short-option positions or premium receipts. Subsequent Wheel phases
+            and covered calls require authoritative holdings, cost bases and order outcomes; no nightly cash reset is allowed.</p>
+        </div>
         <p id="order-note">
           Initial empty queue; not yet a successful no-trade evaluation.
         </p>
@@ -705,9 +722,9 @@
             This verifies identity, not enrollment or option-price coverage in the course database.
             Both modes validate the configured static conids against this evidence and reject any conflicting course mapping.
             No nightly IBKR login is required; missing course coverage remains an execution-readiness limitation.</p>
-          <p>Course mode does not require an official account to generate initial proposals: it uses
-            hypothetical $40,000 cash, zero shares and zero short options. All existing risk limits apply.
-            Official account management separately requires dated cash, equity and complete positions;
+          <p>Course mode does not require an official account to generate initial proposals: the professor confirmed
+            no initial positions and the student authorized $40,000 of simulated cash. The amount is not professor-confirmed.
+            All existing risk limits apply. Subsequent account management separately requires dated cash, equity and complete positions;
             covered calls require confirmed shares and cost bases. The native schema and update timing
             must be supplied by the course producer. An inactive Sanji resolver does not block initial
             proposal generation, but unconfirmed earlier proposals cannot be treated as completed trades.</p>
@@ -862,8 +879,10 @@
             later discoveries cannot establish earlier availability. The historical section tests variation
             in eligibility across periods, not regime-specific investment returns, correlation protection
             or the performance of alternative parameter choices.</p>
-          <p>For authoritative account operation, the professor must supply the native Sanji account schema,
-            actual cash/equity and complete positions, plus update-complete timing. Bases, marks and
+          <p>The initial empty portfolio is now confirmed, and the student has authorized the $40,000 simulation budget;
+            neither is a blocker for initial course proposals. For subsequent authoritative account operation,
+            the professor must supply the native Sanji account schema, dated cash/equity and complete positions,
+            plus update-complete timing. Bases, marks and
             resolution IDs are needed when the corresponding positions or orders exist; a flat confirmed
             book has no such positions to value. For execution, course enrollment and contract-open coverage
             for the four verified conids remain unconfirmed. Resolver activation is needed to observe course executions, not to validate a

@@ -229,3 +229,42 @@ test('Course market-input failure remains blocked and never clears retained queu
   assert.match(e.get('issues').textContent,/missing close/);
   assert.match(e.get('account-mode').textContent,/not fills or actual balances/);
 });
+
+function initialAuditFixture(){
+  const scenario=realDemo.scenarios.find(s=>s.id==='cash_start');
+  return {...realStatus,status:'success',account_mode:'course_proposal',errors:[],
+    initial_account_policy:{scope:'course_simulation_only',starting_cash:40000,
+      professor_confirmed_cash_amount:false,official_sanji_balance:false,
+      initial_positions_file_required:false,initial_inventory:{shares:0,open_puts:0,open_calls:0}},
+    initial_cycle_review:{status:'validated',orders_written:false,fills_inferred:false,
+      market_retrieved_at:realStatus.market_data_retrieved_at,signal_date:realStatus.calendar.as_of,
+      target_session:realStatus.calendar.target_session,existing_proposals_match:true,
+      proposals:scenario.proposed_orders,capital:scenario.capital,
+      collateral_by_proposal:scenario.proposed_orders.map(o=>({id:o.id,underlying:o.underlying,strike:o.strike,qty:o.qty,collateral:100*o.strike*o.qty}))}};
+}
+test('Confirmed initial inventory is distinct from student-authorized simulated cash',async()=>{
+  const e=await render(initialAuditFixture());
+  assert.match(e.get('initial-account-summary').textContent,/Professor-confirmed initial inventory: 0 shares, 0 open puts, 0 open calls/);
+  assert.match(e.get('initial-account-summary').textContent,/Student-selected and explicitly authorized/);
+  assert.match(e.get('initial-account-summary').textContent,/not professor-confirmed.*not an official Sanji balance/);
+  assert.match(e.get('initial-account-summary').textContent,/positions.json is not required/);
+  assert.match(e.get('initial-collateral-note').textContent,/\$12,400.00.*31.00%.*\$27,600.00/);
+  assert.equal(e.get('initial-collateral-rows').children.length,2);
+  assert.match(e.get('initial-collateral-rows').textContent,/\$9,600.00/);
+  assert.match(e.get('initial-collateral-rows').textContent,/\$2,800.00/);
+});
+test('Initial audit with inconsistent collateral or dates makes no allocation claim',async()=>{
+  for(const mutate of [s=>s.initial_cycle_review.capital.put_collateral+=1,s=>s.initial_cycle_review.signal_date='1900-01-01',s=>s.initial_cycle_review.fills_inferred=true]){
+    const s=structuredClone(initialAuditFixture());mutate(s);
+    const e=await render(s);
+    assert.match(e.get('initial-collateral-note').textContent,/failed|unavailable or inconsistent/);
+    assert.doesNotMatch(e.get('initial-collateral-note').textContent,/Total proposed collateral/);
+  }
+});
+test('Earlier commitments withhold a new flat-start audit, without assuming zero later positions',async()=>{
+  const s=initialAuditFixture();s.initial_cycle_review={status:'not_initial_cycle'};
+  const e=await render(s);
+  assert.match(e.get('initial-collateral-note').textContent,/Not an initial-cycle reset/);
+  assert.match(e.get('initial-collateral-note').textContent,/stay reserved until reconciled/);
+  assert.match(html,/Subsequent Wheel phases[\s\S]*require authoritative holdings/);
+});

@@ -140,7 +140,7 @@
       text("capital-chart", "Capital checks unavailable for this attempt. No cash balance or zero exposure is assumed beyond the explicitly selected course mode; see the input diagnostics.");
     }
     text("capital-note", s.account_mode === "course_proposal"
-      ? "Course proposal budget only: hypothetical $40,000 starting cash, not actual Sanji NAV. Exposure includes reserved put collateral, including past proposals with unknown outcomes. No premiums or fills are credited."
+      ? "Course proposal budget only: student-authorized $40,000 simulated starting cash, not actual Sanji NAV or a professor-confirmed amount. Initial zero inventory is confirmed; later holdings are not inferred. Exposure includes reserved put collateral, including past proposals with unknown outcomes. No premiums or fills are credited."
       : "Authoritative account mode: stock market value plus put strike collateral, versus uncommitted cash. Collateral is included in exposure, not added twice. Missing account data is not zero.");
   }
   function renderDiscussion(s) {
@@ -172,8 +172,8 @@
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
       ["Sanji account", s.account_status || "No verified account status",
         s.account_mode === "course_proposal"
-          ? "Not required for initial course proposals: explicit $40,000 cash-only assumptions and durable commitment reservations are used. Covered calls require confirmed holdings; no positions or executions are invented."
-          : "Authoritative mode needs dated cash, equity and complete positions, plus bases, marks and resolution IDs when relevant. An invalid existing book never silently falls back to assumptions."],
+          ? "No positions file is needed to establish the professor-confirmed initial zero inventory. The student authorized $40,000 simulated capital, not an official balance. Durable reservations remain; covered calls need confirmed holdings."
+          : "Initial zero inventory is professor-confirmed, but simulated capital is not an official balance. Authoritative mode needs a dated, reconciled book for later cycles; invalid records never fall back to the starting scenario."],
       ["Stock identifiers", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four static conids validated against official IBKR evidence",
         "Literal strike/expiry proposals use verified stock identities. Course conflicts block publication; no nightly IBKR login is required."],
       ["Course execution coverage", (s.pipeline_audit?.course_coverage_unconfirmed || []).length ? "Course binding unconfirmed for "+s.pipeline_audit.course_coverage_unconfirmed.join(", ") : "Inspect the separate course coverage audit",
@@ -185,6 +185,46 @@
     ];
     const table = $("availability-rows"); table.replaceChildren();
     for (const values of rows) {const tr = document.createElement("tr"); values.forEach(v=>cell(tr,v)); table.append(tr);}
+  }
+  function renderInitialAccount(s) {
+    const p = s.initial_account_policy, a = s.initial_cycle_review;
+    const tbody = $("initial-collateral-rows");
+    empty(tbody, 4, "No verified initial-cycle audit for this attempt.");
+    if (!p || p.scope !== "course_simulation_only" || p.starting_cash !== 40000 ||
+        p.professor_confirmed_cash_amount !== false || p.official_sanji_balance !== false ||
+        p.initial_positions_file_required !== false ||
+        ["shares", "open_puts", "open_calls"].some(k => p.initial_inventory?.[k] !== 0)) {
+      text("initial-collateral-note", "This diagnostic file does not contain the current initial-account policy. The stated starting scenario is not evidence of later holdings or fills.");
+      return;
+    }
+    text("initial-account-summary", "Professor-confirmed initial inventory: 0 shares, 0 open puts, 0 open calls. Student-selected and explicitly authorized simulated cash: $40,000. The amount is not professor-confirmed and is not an official Sanji balance. An initial positions.json is not required.");
+    if (!a || a.status !== "validated" || a.orders_written !== false || a.fills_inferred !== false ||
+        a.market_retrieved_at !== s.market_data_retrieved_at || a.signal_date !== s.calendar?.as_of ||
+        a.target_session !== s.calendar?.target_session || a.existing_proposals_match !== true ||
+        !Array.isArray(a.collateral_by_proposal) || !Array.isArray(a.proposals)) {
+      text("initial-collateral-note", a?.status === "not_initial_cycle"
+        ? "Not an initial-cycle reset: earlier proposals or an authoritative book exist. Outstanding orders stay reserved until reconciled; no new flat account is assumed."
+        : "Initial-cycle selection/collateral review unavailable or inconsistent. No official balance, filled position or released collateral is inferred.");
+      return;
+    }
+    const c = a.capital, total = a.collateral_by_proposal.reduce((sum,r)=>sum+r.collateral,0);
+    if (!c || c.passed !== true || c.cash !== 40000 || c.equity !== 40000 ||
+        a.proposals.length !== a.collateral_by_proposal.length || !Number.isFinite(total) ||
+        a.collateral_by_proposal.some(r=>r.qty!==1 || r.collateral!==100*r.strike || r.collateral>12000 ||
+          !a.proposals.some(o=>o.id===r.id&&o.contract==='put'&&o.strike===r.strike&&o.underlying===r.underlying&&o.qty===r.qty)) ||
+        Math.abs(total-c.put_collateral)>1e-8 || Math.abs(total-c.exposure)>1e-8 ||
+        Math.abs(c.cash-total-c.uncommitted_cash)>1e-8 || total>28000 || c.uncommitted_cash<12000) {
+      text("initial-collateral-note", "Initial-cycle capital reconciliation failed; no validated allocation is asserted.");
+      return;
+    }
+    tbody.replaceChildren();
+    for (const r of a.collateral_by_proposal) {
+      const ticker = Object.entries(s.conid_status || {}).find(([,id])=>id===r.underlying)?.[0] || "Unmapped";
+      const tr=document.createElement("tr");
+      [ticker+" / "+r.underlying, fmt(r.strike), r.qty, fmt(r.collateral)].forEach(v=>cell(tr,v)); tbody.append(tr);
+    }
+    if (!a.collateral_by_proposal.length) empty(tbody,4,"No qualifying initial puts in this dated evaluation.");
+    text("initial-collateral-note", `Selection rechecked against the real LSEG ${a.signal_date} close for ${a.target_session}. Total proposed collateral ${fmt(total)} (${fmt(total/c.equity,true)}); uncommitted simulated cash ${fmt(c.uncommitted_cash)}. Per-name limit $12,000; total limit $28,000; minimum reserve $12,000. Existing proposals match this initial-cycle check. This audit writes no orders and credits no premiums or fills; the actual planner retains pending reservations.`);
   }
   function render(s, orders, ordersAvailable = true) {
     const good = s.status === "success";
@@ -215,7 +255,7 @@
       observed
         ? "Signals use completed session " +
             s.calendar.as_of +
-            (course ? ". Course proposals use explicit $40,000 cash-only assumptions, not an official account."
+            (course ? ". Course proposals use student-authorized $40,000 simulated cash and confirmed initial zero inventory, not an official account."
               : ". Authoritative mode requires a fresh, reconciled account and verified identifiers.") +
             (s.evaluation_kind === "retained_market_replay" ? " This is a replay of the original LSEG response, not a new API query; production orders cannot be published by replay." : "")
         : "Only validated inputs appear here. Missing data is not a no-trade signal.",
@@ -224,7 +264,7 @@
     if (!course && s.account_status && s.account_status !== "Available")
       issues.push(s.account_status);
     text("account-mode", course
-      ? "COURSE PROPOSAL MODE · Hypothetical starting cash $40,000; initial stocks 0; initial short options 0; no leverage. Official Sanji account unavailable. " +
+      ? "COURSE PROPOSAL MODE · Student-authorized simulated starting cash $40,000; professor-confirmed initial stocks 0, puts 0 and calls 0; no leverage. The amount is not professor-confirmed or an official Sanji balance. " +
         (s.unconfirmed_proposal_count ?? 0) + " unconfirmed proposal(s); past proposals keep their ticker locks and collateral reservations. These are proposals, not fills or actual balances."
       : s.account_mode === "authoritative"
         ? "AUTHORITATIVE ACCOUNT MODE · " + s.account_status + ". The planner reads the book; it never writes positions or assumes executions."
@@ -253,7 +293,7 @@
       cell(
         tr,
         p
-          ? `${p.shares} shares / ${p.put} put / ${p.call} call${course ? " (assumed initial state)" : ""}`
+          ? `${p.shares} shares / ${p.put} put / ${p.call} call${course ? " (initial reference only; pending proposals are not fills)" : ""}`
           : "Account unavailable",
       );
       cell(
@@ -263,7 +303,7 @@
               .map(([k, v]) => k + ": " + (v ? "pass" : "fail"))
               .join(" · ")
           : "Not evaluated",
-        (d.technical_status ? d.technical_status+". " : "") + (d.eligible ? "Final eligibility passed" : s.status === "blocked" ? "Final eligibility not established" : "Not eligible / not evaluated"),
+        (d.technical_status ? d.technical_status+". " : "") + (d.eligible ? "Final eligibility passed" : s.status === "blocked" ? "Final eligibility not established" : d.category === "Already proposed" ? "Existing proposal/weekly slot retained; not a new entry or a confirmed fill" : "Not eligible / not evaluated"),
       );
       cell(tr, s.status === "blocked" ? "Evaluation blocked" : d.category === "Proposed order" ? d.decision : d.category || d.decision || "Not evaluated", (d.reasons || []).join("; "));
       rows.append(tr);
@@ -285,6 +325,7 @@
           ? "Initial empty queue; not yet a successful no-trade evaluation."
           : "Order files were not changed by this attempt. Any displayed orders are retained from an earlier run; their dated sessions govern eligibility.",
     );
+    renderInitialAccount(s);
     const orderRows = $("order-rows");
     orderRows.replaceChildren();
     for (const o of orders) {

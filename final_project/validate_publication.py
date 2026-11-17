@@ -55,7 +55,7 @@ def check(root):
     if any(o['id'].startswith('fin535-demo-') for o in orders):
         raise ValueError('Demonstration order in production queue')
     if status.get('account_mode') == 'course_proposal' and status['status'] == 'success':
-        from .course import initial_account, read_state, ASSUMPTIONS
+        from .course import initial_account, initial_policy, review_initial_proposals, read_state, ASSUMPTIONS
         from .strategy import evaluate
         market = json.loads((root/'docs/data/market_snapshot.json').read_text())
         if status.get('conid_status') != verified_ids:
@@ -72,6 +72,13 @@ def check(root):
                 raise ValueError('Course decisions/capital do not independently reproduce: '+key)
         if recomputed['orders'] != status.get('evaluated_orders'):
             raise ValueError('Proposed JSON differs from actual model decisions')
+        if 'initial_account_policy' in status:
+            if status['initial_account_policy'] != initial_policy():
+                raise ValueError('Initial inventory/capital authority is inconsistent')
+            expected_review = review_initial_proposals(market, status['conid_status'], status['pending_orders_before'],
+                {'authoritative_account_seen': False, 'put_proposal_history': status['put_proposal_history_before']})
+            if not equivalent_observations(status.get('initial_cycle_review'), expected_review):
+                raise ValueError('Initial-cycle proposal/collateral audit does not reproduce')
         if status.get('orders_updated'):
             if orders != recomputed['orders'] or any(o['for'] != market['calendar']['target_session'] for o in orders):
                 raise ValueError('Published course queue differs from evaluated upcoming-session proposals')

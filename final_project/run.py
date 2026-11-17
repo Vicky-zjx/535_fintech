@@ -11,7 +11,7 @@ from .sanji_orders import atomic_json, read_orders, publish_orders
 from .strategy import evaluate
 from .strategy_config import UNIVERSE, STRATEGY_REVISION
 from .verify_conids import resolve_identifiers
-from .course import initial_account, read_state, pending_orders, next_state, proposal_history, ASSUMPTIONS
+from .course import initial_account, initial_policy, review_initial_proposals, read_state, pending_orders, next_state, proposal_history, ASSUMPTIONS
 from lseg_chart.update import safe_failure_detail
 
 
@@ -24,6 +24,7 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
               'decisions': [], 'capital': None, 'calendar': None,
               'strategy_revision': STRATEGY_REVISION,
               'requested_mode': mode, 'account_mode': None,
+              'initial_account_policy': initial_policy(),
               'outcome': 'missing_inputs', 'evaluated_orders': None,
               'evaluation_kind': 'retained_market_replay' if replay else 'fresh_api'}
     status_path = root/'docs/data/strategy_status.json'
@@ -55,9 +56,9 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
         hypothetical = mode == 'course' and not account_path.exists()
         report['account_mode'] = 'course_proposal' if hypothetical else 'authoritative'
         report['authoritative_account_available'] = account_path.exists()
-        report['account_status'] = ('Unavailable; explicit course proposal assumptions used, not an official account'
+        report['account_status'] = ('Sanji book unavailable; professor-confirmed initial zero inventory and student-authorized $40,000 simulated cash used, not an official balance'
                                     if hypothetical else 'Available' if account_path.exists()
-                                    else 'Missing mkt/positions.json; authoritative mode requires it')
+                                    else 'Initial zero inventory is confirmed, but the $40,000 authorization is for course simulation only; an authoritative cash balance/book has not been supplied')
         report['account_assumptions'] = ASSUMPTIONS if hypothetical else None
         if hypothetical:
             account = initial_account(market['calendar']['as_of'])
@@ -76,6 +77,8 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
         report['conid_status'] = conids
         report['identifier_audit'] = coverage
         report['identifier_verified_at'] = evidence['retrieved_at']
+        if hypothetical:
+            report['initial_cycle_review'] = review_initial_proposals(market, conids, pending, state)
         result = evaluate(market, account, conids, pending, course_proposal=hypothetical,
                           put_history=state['put_proposal_history'])
         report.update({k: v for k, v in result.items() if k != 'orders'})
@@ -134,7 +137,7 @@ def main():
     p.add_argument('--replay', action='store_true',
                    help='Audit the retained real snapshot; no API calls or production-order writes')
     p.add_argument('--mode', choices=('course', 'authoritative'), default='course',
-                   help='Course uses disclosed starting assumptions ONLY when no official account exists')
+                   help='Course uses student-authorized simulated cash and confirmed initial zero inventory ONLY when no official account exists; never infers later fills')
     args = p.parse_args()
     return run(args.root, datetime.now(timezone.utc), replay=args.replay, mode=args.mode)
 
