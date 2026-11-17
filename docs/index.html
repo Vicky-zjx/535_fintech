@@ -819,113 +819,25 @@
 
       <section id="evaluation">
         <p class="eyebrow">12 / EVALUATION &amp; LIMITATIONS</p>
-        <h2>Performance Evaluation Pending Sanji Data</h2>
+        <h2>Strategy Limitations and Future Evaluation</h2>
         <div class="discussion">
-          <p id="performance-pending">Portfolio performance has not yet been calculated because
-            verified Sanji execution and account NAV histories are unavailable. The current analysis
-            concerns real market signals, risk checks and separately labeled hypothetical books.
-            This is a missing evidence dependency, not an unexplained calculation error or a zero return.</p>
-          <p>Execution and performance reporting are separate from this assignment's deliverable:
-            an automated model that generates and manages valid proposed orders. Missing execution
-            records do not mean that the order-generation workflow failed.</p>
-          <h3>The cost of conservative rules</h3>
-          <p>Fewer qualifying entries mean fewer chances to collect premium, while cash can miss a
-            rising market. A volatility cap may exclude precisely the contracts offering the largest
-            premiums; a trend or drop filter may postpone entry until a rebound is already underway.
-            The opposite possibility is that avoiding some entries reduces large losses. Today's
-            rejections establish neither result. Cash drag and avoided losses require an executed
-            or consistently simulated alternative path, not hindsight about rejected stocks.</p>
-          <h3>After assignment, the risk changes</h3>
-          <p>A put assignment exchanges reserved cash for 100 shares at the strike. The obligation
-            becomes direct stock exposure; it is not a new profit, and loss can already exist at the
-            assignment price. Subsequent covered calls exchange some upside for premium. These shares
-            remain exposed when no call satisfies the strike floors, and the new-put filters do not
-            trigger an automatic sale of existing stock. There are no stop-losses or rolls in this policy.</p>
-          <p>Sanji must confirm assignment and available shares before the planner can write a call.
-            American-option exercise can occur before expiry, and dividend-related call assignment
-            can alter both holdings and dividend entitlement. A simulator that simply assumes all
-            options expire on Friday would miss those account transitions. The current planner
-            delegates them to the authoritative book; the hypothetical inventory is not evidence
-            that any assignment occurred.</p>
-          <h3>What a valid performance record would contain</h3>
-          <p>Actual fills, realized premium receipts, net P&amp;L, account return, return on deployed
-            capital, Sharpe, maximum drawdown and assignment frequency are all pending. A current
-            account snapshot alone would not recover that history. Required records include fill
-            IDs, times, quantities and prices; costs; dividends and cash flows; option resolutions;
-            and daily reconciled cash, holdings, marks and NAV. Earlier single-stock assignments are
-            not performance evidence for this four-stock policy.</p>
-          <p>The planned daily Sharpe uses genuine adjacent-session, flow-adjusted account returns,
-            sample standard deviation and √252 annualization. A contemporaneous short-term Treasury
-            risk-free series, dated without look-ahead and converted to daily units, will be specified
-            before evaluating performance; 0% is only a separately labeled sensitivity comparison,
-            not the default claim of excess return. Actual credited cash interest belongs in P&amp;L.
-            A simulated cash-yield assumption must state its source and accrual rule and be compared
-            with a zero-interest sensitivity case. Neither interest series nor performance is calculated here.
-            Maximum drawdown will use the entire flow-adjusted wealth path relative to its running peak,
-            including opening equity (the NAV path when there are no external flows).
-            Missing marks remain missing: full-period statistics will be withheld
-            rather than bridging returns, interpolating NAV or substituting zero. Any partial-sample
-            statistic would have its own dates and explicit limitations.</p>
-          <h3>A comparison to run, not a result already obtained</h3>
-          <p>The proposed baseline is a weekly Wheel on the same four names, retaining cash security,
-            account limits and contract-selection rules but omitting the three
-            technical entry screens. Compare it with this risk-managed version using identical market
-            periods, initial equity, observed contract access, transaction costs, assignment treatment
-            and execution assumptions. This isolates the screens without granting either strategy
-            leverage or better fills. It is a proposed research protocol; the comparison has not run.</p>
-          <p>Sanji history for only the selected strategy cannot reveal fills for the baseline's
-            counterfactual trades. Those would need a separately labeled, point-in-time simulation
-            or parallel course evaluation. Compare net account and deployed-capital returns, utilization,
-            drawdown, Sharpe and assignment frequency together. Keep the rules fixed, then test
-            sensitivity over other periods without selecting parameters on the evaluation sample.</p>
-          <h3>What remains uncertain — and how to resolve it</h3>
-          <p><strong>The IV–RV thesis is untested.</strong> This project has no paired, reliable
-            entry-date implied volatility and subsequent realized-volatility sample for the historical
-            option trades. HV20 is backward-looking stock volatility, not IV. Neither the eligibility
-            analysis nor a put proposal establishes that an implied-volatility premium was earned.</p>
-          <p>Current LSEG discovery is an observed candidate set, not a complete historical chain.
-            A fallback is reproducible within that set but can select differently as coverage changes.
-            Missing dated Greeks prevent a claim that demonstrated proposals are 25-delta trades.
-            A replay needs archived point-in-time chains and contract exclusions, so
-            later discoveries cannot establish earlier availability. The historical section tests variation
-            in eligibility across periods, not regime-specific investment returns, correlation protection
-            or the performance of alternative parameter choices.</p>
-          <p>The initial scenario is $40,000 simulated cash with no positions;
-            initial account setup no longer blocks course proposals. For subsequent authoritative account operation,
-            the professor must supply the native Sanji account schema, dated cash/equity and complete positions,
-            plus update-complete timing. Bases, marks and
-            resolution IDs are needed when the corresponding positions or orders exist; a flat confirmed
-            book has no such positions to value. For execution, course enrollment and contract-open coverage
-            for the four verified conids remain unconfirmed. Resolver activation is needed to observe course executions, not to validate a
-            proposal's JSON. Course mode already supports hypothetical cash-only proposals without these
-            official records. No earnings-calendar entitlement or alternative event feed is required.</p>
-          <p>These records can feed a separate, read-only performance report alongside the existing
-            market, decision and order artifacts. That preserves the planner and page layout while
-            adding auditable account evidence; no production balance or fill needs to be invented
-            to make the current website look complete.</p>
-        </div>
-        <div class="limitations">
-          <p>
-            <strong>Earnings-event risk.</strong> The strategy does not screen around earnings announcements
-            and may therefore be exposed to earnings-related price gaps. Trend, volatility and cash-reserve
-            checks do not eliminate this risk.
-          </p>
-          <p>
-            <strong>Equity risk.</strong> Four stocks can decline together. Put
-            assignment can create losses larger than premium income; calls cap
-            upside and do not remove downside.
-          </p>
-          <p>
-            <strong>Execution risk.</strong> Short-dated gamma, overnight gaps,
-            early assignment, dividends, spreads, fees and market-order slippage
-            matter. No fills or fees are invented by the nightly planner.
-          </p>
-          <p>
-            <strong>Data risk.</strong> Observed option coverage may be
-            incomplete. Greeks can be missing or revised. A
-            fallback changes selection—not the facts—and historical replay would
-            need point-in-time snapshots.
-          </p>
+          <p>My strategy uses trend, volatility, and portfolio restrictions to control when and how much
+            risk it takes. However, these restrictions also reduce trading opportunities and may result
+            in lower premium income and capital utilization. The three-year historical analysis shows
+            how the filters affect technical eligibility, but it does not establish whether they improve
+            investment returns.</p>
+          <p>The Wheel Strategy also carries risks after assignment. If a short put is assigned, the
+            portfolio becomes exposed to movements in the underlying stock price. Selling covered calls
+            can provide additional premium income, but it limits upside potential and does not eliminate
+            downside risk.</p>
+          <p id="performance-pending">For this assignment, my main objective is to implement an automated
+            trading algorithm that uses LSEG market data and generates Sanji-compatible orders through
+            GitHub Actions. The generated orders are proposals rather than confirmed executions.
+            Evaluating actual returns, Sharpe ratios, and maximum drawdown would require a complete
+            history of simulated fills and portfolio values.</p>
+          <p>A future extension would compare the risk-managed Wheel Strategy with a baseline Wheel
+            Strategy using the same stocks, capital, and trading period to evaluate whether the
+            additional restrictions improve risk-adjusted performance.</p>
         </div>
       </section>
 

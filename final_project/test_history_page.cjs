@@ -25,8 +25,9 @@ test('Invalid provenance, counts and denominators fail rather than becoming zero
 test('Required section order, method and existing SVG/navigation remain intact',()=>{
   const actual=[...html.matchAll(/<section id="([^"]+)"/g)].map(m=>m[1]);
   assert.deepEqual(actual,['objective','workflow','universe','rules','risk','historical','decisions','orders','demonstration','measurement','analysis','evaluation','reproducibility']);
-  assert.match(html,/IV–RV thesis is untested/);assert.match(html,/vintage prices/);
-  assert.match(html,/risk-free series/);assert.match(html,/data-course-nav/);assert.match(html,/strategy-workflow.svg/);
+  assert.match(html,/technical eligibility/);assert.match(html,/vintage prices/);
+  assert.match(html,/does not establish whether they improve\s+investment returns/);
+  assert.match(html,/data-course-nav/);assert.match(html,/strategy-workflow.svg/);
   assert.doesNotMatch(html+script,/[\u4e00-\u9fff]/);
 });
 class Element {

@@ -33,6 +33,27 @@ async function render(status,orders=[],fail=false,demo=null){
   return elements;
 }
 const baseline={status:'not_run',decisions:[],errors:['Live data not yet available'],orders_updated:false};
+test('Limitations section contains exactly the four requested paragraphs and preserves anchors',()=>{
+  const section=html.match(/<section id="evaluation">([\s\S]*?)<\/section>/)?.[1];
+  assert.ok(section);
+  assert.match(section,/<h2>Strategy Limitations and Future Evaluation<\/h2>/);
+  const discussion=section.match(/<div class="discussion">([\s\S]*?)<\/div>/)?.[1];
+  assert.ok(discussion);
+  const paragraphs=[...discussion.matchAll(/<p(?:\s[^>]*)?>([\s\S]*?)<\/p>/g)]
+    .map(m=>m[1].replace(/\s+/g,' ').trim());
+  assert.deepEqual(paragraphs,[
+  "My strategy uses trend, volatility, and portfolio restrictions to control when and how much risk it takes. However, these restrictions also reduce trading opportunities and may result in lower premium income and capital utilization. The three-year historical analysis shows how the filters affect technical eligibility, but it does not establish whether they improve investment returns.",
+  "The Wheel Strategy also carries risks after assignment. If a short put is assigned, the portfolio becomes exposed to movements in the underlying stock price. Selling covered calls can provide additional premium income, but it limits upside potential and does not eliminate downside risk.",
+  "For this assignment, my main objective is to implement an automated trading algorithm that uses LSEG market data and generates Sanji-compatible orders through GitHub Actions. The generated orders are proposals rather than confirmed executions. Evaluating actual returns, Sharpe ratios, and maximum drawdown would require a complete history of simulated fills and portfolio values.",
+  "A future extension would compare the risk-managed Wheel Strategy with a baseline Wheel Strategy using the same stocks, capital, and trading period to evaluate whether the additional restrictions improve risk-adjusted performance."
+]);
+  assert.equal((section.match(/<p(?:\s|>)/g)||[]).length,5); // Eyebrow + four body paragraphs.
+  assert.doesNotMatch(section,/<h3|class="limitations"|Performance Evaluation Pending Sanji Data/);
+  assert.match(section,/id="performance-pending"/); // Preserve existing deep links.
+  assert.match(html,/href="#evaluation">Limitations<\/a>/);
+  const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
+  for(const [,anchor] of html.matchAll(/href="#([^"]+)"/g)) assert.ok(ids.has(anchor),'Existing anchor '+anchor);
+});
 test('Initial state is not a successful no-trade run',async()=>{
   const e=await render(baseline);assert.match(e.get('order-note').textContent,/not yet a successful/);assert.equal(e.get('decision-rows').children.length,4);
 });
@@ -173,8 +194,8 @@ test('English methodology and formulas are visible without a fabricated performa
   assert.match(html,/Account Return = Net Portfolio P&amp;L \/ Starting Portfolio Equity/);
   assert.match(html,/Return on Deployed Capital = Net Strategy P&amp;L \/ Average Deployed Capital/);
   assert.match(html,/Capital Utilization = Deployed Capital \/ Portfolio Equity/);
-  assert.match(html,/Performance Evaluation Pending Sanji Data/);
-  assert.match(html,/comparison has not run/);
+  assert.match(html,/Strategy Limitations and Future Evaluation/);
+  assert.match(html,/A future extension would compare/);
   assert.match(html,/strategy-workflow\.svg/);
   assert.ok(html.indexOf('assets/analysis.js')<html.indexOf('assets/app.js'));
   assert.doesNotMatch(html+script+analysisScript,/[\u4e00-\u9fff]/);
@@ -187,7 +208,7 @@ test('Assignment scope separates proposed orders, schema and execution without i
   assert.match(scope,/does not require completed Sanji fills or positions/);
   assert.match(scope,/student-selected \$40,000 simulation budget/);
   assert.match(scope,/Pending proposals retain their collateral and weekly commitments/);
-  assert.match(html,/Missing execution\s+records do not mean that the order-generation workflow failed/);
+  assert.match(html,/The generated orders are proposals rather than confirmed executions/);
 });
 
 test('Dated automation audit distinguishes actual schedule evidence from manual success and punctuality',()=>{
@@ -201,12 +222,11 @@ test('Dated automation audit distinguishes actual schedule evidence from manual 
   assert.match(evidence,/historical run records, not a claim about every future run/);
 });
 
-test('Earnings policy is removed from current diagnostics, with an explicit gap-risk disclosure',async()=>{
+test('Earnings policy remains intentionally removed from current diagnostics and strategy',async()=>{
   const e=await render(realStatus,[],false,realDemo);
   for(const id of ['availability-rows','data-quality','pipeline-discussion','demo-results'])
     assert.doesNotMatch(e.get(id).textContent,/earnings|blackout|calendar confirmation/i);
-  assert.match(html,/does not screen around earnings announcements/);
-  assert.match(html,/exposed to earnings-related price gaps/);
+  assert.match(html,/No earnings dates are requested or used/);
   assert.match(html,/intentionally removed/);
   assert.doesNotMatch(html,/Unknown earnings still block|earnings validation|No earnings from entry|earnings_investigation\.json|event filters/);
   const flow=fs.readFileSync(path.join(__dirname,'../docs/assets/strategy-workflow.svg'),'utf8');
