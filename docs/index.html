@@ -151,9 +151,8 @@
             <aside class="note">
               <h3>Proposals are not positions</h3>
               <p>
-                The professor confirmed a cash-only start with zero shares, puts and calls.
-                The student selected and authorized $40,000 of simulated capital;
-                this is not a professor-confirmed amount or an official Sanji balance. Sanji confirms fills,
+                The course simulation starts with $40,000 cash and zero shares, puts and calls.
+                Sanji confirms fills,
                 expiry and assignment. Unconfirmed proposals reserve collateral
                 and lock their ticker; the planner never edits positions or invents fills.
               </p>
@@ -412,8 +411,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Student-authorized simulated starting capital</td>
-                  <td>$40,000 — not a professor-confirmed amount or live balance</td>
+                  <td>Initial simulated capital</td>
+                  <td>$40,000</td>
                 </tr>
                 <tr>
                   <td>Exposure per ticker</td>
@@ -440,8 +439,8 @@
           </div>
           <div>
             <p>
-              In course mode, check the student-authorized $40,000 simulated starting
-              cash, professor-confirmed initial zero inventory and all unconfirmed commitments. When an authoritative
+              In course mode, check the $40,000 simulated starting
+              cash, initial zero inventory and all unconfirmed commitments. When an authoritative
               book exists, validate its date and reconcile equity to cash plus
               marked positions. An invalid existing book never triggers a hypothetical reset.
             </p>
@@ -647,10 +646,10 @@
         </div>
         <p class="notice" id="account-mode">Course assumptions and official account status are reported separately.</p>
         <div class="note">
-          <h3>Confirmed starting state, separate capital authority</h3>
-          <p id="initial-account-summary">The professor confirmed zero shares, zero open puts and zero open calls at the start.
-            The student selected $40,000 of simulated cash. No initial positions file is needed;
-            neither statement establishes subsequent fills or a real account balance.</p>
+          <h3>Initial simulated account</h3>
+          <p id="initial-account-summary">Initial simulated capital: $40,000. Starting inventory:
+            0 shares, 0 open puts and 0 open calls. No initial positions file is needed;
+            subsequent holdings depend on confirmed order outcomes.</p>
           <details><summary>Initial-cycle selection and collateral audit</summary>
             <p id="initial-collateral-note">A dated, reproducible initial-cycle audit has not loaded.</p>
             <div class="table-wrap" tabindex="0" aria-label="Initial proposed put collateral">
@@ -722,8 +721,8 @@
             This verifies identity, not enrollment or option-price coverage in the course database.
             Both modes validate the configured static conids against this evidence and reject any conflicting course mapping.
             No nightly IBKR login is required; missing course coverage remains an execution-readiness limitation.</p>
-          <p>Course mode does not require an official account to generate initial proposals: the professor confirmed
-            no initial positions and the student authorized $40,000 of simulated cash. The amount is not professor-confirmed.
+          <p>Course mode starts with $40,000 of simulated cash and no positions;
+            an initial official account file is not required to generate proposals.
             All existing risk limits apply. Subsequent account management separately requires dated cash, equity and complete positions;
             covered calls require confirmed shares and cost bases. The native schema and update timing
             must be supplied by the course producer. An inactive Sanji resolver does not block initial
@@ -879,8 +878,8 @@
             later discoveries cannot establish earlier availability. The historical section tests variation
             in eligibility across periods, not regime-specific investment returns, correlation protection
             or the performance of alternative parameter choices.</p>
-          <p>The initial empty portfolio is now confirmed, and the student has authorized the $40,000 simulation budget;
-            neither is a blocker for initial course proposals. For subsequent authoritative account operation,
+          <p>The initial scenario is $40,000 simulated cash with no positions;
+            initial account setup no longer blocks course proposals. For subsequent authoritative account operation,
             the professor must supply the native Sanji account schema, dated cash/equity and complete positions,
             plus update-complete timing. Bases, marks and
             resolution IDs are needed when the corresponding positions or orders exist; a flat confirmed

@@ -140,7 +140,7 @@
       text("capital-chart", "Capital checks unavailable for this attempt. No cash balance or zero exposure is assumed beyond the explicitly selected course mode; see the input diagnostics.");
     }
     text("capital-note", s.account_mode === "course_proposal"
-      ? "Course proposal budget only: student-authorized $40,000 simulated starting cash, not actual Sanji NAV or a professor-confirmed amount. Initial zero inventory is confirmed; later holdings are not inferred. Exposure includes reserved put collateral, including past proposals with unknown outcomes. No premiums or fills are credited."
+      ? "Initial simulated capital: $40,000, with zero starting positions. Exposure includes reserved put collateral, including past proposals with unknown outcomes. Later holdings, premiums and fills are not inferred."
       : "Authoritative account mode: stock market value plus put strike collateral, versus uncommitted cash. Collateral is included in exposure, not added twice. Missing account data is not zero.");
   }
   function renderDiscussion(s) {
@@ -170,10 +170,10 @@
         "Market retrieval and individual field entitlements are separate from Sanji account availability. Completed-session indicators can be studied when validated."],
       ["Technical screen", evidence ? evidence.passed.length+" of 4 pass; "+evidence.rows.filter(d=>!d.technical).map(d=>d.ticker+": "+d.failed.join(", ")).join("; ") : "Complete validated comparison unavailable",
         "A failed filter rejects a new put; absent data is not a failed filter. Call decisions follow the confirmed stock position instead."],
-      ["Sanji account", s.account_status || "No verified account status",
+      ["Sanji account", s.account_mode === "course_proposal" ? "Course simulation: $40,000 cash-only initial portfolio; authoritative Sanji book not yet available" : s.account_status || "No verified account status",
         s.account_mode === "course_proposal"
-          ? "No positions file is needed to establish the professor-confirmed initial zero inventory. The student authorized $40,000 simulated capital, not an official balance. Durable reservations remain; covered calls need confirmed holdings."
-          : "Initial zero inventory is professor-confirmed, but simulated capital is not an official balance. Authoritative mode needs a dated, reconciled book for later cycles; invalid records never fall back to the starting scenario."],
+          ? "No positions file is needed for the cash-only initial scenario. Durable reservations remain; covered calls need confirmed holdings."
+          : "Authoritative mode needs a dated, reconciled book for later cycles; invalid records never fall back to the simulated starting scenario."],
       ["Stock identifiers", missingIds.length ? "Missing for "+missingIds.join(", ") : "All four static conids validated against official IBKR evidence",
         "Literal strike/expiry proposals use verified stock identities. Course conflicts block publication; no nightly IBKR login is required."],
       ["Course execution coverage", (s.pipeline_audit?.course_coverage_unconfirmed || []).length ? "Course binding unconfirmed for "+s.pipeline_audit.course_coverage_unconfirmed.join(", ") : "Inspect the separate course coverage audit",
@@ -197,7 +197,7 @@
       text("initial-collateral-note", "This diagnostic file does not contain the current initial-account policy. The stated starting scenario is not evidence of later holdings or fills.");
       return;
     }
-    text("initial-account-summary", "Professor-confirmed initial inventory: 0 shares, 0 open puts, 0 open calls. Student-selected and explicitly authorized simulated cash: $40,000. The amount is not professor-confirmed and is not an official Sanji balance. An initial positions.json is not required.");
+    text("initial-account-summary", "Initial simulated capital: $40,000. Starting inventory: 0 shares, 0 open puts, 0 open calls. An initial positions.json is not required; subsequent holdings depend on confirmed order outcomes.");
     if (!a || a.status !== "validated" || a.orders_written !== false || a.fills_inferred !== false ||
         a.market_retrieved_at !== s.market_data_retrieved_at || a.signal_date !== s.calendar?.as_of ||
         a.target_session !== s.calendar?.target_session || a.existing_proposals_match !== true ||
@@ -255,7 +255,7 @@
       observed
         ? "Signals use completed session " +
             s.calendar.as_of +
-            (course ? ". Course proposals use student-authorized $40,000 simulated cash and confirmed initial zero inventory, not an official account."
+            (course ? ". Course proposals use $40,000 simulated starting cash and zero initial positions."
               : ". Authoritative mode requires a fresh, reconciled account and verified identifiers.") +
             (s.evaluation_kind === "retained_market_replay" ? " This is a replay of the original LSEG response, not a new API query; production orders cannot be published by replay." : "")
         : "Only validated inputs appear here. Missing data is not a no-trade signal.",
@@ -264,7 +264,7 @@
     if (!course && s.account_status && s.account_status !== "Available")
       issues.push(s.account_status);
     text("account-mode", course
-      ? "COURSE PROPOSAL MODE · Student-authorized simulated starting cash $40,000; professor-confirmed initial stocks 0, puts 0 and calls 0; no leverage. The amount is not professor-confirmed or an official Sanji balance. " +
+      ? "COURSE PROPOSAL MODE · Initial simulated capital: $40,000; starting stocks 0, puts 0 and calls 0; no leverage. " +
         (s.unconfirmed_proposal_count ?? 0) + " unconfirmed proposal(s); past proposals keep their ticker locks and collateral reservations. These are proposals, not fills or actual balances."
       : s.account_mode === "authoritative"
         ? "AUTHORITATIVE ACCOUNT MODE · " + s.account_status + ". The planner reads the book; it never writes positions or assumes executions."

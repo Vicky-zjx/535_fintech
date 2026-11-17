@@ -209,7 +209,8 @@ test('Course mode labels hypothetical budget separately from unavailable officia
     capital:{equity:40000,cash:40000,exposure:12400,put_collateral:12400,uncommitted_cash:27600}};
   const e=await render(s,[{id:'fin535-course-test',for:'2026-11-16',underlying:8894,action:'SHT',contract:'put',expiry:'2026-11-20',strike:96,qty:1}]);
   assert.match(e.get('account-mode').textContent,/COURSE PROPOSAL MODE/);
-  assert.match(e.get('capital-note').textContent,/not actual Sanji NAV/);
+  assert.match(e.get('capital-note').textContent,/Initial simulated capital: \$40,000/);
+  assert.match(e.get('availability-rows').textContent,/authoritative Sanji book not yet available/);
   assert.match(e.get('order-note').textContent,/not actual Sanji account orders/);
   assert.equal(e.get('issues').textContent,'');
   assert.match(e.get('run-state').textContent,/Validated evaluation/);
@@ -242,11 +243,15 @@ function initialAuditFixture(){
       proposals:scenario.proposed_orders,capital:scenario.capital,
       collateral_by_proposal:scenario.proposed_orders.map(o=>({id:o.id,underlying:o.underlying,strike:o.strike,qty:o.qty,collateral:100*o.strike*o.qty}))}};
 }
-test('Confirmed initial inventory is distinct from student-authorized simulated cash',async()=>{
+test('Initial account copy is concise while retaining the simulation and fill distinction',async()=>{
   const e=await render(initialAuditFixture());
-  assert.match(e.get('initial-account-summary').textContent,/Professor-confirmed initial inventory: 0 shares, 0 open puts, 0 open calls/);
-  assert.match(e.get('initial-account-summary').textContent,/Student-selected and explicitly authorized/);
-  assert.match(e.get('initial-account-summary').textContent,/not professor-confirmed.*not an official Sanji balance/);
+  assert.match(e.get('initial-account-summary').textContent,/Initial simulated capital: \$40,000/);
+  assert.match(e.get('initial-account-summary').textContent,/Starting inventory: 0 shares, 0 open puts, 0 open calls/);
+  assert.match(e.get('initial-account-summary').textContent,/subsequent holdings depend on confirmed order outcomes/);
+  for (const id of ['initial-account-summary','account-mode','capital-note','availability-rows'])
+    assert.doesNotMatch(e.get(id).textContent,/professor.confirmed|student.authorized|capital authority/i);
+  assert.doesNotMatch(html,/not (?:a )?professor.confirmed|student.authorized|capital authority/i);
+  assert.match(html,/<td>Initial simulated capital<\/td>\s*<td>\$40,000<\/td>/);
   assert.match(e.get('initial-account-summary').textContent,/positions.json is not required/);
   assert.match(e.get('initial-collateral-note').textContent,/\$12,400.00.*31.00%.*\$27,600.00/);
   assert.equal(e.get('initial-collateral-rows').children.length,2);
