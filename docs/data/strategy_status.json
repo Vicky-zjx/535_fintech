@@ -2,9 +2,9 @@
   "schema_version": 1,
   "mode": "live",
   "status": "success",
-  "attempted_at": "2026-11-17T11:25:24.537391+00:00",
-  "successful_at": "2026-11-17T11:25:24.537391+00:00",
-  "market_data_retrieved_at": "2026-11-17T11:25:24.537391+00:00",
+  "attempted_at": "2026-11-18T10:57:13.384603+00:00",
+  "successful_at": "2026-11-18T10:57:13.384603+00:00",
+  "market_data_retrieved_at": "2026-11-18T10:57:13.384603+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": true,
   "errors": [],
@@ -18,16 +18,15 @@
       ],
       "category": "Technical filter failed",
       "technical_status": "Technical filter failed",
-      "close": 50.08,
-      "price_date": "2026-11-16",
+      "close": 49.44,
+      "price_date": "2026-11-17",
       "observation_window": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-20",
           "2026-10-21",
           "2026-10-22",
           "2026-10-23",
@@ -46,10 +45,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "sma50_dates": [
-          "2026-09-08",
           "2026-09-09",
           "2026-09-10",
           "2026-09-11",
@@ -98,13 +97,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-19",
-            "2026-10-20"
-          ],
           [
             "2026-10-20",
             "2026-10-21"
@@ -180,14 +176,18 @@
           [
             "2026-11-13",
             "2026-11-16"
+          ],
+          [
+            "2026-11-16",
+            "2026-11-17"
           ]
         ],
-        "r5_anchor_date": "2026-11-09"
+        "r5_anchor_date": "2026-11-10"
       },
-      "sma20": 50.4905,
-      "sma50": 53.8188,
-      "hv20": 0.24968292114415427,
-      "r5": -0.00929772502472792,
+      "sma20": 50.4305,
+      "sma50": 53.5598,
+      "hv20": 0.2526948056294343,
+      "r5": -0.024467245461720633,
       "filters": {
         "trend": false,
         "volatility": true,
@@ -209,16 +209,15 @@
       ],
       "category": "Already proposed",
       "technical_status": "Technical filter passed",
-      "close": 99.48,
-      "price_date": "2026-11-16",
+      "close": 98.79,
+      "price_date": "2026-11-17",
       "observation_window": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-20",
           "2026-10-21",
           "2026-10-22",
           "2026-10-23",
@@ -237,10 +236,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "sma50_dates": [
-          "2026-09-08",
           "2026-09-09",
           "2026-09-10",
           "2026-09-11",
@@ -289,13 +288,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-19",
-            "2026-10-20"
-          ],
           [
             "2026-10-20",
             "2026-10-21"
@@ -371,14 +367,18 @@
           [
             "2026-11-13",
             "2026-11-16"
+          ],
+          [
+            "2026-11-16",
+            "2026-11-17"
           ]
         ],
-        "r5_anchor_date": "2026-11-09"
+        "r5_anchor_date": "2026-11-10"
       },
-      "sma20": 95.062,
-      "sma50": 91.0482,
-      "hv20": 0.20438553082905986,
-      "r5": 0.035926273039675216,
+      "sma20": 95.327,
+      "sma50": 91.2568,
+      "hv20": 0.2073927918875485,
+      "r5": 0.019399442781962817,
       "filters": {
         "trend": true,
         "volatility": true,
@@ -399,17 +399,16 @@
         "Unconfirmed proposal/active pending order: ticker locked and collateral reserved; no duplicate or assumed fill"
       ],
       "category": "Already proposed",
-      "technical_status": "Technical filter passed",
-      "close": 28.86,
-      "price_date": "2026-11-16",
+      "technical_status": "Technical filter failed",
+      "close": 28.47,
+      "price_date": "2026-11-17",
       "observation_window": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-20",
           "2026-10-21",
           "2026-10-22",
           "2026-10-23",
@@ -428,10 +427,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "sma50_dates": [
-          "2026-09-08",
           "2026-09-09",
           "2026-09-10",
           "2026-09-11",
@@ -480,13 +479,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-19",
-            "2026-10-20"
-          ],
           [
             "2026-10-20",
             "2026-10-21"
@@ -562,16 +558,20 @@
           [
             "2026-11-13",
             "2026-11-16"
+          ],
+          [
+            "2026-11-16",
+            "2026-11-17"
           ]
         ],
-        "r5_anchor_date": "2026-11-09"
+        "r5_anchor_date": "2026-11-10"
       },
-      "sma20": 29.7635,
-      "sma50": 28.81,
-      "hv20": 0.25249897960535567,
-      "r5": -0.012658227848101333,
+      "sma20": 29.6815,
+      "sma50": 28.8236,
+      "hv20": 0.24016046802338273,
+      "r5": -0.030313351498637675,
       "filters": {
-        "trend": true,
+        "trend": false,
         "volatility": true,
         "sudden_drop": true
       },
@@ -591,16 +591,15 @@
       ],
       "category": "Technical filter failed",
       "technical_status": "Technical filter failed",
-      "close": 11.57,
-      "price_date": "2026-11-16",
+      "close": 11.34,
+      "price_date": "2026-11-17",
       "observation_window": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-20",
           "2026-10-21",
           "2026-10-22",
           "2026-10-23",
@@ -619,10 +618,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "sma50_dates": [
-          "2026-09-08",
           "2026-09-09",
           "2026-09-10",
           "2026-09-11",
@@ -671,13 +670,10 @@
           "2026-11-11",
           "2026-11-12",
           "2026-11-13",
-          "2026-11-16"
+          "2026-11-16",
+          "2026-11-17"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-19",
-            "2026-10-20"
-          ],
           [
             "2026-10-20",
             "2026-10-21"
@@ -753,14 +749,18 @@
           [
             "2026-11-13",
             "2026-11-16"
+          ],
+          [
+            "2026-11-16",
+            "2026-11-17"
           ]
         ],
-        "r5_anchor_date": "2026-11-09"
+        "r5_anchor_date": "2026-11-10"
       },
-      "sma20": 12.121,
-      "sma50": 12.4984,
-      "hv20": 0.3122868574000494,
-      "r5": -0.07587859424920118,
+      "sma20": 12.0805,
+      "sma50": 12.4452,
+      "hv20": 0.31840825813676304,
+      "r5": -0.07654723127035823,
       "filters": {
         "trend": false,
         "volatility": true,
@@ -790,11 +790,11 @@
     }
   },
   "calendar": {
-    "as_of": "2026-11-16",
-    "target_session": "2026-11-17",
+    "as_of": "2026-11-17",
+    "target_session": "2026-11-18",
     "first_session_of_week": false,
     "exchange": "XNYS",
-    "close_time": "2026-11-16T21:00:00+00:00"
+    "close_time": "2026-11-17T21:00:00+00:00"
   },
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "requested_mode": "course",
@@ -816,35 +816,10 @@
     "initial_positions_file_required": false,
     "subsequent_cycles": "Use authoritative account/position records and order outcomes; never infer fills or assignments"
   },
-  "outcome": "proposals_available",
-  "evaluated_orders": [
-    {
-      "id": "fin535-course-ko-put-2026-11-17",
-      "for": "2026-11-17",
-      "order_type": "mkt",
-      "action": "SHT",
-      "qty": 1,
-      "underlying": 8894,
-      "contract": "put",
-      "expiry": "2026-11-27",
-      "strike": 96.0,
-      "ref": "prev_close"
-    },
-    {
-      "id": "fin535-course-pfe-put-2026-11-17",
-      "for": "2026-11-17",
-      "order_type": "mkt",
-      "action": "SHT",
-      "qty": 1,
-      "underlying": 11031,
-      "contract": "put",
-      "expiry": "2026-11-27",
-      "strike": 28.0,
-      "ref": "prev_close"
-    }
-  ],
+  "outcome": "awaiting_order_confirmation",
+  "evaluated_orders": [],
   "evaluation_kind": "fresh_api",
-  "market_snapshot_sha256": "8f49d1d0cfd71a6b4356bbb4915f684890abf0c2858f3364bbd8c7ef845e8bd9",
+  "market_snapshot_sha256": "f5578aedabbba19399bfd386d10aeefe02dc11942a91b1cb04486e04d040cf9e",
   "authoritative_account_available": false,
   "account_status": "Sanji book unavailable; professor-confirmed initial zero inventory and student-authorized $40,000 simulated cash used, not an official balance",
   "account_assumptions": {
@@ -929,184 +904,8 @@
   },
   "identifier_verified_at": "2026-11-16T22:00:10.475449+00:00",
   "initial_cycle_review": {
-    "status": "validated",
-    "scope": "Initial-cycle selection/collateral audit only; the actual planner still reserves every pending proposal",
-    "signal_date": "2026-11-16",
-    "target_session": "2026-11-17",
-    "market_retrieved_at": "2026-11-17T11:25:24.537391+00:00",
-    "starting_cash": 40000,
-    "initial_inventory": {
-      "shares": 0,
-      "open_puts": 0,
-      "open_calls": 0
-    },
-    "proposals": [
-      {
-        "id": "fin535-course-ko-put-2026-11-17",
-        "for": "2026-11-17",
-        "order_type": "mkt",
-        "action": "SHT",
-        "qty": 1,
-        "underlying": 8894,
-        "contract": "put",
-        "expiry": "2026-11-27",
-        "strike": 96.0,
-        "ref": "prev_close"
-      },
-      {
-        "id": "fin535-course-pfe-put-2026-11-17",
-        "for": "2026-11-17",
-        "order_type": "mkt",
-        "action": "SHT",
-        "qty": 1,
-        "underlying": 11031,
-        "contract": "put",
-        "expiry": "2026-11-27",
-        "strike": 28.0,
-        "ref": "prev_close"
-      }
-    ],
-    "decisions": [
-      {
-        "ticker": "BAC",
-        "decision": "No Trade",
-        "reasons": [
-          "trend filter failed"
-        ],
-        "category": "Technical filter failed",
-        "technical_status": "Technical filter failed",
-        "close": 50.08,
-        "sma20": 50.4905,
-        "sma50": 53.8188,
-        "hv20": 0.24968292114415427,
-        "r5": -0.00929772502472792,
-        "filters": {
-          "trend": false,
-          "volatility": true,
-          "sudden_drop": true
-        }
-      },
-      {
-        "ticker": "KO",
-        "decision": "Sell Put",
-        "reasons": [
-          "Fallback: observed strike nearest 3% OTM; not 25-delta"
-        ],
-        "category": "Proposed order",
-        "technical_status": "Technical filter passed",
-        "close": 99.48,
-        "sma20": 95.062,
-        "sma50": 91.0482,
-        "hv20": 0.20438553082905986,
-        "r5": 0.035926273039675216,
-        "filters": {
-          "trend": true,
-          "volatility": true,
-          "sudden_drop": true
-        },
-        "candidate": {
-          "ric": "KOW272609600.U",
-          "type": "put",
-          "strike": 96.0,
-          "expiry": "2026-11-27",
-          "multiplier": 100,
-          "terms_verified": true,
-          "observed_on": "2026-11-16",
-          "delta": null,
-          "delta_date": null,
-          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
-          "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
-        }
-      },
-      {
-        "ticker": "PFE",
-        "decision": "Sell Put",
-        "reasons": [
-          "Fallback: observed strike nearest 3% OTM; not 25-delta"
-        ],
-        "category": "Proposed order",
-        "technical_status": "Technical filter passed",
-        "close": 28.86,
-        "sma20": 29.7635,
-        "sma50": 28.81,
-        "hv20": 0.25249897960535567,
-        "r5": -0.012658227848101333,
-        "filters": {
-          "trend": true,
-          "volatility": true,
-          "sudden_drop": true
-        },
-        "candidate": {
-          "ric": "PFEW272602800.U",
-          "type": "put",
-          "strike": 28.0,
-          "expiry": "2026-11-27",
-          "multiplier": 100,
-          "terms_verified": true,
-          "observed_on": "2026-11-16",
-          "delta": null,
-          "delta_date": null,
-          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
-          "selection_method": "Fallback: observed strike nearest 3% OTM; not 25-delta"
-        }
-      },
-      {
-        "ticker": "F",
-        "decision": "No Trade",
-        "reasons": [
-          "trend filter failed"
-        ],
-        "category": "Technical filter failed",
-        "technical_status": "Technical filter failed",
-        "close": 11.57,
-        "sma20": 12.121,
-        "sma50": 12.4984,
-        "hv20": 0.3122868574000494,
-        "r5": -0.07587859424920118,
-        "filters": {
-          "trend": false,
-          "volatility": true,
-          "sudden_drop": true
-        }
-      }
-    ],
-    "capital": {
-      "passed": true,
-      "reasons": [],
-      "equity": 40000.0,
-      "cash": 40000.0,
-      "exposure": 12400.0,
-      "put_collateral": 12400.0,
-      "uncommitted_cash": 27600.0,
-      "by_ticker": {
-        "BAC": 0.0,
-        "KO": 9600.0,
-        "PFE": 2800.0,
-        "F": 0.0
-      }
-    },
-    "existing_proposals_match": true,
-    "collateral_by_proposal": [
-      {
-        "id": "fin535-course-ko-put-2026-11-17",
-        "underlying": 8894,
-        "strike": 96.0,
-        "qty": 1,
-        "collateral": 9600.0
-      },
-      {
-        "id": "fin535-course-pfe-put-2026-11-17",
-        "underlying": 11031,
-        "strike": 28.0,
-        "qty": 1,
-        "collateral": 2800.0
-      }
-    ],
-    "limits": {
-      "per_ticker": 12000.0,
-      "total_exposure": 28000.0,
-      "minimum_reserve": 12000.0
-    },
+    "status": "not_initial_cycle",
+    "reason": "Earlier proposals or an authoritative book exist; no reset to an empty account",
     "orders_written": false,
     "fills_inferred": false
   },
@@ -1127,7 +926,7 @@
     }
   },
   "unconfirmed_proposal_count": 2,
-  "past_unconfirmed_proposal_count": 0,
+  "past_unconfirmed_proposal_count": 2,
   "pipeline_audit": {
     "first_blocking_stage": null,
     "account_present": false,
@@ -1146,8 +945,8 @@
       "ric": "BAC.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -1156,82 +955,17 @@
         "latest_completed_close_valid": true,
         "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
       },
-      "exclusions": [
-        {
-          "ric": "BAC-w0r2Xm.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "BAC-w0qAzf.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACW2026D00060000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "BAC-w0p1pX.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00050000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00052000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00067500.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACW2026D00055000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00064000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00055000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00060000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00056000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACW2026D00052000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACW2026D00050000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2BACK2026D00070000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "BAC-w0q8D2.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        }
-      ],
+      "exclusions": [],
       "options_status": "observed",
-      "candidate_count": 156,
+      "candidate_count": 72,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "KO": {
       "ric": "KO.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -1240,118 +974,17 @@
         "latest_completed_close_valid": true,
         "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
       },
-      "exclusions": [
-        {
-          "ric": "2KOK2026D00100000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00090000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00094000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0tiK7.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00075000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00088000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00093000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00097500.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00094000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0t5bP.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00092500.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00090000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0tJDd.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00089000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00089000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0spG6.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00095000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00088000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0rize.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00072500.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00093000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "KO-o0sSyu.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOW2026D00072500.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00075000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2KOK2026D00095000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        }
-      ],
+      "exclusions": [],
       "options_status": "observed",
-      "candidate_count": 176,
+      "candidate_count": 84,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "PFE": {
       "ric": "PFE.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -1362,60 +995,24 @@
       },
       "exclusions": [
         {
-          "ric": "2PFEK2026D00027000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEW2026D00035000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "PFE-i0yzkT.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
           "ric": "2PFEW2326D00030000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEK2026D00035000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEK2026D00030000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEW2026D00030000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "PFE-i0z56X.FO",
           "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
         },
         {
           "ric": "2PFEK2326D00030000.FO",
           "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "PFE-i0zPbG.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEW2026D00027000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
         }
       ],
       "options_status": "observed",
-      "candidate_count": 152,
+      "candidate_count": 72,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
     "F": {
       "ric": "F.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-08-31",
-        "window_end": "2026-11-16",
+        "window_start": "2026-09-01",
+        "window_end": "2026-11-17",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -1424,28 +1021,15 @@
         "latest_completed_close_valid": true,
         "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
       },
-      "exclusions": [
-        {
-          "ric": "2FW2026D00013000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "F-s0jnre.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2FK2026D00013000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        }
-      ],
+      "exclusions": [],
       "options_status": "observed",
-      "candidate_count": 140,
+      "candidate_count": 60,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     }
   },
-  "proposed_order_count": 2,
+  "proposed_order_count": 0,
   "new_order_ids": [],
-  "order_files_changed": false,
-  "order_count": 2,
-  "orders_sha256": "7d0a3742004a67f5b7517f836b5c178b498d4177624ca05d84e44b8abeaaf498"
+  "order_files_changed": true,
+  "order_count": 0,
+  "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
 }
