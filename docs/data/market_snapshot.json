@@ -1,18 +1,18 @@
 {
   "mode": "live",
   "source": "LSEG Data Platform",
-  "retrieved_at": "2026-11-18T10:57:13.384603+00:00",
+  "retrieved_at": "2026-11-19T11:00:04.212367+00:00",
   "calendar": {
-    "as_of": "2026-11-17",
-    "target_session": "2026-11-18",
+    "as_of": "2026-11-18",
+    "target_session": "2026-11-19",
     "first_session_of_week": false,
     "exchange": "XNYS",
-    "close_time": "2026-11-17T21:00:00+00:00"
+    "close_time": "2026-11-18T21:00:00+00:00"
   },
   "history_window": {
-    "analysis_start": "2023-11-17",
-    "analysis_end": "2026-11-17",
-    "query_start": "2023-08-31",
+    "analysis_start": "2023-11-18",
+    "analysis_end": "2026-11-18",
+    "query_start": "2023-09-01",
     "warmup_sessions_requested": 55,
     "expected_sample_sessions": 752
   },
@@ -21,10 +21,6 @@
       "ric": "BAC.N",
       "identity_verified": true,
       "history": [
-        {
-          "date": "2023-08-31",
-          "close": 28.67
-        },
         {
           "date": "2023-09-01",
           "close": 28.98
@@ -3248,6 +3244,10 @@
         {
           "date": "2026-11-17",
           "close": 49.44
+        },
+        {
+          "date": "2026-11-18",
+          "close": 48.91
         }
       ],
       "contracts": [
@@ -3258,7 +3258,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3270,7 +3270,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3282,7 +3282,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3294,7 +3294,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3306,7 +3306,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3318,7 +3318,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3330,7 +3330,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3342,7 +3342,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3354,7 +3354,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3366,7 +3366,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3378,7 +3378,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3390,7 +3390,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3402,7 +3402,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3414,7 +3414,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3426,7 +3426,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3438,7 +3438,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3450,7 +3450,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3462,7 +3462,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3474,7 +3474,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3486,7 +3486,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3498,7 +3498,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3510,7 +3510,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3522,7 +3522,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3534,7 +3534,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3546,7 +3546,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3558,7 +3558,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3570,7 +3570,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3582,7 +3582,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3594,7 +3594,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3606,7 +3606,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3618,7 +3618,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3630,7 +3630,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3642,7 +3642,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3654,7 +3654,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3666,7 +3666,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3678,7 +3678,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3690,7 +3690,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3702,7 +3702,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3714,7 +3714,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3726,7 +3726,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3738,7 +3738,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3750,7 +3750,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3762,7 +3762,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3774,7 +3774,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3786,7 +3786,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3798,7 +3798,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3810,7 +3810,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3822,7 +3822,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3834,7 +3834,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3846,7 +3846,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3858,7 +3858,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3870,7 +3870,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3882,7 +3882,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3894,7 +3894,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3906,7 +3906,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3918,7 +3918,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3930,7 +3930,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3942,7 +3942,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3954,7 +3954,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3966,7 +3966,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3978,7 +3978,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -3990,7 +3990,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4002,7 +4002,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4014,7 +4014,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4026,7 +4026,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4038,7 +4038,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4050,7 +4050,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4062,7 +4062,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4074,7 +4074,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4086,7 +4086,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4098,7 +4098,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4110,7 +4110,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -4118,8 +4118,8 @@
       ],
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-01",
-        "window_end": "2026-11-17",
+        "window_start": "2026-09-02",
+        "window_end": "2026-11-18",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -4139,10 +4139,6 @@
       "ric": "KO.N",
       "identity_verified": true,
       "history": [
-        {
-          "date": "2023-08-31",
-          "close": 59.83
-        },
         {
           "date": "2023-09-01",
           "close": 59.31
@@ -7366,9 +7362,25 @@
         {
           "date": "2026-11-17",
           "close": 98.79
+        },
+        {
+          "date": "2026-11-18",
+          "close": 98.09
         }
       ],
       "contracts": [
+        {
+          "ric": "KOK272611000.U",
+          "type": "call",
+          "strike": 110.0,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-18",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
         {
           "ric": "KOW272608000.U",
           "type": "put",
@@ -7376,7 +7388,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7388,7 +7400,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7400,7 +7412,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7412,7 +7424,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7424,7 +7436,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7436,7 +7448,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7448,7 +7460,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7460,7 +7472,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7472,7 +7484,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7484,7 +7496,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7496,7 +7508,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7508,7 +7520,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7520,7 +7532,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7532,7 +7544,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7544,7 +7556,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7556,7 +7568,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7568,7 +7580,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7580,7 +7592,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7592,7 +7604,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7604,7 +7616,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7616,7 +7628,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7628,7 +7640,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7640,7 +7652,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7652,7 +7664,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7664,7 +7676,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7676,7 +7688,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7688,7 +7700,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7700,7 +7712,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7712,7 +7724,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7724,7 +7736,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7736,7 +7748,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7748,7 +7760,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7760,7 +7772,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7772,7 +7784,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7784,7 +7796,19 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
+        {
+          "ric": "KOW272611000.U",
+          "type": "put",
+          "strike": 110.0,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7796,7 +7820,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7808,7 +7832,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7820,7 +7844,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7832,7 +7856,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7844,7 +7868,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7856,7 +7880,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7868,7 +7892,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7880,7 +7904,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7892,7 +7916,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7904,7 +7928,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7916,7 +7940,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7928,7 +7952,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7940,7 +7964,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7952,7 +7976,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7964,7 +7988,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7976,7 +8000,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -7988,7 +8012,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8000,7 +8024,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8012,7 +8036,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8024,7 +8048,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8036,7 +8060,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8048,7 +8072,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8060,7 +8084,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8072,7 +8096,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8084,7 +8108,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8096,7 +8120,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8108,7 +8132,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8120,7 +8144,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8132,7 +8156,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8144,7 +8168,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8156,7 +8180,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8168,7 +8192,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8180,7 +8204,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8192,7 +8216,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8204,7 +8228,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8216,7 +8240,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8228,7 +8252,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8240,7 +8264,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8252,7 +8276,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8264,7 +8288,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8276,7 +8300,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8288,7 +8312,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8300,7 +8324,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8312,7 +8336,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8324,7 +8348,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8336,7 +8360,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8348,7 +8372,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8360,7 +8384,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8372,7 +8396,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -8380,8 +8404,8 @@
       ],
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-01",
-        "window_end": "2026-11-17",
+        "window_start": "2026-09-02",
+        "window_end": "2026-11-18",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -8393,7 +8417,7 @@
       "option_underlying_ric": "KO",
       "exclusions": [],
       "options_status": "observed",
-      "candidate_count": 84,
+      "candidate_count": 86,
       "universe_limitation": "Current observed discovery subset, not a complete historical option chain",
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
@@ -8401,10 +8425,6 @@
       "ric": "PFE.N",
       "identity_verified": true,
       "history": [
-        {
-          "date": "2023-08-31",
-          "close": 35.38
-        },
         {
           "date": "2023-09-01",
           "close": 35.78
@@ -11628,6 +11648,10 @@
         {
           "date": "2026-11-17",
           "close": 28.47
+        },
+        {
+          "date": "2026-11-18",
+          "close": 28.06
         }
       ],
       "contracts": [
@@ -11638,7 +11662,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11650,7 +11674,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11662,7 +11686,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11674,7 +11698,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11686,7 +11710,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11698,7 +11722,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11710,7 +11734,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11722,7 +11746,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11734,7 +11758,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11746,7 +11770,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11758,7 +11782,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11770,7 +11794,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11782,7 +11806,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11794,7 +11818,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11806,7 +11830,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11818,7 +11842,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11830,7 +11854,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11842,7 +11866,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11854,7 +11878,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11866,7 +11890,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11878,7 +11902,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11890,7 +11914,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11902,7 +11926,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11914,7 +11938,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11926,7 +11950,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11938,7 +11962,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11950,7 +11974,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11962,7 +11986,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11974,7 +11998,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11986,7 +12010,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -11998,7 +12022,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12010,7 +12034,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12022,7 +12046,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12034,7 +12058,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12046,7 +12070,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12058,7 +12082,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12070,7 +12094,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12082,7 +12106,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12094,7 +12118,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12106,7 +12130,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12118,7 +12142,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12130,7 +12154,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12142,7 +12166,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12154,7 +12178,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12166,7 +12190,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12178,7 +12202,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12190,7 +12214,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12202,7 +12226,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12214,7 +12238,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12226,7 +12250,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12238,7 +12262,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12250,7 +12274,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12262,7 +12286,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12274,7 +12298,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12286,7 +12310,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12298,7 +12322,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12310,7 +12334,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12322,7 +12346,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12334,7 +12358,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12346,7 +12370,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12358,7 +12382,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12370,7 +12394,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12382,7 +12406,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12394,7 +12418,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12406,7 +12430,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12418,7 +12442,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12430,7 +12454,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12442,7 +12466,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12454,7 +12478,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12466,7 +12490,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12478,7 +12502,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12490,7 +12514,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -12498,8 +12522,8 @@
       ],
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-01",
-        "window_end": "2026-11-17",
+        "window_start": "2026-09-02",
+        "window_end": "2026-11-18",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -12528,10 +12552,6 @@
       "ric": "F.N",
       "identity_verified": true,
       "history": [
-        {
-          "date": "2023-08-31",
-          "close": 11.95616497
-        },
         {
           "date": "2023-09-01",
           "close": 11.96602166
@@ -15755,6 +15775,10 @@
         {
           "date": "2026-11-17",
           "close": 11.34
+        },
+        {
+          "date": "2026-11-18",
+          "close": 11.28
         }
       ],
       "contracts": [
@@ -15765,7 +15789,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15777,7 +15801,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15789,7 +15813,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15801,7 +15825,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15813,7 +15837,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15825,7 +15849,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15837,7 +15861,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15849,7 +15873,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15861,7 +15885,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15873,7 +15897,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15885,7 +15909,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15897,7 +15921,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15909,7 +15933,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15921,7 +15945,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15933,7 +15957,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15945,7 +15969,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15957,7 +15981,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15969,7 +15993,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15981,7 +16005,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -15993,7 +16017,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16005,7 +16029,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16017,7 +16041,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16029,7 +16053,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16041,7 +16065,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16053,7 +16077,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16065,7 +16089,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16077,7 +16101,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16089,7 +16113,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16101,7 +16125,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16113,7 +16137,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16125,7 +16149,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16137,7 +16161,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16149,7 +16173,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16161,7 +16185,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16173,7 +16197,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16185,7 +16209,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16197,7 +16221,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16209,7 +16233,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16221,7 +16245,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16233,7 +16257,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16245,7 +16269,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16257,7 +16281,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16269,7 +16293,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16281,7 +16305,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16293,7 +16317,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16305,7 +16329,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16317,7 +16341,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16329,7 +16353,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16341,7 +16365,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16353,7 +16377,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16365,7 +16389,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16377,7 +16401,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16389,7 +16413,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16401,7 +16425,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16413,7 +16437,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16425,7 +16449,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16437,7 +16461,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16449,7 +16473,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16461,7 +16485,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16473,7 +16497,7 @@
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
-          "observed_on": "2026-11-17",
+          "observed_on": "2026-11-18",
           "delta": null,
           "delta_date": null,
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
@@ -16481,8 +16505,8 @@
       ],
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-01",
-        "window_end": "2026-11-17",
+        "window_start": "2026-09-02",
+        "window_end": "2026-11-18",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -17332,11 +17356,6 @@
           806
         ],
         "data": [
-          [
-            "BAC.N",
-            "2023-08-31T00:00:00.000",
-            28.67
-          ],
           [
             "BAC.N",
             "2023-09-01T00:00:00.000",
@@ -21366,6 +21385,11 @@
             "BAC.N",
             "2026-11-17T00:00:00.000",
             49.44
+          ],
+          [
+            "BAC.N",
+            "2026-11-18T00:00:00.000",
+            48.91
           ]
         ]
       },
@@ -23243,11 +23267,6 @@
           806
         ],
         "data": [
-          [
-            "KO.N",
-            "2023-08-31T00:00:00.000",
-            59.83
-          ],
           [
             "KO.N",
             "2023-09-01T00:00:00.000",
@@ -27277,6 +27296,11 @@
             "KO.N",
             "2026-11-17T00:00:00.000",
             98.79
+          ],
+          [
+            "KO.N",
+            "2026-11-18T00:00:00.000",
+            98.09
           ]
         ]
       },
@@ -27391,9 +27415,24 @@
           80,
           81,
           82,
-          83
+          83,
+          84,
+          85
         ],
         "data": [
+          [
+            "KOK272611000.U",
+            110,
+            "2026-11-27T00:00:00.000",
+            "Call",
+            [
+              "KO"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
           [
             "KOW272608000.U",
             80,
@@ -27839,6 +27878,19 @@
           [
             "KOW272610000.U",
             100,
+            "2026-11-27T00:00:00.000",
+            "Put",
+            [
+              "KO"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
+          [
+            "KOW272611000.U",
+            110,
             "2026-11-27T00:00:00.000",
             "Put",
             [
@@ -29322,11 +29374,6 @@
           806
         ],
         "data": [
-          [
-            "PFE.N",
-            "2023-08-31T00:00:00.000",
-            35.38
-          ],
           [
             "PFE.N",
             "2023-09-01T00:00:00.000",
@@ -33356,6 +33403,11 @@
             "PFE.N",
             "2026-11-17T00:00:00.000",
             28.47
+          ],
+          [
+            "PFE.N",
+            "2026-11-18T00:00:00.000",
+            28.06
           ]
         ]
       },
@@ -35261,11 +35313,6 @@
           806
         ],
         "data": [
-          [
-            "F.N",
-            "2023-08-31T00:00:00.000",
-            11.95616497
-          ],
           [
             "F.N",
             "2023-09-01T00:00:00.000",
@@ -39295,6 +39342,11 @@
             "F.N",
             "2026-11-17T00:00:00.000",
             11.34
+          ],
+          [
+            "F.N",
+            "2026-11-18T00:00:00.000",
+            11.28
           ]
         ]
       },

@@ -1,14 +1,14 @@
 [
   {
-    "id": "fin535-demo-ko-put-2026-11-18",
-    "for": "2026-11-18",
+    "id": "fin535-demo-ko-put-2026-11-19",
+    "for": "2026-11-19",
     "order_type": "mkt",
     "action": "SHT",
     "qty": 1,
     "underlying": 8894,
     "contract": "put",
     "expiry": "2026-11-27",
-    "strike": 96.0,
+    "strike": 95.0,
     "ref": "prev_close"
   }
 ]
