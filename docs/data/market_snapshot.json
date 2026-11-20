@@ -1,7 +1,7 @@
 {
   "mode": "live",
   "source": "LSEG Data Platform",
-  "retrieved_at": "2026-11-20T05:03:23.635982+00:00",
+  "retrieved_at": "2026-11-20T10:49:40.073491+00:00",
   "calendar": {
     "as_of": "2026-11-19",
     "target_session": "2026-11-20",
@@ -3352,9 +3352,45 @@
           "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
         },
         {
+          "ric": "BACK272604550.U",
+          "type": "call",
+          "strike": 45.5,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-19",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
+        {
           "ric": "BACK272606400.U",
           "type": "call",
           "strike": 64.0,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-19",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
+        {
+          "ric": "BACK272604350.U",
+          "type": "call",
+          "strike": 43.5,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-19",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
+        {
+          "ric": "BACW272604550.U",
+          "type": "put",
+          "strike": 45.5,
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
@@ -3499,6 +3535,18 @@
           "ric": "BACK272604650.U",
           "type": "call",
           "strike": 46.5,
+          "expiry": "2026-11-27",
+          "multiplier": 100,
+          "terms_verified": true,
+          "observed_on": "2026-11-19",
+          "delta": null,
+          "delta_date": null,
+          "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root"
+        },
+        {
+          "ric": "BACW272604350.U",
+          "type": "put",
+          "strike": 43.5,
           "expiry": "2026-11-27",
           "multiplier": 100,
           "terms_verified": true,
@@ -4159,7 +4207,7 @@
       "option_underlying_ric": "BAC",
       "exclusions": [],
       "options_status": "observed",
-      "candidate_count": 74,
+      "candidate_count": 78,
       "universe_limitation": "Current observed discovery subset, not a complete historical option chain",
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
     },
@@ -21540,7 +21588,11 @@
           70,
           71,
           72,
-          73
+          73,
+          74,
+          75,
+          76,
+          77
         ],
         "data": [
           [
@@ -21648,10 +21700,49 @@
             "A"
           ],
           [
+            "BACK272604550.U",
+            45.5,
+            "2026-11-27T00:00:00.000",
+            "Call",
+            [
+              "BAC"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
+          [
             "BACK272606400.U",
             64.0,
             "2026-11-27T00:00:00.000",
             "Call",
+            [
+              "BAC"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
+          [
+            "BACK272604350.U",
+            43.5,
+            "2026-11-27T00:00:00.000",
+            "Call",
+            [
+              "BAC"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
+          [
+            "BACW272604550.U",
+            45.5,
+            "2026-11-27T00:00:00.000",
+            "Put",
             [
               "BAC"
             ],
@@ -21808,6 +21899,19 @@
             46.5,
             "2026-11-27T00:00:00.000",
             "Call",
+            [
+              "BAC"
+            ],
+            100,
+            "USD",
+            "Standard",
+            "A"
+          ],
+          [
+            "BACW272604350.U",
+            43.5,
+            "2026-11-27T00:00:00.000",
+            "Put",
             [
               "BAC"
             ],
