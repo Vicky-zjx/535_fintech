@@ -3,22 +3,22 @@
   "kind": "historical_technical_signal_analysis",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "source": "LSEG Data Platform",
-  "market_retrieved_at": "2026-11-19T11:00:04.212367+00:00",
+  "market_retrieved_at": "2026-11-20T05:03:23.635982+00:00",
   "window": {
-    "analysis_start": "2023-11-18",
-    "analysis_end": "2026-11-18",
+    "analysis_start": "2023-11-19",
+    "analysis_end": "2026-11-19",
     "query_start": "2023-09-01",
     "warmup_sessions_requested": 55,
-    "expected_sample_sessions": 752
+    "expected_sample_sessions": 753
   },
   "status": "complete",
   "tickers": {
     "BAC": {
       "coverage": {
-        "expected_sessions": 752,
-        "observed_sessions": 752,
+        "expected_sessions": 753,
+        "observed_sessions": 753,
         "first_observed": "2023-11-20",
-        "last_observed": "2026-11-18",
+        "last_observed": "2026-11-19",
         "missing_dates": [],
         "observed_warmup_closes": 55,
         "requested_warmup_closes": 55,
@@ -26,67 +26,67 @@
         "complete": true
       },
       "daily": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 482,
-          "volatility": 731,
-          "sudden_drop": 741,
+          "volatility": 732,
+          "sudden_drop": 742,
           "combined": 482
         },
         "pass_rates": {
-          "trend": 0.6409574468085106,
-          "volatility": 0.9720744680851063,
-          "sudden_drop": 0.9853723404255319,
-          "combined": 0.6409574468085106
+          "trend": 0.6401062416998672,
+          "volatility": 0.9721115537848606,
+          "sudden_drop": 0.9853917662682603,
+          "combined": 0.6401062416998672
         },
         "standalone_rejections": {
-          "trend": 270,
+          "trend": 271,
           "volatility": 21,
           "sudden_drop": 11
         },
         "exclusive_rejections": {
-          "trend": 243,
+          "trend": 244,
           "volatility": 0,
           "sudden_drop": 0
         },
         "rejection_patterns": {
           "pass_all": 482,
-          "trend": 243,
+          "trend": 244,
           "trend+sudden_drop": 6,
           "trend+volatility+sudden_drop": 5,
           "trend+volatility": 16
         }
       },
       "weekly": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 482,
-          "volatility": 731,
-          "sudden_drop": 741,
+          "volatility": 732,
+          "sudden_drop": 742,
           "combined": 482
         },
         "pass_rates": {
-          "trend": 0.6409574468085106,
-          "volatility": 0.9720744680851063,
-          "sudden_drop": 0.9853723404255319,
-          "combined": 0.6409574468085106
+          "trend": 0.6401062416998672,
+          "volatility": 0.9721115537848606,
+          "sudden_drop": 0.9853917662682603,
+          "combined": 0.6401062416998672
         },
         "standalone_rejections": {
-          "trend": 270,
+          "trend": 271,
           "volatility": 21,
           "sudden_drop": 11
         },
         "exclusive_rejections": {
-          "trend": 243,
+          "trend": 244,
           "volatility": 0,
           "sudden_drop": 0
         },
         "rejection_patterns": {
-          "trend": 243,
+          "trend": 244,
           "pass_all": 482,
           "trend+sudden_drop": 6,
           "trend+volatility+sudden_drop": 5,
@@ -192,34 +192,34 @@
           }
         },
         "2026": {
-          "candidate_dates": 222,
-          "evaluated_dates": 222,
+          "candidate_dates": 223,
+          "evaluated_dates": 223,
           "excluded_dates": 0,
           "pass_counts": {
             "trend": 98,
-            "volatility": 222,
-            "sudden_drop": 222,
+            "volatility": 223,
+            "sudden_drop": 223,
             "combined": 98
           },
           "pass_rates": {
-            "trend": 0.44144144144144143,
+            "trend": 0.43946188340807174,
             "volatility": 1.0,
             "sudden_drop": 1.0,
-            "combined": 0.44144144144144143
+            "combined": 0.43946188340807174
           },
           "standalone_rejections": {
-            "trend": 124,
+            "trend": 125,
             "volatility": 0,
             "sudden_drop": 0
           },
           "exclusive_rejections": {
-            "trend": 124,
+            "trend": 125,
             "volatility": 0,
             "sudden_drop": 0
           },
           "rejection_patterns": {
             "pass_all": 98,
-            "trend": 124
+            "trend": 125
           }
         }
       },
@@ -16011,6 +16011,27 @@
           "missing_dates_in_window": "",
           "hv_return_start": "2026-10-21",
           "hv_return_end": "2026-11-18",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
+        },
+        {
+          "ticker": "BAC",
+          "signal_date": "2026-11-19",
+          "entry_session": "2026-11-20",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 48.57,
+          "sma20": 50.2115,
+          "sma50": 53.0048,
+          "hv20": 0.25333226555226485,
+          "r5": -0.038408235992872686,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-22",
+          "hv_return_end": "2026-11-19",
           "trend": false,
           "volatility": true,
           "sudden_drop": true,
@@ -31809,15 +31830,36 @@
           "volatility": true,
           "sudden_drop": true,
           "eligible": false
+        },
+        {
+          "ticker": "BAC",
+          "signal_date": "2026-11-18",
+          "entry_session": "2026-11-19",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 48.91,
+          "sma20": 50.337,
+          "sma50": 53.2846,
+          "hv20": 0.25444465646458914,
+          "r5": -0.03473455693704375,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-21",
+          "hv_return_end": "2026-11-18",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
         }
       ]
     },
     "KO": {
       "coverage": {
-        "expected_sessions": 752,
-        "observed_sessions": 752,
+        "expected_sessions": 753,
+        "observed_sessions": 753,
         "first_observed": "2023-11-20",
-        "last_observed": "2026-11-18",
+        "last_observed": "2026-11-19",
         "missing_dates": [],
         "observed_warmup_closes": 55,
         "requested_warmup_closes": 55,
@@ -31825,20 +31867,20 @@
         "complete": true
       },
       "daily": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
-          "trend": 446,
-          "volatility": 752,
-          "sudden_drop": 752,
-          "combined": 446
+          "trend": 447,
+          "volatility": 753,
+          "sudden_drop": 753,
+          "combined": 447
         },
         "pass_rates": {
-          "trend": 0.5930851063829787,
+          "trend": 0.5936254980079682,
           "volatility": 1.0,
           "sudden_drop": 1.0,
-          "combined": 0.5930851063829787
+          "combined": 0.5936254980079682
         },
         "standalone_rejections": {
           "trend": 306,
@@ -31851,25 +31893,25 @@
           "sudden_drop": 0
         },
         "rejection_patterns": {
-          "pass_all": 446,
+          "pass_all": 447,
           "trend": 306
         }
       },
       "weekly": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
-          "trend": 446,
-          "volatility": 752,
-          "sudden_drop": 752,
-          "combined": 446
+          "trend": 447,
+          "volatility": 753,
+          "sudden_drop": 753,
+          "combined": 447
         },
         "pass_rates": {
-          "trend": 0.5930851063829787,
+          "trend": 0.5936254980079682,
           "volatility": 1.0,
           "sudden_drop": 1.0,
-          "combined": 0.5930851063829787
+          "combined": 0.5936254980079682
         },
         "standalone_rejections": {
           "trend": 306,
@@ -31882,7 +31924,7 @@
           "sudden_drop": 0
         },
         "rejection_patterns": {
-          "pass_all": 446,
+          "pass_all": 447,
           "trend": 306
         }
       },
@@ -31980,20 +32022,20 @@
           }
         },
         "2026": {
-          "candidate_dates": 222,
-          "evaluated_dates": 222,
+          "candidate_dates": 223,
+          "evaluated_dates": 223,
           "excluded_dates": 0,
           "pass_counts": {
-            "trend": 148,
-            "volatility": 222,
-            "sudden_drop": 222,
-            "combined": 148
+            "trend": 149,
+            "volatility": 223,
+            "sudden_drop": 223,
+            "combined": 149
           },
           "pass_rates": {
-            "trend": 0.6666666666666666,
+            "trend": 0.6681614349775785,
             "volatility": 1.0,
             "sudden_drop": 1.0,
-            "combined": 0.6666666666666666
+            "combined": 0.6681614349775785
           },
           "standalone_rejections": {
             "trend": 74,
@@ -32007,7 +32049,7 @@
           },
           "rejection_patterns": {
             "trend": 74,
-            "pass_all": 148
+            "pass_all": 149
           }
         }
       },
@@ -47799,6 +47841,27 @@
           "missing_dates_in_window": "",
           "hv_return_start": "2026-10-21",
           "hv_return_end": "2026-11-18",
+          "trend": true,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": true
+        },
+        {
+          "ticker": "KO",
+          "signal_date": "2026-11-19",
+          "entry_session": "2026-11-20",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 96.09,
+          "sma20": 95.635,
+          "sma50": 91.6328,
+          "hv20": 0.1991541849940824,
+          "r5": -0.013854679802955627,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-22",
+          "hv_return_end": "2026-11-19",
           "trend": true,
           "volatility": true,
           "sudden_drop": true,
@@ -63597,15 +63660,36 @@
           "volatility": true,
           "sudden_drop": true,
           "eligible": true
+        },
+        {
+          "ticker": "KO",
+          "signal_date": "2026-11-18",
+          "entry_session": "2026-11-19",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 98.09,
+          "sma20": 95.5975,
+          "sma50": 91.4676,
+          "hv20": 0.20630101555191155,
+          "r5": 0.005329507020600754,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-21",
+          "hv_return_end": "2026-11-18",
+          "trend": true,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": true
         }
       ]
     },
     "PFE": {
       "coverage": {
-        "expected_sessions": 752,
-        "observed_sessions": 752,
+        "expected_sessions": 753,
+        "observed_sessions": 753,
         "first_observed": "2023-11-20",
-        "last_observed": "2026-11-18",
+        "last_observed": "2026-11-19",
         "missing_dates": [],
         "observed_warmup_closes": 55,
         "requested_warmup_closes": 55,
@@ -63613,65 +63697,65 @@
         "complete": true
       },
       "daily": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 277,
-          "volatility": 752,
-          "sudden_drop": 743,
+          "volatility": 753,
+          "sudden_drop": 744,
           "combined": 277
         },
         "pass_rates": {
-          "trend": 0.3683510638297872,
+          "trend": 0.36786188579017265,
           "volatility": 1.0,
-          "sudden_drop": 0.988031914893617,
-          "combined": 0.3683510638297872
+          "sudden_drop": 0.9880478087649402,
+          "combined": 0.36786188579017265
         },
         "standalone_rejections": {
-          "trend": 475,
+          "trend": 476,
           "volatility": 0,
           "sudden_drop": 9
         },
         "exclusive_rejections": {
-          "trend": 466,
+          "trend": 467,
           "volatility": 0,
           "sudden_drop": 0
         },
         "rejection_patterns": {
-          "trend": 466,
+          "trend": 467,
           "trend+sudden_drop": 9,
           "pass_all": 277
         }
       },
       "weekly": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 277,
-          "volatility": 752,
-          "sudden_drop": 743,
+          "volatility": 753,
+          "sudden_drop": 744,
           "combined": 277
         },
         "pass_rates": {
-          "trend": 0.3683510638297872,
+          "trend": 0.36786188579017265,
           "volatility": 1.0,
-          "sudden_drop": 0.988031914893617,
-          "combined": 0.3683510638297872
+          "sudden_drop": 0.9880478087649402,
+          "combined": 0.36786188579017265
         },
         "standalone_rejections": {
-          "trend": 475,
+          "trend": 476,
           "volatility": 0,
           "sudden_drop": 9
         },
         "exclusive_rejections": {
-          "trend": 466,
+          "trend": 467,
           "volatility": 0,
           "sudden_drop": 0
         },
         "rejection_patterns": {
-          "trend": 466,
+          "trend": 467,
           "trend+sudden_drop": 9,
           "pass_all": 277
         }
@@ -63772,33 +63856,33 @@
           }
         },
         "2026": {
-          "candidate_dates": 222,
-          "evaluated_dates": 222,
+          "candidate_dates": 223,
+          "evaluated_dates": 223,
           "excluded_dates": 0,
           "pass_counts": {
             "trend": 136,
-            "volatility": 222,
-            "sudden_drop": 221,
+            "volatility": 223,
+            "sudden_drop": 222,
             "combined": 136
           },
           "pass_rates": {
-            "trend": 0.6126126126126126,
+            "trend": 0.6098654708520179,
             "volatility": 1.0,
-            "sudden_drop": 0.9954954954954955,
-            "combined": 0.6126126126126126
+            "sudden_drop": 0.9955156950672646,
+            "combined": 0.6098654708520179
           },
           "standalone_rejections": {
-            "trend": 86,
+            "trend": 87,
             "volatility": 0,
             "sudden_drop": 1
           },
           "exclusive_rejections": {
-            "trend": 85,
+            "trend": 86,
             "volatility": 0,
             "sudden_drop": 0
           },
           "rejection_patterns": {
-            "trend": 85,
+            "trend": 86,
             "pass_all": 136,
             "trend+sudden_drop": 1
           }
@@ -79592,6 +79676,27 @@
           "missing_dates_in_window": "",
           "hv_return_start": "2026-10-21",
           "hv_return_end": "2026-11-18",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
+        },
+        {
+          "ticker": "PFE",
+          "signal_date": "2026-11-19",
+          "entry_session": "2026-11-20",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 27.54,
+          "sma20": 29.448,
+          "sma50": 28.826999999999998,
+          "hv20": 0.23427651716095962,
+          "r5": -0.04474505723204991,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-22",
+          "hv_return_end": "2026-11-19",
           "trend": false,
           "volatility": true,
           "sudden_drop": true,
@@ -95390,15 +95495,36 @@
           "volatility": true,
           "sudden_drop": true,
           "eligible": false
+        },
+        {
+          "ticker": "PFE",
+          "signal_date": "2026-11-18",
+          "entry_session": "2026-11-19",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 28.06,
+          "sma20": 29.592,
+          "sma50": 28.8292,
+          "hv20": 0.2429288789851309,
+          "r5": -0.04719864176570465,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-21",
+          "hv_return_end": "2026-11-18",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
         }
       ]
     },
     "F": {
       "coverage": {
-        "expected_sessions": 752,
-        "observed_sessions": 752,
+        "expected_sessions": 753,
+        "observed_sessions": 753,
         "first_observed": "2023-11-20",
-        "last_observed": "2026-11-18",
+        "last_observed": "2026-11-19",
         "missing_dates": [],
         "observed_warmup_closes": 55,
         "requested_warmup_closes": 55,
@@ -95406,34 +95532,34 @@
         "complete": true
       },
       "daily": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 360,
-          "volatility": 657,
-          "sudden_drop": 725,
+          "volatility": 658,
+          "sudden_drop": 726,
           "combined": 306
         },
         "pass_rates": {
-          "trend": 0.4787234042553192,
-          "volatility": 0.8736702127659575,
-          "sudden_drop": 0.964095744680851,
-          "combined": 0.40691489361702127
+          "trend": 0.47808764940239046,
+          "volatility": 0.8738379814077025,
+          "sudden_drop": 0.9641434262948207,
+          "combined": 0.4063745019920319
         },
         "standalone_rejections": {
-          "trend": 392,
+          "trend": 393,
           "volatility": 95,
           "sudden_drop": 27
         },
         "exclusive_rejections": {
-          "trend": 336,
+          "trend": 337,
           "volatility": 51,
           "sudden_drop": 0
         },
         "rejection_patterns": {
           "trend+volatility": 32,
-          "trend": 336,
+          "trend": 337,
           "pass_all": 306,
           "trend+sudden_drop": 15,
           "trend+volatility+sudden_drop": 9,
@@ -95442,34 +95568,34 @@
         }
       },
       "weekly": {
-        "candidate_dates": 752,
-        "evaluated_dates": 752,
+        "candidate_dates": 753,
+        "evaluated_dates": 753,
         "excluded_dates": 0,
         "pass_counts": {
           "trend": 360,
-          "volatility": 656,
-          "sudden_drop": 725,
+          "volatility": 657,
+          "sudden_drop": 726,
           "combined": 306
         },
         "pass_rates": {
-          "trend": 0.4787234042553192,
-          "volatility": 0.8723404255319149,
-          "sudden_drop": 0.964095744680851,
-          "combined": 0.40691489361702127
+          "trend": 0.47808764940239046,
+          "volatility": 0.8725099601593626,
+          "sudden_drop": 0.9641434262948207,
+          "combined": 0.4063745019920319
         },
         "standalone_rejections": {
-          "trend": 392,
+          "trend": 393,
           "volatility": 96,
           "sudden_drop": 27
         },
         "exclusive_rejections": {
-          "trend": 335,
+          "trend": 336,
           "volatility": 51,
           "sudden_drop": 0
         },
         "rejection_patterns": {
           "trend+volatility": 33,
-          "trend": 335,
+          "trend": 336,
           "pass_all": 306,
           "trend+sudden_drop": 15,
           "trend+volatility+sudden_drop": 9,
@@ -95580,33 +95706,33 @@
           }
         },
         "2026": {
-          "candidate_dates": 222,
-          "evaluated_dates": 222,
+          "candidate_dates": 223,
+          "evaluated_dates": 223,
           "excluded_dates": 0,
           "pass_counts": {
             "trend": 75,
-            "volatility": 194,
-            "sudden_drop": 214,
+            "volatility": 195,
+            "sudden_drop": 215,
             "combined": 47
           },
           "pass_rates": {
-            "trend": 0.33783783783783783,
-            "volatility": 0.8738738738738738,
-            "sudden_drop": 0.963963963963964,
-            "combined": 0.21171171171171171
+            "trend": 0.336322869955157,
+            "volatility": 0.874439461883408,
+            "sudden_drop": 0.9641255605381166,
+            "combined": 0.21076233183856502
           },
           "standalone_rejections": {
-            "trend": 147,
+            "trend": 148,
             "volatility": 28,
             "sudden_drop": 8
           },
           "exclusive_rejections": {
-            "trend": 142,
+            "trend": 143,
             "volatility": 25,
             "sudden_drop": 0
           },
           "rejection_patterns": {
-            "trend": 142,
+            "trend": 143,
             "pass_all": 47,
             "trend+sudden_drop": 5,
             "volatility": 25,
@@ -111406,6 +111532,27 @@
           "volatility": true,
           "sudden_drop": true,
           "eligible": false
+        },
+        {
+          "ticker": "F",
+          "signal_date": "2026-11-19",
+          "entry_session": "2026-11-20",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 11.24,
+          "sma20": 12.0145,
+          "sma50": 12.349,
+          "hv20": 0.31109186064843164,
+          "r5": -0.055462184873949605,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-22",
+          "hv_return_end": "2026-11-19",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
         }
       ],
       "weekly_rows": [
@@ -127200,21 +127347,42 @@
           "volatility": true,
           "sudden_drop": true,
           "eligible": false
+        },
+        {
+          "ticker": "F",
+          "signal_date": "2026-11-18",
+          "entry_session": "2026-11-19",
+          "first_weekly_session": false,
+          "valid": true,
+          "exclusion": null,
+          "close": 11.28,
+          "sma20": 12.0495,
+          "sma50": 12.4018,
+          "hv20": 0.31190065995081484,
+          "r5": -0.07918367346938782,
+          "valid_closes_in_window": 55,
+          "missing_dates_in_window": "",
+          "hv_return_start": "2026-10-21",
+          "hv_return_end": "2026-11-18",
+          "trend": false,
+          "volatility": true,
+          "sudden_drop": true,
+          "eligible": false
         }
       ]
     }
   },
   "joint_weekly": {
-    "evaluated_dates": 752,
+    "evaluated_dates": 753,
     "multiple_eligible_dates": 517,
     "distribution": {
       "0": 27,
-      "1": 208,
+      "1": 209,
       "2": 275,
       "3": 215,
       "4": 27
     },
-    "candidate_dates": 752,
+    "candidate_dates": 753,
     "excluded_dates": 0,
     "rows": [
       {
@@ -133964,6 +134132,14 @@
           "KO"
         ],
         "eligible_count": 1
+      },
+      {
+        "entry_session": "2026-11-19",
+        "complete": true,
+        "eligible_tickers": [
+          "KO"
+        ],
+        "eligible_count": 1
       }
     ],
     "by_year": {
@@ -134001,11 +134177,11 @@
         }
       },
       "2026": {
-        "evaluated_dates": 222,
+        "evaluated_dates": 223,
         "multiple_eligible_dates": 150,
         "distribution": {
           "0": 4,
-          "1": 68,
+          "1": 69,
           "2": 92,
           "3": 55,
           "4": 3
@@ -134015,7 +134191,7 @@
   },
   "entry_sampling": "Every eligible next XNYS session; legacy weekly keys now contain daily entry opportunities, not orders or independent weekly trades. The live planner applies the durable once-per-ticker/week cap.",
   "scope": "Technical eligibility only; no historical option selection, cash allocation, fills, NAV or returns. Current fixed universe; closes as retrieved, not vintage unrevised data. SMA uses latest valid observations within 55 sessions; HV uses only adjacent-session returns.",
-  "generated_at": "2026-11-19T11:00:24.899216+00:00",
-  "market_snapshot_sha256": "cb2f2c072f5a36db09aa0bb85f178fa8dcc3deeb670c2c9183d6e956ffb99955",
+  "generated_at": "2026-11-20T05:03:43.367087+00:00",
+  "market_snapshot_sha256": "3f25472f4fc0387f291de1a42283f73c6c46308c0c127768cac7f224728418ef",
   "matches_latest_market_attempt": true
 }

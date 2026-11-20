@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "scope": "proposal_lifecycle_not_execution_history",
-  "as_of": "2026-11-18",
-  "target_session": "2026-11-19",
-  "evaluation_attempted_at": "2026-11-19T11:00:04.212367+00:00",
-  "market_retrieved_at": "2026-11-19T11:00:04.212367+00:00",
+  "as_of": "2026-11-19",
+  "target_session": "2026-11-20",
+  "evaluation_attempted_at": "2026-11-20T05:03:23.635982+00:00",
+  "market_retrieved_at": "2026-11-20T05:03:23.635982+00:00",
   "history_sha256": "7806db59c385799836edae828c3ffce430d84588db0b83e1f4223391c888d6c5",
   "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-  "status_sha256": "d9d3ec2e829002342bf13987906ff09fc0315511799fe7804f303a2fa9d1aa5b",
+  "status_sha256": "c11ba2bab36997830eeae4311bbf78a99029a65ab2fe07b8a48f2c4ae043a84b",
   "records": [
     {
       "order": {
@@ -65,14 +65,14 @@
     "weekly_cap_preserved": true,
     "status": "success",
     "calendar": {
-      "as_of": "2026-11-18",
-      "target_session": "2026-11-19",
+      "as_of": "2026-11-19",
+      "target_session": "2026-11-20",
       "first_session_of_week": false,
       "exchange": "XNYS",
-      "close_time": "2026-11-18T21:00:00+00:00"
+      "close_time": "2026-11-19T21:00:00+00:00"
     },
-    "market_retrieved_at": "2026-11-19T11:00:04.212367+00:00",
-    "market_snapshot_sha256": "cb2f2c072f5a36db09aa0bb85f178fa8dcc3deeb670c2c9183d6e956ffb99955",
+    "market_retrieved_at": "2026-11-20T05:03:23.635982+00:00",
+    "market_snapshot_sha256": "3f25472f4fc0387f291de1a42283f73c6c46308c0c127768cac7f224728418ef",
     "capital": {
       "passed": true,
       "reasons": [],
