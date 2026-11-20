@@ -24,10 +24,10 @@ class Element {
   get firstChild(){return this.children[0];}
   setAttribute(k,v){this.attributes[k]=v;}
 }
-async function render(status,orders=[],fail=false,demo=null){
+async function render(status,orders=[],fail=false,demo=null,lifecycle=null){
   const elements=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const document={getElementById:id=>{assert.ok(elements.has(id),'Real HTML ID '+id);return elements.get(id);},createElement:t=>new Element(t),createElementNS:(_,t)=>new Element(t),querySelector:()=>new Element()};
-  const context=vm.createContext({document,Intl,Date,window:{},fetch:async url=>({ok:typeof fail==='function'?!fail(url):!fail,json:async()=>url.includes('demo_status')?demo:url.includes('strategy_status')?status:orders})});
+  const context=vm.createContext({document,Intl,Date,window:{},fetch:async url=>({ok:typeof fail==='function'?!fail(url):!fail,json:async()=>url.includes('order_lifecycle')?lifecycle:url.includes('demo_status')?demo:url.includes('strategy_status')?status:orders})});
   vm.runInContext(analysisScript,context);vm.runInContext(script,context);
   await new Promise(resolve=>setImmediate(resolve));
   return elements;
@@ -56,6 +56,31 @@ test('Limitations section contains exactly the four requested paragraphs and pre
 });
 test('Initial state is not a successful no-trade run',async()=>{
   const e=await render(baseline);assert.match(e.get('order-note').textContent,/not yet a successful/);assert.equal(e.get('decision-rows').children.length,4);
+});
+test('Previous proposals remain visible beside an empty current queue without inventing outcomes',async()=>{
+  // Dated offline rendering fixture, not a current market or execution claim.
+  const s={...baseline,status:'success',errors:[],calendar:{as_of:'2026-11-18',target_session:'2026-11-19'},attempted_at:'2026-11-19T11:00:00Z',outcome:'awaiting_order_confirmation'};
+  const records=[['KO',96,9600],['PFE',28,2800]].map(([ticker,strike,reserved_put_collateral])=>({ticker,strike,reserved_put_collateral,status:'previous_unconfirmed',option_expiry_passed:false,order:{for:'2026-11-17',contract:'put',strike,expiry:'2026-11-27',id:'TEST-'+ticker}}));
+  const lifecycle={schema_version:1,scope:'proposal_lifecycle_not_execution_history',records,automatic_release_enabled:false,non_execution_verified:false,as_of:s.calendar.as_of,target_session:s.calendar.target_session,evaluation_attempted_at:s.attempted_at,conditional_preview:{status:'success',execution_eligible:false,orders_written:false,reservations_released:false,weekly_cap_preserved:true,calendar:s.calendar,candidates:[],decisions:[]}};
+  const before=JSON.stringify(lifecycle),e=await render(s,[],false,null,lifecycle);
+  assert.match(html,/<h3>Current Proposed Orders<\/h3>/);
+  assert.match(html,/<h3>Previous Unconfirmed Proposals<\/h3>/);
+  assert.match(e.get('order-note').textContent,/not a failed strategy/);
+  assert.equal(e.get('proposal-history-rows').children.length,2);
+  for(const value of ['KO','PFE','2026-11-17','2026-11-27','$96.00','$28.00','Unconfirmed'])assert.ok(e.get('proposal-history-rows').textContent.includes(value));
+  assert.match(e.get('proposal-history-note').textContent,/\$12,400\.00/);
+  assert.match(e.get('proposal-resolution-note').textContent,/No confirmed fills, cancellations/);
+  assert.match(e.get('conditional-preview-note').textContent,/not a forecast or an executable queue/);
+  assert.equal(JSON.stringify(lifecycle),before);
+  records[0].option_expiry_passed=true;
+  const expired=await render(s,[],false,null,lifecycle);
+  assert.match(expired.get('proposal-history-rows').textContent,/option expiry passed; outcome still unknown/);
+  assert.doesNotMatch(expired.get('proposal-history-rows').textContent,/cancelled|unexecuted/);
+});
+test('Missing or stale lifecycle evidence cannot be read as zero obligations',async()=>{
+  const e=await render(currentStatus,[],false,null,{schema_version:1});
+  assert.match(e.get('proposal-history-note').textContent,/do not interpret this as zero/);
+  assert.match(e.get('proposal-history-rows').textContent,/no commitments are released/);
 });
 test('Validated empty array is explicitly a legitimate no-trade result',async()=>{
   const e=await render({...baseline,status:'success',errors:[]});assert.match(e.get('order-note').textContent,/Valid no-trade/);

@@ -148,8 +148,45 @@ fresh nightly course runs remain the sole API-driven proposal workflow.
 
 ### Unconfirmed proposal lifecycle
 
+#### November 19 lifecycle audit and reporting
+
+`course/proposal_history.json` separately retains full immutable proposal terms,
+including the November 17 KO 96 / PFE 28 puts expiring November 27. It is not a
+fill blotter. `docs/data/order_lifecycle.json` projects that history for the English
+page's Current Proposed Orders and Previous Unconfirmed Proposals tables. Both
+order arrays remain upcoming-session proposals only after a successful run;
+failures preserve the previous queue and explicitly label it retained.
+
+The publicly readable queue has no verified never-transmitted guarantee. The
+professor's documentation says the resolver is not active yet, but this is not
+per-order evidence of non-execution or a guarantee against future replay. No
+automatic expiry/cancellation policy is enabled for these issued proposals. Both
+course and authoritative modes retain unresolved ticker locks and collateral,
+even after expiry. A validated account's explicit resolved IDs can reconcile a
+commitment; absent a typed outcome, history says **resolved — outcome unspecified**,
+not filled, cancelled, rejected, or expired unexecuted. No native fill-file schema
+is guessed, and no official account or outcome record is written.
+
+A separate conditional preview asks what could qualify IF all uncertain proposals
+were proven never executed and no other activity occurred. It uses the latest real
+snapshot and original authorized capital, retains the actual one-put-per-week
+history, and applies the unchanged engine. It does not forecast future prices,
+reset the ongoing portfolio, release real reservations or emit executable tickets.
+It is withheld after authoritative account use, on a blocked run, or if evidence
+does not match. This keeps research inspectable while the actual queue stays safe.
+
+Run `python -m final_project.lifecycle` to migrate existing full proposals into the
+separate history and refresh reporting without API calls or order/state writes.
+Run `python -m final_project.validate_publication` to independently reproduce the
+report/preview from source records. The nightly workflow runs these steps after
+the existing real query and commits them with the matching diagnostics. Proposal
+history is also transactionally updated with every successfully published batch;
+same-ID term changes, missing commitment state, and conflicting histories fail
+closed. Original proposal-creation timestamps were not retained and are not
+invented; the stored target session is not a claimed creation or execution time.
+
 `course/proposal_state.json` is a durable **commitment record**, not an account.
-It stores assumptions and unconfirmed course proposals, never hypothetical fills.
+It stores assumptions and unconfirmed course/authoritative proposals, never hypothetical fills.
 
 1. Reserve strike × 100 for each proposed put; lock its ticker.
 2. Repeat runs for the same session retain the same ID and terms without reserving twice.

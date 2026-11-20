@@ -54,6 +54,18 @@ def check(root):
         raise ValueError('Order content hash disagrees with published diagnostics')
     if any(o['id'].startswith('fin535-demo-') for o in orders):
         raise ValueError('Demonstration order in production queue')
+    lifecycle_path = root/'docs/data/order_lifecycle.json'
+    if lifecycle_path.exists():
+        from .lifecycle import read_history, advance_history, project, conditional_preview
+        from .course import read_state
+        state = read_state(root)
+        history = read_history(root)
+        if history != advance_history(history, state['unconfirmed_orders'] + orders):
+            raise ValueError('Published proposals missing from durable history')
+        expected = project(history, status, orders)
+        expected['conditional_preview'] = conditional_preview(root, status, state)
+        if not equivalent_observations(json.loads(lifecycle_path.read_text()), expected):
+            raise ValueError('Lifecycle history/preview does not independently reproduce')
     if status.get('account_mode') == 'course_proposal' and status['status'] == 'success':
         from .course import initial_account, initial_policy, review_initial_proposals, read_state, ASSUMPTIONS
         from .strategy import evaluate

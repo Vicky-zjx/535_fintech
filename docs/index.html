@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/style.css" />
     <script defer src="../course-nav.js"></script>
     <script defer src="assets/analysis.js?v=cash-only-1"></script>
-    <script defer src="assets/app.js?v=cash-only-1"></script>
+    <script defer src="assets/app.js?v=lifecycle-1"></script>
     <script defer src="../covered-call/assets/plotly.min.js"></script>
     <script defer src="assets/history.js"></script>
   </head>
@@ -670,6 +670,9 @@
             They do not create shares, short-option positions or premium receipts. Subsequent Wheel phases
             and covered calls require authoritative holdings, cost bases and order outcomes; no nightly cash reset is allowed.</p>
         </div>
+        <h3>Current Proposed Orders</h3>
+        <p>Orders for the upcoming trading session. A successful empty queue is valid:
+          filters, weekly limits or earlier unresolved commitments can prevent a new proposal.</p>
         <p id="order-note">
           Initial empty queue; not yet a successful no-trade evaluation.
         </p>
@@ -704,6 +707,32 @@
         <p class="muted">The queue contains dated proposals for the upcoming session. Past proposals with
           unknown execution remain in the <a href="../course/proposal_state.json">commitment record</a>:
           they are not retried on a new date, assumed filled, or silently released at expiry.</p>
+        <h3>Previous Unconfirmed Proposals</h3>
+        <p id="proposal-history-note">Loading the separate historical proposal record; no execution outcome is inferred.</p>
+        <div class="table-wrap" tabindex="0" aria-label="Previous unconfirmed proposals">
+          <table><thead><tr><th>Target session</th><th>Ticker</th><th>Type</th><th>Strike</th>
+            <th>Expiry</th><th>Status</th><th>Reserved collateral</th><th>Stable ID</th></tr></thead>
+            <tbody id="proposal-history-rows"><tr><td colspan="8">Historical status not yet verified.</td></tr></tbody>
+          </table>
+        </div>
+        <p id="proposal-resolution-note"></p>
+        <details><summary>Lifecycle policy and conditional next-cycle preview</summary>
+          <p>A proposal is not a fill. Confirmed fills require execution records; confirmed cancellations,
+            rejections or unexecuted expiry require explicit outcome evidence. A passed target date or option
+            expiry alone proves none of these. A reconciled account that resolves an ID without naming its
+            outcome is labelled “resolved — outcome unspecified,” not a cancellation or fill.</p>
+          <p>Automatic release is disabled: proposals published in the Sanji-readable queue have no verified
+            never-transmitted guarantee. Neither production nor the ongoing course book reclaims that cash
+            or resets to $40,000 overnight. Other unlocked stocks may still qualify within the remaining limits.</p>
+          <p id="conditional-preview-note">A conditional preview is unavailable until matching real-market evidence loads.</p>
+          <ul id="conditional-preview-results"></ul>
+          <p class="muted">This separate scenario asks what could pass IF earlier proposals were proven never
+            executed and no other account activity occurred. It keeps the actual weekly proposal history,
+            all filters and all capital limits. It does not establish that condition, predict future prices,
+            release commitments, or write executable orders.</p>
+          <p><a href="../course/proposal_history.json">Full proposal history</a> ·
+            <a href="data/order_lifecycle.json">Lifecycle and conditional-preview audit</a></p>
+        </details>
       </section>
 
       <section id="demonstration" aria-labelledby="demo-title">

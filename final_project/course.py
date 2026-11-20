@@ -117,6 +117,10 @@ def initial_account(as_of):
 
 def read_state(root):
     path = Path(root)/STATE_PATH
+    from .lifecycle import read_history
+    history = read_history(root)
+    if not path.exists() and history['proposals']:
+        raise ValueError('Commitment state missing despite durable history; no initial cash reset')
     state = json.loads(path.read_text()) if path.exists() else dict(
         schema_version=1, mode='course_proposal_commitments', assumptions=deepcopy(ASSUMPTIONS),
         authoritative_account_seen=False, unconfirmed_orders=[])
@@ -125,9 +129,24 @@ def read_state(root):
             or type(state.get('authoritative_account_seen')) is not bool):
         raise ValueError('Invalid course commitment state; never reset it to reclaim capital')
     validate(state['unconfirmed_orders'])
-    if any(not o['id'].startswith('fin535-course-') for o in state['unconfirmed_orders']):
+    if any(not o['id'].startswith(('fin535-course-', 'fin535-wheel-')) for o in state['unconfirmed_orders']):
         raise ValueError('Course state contains unidentified obligations')
-    state['put_proposal_history'] = proposal_history(state.get('put_proposal_history', []), state['unconfirmed_orders'])
+    known = {o['id']: o for o in state['unconfirmed_orders']}
+    for record in history['proposals']:
+        o = record['order']
+        if (record['resolution'] is not None or o['id'].startswith('fin535-wheel-')) and not state['authoritative_account_seen']:
+            raise ValueError('Authoritative history cannot revert to a hypothetical initial account')
+        if record['resolution'] is not None:
+            if o['id'] in known:
+                raise ValueError('Resolved history conflicts with pending state; reconciliation required')
+            continue
+        if o['id'] in known and known[o['id']] != o:
+            raise ValueError('Durable history conflicts with proposal state')
+        known[o['id']] = o
+    state['unconfirmed_orders'] = validate(list(known.values()))
+    state['put_proposal_history'] = proposal_history(
+        proposal_history(state.get('put_proposal_history', []), [r['order'] for r in history['proposals']]),
+        state['unconfirmed_orders'])
     return state
 
 
@@ -152,7 +171,7 @@ def next_state(state, orders, account, *, hypothetical):
     resolved = set(account.get('resolved_order_ids', []))
     known = {o['id']: o for o in state['unconfirmed_orders'] if o['id'] not in resolved}
     for order in orders:
-        if order['id'].startswith('fin535-course-'):
+        if order['id'].startswith(('fin535-course-', 'fin535-wheel-')):
             if order['id'] in known and known[order['id']] != order:
                 raise ValueError('Cannot change the terms of an issued course proposal')
             known[order['id']] = order

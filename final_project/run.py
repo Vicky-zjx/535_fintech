@@ -13,6 +13,7 @@ from .strategy_config import UNIVERSE, STRATEGY_REVISION
 from .verify_conids import resolve_identifiers
 from .course import initial_account, initial_policy, review_initial_proposals, read_state, pending_orders, next_state, proposal_history, ASSUMPTIONS
 from lseg_chart.update import safe_failure_detail
+from .lifecycle import read_history, advance_history
 
 
 def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
@@ -83,8 +84,7 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
                           put_history=state['put_proposal_history'])
         report.update({k: v for k, v in result.items() if k != 'orders'})
         report['evaluated_orders'] = result['orders']
-        unresolved = [o for o in pending if o['id'].startswith('fin535-course-')
-                      and o['id'] not in (account or {}).get('resolved_order_ids', [])]
+        unresolved = [o for o in pending if o['id'] not in (account or {}).get('resolved_order_ids', [])]
         report['unconfirmed_proposal_count'] = len(unresolved)
         report['past_unconfirmed_proposal_count'] = sum(o['for'] <= market['calendar']['as_of'] for o in unresolved)
         report['pipeline_audit'] = {
@@ -107,7 +107,8 @@ def run(root, now, provider=fetch_market, *, replay=False, mode='course'):
                                  'partial_data_no_proposals' if result.get('warnings') else 'no_eligible_trades')
             if not replay:
                 updated = next_state(state, result['orders'], account, hypothetical=hypothetical)
-                publish_orders(root, result['orders'], course_state=updated)
+                history = advance_history(read_history(root), pending + result['orders'], account)
+                publish_orders(root, result['orders'], course_state=updated, proposal_history=history)
                 report['orders_updated'] = True
                 report['order_files_changed'] = old != result['orders']
                 report['unconfirmed_proposal_count'] = len(updated['unconfirmed_orders'])

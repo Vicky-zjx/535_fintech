@@ -109,9 +109,8 @@ def evaluate(market, account, conids, pending, *, course_proposal=False, put_his
         for o in pending:
             if o['id'] in resolved:
                 continue
-            uncertain_course = o['id'].startswith('fin535-course-')
-            if o['for'] <= as_of and not uncertain_course:
-                continue  # A reconciled authoritative book includes prior-session changes.
+            # A current book alone cannot prove an earlier proposal was not
+            # executed. Both modes require explicit reconciliation of its ID.
             t = inverse.get(o['underlying'])
             if t is None or t in pending_tickers:
                 raise ValueError('Unknown/duplicate pending obligation')

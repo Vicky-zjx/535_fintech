@@ -37,7 +37,7 @@ jobs:
         run: python -m pip install -r final_project/requirements.txt
       - name: Offline dry run and regression tests (no credentials)
         run: |
-          python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_course final_project.test_demo final_project.test_historical final_project.test_flexible_entry lseg_chart.test_update -b -v
+          python -W ignore::DeprecationWarning -m unittest final_project.test_strategy final_project.test_course final_project.test_lifecycle final_project.test_demo final_project.test_historical final_project.test_flexible_entry lseg_chart.test_update -b -v
           python -m unittest discover -s tests -p 'test_site_layout.py' -v
           node --test lseg_chart/test_page.cjs
           node --test final_project/test_page.cjs
@@ -58,12 +58,14 @@ jobs:
       - name: Analyze three-year real closes (not an options backtest)
         run: python -m final_project.historical
       - name: Validate public output (also after a blocked evaluation)
-        run: python -m final_project.validate_publication
+        run: |
+          python -m final_project.lifecycle
+          python -m final_project.validate_publication
       - name: Commit only generated public outputs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for path in open_orders.json mkt/open_orders.json course/proposal_state.json docs/data/strategy_status.json docs/data/market_snapshot.json docs/data/demo_status.json docs/data/demo_cash_start_orders.json docs/data/demo_covered_inventory_orders.json docs/data/entry_demo_status.json docs/data/entry_demo_cash_start_orders.json docs/data/entry_demo_covered_inventory_orders.json docs/data/historical_signals.json docs/data/historical_signals.csv; do
+          for path in open_orders.json mkt/open_orders.json course/proposal_state.json course/proposal_history.json docs/data/order_lifecycle.json docs/data/strategy_status.json docs/data/market_snapshot.json docs/data/demo_status.json docs/data/demo_cash_start_orders.json docs/data/demo_covered_inventory_orders.json docs/data/entry_demo_status.json docs/data/entry_demo_cash_start_orders.json docs/data/entry_demo_covered_inventory_orders.json docs/data/historical_signals.json docs/data/historical_signals.csv; do
             if test -f "$path"; then git add -- "$path"; fi
           done
           if ! git diff --cached --quiet; then

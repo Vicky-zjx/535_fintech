@@ -152,6 +152,11 @@ class CourseTests(unittest.TestCase):
             o['for']='2026-11-02'; o['expiry']='2026-11-06'
             o['id']=o['id'].replace('2026-11-16','2026-11-02')
         atomic_json(self.root/STATE_PATH, state)
+        # Move the complete synthetic fixture, including its immutable history,
+        # into the older test window. Real issued terms must never be rewritten.
+        from .lifecycle import HISTORY_PATH, advance_history
+        atomic_json(self.root/HISTORY_PATH, advance_history(
+            {'schema_version': 1, 'kind': 'proposal_history_not_fills', 'proposals': []}, pending))
         publish_orders(self.root, [])
         self.assertEqual(self.go(), 0)
         self.assertEqual(read_orders(self.root), [])
@@ -262,7 +267,11 @@ class CourseTests(unittest.TestCase):
         self.account['resolved_order_ids']=[o['id'] for o in proposed]
         atomic_json(self.root/'mkt/positions.json', self.account)
         self.assertEqual(self.go(), 0)
-        self.assertEqual(read_state(self.root)['unconfirmed_orders'], [])
+        # The resolved puts leave commitments; the newly proposed covered call
+        # now persists too, until its own outcome is explicitly reconciled.
+        self.assertEqual(read_state(self.root)['unconfirmed_orders'], read_orders(self.root))
+        self.assertTrue(all(o['contract'] == 'call' for o in read_orders(self.root)))
+        self.assertFalse({o['id'] for o in proposed} & {o['id'] for o in read_state(self.root)['unconfirmed_orders']})
 
     def test_course_book_cannot_claim_stocks_or_premium(self):
         a=initial_account('2026-11-13')

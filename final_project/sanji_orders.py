@@ -66,7 +66,7 @@ def read_orders(root):
     return validate(json.loads(paths[0].read_text()))
 
 
-def publish_orders(root, orders, *, course_state=None):
+def publish_orders(root, orders, *, course_state=None, proposal_history=None):
     validate(orders)  # Validate the complete batch BEFORE either write.
     if any(o['id'].startswith('fin535-demo-') for o in orders):
         raise ValueError('Demonstration orders must never enter the production queue')
@@ -79,6 +79,10 @@ def publish_orders(root, orders, *, course_state=None):
         # cannot publish an unrecorded proposal and then spend its collateral again.
         paths.insert(0, Path(root)/STATE_PATH)
         payloads.insert(0, course_state)
+    if proposal_history is not None:
+        from .lifecycle import HISTORY_PATH
+        paths.insert(0, Path(root)/HISTORY_PATH)
+        payloads.insert(0, proposal_history)
     old = [p.read_bytes() if p.exists() else None for p in paths]
     try:
         for p, payload in zip(paths, payloads):

@@ -317,7 +317,7 @@
           ? (course ? "Proposed course orders under explicit hypothetical assumptions; not actual Sanji account orders or fills."
             : "Proposals based on the authoritative book; not verified fills.")
           : s.outcome === "awaiting_order_confirmation"
-            ? "No active dated orders. Earlier proposals have unknown outcomes: affected tickers and collateral remain locked, not assumed filled or released. See the commitment record."
+            ? "Valid evaluation: no new orders for this target session. Previous unconfirmed proposals have unknown outcomes and are shown below; their ticker locks and collateral stay reserved. An empty current file is not a failed strategy run."
             : s.warnings?.length
               ? "No proposals from evaluable stocks. Other tickers have unavailable inputs; this is not evidence that the whole universe has no opportunities."
               : "Valid no-trade evaluation: no qualifying new or pending orders."
@@ -393,6 +393,41 @@
     if (!r.ok) throw Error("HTTP " + r.status);
     return r.json();
   }
+  function renderLifecycle(lifecycle, s) {
+    if (lifecycle?.schema_version !== 1 || lifecycle.scope !== 'proposal_lifecycle_not_execution_history' ||
+        !Array.isArray(lifecycle.records) || lifecycle.automatic_release_enabled !== false ||
+        lifecycle.non_execution_verified !== false || lifecycle.target_session !== s.calendar?.target_session ||
+        lifecycle.evaluation_attempted_at !== s.attempted_at)
+      throw Error('Lifecycle evidence does not match this evaluation');
+    const previous=lifecycle.records.filter(r=>['previous_unconfirmed','unconfirmed'].includes(r.status));
+    const resolved=lifecycle.records.filter(r=>r.status==='authoritative_resolution_unspecified');
+    const rows=$('proposal-history-rows');rows.replaceChildren();
+    for(const r of previous){
+      const o=r.order,tr=document.createElement('tr');
+      [o.for,r.ticker,o.contract,fmt(o.strike),o.expiry,
+       r.option_expiry_passed ? 'Unconfirmed — option expiry passed; outcome still unknown' : 'Unconfirmed — execution unknown',
+       o.contract==='put'?fmt(r.reserved_put_collateral):'Covered shares remain locked',o.id].forEach(v=>cell(tr,v));
+      rows.append(tr);
+    }
+    if(!previous.length)empty(rows,8,'No previous unconfirmed proposals in the verified history.');
+    text('proposal-history-note',`${previous.length} previous unconfirmed proposal(s), evaluated through ${lifecycle.as_of}. Full original terms remain in history even after the dated queue changes. Reserved put collateral: ${fmt(previous.reduce((n,r)=>n+r.reserved_put_collateral,0))}. These reservations are not cash spent, premiums or confirmed positions.`);
+    text('proposal-resolution-note',resolved.length
+      ? resolved.map(r=>`${r.ticker} / ${r.order.id}: resolved — outcome unspecified (${r.resolution.account_as_of}).`).join(' ')+' The complete records remain in proposal history; no fill/cancellation type is inferred.'
+      : 'No confirmed fills, cancellations, rejections or expired-unexecuted outcomes have been supplied.');
+    const preview=lifecycle.conditional_preview, list=$('conditional-preview-results');list.replaceChildren();
+    if(preview?.execution_eligible!==false || preview.orders_written!==false || preview.reservations_released!==false || preview.weekly_cap_preserved!==true)
+      throw Error('Conditional preview isolation is not verified');
+    text('conditional-preview-note',preview.status==='success'
+      ? `Conditional scenario only — latest real signal ${preview.calendar.as_of}, target ${preview.calendar.target_session}; not a forecast or an executable queue. ${preview.candidates.length} candidate(s) after retaining existing weekly locks. No actual reservation is released.`
+      : 'Conditional scenario unavailable: '+(preview.reason||'Required inputs did not validate')+'. Actual commitments are unchanged.');
+    for(const d of preview.decisions||[]){
+      const li=document.createElement('li');
+      const c=(preview.candidates||[]).find(c=>c.ticker===d.ticker);
+      li.textContent=d.ticker+' — '+d.technical_status+'; '+d.category+'. '+d.reasons.join('; ')+
+        (c?` Scenario candidate: ${c.qty} ${c.contract}, strike ${fmt(c.strike)}, expiry ${c.expiry}.`:'');
+      list.append(li);
+    }
+  }
   function renderDemo(demo) {
     const cashStart = window.FinalAnalysis.cashStartScenario(demo);
     text('demo-summary', 'DEMONSTRATION ONLY · Retained real LSEG response: ' + demo.market_retrieved_at +
@@ -452,11 +487,18 @@
   get('data/demo_status.json').then(renderDemo).catch(() => {
     text('demo-summary', 'Demonstration unavailable. Production status and orders are shown independently above.');
   });
-  Promise.allSettled([get("data/strategy_status.json"), get("../open_orders.json")])
-    .then(([status, orders]) => {
+  Promise.allSettled([get("data/strategy_status.json"), get("../open_orders.json"), get("data/order_lifecycle.json")])
+    .then(([status, orders, lifecycle]) => {
       if (status.status !== "fulfilled") throw Error("Diagnostics unavailable");
       const loaded = orders.status === "fulfilled" && Array.isArray(orders.value);
       render(status.value, loaded ? orders.value : [], loaded);
+      try {
+        if(lifecycle.status!=='fulfilled')throw Error('Lifecycle download unavailable');
+        renderLifecycle(lifecycle.value,status.value);
+      } catch(error) {
+        text('proposal-history-note','Proposal history unavailable or out of sync; do not interpret this as zero outstanding obligations. '+error.message);
+        empty($('proposal-history-rows'),8,'Historical status unverified; no commitments are released.');
+      }
     })
     .catch(() => {
       text("run-state", "Live data not yet available");

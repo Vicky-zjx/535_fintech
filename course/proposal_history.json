@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "kind": "proposal_history_not_fills",
+  "proposals": [
+    {
+      "order": {
+        "id": "fin535-course-ko-put-2026-11-17",
+        "for": "2026-11-17",
+        "order_type": "mkt",
+        "action": "SHT",
+        "qty": 1,
+        "underlying": 8894,
+        "contract": "put",
+        "expiry": "2026-11-27",
+        "strike": 96.0,
+        "ref": "prev_close"
+      },
+      "resolution": null
+    },
+    {
+      "order": {
+        "id": "fin535-course-pfe-put-2026-11-17",
+        "for": "2026-11-17",
+        "order_type": "mkt",
+        "action": "SHT",
+        "qty": 1,
+        "underlying": 11031,
+        "contract": "put",
+        "expiry": "2026-11-27",
+        "strike": 28.0,
+        "ref": "prev_close"
+      },
+      "resolution": null
+    }
+  ]
+}
