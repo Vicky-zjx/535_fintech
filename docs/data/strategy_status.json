@@ -2,9 +2,9 @@
   "schema_version": 1,
   "mode": "live",
   "status": "success",
-  "attempted_at": "2026-11-20T10:49:40.073491+00:00",
-  "successful_at": "2026-11-20T10:49:40.073491+00:00",
-  "market_data_retrieved_at": "2026-11-20T10:49:40.073491+00:00",
+  "attempted_at": "2026-11-21T10:32:45.703474+00:00",
+  "successful_at": "2026-11-21T10:32:45.703474+00:00",
+  "market_data_retrieved_at": "2026-11-21T10:32:45.703474+00:00",
   "source": "LSEG Data Platform",
   "orders_updated": true,
   "errors": [],
@@ -18,16 +18,15 @@
       ],
       "category": "Technical filter failed",
       "technical_status": "Technical filter failed",
-      "close": 48.57,
-      "price_date": "2026-11-19",
+      "close": 47.04,
+      "price_date": "2026-11-20",
       "observation_window": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-23",
           "2026-10-26",
           "2026-10-27",
           "2026-10-28",
@@ -46,10 +45,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "sma50_dates": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -98,13 +97,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-22",
-            "2026-10-23"
-          ],
           [
             "2026-10-23",
             "2026-10-26"
@@ -180,14 +176,18 @@
           [
             "2026-11-18",
             "2026-11-19"
+          ],
+          [
+            "2026-11-19",
+            "2026-11-20"
           ]
         ],
-        "r5_anchor_date": "2026-11-12"
+        "r5_anchor_date": "2026-11-13"
       },
-      "sma20": 50.2115,
-      "sma50": 53.0048,
-      "hv20": 0.25333226555226485,
-      "r5": -0.038408235992872686,
+      "sma20": 50.0355,
+      "sma50": 52.6918,
+      "hv20": 0.2731427481130727,
+      "r5": -0.07800862406899267,
       "filters": {
         "trend": false,
         "volatility": true,
@@ -209,16 +209,15 @@
       ],
       "category": "Already proposed",
       "technical_status": "Technical filter passed",
-      "close": 96.09,
-      "price_date": "2026-11-19",
+      "close": 96.99,
+      "price_date": "2026-11-20",
       "observation_window": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-23",
           "2026-10-26",
           "2026-10-27",
           "2026-10-28",
@@ -237,10 +236,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "sma50_dates": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -289,13 +288,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-22",
-            "2026-10-23"
-          ],
           [
             "2026-10-23",
             "2026-10-26"
@@ -371,14 +367,18 @@
           [
             "2026-11-18",
             "2026-11-19"
+          ],
+          [
+            "2026-11-19",
+            "2026-11-20"
           ]
         ],
-        "r5_anchor_date": "2026-11-12"
+        "r5_anchor_date": "2026-11-13"
       },
-      "sma20": 95.635,
-      "sma50": 91.6328,
-      "hv20": 0.1991541849940824,
-      "r5": -0.013854679802955627,
+      "sma20": 95.849,
+      "sma50": 91.8068,
+      "hv20": 0.17066551467511898,
+      "r5": -0.022770780856423256,
       "filters": {
         "trend": true,
         "volatility": true,
@@ -400,16 +400,15 @@
       ],
       "category": "Already proposed",
       "technical_status": "Technical filter failed",
-      "close": 27.54,
-      "price_date": "2026-11-19",
+      "close": 27.4,
+      "price_date": "2026-11-20",
       "observation_window": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-23",
           "2026-10-26",
           "2026-10-27",
           "2026-10-28",
@@ -428,10 +427,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "sma50_dates": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -480,13 +479,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-22",
-            "2026-10-23"
-          ],
           [
             "2026-10-23",
             "2026-10-26"
@@ -562,14 +558,18 @@
           [
             "2026-11-18",
             "2026-11-19"
+          ],
+          [
+            "2026-11-19",
+            "2026-11-20"
           ]
         ],
-        "r5_anchor_date": "2026-11-12"
+        "r5_anchor_date": "2026-11-13"
       },
-      "sma20": 29.448,
-      "sma50": 28.826999999999998,
-      "hv20": 0.23427651716095962,
-      "r5": -0.04474505723204991,
+      "sma20": 29.316499999999998,
+      "sma50": 28.8206,
+      "hv20": 0.232402971624057,
+      "r5": -0.05157493942540681,
       "filters": {
         "trend": false,
         "volatility": true,
@@ -591,16 +591,15 @@
       ],
       "category": "Technical filter failed",
       "technical_status": "Technical filter failed",
-      "close": 11.24,
-      "price_date": "2026-11-19",
+      "close": 11.17,
+      "price_date": "2026-11-20",
       "observation_window": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "expected_sessions": 55,
         "valid_closes": 55,
         "missing_dates": [],
         "sma20_dates": [
-          "2026-10-23",
           "2026-10-26",
           "2026-10-27",
           "2026-10-28",
@@ -619,10 +618,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "sma50_dates": [
-          "2026-09-11",
           "2026-09-14",
           "2026-09-15",
           "2026-09-16",
@@ -671,13 +670,10 @@
           "2026-11-16",
           "2026-11-17",
           "2026-11-18",
-          "2026-11-19"
+          "2026-11-19",
+          "2026-11-20"
         ],
         "hv20_return_pairs": [
-          [
-            "2026-10-22",
-            "2026-10-23"
-          ],
           [
             "2026-10-23",
             "2026-10-26"
@@ -753,14 +749,18 @@
           [
             "2026-11-18",
             "2026-11-19"
+          ],
+          [
+            "2026-11-19",
+            "2026-11-20"
           ]
         ],
-        "r5_anchor_date": "2026-11-12"
+        "r5_anchor_date": "2026-11-13"
       },
-      "sma20": 12.0145,
-      "sma50": 12.349,
-      "hv20": 0.31109186064843164,
-      "r5": -0.055462184873949605,
+      "sma20": 11.993,
+      "sma50": 12.293,
+      "hv20": 0.2961435323558229,
+      "r5": -0.06213266162888331,
       "filters": {
         "trend": false,
         "volatility": true,
@@ -790,11 +790,11 @@
     }
   },
   "calendar": {
-    "as_of": "2026-11-19",
-    "target_session": "2026-11-20",
-    "first_session_of_week": false,
+    "as_of": "2026-11-20",
+    "target_session": "2026-11-23",
+    "first_session_of_week": true,
     "exchange": "XNYS",
-    "close_time": "2026-11-19T21:00:00+00:00"
+    "close_time": "2026-11-20T21:00:00+00:00"
   },
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "requested_mode": "course",
@@ -819,7 +819,7 @@
   "outcome": "awaiting_order_confirmation",
   "evaluated_orders": [],
   "evaluation_kind": "fresh_api",
-  "market_snapshot_sha256": "76ef1c13a2868954a680d4ec6cf5454ed984f96858643b1df5868fe79a9aae0c",
+  "market_snapshot_sha256": "8b5e8ad74b782be25708f59840ca300c1d1baec91768174b0da955497e6c2db6",
   "authoritative_account_available": false,
   "account_status": "Sanji book unavailable; professor-confirmed initial zero inventory and student-authorized $40,000 simulated cash used, not an official balance",
   "account_assumptions": {
@@ -945,8 +945,8 @@
       "ric": "BAC.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -955,7 +955,12 @@
         "latest_completed_close_valid": true,
         "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
       },
-      "exclusions": [],
+      "exclusions": [
+        {
+          "ric": "2BACL0326D00061500.FO",
+          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
+        }
+      ],
       "options_status": "observed",
       "candidate_count": 78,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
@@ -964,8 +969,8 @@
       "ric": "KO.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -983,8 +988,8 @@
       "ric": "PFE.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
@@ -993,16 +998,7 @@
         "latest_completed_close_valid": true,
         "policy": "No redating, forward fill, interpolation, zero fill or changed price field. Alternate RIC requires verified identity and matching overlap."
       },
-      "exclusions": [
-        {
-          "ric": "2PFEW2326D00030000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        },
-        {
-          "ric": "2PFEK2326D00030000.FO",
-          "reason": "Nonstandard root/venue/encoding; no inferred deliverable"
-        }
-      ],
+      "exclusions": [],
       "options_status": "observed",
       "candidate_count": 72,
       "delta_status": "Dated Greeks unavailable; listed-strike fallback: LDError"
@@ -1011,8 +1007,8 @@
       "ric": "F.N",
       "errors": [],
       "price_recovery": {
-        "window_start": "2026-09-03",
-        "window_end": "2026-11-19",
+        "window_start": "2026-09-04",
+        "window_end": "2026-11-20",
         "field": "TR.PriceClose",
         "currency": "USD",
         "recovered": [],
