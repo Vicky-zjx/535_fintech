@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-21T10:33:05.677995+00:00",
+  "generated_at": "2026-11-22T10:37:20.446539+00:00",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
-  "market_retrieved_at": "2026-11-21T10:32:45.703474+00:00",
-  "market_snapshot_sha256": "8b5e8ad74b782be25708f59840ca300c1d1baec91768174b0da955497e6c2db6",
+  "market_retrieved_at": "2026-11-22T10:37:05.192803+00:00",
+  "market_snapshot_sha256": "7b0e931bb33dc60700c6687119118ea075a78827e663fbcb371f73c7338461df",
   "calendar": {
     "as_of": "2026-11-20",
     "target_session": "2026-11-23",

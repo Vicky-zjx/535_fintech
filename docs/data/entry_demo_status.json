@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-21T10:33:06.219138+00:00",
+  "generated_at": "2026-11-22T10:37:21.011257+00:00",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
