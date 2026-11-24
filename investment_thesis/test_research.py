@@ -81,6 +81,13 @@ class ThesisTests(unittest.TestCase):
         h['tickers']['BAC']['daily_rows'].pop(10)
         with self.assertRaises(ValueError): outcomes(h)
 
+    def test_review_compares_unconditional_baseline_not_only_failed_signals(self):
+        r = analyze(fixture())['full_sample']
+        a = r['aggregate']
+        a.update(downside_benefit=.01, tail_benefit=.01,
+                 baseline_downside_benefit=-.001, baseline_tail_benefit=-.001)
+        self.assertEqual(wrong_if(r), {'no_downside_benefit':'triggered','no_tail_benefit':'triggered'})
+
     def test_provenance_invalid_price_and_boolean_validation(self):
         for mutate in (lambda h:h.update(source='synthetic'),
                        lambda h:h['tickers']['BAC']['daily_rows'][3].update(close=0),

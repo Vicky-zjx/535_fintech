@@ -36,7 +36,7 @@ test('All stock views plot exactly generated data and preserve null gaps',()=>{
 });
 test('Negative or inconclusive findings are not hidden behind profitability claims',()=>{
   for(const fn of [interpretation,review,alpha,cost])assert.doesNotMatch(fn(d),/undefined|NaN/);
-  const v=structuredClone(d);v.full_sample.aggregate.return_spread=-.01;
+  const v=structuredClone(d);v.full_sample.aggregate.baseline_return_spread=-.01;
   assert.match(alpha(v),/does not support/);
   v.full_sample.aggregate.downside_benefit=-.01;
   assert.match(interpretation(v),/does not support/);

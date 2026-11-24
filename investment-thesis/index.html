@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="style.css">
   <script defer src="../course-nav.js?v=thesis-1"></script>
   <script defer src="../covered-call/assets/plotly.min.js"></script>
-  <script defer src="app.js?v=1"></script>
+  <script defer src="app.js?v=2"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -71,7 +71,7 @@
       <p class="eyebrow">FALSIFICATION / FIXED BEFORE THIS TRACKER WAS RUN</p>
       <h2 id="wrong-title">Two reasons to reconsider.</h2>
       <p>I would abandon the claim that these screens identify safer short-horizon exposure if either condition holds in the latest 126 matured reference sessions:</p>
-      <ol class="criteria"><li>The pass group has an <strong>equal or larger mean maximum closing loss</strong> than the fail group.</li><li>The pass group has an <strong>equal or higher frequency of a 3% closing decline</strong> than the fail group.</li></ol>
+      <ol class="criteria"><li>The pass group has an <strong>equal or larger mean maximum closing loss</strong> than the unfiltered baseline.</li><li>The pass group has an <strong>equal or higher frequency of a 3% closing decline</strong> than the unfiltered baseline.</li></ol>
       <p>Each stock needs at least 20 pass and 20 fail paths. Compare equal-weight within-stock results; otherwise report insufficient evidence. These are research review conditions, not new order-engine switches. They do not claim statistical significance.</p>
       <p id="thesis-review" class="review" aria-live="polite">Waiting for the current review window.</p>
     </section>
@@ -94,7 +94,7 @@
     <section id="method" class="prose" aria-labelledby="method-title">
       <p class="eyebrow">METHOD / REPRODUCIBLE AND SEPARATE FROM EXECUTION</p>
       <h2 id="method-title">Know what the chart can—and cannot—say.</h2>
-      <p>Design v1 was fixed on November 23, 2026. Earlier data are retrospective, not an out-of-sample test. Signal at t; reference at t+1; outcome at t+6 using the XNYS calendar. All six path closes must exist. Invalid signals are excluded, not labeled filter failures. Missing prices are never interpolated, carried forward or replaced by zero. Each plotted date uses only outcomes already complete by that date.</p>
+      <p>Design fixed on November 23, 2026; v1.1 aligns review conditions with the stated unfiltered baseline (the fail group remains a diagnostic). Earlier data are retrospective, not an out-of-sample test. Signal at t; reference at t+1; outcome at t+6 using the XNYS calendar. All six path closes must exist. Invalid signals are excluded, not labeled filter failures. Missing prices are never interpolated, carried forward or replaced by zero. Each plotted date uses only outcomes already complete by that date.</p>
       <p>Each aggregate line equally weights the four within-stock cohort means. It remains missing when any stock lacks the required sample. That avoids changing the stock mix between pass and fail groups, but does not control for different market regimes. LSEG closes are as retrieved, not vintage data or dividend-inclusive total returns. The fixed surviving universe and overlapping paths limit causal and statistical conclusions.</p>
       <p>A separate GitHub Action rebuilds this tracker after the existing nightly LSEG workflow succeeds. It reads the validated three-year history; it neither changes it nor writes orders. Failed updates retain the last dated evidence. The JSON records source hashes and every outcome, and the CSV preserves exclusions. The tracker tests a stock-risk premise; historical option pricing, execution and net Wheel performance remain separate questions.</p>
       <p class="command"><code>python -m investment_thesis.research<br>python -m investment_thesis.validate</code></p>

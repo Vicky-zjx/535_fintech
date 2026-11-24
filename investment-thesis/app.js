@@ -12,7 +12,7 @@
         d.market_retrieved_at!==h.market_retrieved_at || d.historical_generated_at!==h.generated_at ||
         d.window.analysis_start!==h.window.analysis_start || d.window.analysis_end!==h.window.analysis_end)
       throw Error('Research and historical source disagree');
-    if (d.design.version!=='forward-stock-risk-v1' || d.design.minimum_per_cohort_per_ticker!==20 ||
+    if (d.design.version!=='forward-stock-risk-v1.1' || d.design.minimum_per_cohort_per_ticker!==20 ||
         d.design.rolling_entry_sessions!==126 || d.design.holding_sessions!==5 || d.design.reference_lag_sessions!==1 ||
         d.design.adverse_move_threshold!==.03) throw Error('Unexpected research definition');
     if (d.rolling.length!==h.tickers.BAC.daily_rows.length) throw Error('Missing research dates');
@@ -76,11 +76,11 @@
     const p=d.rolling.at(-1),a=p.aggregate;
     if(!a.sufficient)return `Review as of ${p.as_of}: insufficient evidence for the four-stock conditions. ${a.insufficient_tickers.map(t=>`${t}: ${p.tickers[t].pass.n} pass / ${p.tickers[t].fail.n} fail paths`).join('; ')} (minimum 20 of each). Individual stock charts remain selectable. No success is inferred from an unavailable review.`;
     const label=v=>v==='triggered'?'triggered — review the thesis':'not triggered';
-    return `Review as of ${p.as_of}: condition 1 ${label(p.wrong_if.no_downside_benefit)} (${bps(a.downside_benefit)} loss reduction); condition 2 ${label(p.wrong_if.no_tail_benefit)} (${(100*a.tail_benefit).toFixed(2)} percentage-point frequency reduction). These are descriptive review flags, not evidence of statistical significance or changes to live order rules.`;
+    return `Review as of ${p.as_of}: condition 1 ${label(p.wrong_if.no_downside_benefit)} (${bps(a.baseline_downside_benefit)} loss reduction versus unfiltered); condition 2 ${label(p.wrong_if.no_tail_benefit)} (${(100*a.baseline_tail_benefit).toFixed(2)} percentage-point frequency reduction versus unfiltered). These are descriptive review flags, not evidence of statistical significance or changes to live order rules.`;
   }
   function alpha(d) {
     const a=d.full_sample.aggregate;
-    return `The full-sample five-session stock-return contrast is ${bps(a.return_spread)}: ${pct(a.pass_mean_return)} after pass signals versus ${pct(a.fail_mean_return)} after fail signals, using equal stock weights. ${a.return_spread!==null&&a.return_spread<=0?'This does not support a positive directional return advantage.':''} It is neither beta-adjusted alpha nor a tradable long/short spread. The return dispersions in the evidence table show uncertainty; overlapping paths must not be compounded into a strategy return.`;
+    return `The full-sample five-session stock-return contrast versus the unfiltered baseline is ${bps(a.baseline_return_spread)}: ${pct(a.pass_mean_return)} after pass signals versus ${pct(a.all_mean_return)} unfiltered, using equal stock weights. The diagnostic pass-minus-fail contrast is ${bps(a.return_spread)}. ${a.baseline_return_spread!==null&&a.baseline_return_spread<=0?'This does not support a positive directional return advantage.':''} It is neither beta-adjusted alpha nor a tradable long/short spread. The return dispersions in the evidence table show uncertainty; overlapping paths must not be compounded into a strategy return.`;
   }
   function cost(d) {
     return d.cost_budget.examples.map(e=>`${e.ticker} at the recorded $${e.strike.toFixed(0)} strike: ${money(e.collateral)} collateral, ${e.break_even_bps.toFixed(2)} bp to cover the assumed ${money(e.assumed_cost)} cost; a hypothetical 20 bp gross surplus would leave ${money(e.illustrative_net_surplus)} (${e.illustrative_net_bps.toFixed(2)} bp)`).join('. ')+'. These are sensitivity examples, not quotes, realized profits or a forecast. The economic edge is not established by the stock tracker.';

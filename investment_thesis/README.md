@@ -11,7 +11,9 @@ tracker addresses the risk premise, not the still-unverified premium advantage.
 
 ## Fixed research design
 
-`forward-stock-risk-v1`, registered 2026-11-23, before its first calculation:
+`forward-stock-risk-v1.1`, 2026-11-23. V1 fixed the sampling design before the
+first calculation; v1.1 corrects the review comparison to the stated unfiltered
+baseline, with no changed market data or strategy parameters:
 
 - Real LSEG data from the existing, validated `docs/data/historical_signals.json`.
   Its underlying market snapshot and indicators are independently reproduced.
@@ -25,8 +27,8 @@ tracker addresses the risk premise, not the still-unverified premium advantage.
   per stock. Aggregate lines equally weight within-stock cohort means; all four
   stocks must qualify, otherwise the point remains null. Unfiltered means are
   also shown. This controls ticker weights, not differences in market regimes.
-- Review if pass mean loss >= fail mean loss, or pass 3%-loss frequency >= fail
-  frequency. Review flags do not change the trading algorithm. They are not
+- Review if pass mean loss >= unfiltered mean loss, or pass 3%-loss frequency >=
+  unfiltered frequency; the fail cohort is diagnostic. Review flags do not change the trading algorithm. They are not
   significance tests. Pre-registration data are retrospective; prospective
   outcomes are counted separately, not manufactured from earlier history.
 

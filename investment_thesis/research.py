@@ -22,11 +22,11 @@ from final_project.sanji_orders import atomic_json
 from final_project.strategy_config import UNIVERSE, STRATEGY_REVISION
 
 DESIGN = {
-    'version': 'forward-stock-risk-v1', 'registered_on': '2026-11-23',
+    'version': 'forward-stock-risk-v1.1', 'registered_on': '2026-11-23',
     'reference_lag_sessions': 1, 'holding_sessions': 5,
     'rolling_entry_sessions': 126, 'minimum_per_cohort_per_ticker': 20,
     'adverse_move_threshold': .03,
-    'comparison': 'Equal-weight within-ticker pass versus fail contrasts; all four required.',
+    'comparison': 'Primary: equal-weight within-ticker pass versus all (unfiltered); fail cohort is diagnostic. All four required.',
     'sampling': 'Every signal session; overlapping five-session paths, not independent trades.',
     'purpose': 'Test a necessary downside-risk premise, not option pricing, realized alpha or Wheel returns.',
 }
@@ -107,13 +107,16 @@ def comparison(rows_by_ticker):
     aggregate['downside_benefit'] = aggregate['fail_mean_adverse']-aggregate['pass_mean_adverse'] if ready else None
     aggregate['return_spread'] = aggregate['pass_mean_return']-aggregate['fail_mean_return'] if ready else None
     aggregate['tail_benefit'] = aggregate['fail_tail_rate']-aggregate['pass_tail_rate'] if ready else None
+    aggregate['baseline_downside_benefit'] = aggregate['all_mean_adverse']-aggregate['pass_mean_adverse'] if ready else None
+    aggregate['baseline_return_spread'] = aggregate['pass_mean_return']-aggregate['all_mean_return'] if ready else None
+    aggregate['baseline_tail_benefit'] = aggregate['all_tail_rate']-aggregate['pass_tail_rate'] if ready else None
     return {'tickers': tickers, 'aggregate': aggregate}
 
 
 def wrong_if(stats):
     a = stats['aggregate']
     return {name: ('insufficient' if not a['sufficient'] else 'triggered' if a[key] <= 0 else 'not_triggered')
-            for name, key in [('no_downside_benefit', 'downside_benefit'), ('no_tail_benefit', 'tail_benefit')]}
+            for name, key in [('no_downside_benefit', 'baseline_downside_benefit'), ('no_tail_benefit', 'baseline_tail_benefit')]}
 
 
 def cost_sensitivity():
