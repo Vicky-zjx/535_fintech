@@ -1,0 +1,74 @@
+name: Independent thesis history download
+
+on:
+  # One branch-only no-op registers this workflow without pushing the Pages branch.
+  push:
+    branches: [research/history-download-20261124]
+    paths: ['.github/workflows/thesis-history-download.yaml']
+  workflow_dispatch:
+    inputs:
+      confirm_live_download:
+        description: 'Authorize one fresh LSEG research pull (no orders, commits or Pages update)'
+        type: boolean
+        required: true
+        default: false
+      reference_sha256:
+        description: 'SHA256 of the local frozen reference (not its data)'
+        type: string
+        required: true
+      recipient_public_key:
+        description: 'Base64 X25519 public recipient key; private key stays local'
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+# Do not replace pending production runs in their shared concurrency group.
+# The operator checks for existing LSEG jobs before dispatch. Sign-on never forces takeover.
+concurrency:
+  group: fin535-independent-history-download
+  cancel-in-progress: false
+
+jobs:
+  register:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: echo 'Research workflow registered. No queries, orders, artifacts or deployment.'
+  download:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/history-download-20261124' && inputs.confirm_live_download == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout the reviewed dispatch commit, without retained Git credentials
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.11'
+      - name: Install existing research dependencies
+        run: python -m pip install -r investment_thesis/requirements-download.txt
+      - name: Test the downloader with a mock SDK only
+        run: python -B -m unittest investment_thesis.test_download_history investment_thesis.test_private_artifact -q
+      - name: Download independent evidence after explicit confirmation
+        env:
+          LSEG_APP_KEY: ${{ secrets.LSEG_APP_KEY }}
+          LSEG_USERNAME: ${{ secrets.LSEG_USERNAME }}
+          LSEG_PASSWORD: ${{ secrets.LSEG_PASSWORD }}
+          THESIS_REFERENCE_SHA256: ${{ inputs.reference_sha256 }}
+          THESIS_RECIPIENT_PUBLIC_KEY: ${{ inputs.recipient_public_key }}
+        run: python -B -m investment_thesis.download_history --confirm-live-download
+      - name: Upload only authenticated ciphertext; never plaintext market data
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: thesis-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: artifacts/thesis-history/historical_download.encrypted.json
+          if-no-files-found: error
+          include-hidden-files: false
+          retention-days: 1
+          overwrite: false
