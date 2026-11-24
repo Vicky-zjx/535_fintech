@@ -1,0 +1,11 @@
+{
+  "status": "pending",
+  "safe_hosting_plan_verified": false,
+  "verified_by": null,
+  "evidence_reference": null,
+  "scopes": {
+    "historical_aggregate_statistics": false,
+    "daily_aggregate_charts": false,
+    "prospective_aggregate_charts": false
+  }
+}
