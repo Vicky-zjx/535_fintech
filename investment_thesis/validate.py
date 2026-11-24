@@ -7,6 +7,7 @@ from final_project.data_provider import digest
 from final_project.historical import analyze as historical_analysis
 from final_project.validate_publication import equivalent_observations
 from .research import analyze, csv_text
+from .option_audit import audit as option_audit
 
 
 class Document(HTMLParser):
@@ -28,6 +29,7 @@ def check(root):
     if any(not equivalent_observations(h.get(k),v) for k,v in historical_analysis(market).items()):
         raise ValueError('Historical signals do not reproduce from real closes')
     expected=analyze(h)
+    expected['option_audit']=option_audit(root)
     if any(not equivalent_observations(d.get(k),v) for k,v in expected.items()):
         raise ValueError('Thesis statistics do not reproduce from retained history')
     if (page/'data/thesis_observations.csv').read_text()!=csv_text(expected):

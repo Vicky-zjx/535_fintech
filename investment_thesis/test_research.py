@@ -5,9 +5,14 @@ import io
 import json
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+from tempfile import TemporaryDirectory
+from datetime import datetime, timezone
 import exchange_calendars as xcals
 from .research import analyze, outcomes, comparison, wrong_if, cost_sensitivity, csv_text
 from final_project.strategy_config import STRATEGY_REVISION
+from .option_audit import audit, finite
+from .refresh import refresh
 
 
 def fixture():
@@ -81,6 +86,19 @@ class ThesisTests(unittest.TestCase):
         h['tickers']['BAC']['daily_rows'].pop(10)
         with self.assertRaises(ValueError): outcomes(h)
 
+    def test_holiday_or_weekend_window_start_does_not_change_session_sample(self):
+        for start,first in [('2025-01-01','2025-01-02'),('2025-01-04','2025-01-06')]:
+            h=fixture(); h['window']['analysis_start']=start
+            for values in h['tickers'].values():
+                values['daily_rows']=[r for r in values['daily_rows'] if r['signal_date']>=start]
+            dates,rows=outcomes(h)
+            self.assertEqual(dates[0],first)
+            self.assertNotIn(start,dates)
+            self.assertEqual(len(rows['BAC']),len(h['tickers']['BAC']['daily_rows']))
+            self.assertEqual(rows['BAC'][0]['reference_date'],dates[1])
+            self.assertEqual(rows['BAC'][0]['outcome_date'],dates[6])
+            self.assertEqual(h['window']['analysis_start'],start)
+
     def test_review_compares_unconditional_baseline_not_only_failed_signals(self):
         r = analyze(fixture())['full_sample']
         a = r['aggregate']
@@ -101,6 +119,67 @@ class ThesisTests(unittest.TestCase):
         self.assertAlmostEqual(c['examples'][0]['assumed_cost'],3.30)
         self.assertAlmostEqual(c['examples'][0]['break_even_bps'],3.4375)
         self.assertAlmostEqual(c['examples'][1]['break_even_bps'],11.785714285714286)
+
+    def test_all_cost_scenarios_reproduce_and_negative_edge_is_retained(self):
+        for e in cost_sensitivity()['examples']:
+            self.assertEqual([x['gross_bps'] for x in e['scenarios']], [5,10,20,30,50])
+            for x in e['scenarios']:
+                self.assertAlmostEqual(x['net_dollars'],e['collateral']*x['gross_bps']/10000-3.30)
+                self.assertAlmostEqual(x['net_bps'],x['net_dollars']/e['collateral']*10000)
+        self.assertLess(cost_sensitivity()['examples'][1]['scenarios'][1]['net_dollars'],0)
+
+    def test_maturity_and_calendar_freshness_are_not_the_generation_date(self):
+        r=analyze(fixture())
+        self.assertEqual(r['latest_matured_outcome_date'],r['window']['analysis_end'])
+        self.assertGreater(r['next_market_session'],r['window']['analysis_end'])
+        self.assertEqual(r['next_market_session'],'2026-02-02')
+        self.assertIn('21:00:00',r['next_market_close_at'])
+
+    def test_option_inventory_does_not_infer_returns_from_metadata(self):
+        root=Path(__file__).resolve().parents[1]
+        a=audit(root)
+        self.assertEqual(a['status'],'insufficient_option_data')
+        self.assertIsNone(a['economic_advantage'])
+        self.assertFalse(a['extension']['original_registered_condition'])
+        for s in a['snapshots']:
+            if s['status']!='inventoried':continue
+            raw=json.loads((root/s['path']).read_text())
+            for t,c in s['tickers'].items():
+                self.assertEqual(c['contracts'],len(raw['tickers'][t]['contracts']))
+                self.assertEqual(c['puts'],sum(x['type']=='put' for x in raw['tickers'][t]['contracts']))
+        for v in (None,True,float('nan'),float('inf'),'0'):
+            self.assertFalse(finite(v))
+        self.assertTrue(finite(0.))
+
+    def test_failed_upstream_retains_both_evidence_files_and_records_failure(self):
+        with TemporaryDirectory() as tmp:
+            d=Path(tmp)/'investment-thesis/data';d.mkdir(parents=True)
+            before=b'{"generated_at":"prior","market_snapshot_sha256":"prior-hash"}'
+            (d/'thesis_tracker.json').write_bytes(before)
+            (d/'thesis_observations.csv').write_bytes(b'prior-csv')
+            with patch('investment_thesis.refresh.build') as build:
+                status=refresh(tmp,datetime.now(timezone.utc),'failure')
+            build.assert_not_called()
+            self.assertEqual(status['status'],'failed')
+            self.assertEqual(status['evidence_generated_at'],'prior')
+            self.assertEqual((d/'thesis_tracker.json').read_bytes(),before)
+            self.assertEqual((d/'thesis_observations.csv').read_bytes(),b'prior-csv')
+
+    def test_failed_validation_rolls_back_only_own_outputs(self):
+        with TemporaryDirectory() as tmp:
+            root=Path(tmp);d=root/'investment-thesis/data';d.mkdir(parents=True)
+            (d/'thesis_tracker.json').write_text('{}');(d/'thesis_observations.csv').write_text('old')
+            (root/'open_orders.json').write_text('protected')
+            def bad_build(*args):
+                (d/'thesis_tracker.json').write_text('{"unvalidated":true}')
+                (d/'thesis_observations.csv').write_text('new')
+                return {'generated_at':'new','market_snapshot_sha256':'new'}
+            with patch('investment_thesis.refresh.build',side_effect=bad_build),patch('investment_thesis.refresh.check',side_effect=ValueError('bad data')):
+                status=refresh(root,datetime.now(timezone.utc))
+            self.assertEqual(status['status'],'failed')
+            self.assertEqual((d/'thesis_tracker.json').read_text(),'{}')
+            self.assertEqual((d/'thesis_observations.csv').read_text(),'old')
+            self.assertEqual((root/'open_orders.json').read_text(),'protected')
 
     def test_csv_nulls_not_zero_and_no_mutation(self):
         h = fixture(); before = deepcopy(h); r = analyze(h)

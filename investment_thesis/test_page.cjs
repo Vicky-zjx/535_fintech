@@ -8,9 +8,10 @@ const read=p=>fs.readFileSync(path.join(base,p),'utf8');
 const d=JSON.parse(read('investment-thesis/data/thesis_tracker.json'));
 const h=JSON.parse(read('docs/data/historical_signals.json'));
 const s=JSON.parse(read('docs/data/strategy_status.json'));
+const refresh=JSON.parse(read('investment-thesis/data/refresh_status.json'));
 const html=read('investment-thesis/index.html');
 const script=read('investment-thesis/app.js');
-const {check,charts,interpretation,review,alpha,cost}=require('../investment-thesis/app.js');
+const {check,charts,interpretation,review,alpha,cost,view,effect,difference,stability,chartAnalysis,stockAnalysis,overall,conditions,optionAudit,freshness}=require('../investment-thesis/app.js');
 test('Source provenance, source dates and definition agree',()=>{
   check(d,h);
   for(const mutate of [x=>x.source='synthetic',x=>x.market_snapshot_sha256='different',
@@ -52,26 +53,35 @@ class Element{
   replaceChildren(...c){this.children=c;this.content='';}
   addEventListener(name,fn){this.listeners[name]=fn;}
 }
-async function render({fail=false,plotly=true,mismatch=false}={}){
+async function render({fail=false,plotly=true,mismatch=false,retained=false}={}){
   const nodes=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const plotted=[],requested=[];
   const document={getElementById:id=>{assert.ok(nodes.has(id));return nodes.get(id);},createElement:()=>new Element()};
   const window=plotly?{Plotly:{react:(target,traces,layout)=>plotted.push({target,traces,layout})}}:{};
   const historical=structuredClone(h);if(mismatch)historical.market_snapshot_sha256='different';
-  const context=vm.createContext({document,window,fetch:async url=>{requested.push(url);return {ok:!fail,json:async()=>url.includes('thesis_tracker')?d:url.includes('historical_signals')?historical:s};}});
+  const recorded={...refresh,...retained?{status:'failed',evidence_generated_at:d.generated_at,market_snapshot_sha256:d.market_snapshot_sha256}:{}};
+  const context=vm.createContext({document,window,fetch:async url=>{requested.push(url);return {ok:!fail,json:async()=>url.includes('thesis_tracker')?d:url.includes('historical_signals')?historical:url.includes('refresh_status')?recorded:s};}});
   vm.runInContext(script,context);await new Promise(resolve=>setImmediate(resolve));
   return {nodes,plotted,requested};
 }
 test('Real JSON loads into both charts, table and summary without writing orders',async()=>{
   const before=JSON.stringify(d);const r=await render();
   assert.equal(r.plotted.length,2);assert.equal(r.nodes.get('thesis-summary').children.length,4);
-  assert.deepEqual(r.requested,['data/thesis_tracker.json','../docs/data/historical_signals.json','../docs/data/strategy_status.json']);
-  assert.equal(r.nodes.get('thesis-reading').textContent,interpretation(d));
+  assert.deepEqual(r.requested,['data/thesis_tracker.json','../docs/data/historical_signals.json','../docs/data/strategy_status.json','data/refresh_status.json']);
+  assert.equal(r.nodes.get('thesis-reading').textContent,overall(d).join(' '));
   assert.equal(r.nodes.get('thesis-review').textContent,review(d));
   assert.equal(r.nodes.get('thesis-cost').textContent,cost(d));
   assert.ok(!r.nodes.has('order-rows'));
-  r.nodes.get('thesis-ticker').value='PFE';r.nodes.get('thesis-ticker').listeners.change();
-  assert.deepEqual(Array.from(r.plotted.at(-2).traces[0].y),charts(d,'PFE')[0].traces[0].y);
+  for(const t of ['BAC','KO','PFE','F','ALL']){
+    r.nodes.get('thesis-ticker').value=t;r.nodes.get('thesis-ticker').listeners.change();
+    assert.deepEqual(Array.from(r.plotted.at(-2).traces[0].y),charts(d,t)[0].traces[0].y);
+    assert.equal(r.nodes.get('thesis-loss-analysis').textContent,chartAnalysis(d,t,'mean_adverse').join(' '));
+    assert.equal(r.nodes.get('thesis-tail-analysis').textContent,chartAnalysis(d,t,'tail_rate').join(' '));
+    assert.equal(r.nodes.get('thesis-reading').textContent,overall(d,t).join(' '));
+  }
+  assert.equal(r.nodes.get('thesis-cost-table').children.length,5);
+  assert.equal(r.nodes.get('thesis-conditions').children.length,3);
+  assert.equal(r.nodes.get('thesis-stock-analysis').children.length,4);
   assert.equal(JSON.stringify(d),before);
 });
 test('Stale or inaccessible research fails honestly; missing Plotly retains table',async()=>{
@@ -91,4 +101,63 @@ test('Every local anchor exists, English text and nightly integration preserved'
   assert.match(workflow,/python -m investment_thesis.research/);
   assert.match(workflow,/Nightly risk-managed Wheel/);
   assert.match(workflow,/investment-thesis\/data\/thesis_tracker.json investment-thesis\/data\/thesis_observations.csv/);
+  assert.match(workflow,/investment_thesis.refresh --upstream/);
+  assert.match(workflow,/refresh_status.json/);
+});
+test('Narratives reproduce cohort arithmetic and show contradictory results',()=>{
+  for(const t of ['ALL','BAC','KO','PFE','F'])for(const k of ['mean_adverse','tail_rate']){
+    const s=view(d.full_sample,t),e=effect(s,k);
+    assert.ok(Math.abs(e.reduction-(s.all[k]-s.pass[k]))<1e-12);
+    assert.ok(Math.abs(e.relative-e.reduction/s.all[k])<1e-12);
+    const text=chartAnalysis(d,t,k).join(' ');
+    for(const c of ['pass','fail','all'])assert.ok(text.includes((100*s[c][k]).toFixed(2)+'%'));
+    assert.doesNotMatch(text,/undefined|NaN|Infinity/);
+    const z=stability(d,t,k);
+    assert.equal(z.evaluable+z.missing,d.rolling.length);
+    assert.equal(z.better+z.worse+z.equal,z.evaluable);
+    const actual=d.rolling.filter(p=>{const a=effect(view(p,t),k);return a&&a.reduction<0;});
+    assert.equal(z.worse,actual.length);
+    assert.equal(z.lastWorse,actual.at(-1)?.as_of||null);
+  }
+  const changed=structuredClone(d);
+  changed.full_sample.tickers.BAC.pass.mean_adverse=.1;
+  assert.notEqual(chartAnalysis(changed,'BAC','mean_adverse')[1],chartAnalysis(d,'BAC','mean_adverse')[1]);
+  assert.match(chartAnalysis(changed,'BAC','mean_adverse')[1],/Relative change:.*increase/);
+  assert.equal(stockAnalysis(d).length,4);
+});
+test('Zero denominator and insufficient cohorts never invent relative advantage',()=>{
+  const s=structuredClone(d.full_sample.tickers.BAC);
+  s.all.mean_adverse=0;s.pass.mean_adverse=0;
+  assert.equal(effect(s,'mean_adverse').relative,null);
+  assert.match(difference(s,'mean_adverse'),/undefined because the benchmark is zero/);
+  s.sufficient=false;assert.equal(effect(s,'mean_adverse'),null);
+  const changed=structuredClone(d);changed.full_sample.tickers.BAC=s;
+  assert.match(chartAnalysis(changed,'BAC','mean_adverse')[1],/Insufficient evidence/);
+  assert.doesNotMatch(chartAnalysis(changed,'BAC','mean_adverse')[1],/relative reduction/);
+});
+test('Freshness reflects actual next exchange close, not a new webpage timestamp',()=>{
+  const fresh=new Date(new Date(d.next_market_close_at).getTime()-1);
+  const stale=new Date(new Date(d.next_market_close_at).getTime()+1);
+  assert.doesNotMatch(freshness(d,s,refresh,fresh),/STALE MARKET/);
+  assert.match(freshness(d,s,refresh,stale),/STALE MARKET SNAPSHOT/);
+  assert.match(freshness(d,s,{...refresh,status:'failed'},fresh),/STALE \/ FAILED UPDATE/);
+  assert.match(freshness(d,s,{},fresh),/status unavailable/);
+  assert.ok(freshness(d,s,refresh,stale).includes(d.latest_matured_outcome_date));
+});
+test('A recorded failure can show intact retained evidence beside a newer source',async()=>{
+  const r=await render({mismatch:true,retained:true});
+  assert.equal(r.plotted.length,2);
+  assert.match(r.nodes.get('thesis-status').textContent,/STALE \/ FAILED UPDATE/);
+  assert.equal(r.nodes.get('thesis-reading').textContent,overall(d).join(' '));
+});
+test('Option audit, economic extension and cost calculations do not claim alpha',()=>{
+  assert.match(optionAudit(d),/not yet estimable/);
+  assert.match(conditions(d)[2][3],/Not Yet Testable/);
+  assert.match(conditions(d)[2][0],/new extension/);
+  assert.equal(d.option_audit.economic_advantage,null);
+  for(const e of d.cost_budget.examples)for(const c of e.scenarios){
+    assert.ok(Math.abs(c.net_dollars-(c.gross_bps*e.collateral/10000-3.3))<1e-9);
+  }
+  const wrong=structuredClone(d);wrong.cost_budget.examples[0].scenarios[0].net_dollars+=1;
+  assert.throws(()=>check(wrong,h),/cost scenario/);
 });

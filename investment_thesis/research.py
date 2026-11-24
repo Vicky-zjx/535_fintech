@@ -20,6 +20,7 @@ from final_project.data_provider import digest
 from final_project.indicators import valid_close
 from final_project.sanji_orders import atomic_json
 from final_project.strategy_config import UNIVERSE, STRATEGY_REVISION
+from .option_audit import audit as option_audit
 
 DESIGN = {
     'version': 'forward-stock-risk-v1.1', 'registered_on': '2026-11-23',
@@ -38,7 +39,11 @@ def outcomes(h):
             or h.get('strategy_revision') != STRATEGY_REVISION):
         raise ValueError('Thesis requires validated real LSEG historical signals')
     start, end = h['window']['analysis_start'], h['window']['analysis_end']
-    cal = xcals.get_calendar('XNYS', start=start, end=str((pd.Timestamp(end)+pd.Timedelta(days=25)).date()))
+    # The rolling three-year boundary can be a holiday/weekend. Include prior
+    # calendar context so sessions_in_range accepts it without changing the
+    # requested sample boundaries or adding a non-trading-day observation.
+    cal = xcals.get_calendar('XNYS', start=str((pd.Timestamp(start)-pd.Timedelta(days=7)).date()),
+                             end=str((pd.Timestamp(end)+pd.Timedelta(days=25)).date()))
     dates = [str(d.date()) for d in cal.sessions_in_range(start, end)]
     all_dates = [str(d.date()) for d in cal.sessions if str(d.date()) >= dates[0]]
     result = {}
@@ -130,7 +135,11 @@ def cost_sensitivity():
                              assumed_cost=cost, break_even_bps=cost/collateral*1e4,
                              assumed_gross_surplus_bps=20., assumed_gross_surplus=gross,
                              illustrative_net_surplus=gross-cost,
-                             illustrative_net_bps=(gross-cost)/collateral*1e4))
+                             illustrative_net_bps=(gross-cost)/collateral*1e4,
+                             scenarios=[dict(gross_bps=b, gross_dollars=collateral*b/1e4,
+                                             net_dollars=collateral*b/1e4-cost,
+                                             net_bps=b-cost/collateral*1e4)
+                                        for b in (5, 10, 20, 30, 50)]))
     return dict(kind='hypothetical_cost_budget_not_estimated_alpha', commission_per_contract_side=.65,
                 assumed_round_trip_slippage_per_share=.02, commission_sides=2, multiplier=100,
                 maximum_cycles_per_ticker_per_year=52, examples=examples)
@@ -149,11 +158,17 @@ def analyze(h):
         rolling.append(dict(as_of=date, first_reference_date=dates[first_entry] if last_entry >= 1 else None,
                             last_reference_date=dates[last_entry] if last_entry >= 1 else None,
                             **stats, wrong_if=wrong_if(stats)))
+    calendar = xcals.get_calendar('XNYS', start=dates[0], end=str((pd.Timestamp(dates[-1])+pd.Timedelta(days=25)).date()))
+    next_session = calendar.next_session(pd.Timestamp(dates[-1]))
     return dict(schema_version=1, kind='forward_stock_risk_research', source=h['source'],
                 strategy_revision=STRATEGY_REVISION, design=DESIGN, window=h['window'],
                 market_retrieved_at=h['market_retrieved_at'], market_snapshot_sha256=h['market_snapshot_sha256'],
                 historical_signals_sha256=digest(h), historical_generated_at=h.get('generated_at'),
                 coverage={t: dict(Counter(r['status'] for r in values)) for t,values in rows.items()},
+                latest_matured_outcome_date=max((r['outcome_date'] for v in rows.values() for r in v
+                                                if r['status']=='observed'), default=None),
+                next_market_session=str(next_session.date()),
+                next_market_close_at=calendar.session_close(next_session).isoformat(),
                 full_sample=full, rolling=rolling, rows=rows,
                 prospective=comparison({t: [r for r in values if r['prospective']] for t,values in rows.items()}),
                 cost_budget=cost_sensitivity())
@@ -176,6 +191,7 @@ def build(root, now):
     if h['market_snapshot_sha256'] != digest(market):
         raise ValueError('History does not match retained real market snapshot')
     result = analyze(h)
+    result['option_audit'] = option_audit(root)
     result['generated_at'] = now.isoformat()
     atomic_json(data/'thesis_tracker.json', result)
     (data/'thesis_observations.csv').write_text(csv_text(result))

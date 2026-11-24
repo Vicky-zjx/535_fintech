@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   research:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -38,22 +38,23 @@ jobs:
         run: python -m pip install -r final_project/requirements.txt
       - name: Test research without credentials or order writes
         run: python -W ignore::DeprecationWarning -m unittest investment_thesis.test_research -q
-      - name: Rebuild independent tracker from retained real LSEG observations
-        run: python -m investment_thesis.research
-      - name: Validate source alignment, charts and standalone page
-        run: |
-          python -m investment_thesis.validate
-          node --test investment_thesis/test_page.cjs
+      - name: Rebuild and validate, or retain evidence with an explicit failure status
+        id: refresh
+        continue-on-error: true
+        env:
+          UPSTREAM: ${{ github.event_name == 'workflow_dispatch' && 'manual' || github.event.workflow_run.conclusion }}
+        # Internally runs python -m investment_thesis.research's build and validation.
+        run: python -m investment_thesis.refresh --upstream "$UPSTREAM" --verify-page
       - name: Commit only thesis outputs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- investment-thesis/data/thesis_tracker.json investment-thesis/data/thesis_observations.csv
+          git add -- investment-thesis/data/thesis_tracker.json investment-thesis/data/thesis_observations.csv investment-thesis/data/refresh_status.json
           if ! git diff --cached --quiet; then
             git commit -m 'Update independent investment thesis evidence'
             git pull --rebase origin main
             # Do not publish mixed source generations after a concurrent refresh.
-            python -m investment_thesis.validate
+            if [ '${{ steps.refresh.outcome }}' = 'success' ]; then python -m investment_thesis.validate; fi
             git push origin HEAD:main
           fi
       - name: Rebuild existing GitHub Pages site
@@ -61,3 +62,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: gh api --method POST "repos/$GH_REPO/pages/builds" --jq '{status, url}'
+      - name: Report a failed refresh honestly after publishing retained-evidence status
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo '::error::Tracker not refreshed. Previous evidence retained; see refresh_status.json.'
+          exit 1
