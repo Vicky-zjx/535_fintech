@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Selective Risk, Not Just Premium · FIN 535 Investment Thesis</title>
+  <meta name="description" content="An independent investment thesis testing the downside-risk premise of a selective Wheel strategy with real, nightly-updated LSEG evidence.">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="../course-nav.js?v=thesis-1"></script>
+  <script defer src="../covered-call/assets/plotly.min.js"></script>
+  <script defer src="app.js?v=1"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="masthead"><a href="./">FIN 535 <span>/ INVESTMENT THESIS</span></a><span>Research note · November 23, 2026</span></header>
+  <nav data-course-nav aria-label="Course navigation"><a href="../docs/">Wheel order-generation project</a></nav>
+  <main id="main">
+    <header class="hero">
+      <p class="eyebrow">CASH-SECURED OPTIONS / A TESTABLE INVESTMENT VIEW</p>
+      <h1>Selective risk.<br><em>Not just premium.</em></h1>
+      <p class="deck">Does choosing when to sell downside insurance improve the case for the Wheel?</p>
+      <p class="context">A separate thesis study of BAC, KO, PFE and F. The existing nightly strategy and its proposed orders are unchanged.</p>
+    </header>
+    <nav class="section-nav" aria-label="On this page"><a href="#thesis">Thesis</a><a href="#tracker">Daily tracker</a><a href="#wrong-if">Wrong if</a><a href="#costs">Alpha &amp; costs</a><a href="#macro">Macro</a><a href="#method">Method</a></nav>
+
+    <section id="thesis" class="prose" aria-labelledby="thesis-title">
+      <p class="eyebrow">THE INVESTMENT VIEW</p>
+      <h2 id="thesis-title">Sell risk selectively, not every week.</h2>
+      <p id="thesis-statement" class="thesis-statement">I believe short-dated puts on BAC, KO, PFE and F offer a better premium-to-downside-risk trade-off in positive-trend, moderate-volatility regimes than under unconditional weekly selling, because investors' demand for protection need not fall as quickly as near-term stock risk.</p>
+      <h3>In plain language</h3>
+      <p>Option buyers pay to transfer losses they cannot comfortably absorb. A funded seller can accept that risk, but a larger premium is not automatically a better deal: it may simply compensate for a larger expected loss. My view is that declining markets are not always the best time to sell that insurance. I use the existing trend and volatility screens to make new exposure conditional.</p>
+      <p>This contains two claims: the screens identify safer stock-price paths, and the premium remains attractive relative to that risk. The daily tracker below tests the first. It cannot establish the second without comparable option prices and payoffs. <a href="https://www.cboe.com/insights/posts/white-paper-shows-volatility-risk-premium-facilitated-higher-risk-adjusted-returns-for-put-index/">Cboe's index put-writing research</a> motivates the insurance argument; it does not prove an edge in these individual stocks.</p>
+      <dl class="mandate">
+        <div><dt>Expected thesis life</dt><dd>6–12 months while market conditions remain orderly; review monthly.</dd></div>
+        <div><dt>Expected option life</dt><dd>About 7 calendar days; permitted expiries remain 3–10 DTE.</dd></div>
+        <div><dt>After assignment</dt><dd>Shares can remain for weeks or longer. A full Wheel cycle has no fixed exit date; its average lifetime is not yet measured.</dd></div>
+        <div><dt>Implementation</dt><dd>Cash-secured puts; covered calls only after confirmed assignment. No leverage, no naked calls.</dd></div>
+      </dl>
+      <details><summary>The existing rule, kept fixed</summary>
+        <p>Close ≥ SMA50; SMA20 ≥ SMA50; HV20 ≤ 45%; five-day return ≥ −8%. Put delta target ≈ −0.25 and call delta target ≈ +0.25, with the existing observed-strike fallback when dated Greeks are incomplete. At most one new put per ticker per trading week, on any eligible session. Exposure caps remain 30% per ticker and 70% overall, with at least 30% uncommitted cash.</p>
+        <p>The $40,000 starting capital is a course modeling assumption. This page does not change the account, positions, covered-call cost-basis protection, proposed orders or execution assumptions. <a href="../docs/#rules">See the complete order-generation rules</a>.</p>
+      </details>
+    </section>
+
+    <section id="tracker" aria-labelledby="tracker-title">
+      <p class="eyebrow">EVIDENCE / UPDATED AFTER THE NIGHTLY LSEG REFRESH</p>
+      <h2 id="tracker-title">What happened after the signal?</h2>
+      <p class="prose">At each completed close, classify the stock as passing or failing the unchanged screens. Use the next trading session's close as a reference, then observe five subsequent sessions. The tracker compares the largest closing-price loss and the frequency of a decline of at least 3%. Lower values favor the risk premise—not a claim of option profit.</p>
+      <p id="thesis-status" class="source" aria-live="polite">Loading dated LSEG evidence; no result is assumed.</p>
+      <div class="controls"><label for="thesis-ticker">Tracker universe
+        <select id="thesis-ticker"><option value="ALL">All four · equal weight</option><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select></label>
+        <p>Rolling 126 matured reference sessions. Gaps mean insufficient evidence, not zero risk.</p>
+      </div>
+      <div class="chart-grid">
+        <figure><h3>Subsequent five-session downside</h3><div id="thesis-loss-chart" class="plot" role="img" aria-label="Rolling mean maximum closing loss, pass versus fail and unfiltered"></div>
+          <figcaption>Mean maximum closing loss, a positive magnitude. Lower is better. This is not portfolio maximum drawdown.</figcaption></figure>
+        <figure><h3>Frequency of a 3% closing-price decline</h3><div id="thesis-tail-chart" class="plot" role="img" aria-label="Rolling frequency of a three percent or larger closing loss"></div>
+          <figcaption>Fraction of observed paths reaching 3% below the reference close. Not an assignment probability; intraday lows are not measured.</figcaption></figure>
+      </div>
+      <div class="finding"><h3>Read the evidence, including the weak result</h3><p id="thesis-reading" aria-live="polite">Interpretation appears only after source validation.</p></div>
+      <details><summary>Full-sample comparison and sample counts</summary>
+        <div class="table-wrap" tabindex="0" aria-label="Full-sample stock-risk evidence"><table><thead><tr><th>Stock</th><th>Paths<br>Pass / fail</th><th>Mean return<br>Pass / fail</th><th>Return SD<br>Pass / fail</th><th>Mean maximum loss<br>Pass / fail</th><th>3% decline frequency<br>Pass / fail</th></tr></thead>
+          <tbody id="thesis-summary"><tr><td colspan="6">Loading validated observations.</td></tr></tbody></table></div>
+        <p id="thesis-coverage">Coverage is checked independently of filter outcomes.</p>
+        <p id="thesis-prospective">Prospective evidence begins only at design registration.</p>
+        <p>Return and standard deviation refer to five-session stock-price changes, not annualized investment returns. Outcomes overlap and share market risk. These counts are not independent trades.</p>
+      </details>
+    </section>
+
+    <section id="wrong-if" class="prose" aria-labelledby="wrong-title">
+      <p class="eyebrow">FALSIFICATION / FIXED BEFORE THIS TRACKER WAS RUN</p>
+      <h2 id="wrong-title">Two reasons to reconsider.</h2>
+      <p>I would abandon the claim that these screens identify safer short-horizon exposure if either condition holds in the latest 126 matured reference sessions:</p>
+      <ol class="criteria"><li>The pass group has an <strong>equal or larger mean maximum closing loss</strong> than the fail group.</li><li>The pass group has an <strong>equal or higher frequency of a 3% closing decline</strong> than the fail group.</li></ol>
+      <p>Each stock needs at least 20 pass and 20 fail paths. Compare equal-weight within-stock results; otherwise report insufficient evidence. These are research review conditions, not new order-engine switches. They do not claim statistical significance.</p>
+      <p id="thesis-review" class="review" aria-live="polite">Waiting for the current review window.</p>
+    </section>
+
+    <section id="costs" class="prose" aria-labelledby="cost-title">
+      <p class="eyebrow">ECONOMIC VALUE / DO NOT COUNT PREMIUM AS ALPHA</p>
+      <h2 id="cost-title">A small edge can disappear in costs.</h2>
+      <p id="thesis-alpha">Historical stock-return contrasts will appear here; they are not option alpha.</p>
+      <p>My current estimate is that no positive option alpha has been established. For scale, use a planning scenario—not an estimate from these data—of 20 basis points of gross surplus per weekly cycle on collateral, after expected option losses and the cash-return benchmark. Budget $0.65 per contract per side plus $0.02 per share of total round-trip slippage: $3.30 per standard contract. The two-sided cost budget is conservative; it does not add a buy-to-close to the strategy.</p>
+      <p id="thesis-cost">Cost sensitivity uses the two recorded November 17 proposal strikes, not executed trades.</p>
+      <p>At most one new put per ticker per week means roughly 52 possible entries a year, usually fewer. Assignment, pending orders and failed filters reduce turnover. Stock transactions, assignment charges, taxes and cash opportunity costs can reduce the edge further. Costs here are explicit assumptions, not observed broker fees or changes to the existing model. There is no valid Sharpe estimate from overlapping price paths or unfilled proposals.</p>
+    </section>
+
+    <section id="macro" class="prose" aria-labelledby="macro-title">
+      <p class="eyebrow">MACRO ENVIRONMENT / HOW THE VIEW CAN BREAK</p>
+      <h2 id="macro-title">Insurance is most costly when it is needed.</h2>
+      <p>The hypothesis is most plausible if demand for protection persists while fundamentals change gradually, so trend and volatility screens retain some information about near-term risk. A recession or credit shock could reverse BAC and F together; KO and PFE still carry valuation, currency and company-specific risk. Higher rates can increase the cash-return hurdle and tighten credit, while cuts do not guarantee safer stocks. A technology selloff can spread through general risk aversion even without tech holdings. These are scenario exposures, not a forecast of current Fed policy (<a href="https://www.newyorkfed.org/markets/domestic-market-operations/monetary-policy-implementation">Federal Reserve transmission overview</a>). There is no earnings screen, so overnight earnings gaps remain possible.</p>
+    </section>
+
+    <section id="method" class="prose" aria-labelledby="method-title">
+      <p class="eyebrow">METHOD / REPRODUCIBLE AND SEPARATE FROM EXECUTION</p>
+      <h2 id="method-title">Know what the chart can—and cannot—say.</h2>
+      <p>Design v1 was fixed on November 23, 2026. Earlier data are retrospective, not an out-of-sample test. Signal at t; reference at t+1; outcome at t+6 using the XNYS calendar. All six path closes must exist. Invalid signals are excluded, not labeled filter failures. Missing prices are never interpolated, carried forward or replaced by zero. Each plotted date uses only outcomes already complete by that date.</p>
+      <p>Each aggregate line equally weights the four within-stock cohort means. It remains missing when any stock lacks the required sample. That avoids changing the stock mix between pass and fail groups, but does not control for different market regimes. LSEG closes are as retrieved, not vintage data or dividend-inclusive total returns. The fixed surviving universe and overlapping paths limit causal and statistical conclusions.</p>
+      <p>A separate GitHub Action rebuilds this tracker after the existing nightly LSEG workflow succeeds. It reads the validated three-year history; it neither changes it nor writes orders. Failed updates retain the last dated evidence. The JSON records source hashes and every outcome, and the CSV preserves exclusions. The tracker tests a stock-risk premise; historical option pricing, execution and net Wheel performance remain separate questions.</p>
+      <p class="command"><code>python -m investment_thesis.research<br>python -m investment_thesis.validate</code></p>
+      <p class="downloads"><a href="data/thesis_tracker.json">Tracker JSON</a><a href="data/thesis_observations.csv">Observation CSV</a><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/investment_thesis">Source &amp; tests</a><a href="https://github.com/Vicky-zjx/535_fintech/actions/workflows/investment-thesis.yaml">Update workflow</a></p>
+      <p class="source">Assignment requirements: <a href="https://peachyhabanero.com/designing-a-thesis.html">Professor Vestal's thesis framework</a>. Research question, calculations and interpretation are specific to this four-stock Wheel study.</p>
+    </section>
+    <footer><span>FIN 535 · Vicky · Investment Thesis</span><a href="../docs/">Return to the Wheel order-generation project</a></footer>
+  </main>
+</body>
+</html>
