@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "mode": "demonstration",
-  "generated_at": "2026-11-23T11:38:11.200658+00:00",
+  "generated_at": "2026-11-24T13:11:06.339780+00:00",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "label": "DEMONSTRATION ONLY \u2014 hypothetical accounts, not actual Sanji account orders",
   "market_source": "Retained real LSEG API response replay; not a new query or backtest",
-  "market_retrieved_at": "2026-11-23T11:37:55.432926+00:00",
-  "market_snapshot_sha256": "e161ca36720b05021d447656eda361a6bb0bc9ba0b55facdce92337860f545ed",
+  "market_retrieved_at": "2026-11-24T13:10:46.868328+00:00",
+  "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
   "calendar": {
-    "as_of": "2026-11-20",
-    "target_session": "2026-11-23",
-    "first_session_of_week": true,
+    "as_of": "2026-11-23",
+    "target_session": "2026-11-24",
+    "first_session_of_week": false,
     "exchange": "XNYS",
-    "close_time": "2026-11-20T21:00:00+00:00"
+    "close_time": "2026-11-23T21:00:00+00:00"
   },
   "snapshot_file": "market_snapshot.json",
   "starting_capital": 40000,
@@ -29,7 +29,7 @@
       "account": {
         "schema_version": 1,
         "source": "HYPOTHETICAL_DEMONSTRATION",
-        "as_of": "2026-11-20",
+        "as_of": "2026-11-23",
         "currency": "USD",
         "cash": 40000.0,
         "equity": 40000.0,
@@ -49,16 +49,15 @@
           ],
           "category": "Technical filter failed",
           "technical_status": "Technical filter failed",
-          "close": 47.04,
-          "price_date": "2026-11-20",
+          "close": 48.14,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -77,10 +76,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -129,13 +128,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -211,14 +207,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 50.0355,
-          "sma50": 52.6918,
-          "hv20": 0.2731427481130727,
-          "r5": -0.07800862406899267,
+          "sma20": 49.9165,
+          "sma50": 52.4652,
+          "hv20": 0.2891269137213363,
+          "r5": -0.03873801916932906,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -240,16 +240,15 @@
           ],
           "category": "Proposed order",
           "technical_status": "Technical filter passed",
-          "close": 96.99,
-          "price_date": "2026-11-20",
+          "close": 95.88,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -268,10 +267,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -320,13 +319,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -402,14 +398,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 95.849,
-          "sma50": 91.8068,
-          "hv20": 0.17066551467511898,
-          "r5": -0.022770780856423256,
+          "sma20": 96.008,
+          "sma50": 91.9374,
+          "hv20": 0.1774264159539908,
+          "r5": -0.03618817852834744,
           "filters": {
             "trend": true,
             "volatility": true,
@@ -422,13 +422,13 @@
             "cost_basis": null
           },
           "candidate": {
-            "ric": "KOW272609400.U",
+            "ric": "KOX042609300.U",
             "type": "put",
-            "strike": 94.0,
-            "expiry": "2026-11-27",
+            "strike": 93.0,
+            "expiry": "2026-12-04",
             "multiplier": 100,
             "terms_verified": true,
-            "observed_on": "2026-11-20",
+            "observed_on": "2026-11-23",
             "delta": null,
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
@@ -439,12 +439,12 @@
             "reasons": [],
             "equity": 40000.0,
             "cash": 40000.0,
-            "exposure": 9400.0,
-            "put_collateral": 9400.0,
-            "uncommitted_cash": 30600.0,
+            "exposure": 9300.0,
+            "put_collateral": 9300.0,
+            "uncommitted_cash": 30700.0,
             "by_ticker": {
               "BAC": 0.0,
-              "KO": 9400.0,
+              "KO": 9300.0,
               "PFE": 0.0,
               "F": 0.0
             }
@@ -460,15 +460,14 @@
           "category": "Technical filter failed",
           "technical_status": "Technical filter failed",
           "close": 27.4,
-          "price_date": "2026-11-20",
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -487,10 +486,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -539,13 +538,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -621,14 +617,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 29.316499999999998,
-          "sma50": 28.8206,
-          "hv20": 0.232402971624057,
-          "r5": -0.05157493942540681,
+          "sma20": 29.197,
+          "sma50": 28.8142,
+          "hv20": 0.2325723603635187,
+          "r5": -0.05058905058905061,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -650,16 +650,15 @@
           ],
           "category": "Technical filter failed",
           "technical_status": "Technical filter failed",
-          "close": 11.17,
-          "price_date": "2026-11-20",
+          "close": 11.65,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -678,10 +677,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -730,13 +729,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -812,14 +808,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 11.993,
-          "sma50": 12.293,
-          "hv20": 0.2961435323558229,
-          "r5": -0.06213266162888331,
+          "sma20": 11.9965,
+          "sma50": 12.2488,
+          "hv20": 0.3347581030864973,
+          "r5": 0.006914433880726101,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -838,12 +838,12 @@
         "reasons": [],
         "equity": 40000.0,
         "cash": 40000.0,
-        "exposure": 9400.0,
-        "put_collateral": 9400.0,
-        "uncommitted_cash": 30600.0,
+        "exposure": 9300.0,
+        "put_collateral": 9300.0,
+        "uncommitted_cash": 30700.0,
         "by_ticker": {
           "BAC": 0.0,
-          "KO": 9400.0,
+          "KO": 9300.0,
           "PFE": 0.0,
           "F": 0.0
         }
@@ -865,15 +865,15 @@
       },
       "proposed_orders": [
         {
-          "id": "fin535-demo-ko-put-2026-11-23",
-          "for": "2026-11-23",
+          "id": "fin535-demo-ko-put-2026-11-24",
+          "for": "2026-11-24",
           "order_type": "mkt",
           "action": "SHT",
           "qty": 1,
           "underlying": 8894,
           "contract": "put",
-          "expiry": "2026-11-27",
-          "strike": 94.0,
+          "expiry": "2026-12-04",
+          "strike": 93.0,
           "ref": "prev_close"
         }
       ],
@@ -885,22 +885,22 @@
       "account": {
         "schema_version": 1,
         "source": "HYPOTHETICAL_DEMONSTRATION",
-        "as_of": "2026-11-20",
+        "as_of": "2026-11-23",
         "currency": "USD",
-        "cash": 21740.0,
+        "cash": 21693.0,
         "equity": 40000.0,
         "positions": [
           {
             "ticker": "BAC",
             "kind": "stock",
             "quantity": 100,
-            "cost_basis": 47.04
+            "cost_basis": 48.14
           },
           {
             "ticker": "KO",
             "kind": "stock",
             "quantity": 100,
-            "cost_basis": 96.99
+            "cost_basis": 95.88
           },
           {
             "ticker": "PFE",
@@ -912,7 +912,7 @@
             "ticker": "F",
             "kind": "stock",
             "quantity": 100,
-            "cost_basis": 11.17
+            "cost_basis": 11.65
           }
         ],
         "resolved_order_ids": []
@@ -923,23 +923,22 @@
       "decisions": [
         {
           "ticker": "BAC",
-          "decision": "Sell Covered Call",
-          "eligible": true,
+          "decision": "No Trade",
+          "eligible": false,
           "reasons": [
-            "Fallback: two observed strikes above ATM; both price floors checked"
+            "Two-strikes-OTM fallback fails cost-basis/2%-above-close constraints"
           ],
-          "category": "Proposed order",
+          "category": "Option unavailable",
           "technical_status": "Technical filter failed",
-          "close": 47.04,
-          "price_date": "2026-11-20",
+          "close": 48.14,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -958,10 +957,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -1010,13 +1009,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -1092,14 +1088,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 50.0355,
-          "sma50": 52.6918,
-          "hv20": 0.2731427481130727,
-          "r5": -0.07800862406899267,
+          "sma20": 49.9165,
+          "sma50": 52.4652,
+          "hv20": 0.2891269137213363,
+          "r5": -0.03873801916932906,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -1109,35 +1109,7 @@
             "shares": 100,
             "put": 0,
             "call": 0,
-            "cost_basis": 47.04
-          },
-          "candidate": {
-            "ric": "BACK272604800.U",
-            "type": "call",
-            "strike": 48.0,
-            "expiry": "2026-11-27",
-            "multiplier": 100,
-            "terms_verified": true,
-            "observed_on": "2026-11-20",
-            "delta": null,
-            "delta_date": null,
-            "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
-            "selection_method": "Fallback: two observed strikes above ATM; both price floors checked"
-          },
-          "capital_check": {
-            "passed": true,
-            "reasons": [],
-            "equity": 40000.0,
-            "cash": 21740.0,
-            "exposure": 18260.0,
-            "put_collateral": 0.0,
-            "uncommitted_cash": 21740.0,
-            "by_ticker": {
-              "BAC": 4704.0,
-              "KO": 9699.0,
-              "PFE": 2740.0,
-              "F": 1117.0
-            }
+            "cost_basis": 48.14
           }
         },
         {
@@ -1149,16 +1121,15 @@
           ],
           "category": "Proposed order",
           "technical_status": "Technical filter passed",
-          "close": 96.99,
-          "price_date": "2026-11-20",
+          "close": 95.88,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -1177,10 +1148,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -1229,13 +1200,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -1311,14 +1279,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 95.849,
-          "sma50": 91.8068,
-          "hv20": 0.17066551467511898,
-          "r5": -0.022770780856423256,
+          "sma20": 96.008,
+          "sma50": 91.9374,
+          "hv20": 0.1774264159539908,
+          "r5": -0.03618817852834744,
           "filters": {
             "trend": true,
             "volatility": true,
@@ -1328,16 +1300,16 @@
             "shares": 100,
             "put": 0,
             "call": 0,
-            "cost_basis": 96.99
+            "cost_basis": 95.88
           },
           "candidate": {
-            "ric": "KOK272609900.U",
+            "ric": "KOL042609800.U",
             "type": "call",
-            "strike": 99.0,
-            "expiry": "2026-11-27",
+            "strike": 98.0,
+            "expiry": "2026-12-04",
             "multiplier": 100,
             "terms_verified": true,
-            "observed_on": "2026-11-20",
+            "observed_on": "2026-11-23",
             "delta": null,
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
@@ -1347,15 +1319,15 @@
             "passed": true,
             "reasons": [],
             "equity": 40000.0,
-            "cash": 21740.0,
-            "exposure": 18260.0,
+            "cash": 21693.0,
+            "exposure": 18307.0,
             "put_collateral": 0.0,
-            "uncommitted_cash": 21740.0,
+            "uncommitted_cash": 21693.0,
             "by_ticker": {
-              "BAC": 4704.0,
-              "KO": 9699.0,
+              "BAC": 4814.0,
+              "KO": 9588.0,
               "PFE": 2740.0,
-              "F": 1117.0
+              "F": 1165.0
             }
           }
         },
@@ -1369,15 +1341,14 @@
           "category": "Proposed order",
           "technical_status": "Technical filter failed",
           "close": 27.4,
-          "price_date": "2026-11-20",
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -1396,10 +1367,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -1448,13 +1419,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -1530,14 +1498,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 29.316499999999998,
-          "sma50": 28.8206,
-          "hv20": 0.232402971624057,
-          "r5": -0.05157493942540681,
+          "sma20": 29.197,
+          "sma50": 28.8142,
+          "hv20": 0.2325723603635187,
+          "r5": -0.05058905058905061,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -1550,13 +1522,13 @@
             "cost_basis": 27.4
           },
           "candidate": {
-            "ric": "PFEK272602850.U",
+            "ric": "PFEL042602850.U",
             "type": "call",
             "strike": 28.5,
-            "expiry": "2026-11-27",
+            "expiry": "2026-12-04",
             "multiplier": 100,
             "terms_verified": true,
-            "observed_on": "2026-11-20",
+            "observed_on": "2026-11-23",
             "delta": null,
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
@@ -1566,15 +1538,15 @@
             "passed": true,
             "reasons": [],
             "equity": 40000.0,
-            "cash": 21740.0,
-            "exposure": 18260.0,
+            "cash": 21693.0,
+            "exposure": 18307.0,
             "put_collateral": 0.0,
-            "uncommitted_cash": 21740.0,
+            "uncommitted_cash": 21693.0,
             "by_ticker": {
-              "BAC": 4704.0,
-              "KO": 9699.0,
+              "BAC": 4814.0,
+              "KO": 9588.0,
               "PFE": 2740.0,
-              "F": 1117.0
+              "F": 1165.0
             }
           }
         },
@@ -1587,16 +1559,15 @@
           ],
           "category": "Proposed order",
           "technical_status": "Technical filter failed",
-          "close": 11.17,
-          "price_date": "2026-11-20",
+          "close": 11.65,
+          "price_date": "2026-11-23",
           "observation_window": {
-            "window_start": "2026-09-04",
-            "window_end": "2026-11-20",
+            "window_start": "2026-09-08",
+            "window_end": "2026-11-23",
             "expected_sessions": 55,
             "valid_closes": 55,
             "missing_dates": [],
             "sma20_dates": [
-              "2026-10-26",
               "2026-10-27",
               "2026-10-28",
               "2026-10-29",
@@ -1615,10 +1586,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "sma50_dates": [
-              "2026-09-14",
               "2026-09-15",
               "2026-09-16",
               "2026-09-17",
@@ -1667,13 +1638,10 @@
               "2026-11-17",
               "2026-11-18",
               "2026-11-19",
-              "2026-11-20"
+              "2026-11-20",
+              "2026-11-23"
             ],
             "hv20_return_pairs": [
-              [
-                "2026-10-23",
-                "2026-10-26"
-              ],
               [
                 "2026-10-26",
                 "2026-10-27"
@@ -1749,14 +1717,18 @@
               [
                 "2026-11-19",
                 "2026-11-20"
+              ],
+              [
+                "2026-11-20",
+                "2026-11-23"
               ]
             ],
-            "r5_anchor_date": "2026-11-13"
+            "r5_anchor_date": "2026-11-16"
           },
-          "sma20": 11.993,
-          "sma50": 12.293,
-          "hv20": 0.2961435323558229,
-          "r5": -0.06213266162888331,
+          "sma20": 11.9965,
+          "sma50": 12.2488,
+          "hv20": 0.3347581030864973,
+          "r5": 0.006914433880726101,
           "filters": {
             "trend": false,
             "volatility": true,
@@ -1766,16 +1738,16 @@
             "shares": 100,
             "put": 0,
             "call": 0,
-            "cost_basis": 11.17
+            "cost_basis": 11.65
           },
           "candidate": {
-            "ric": "FK272601200.U",
+            "ric": "FL042601250.U",
             "type": "call",
-            "strike": 12.0,
-            "expiry": "2026-11-27",
+            "strike": 12.5,
+            "expiry": "2026-12-04",
             "multiplier": 100,
             "terms_verified": true,
-            "observed_on": "2026-11-20",
+            "observed_on": "2026-11-23",
             "delta": null,
             "delta_date": null,
             "terms_source": "LSEG discovery: LotSize=100, Standard, USD, American; ordinary OPRA root",
@@ -1785,15 +1757,15 @@
             "passed": true,
             "reasons": [],
             "equity": 40000.0,
-            "cash": 21740.0,
-            "exposure": 18260.0,
+            "cash": 21693.0,
+            "exposure": 18307.0,
             "put_collateral": 0.0,
-            "uncommitted_cash": 21740.0,
+            "uncommitted_cash": 21693.0,
             "by_ticker": {
-              "BAC": 4704.0,
-              "KO": 9699.0,
+              "BAC": 4814.0,
+              "KO": 9588.0,
               "PFE": 2740.0,
-              "F": 1117.0
+              "F": 1165.0
             }
           }
         }
@@ -1802,83 +1774,71 @@
         "passed": true,
         "reasons": [],
         "equity": 40000.0,
-        "cash": 21740.0,
-        "exposure": 18260.0,
+        "cash": 21693.0,
+        "exposure": 18307.0,
         "put_collateral": 0.0,
-        "uncommitted_cash": 21740.0,
+        "uncommitted_cash": 21693.0,
         "by_ticker": {
-          "BAC": 4704.0,
-          "KO": 9699.0,
+          "BAC": 4814.0,
+          "KO": 9588.0,
           "PFE": 2740.0,
-          "F": 1117.0
+          "F": 1165.0
         }
       },
       "capital_before": {
         "passed": true,
         "reasons": [],
         "equity": 40000.0,
-        "cash": 21740.0,
-        "exposure": 18260.0,
+        "cash": 21693.0,
+        "exposure": 18307.0,
         "put_collateral": 0.0,
-        "uncommitted_cash": 21740.0,
+        "uncommitted_cash": 21693.0,
         "by_ticker": {
-          "BAC": 4704.0,
-          "KO": 9699.0,
+          "BAC": 4814.0,
+          "KO": 9588.0,
           "PFE": 2740.0,
-          "F": 1117.0
+          "F": 1165.0
         }
       },
       "proposed_orders": [
         {
-          "id": "fin535-demo-ko-call-2026-11-23",
-          "for": "2026-11-23",
+          "id": "fin535-demo-ko-call-2026-11-24",
+          "for": "2026-11-24",
           "order_type": "mkt",
           "action": "SHT",
           "qty": 1,
           "underlying": 8894,
           "contract": "call",
-          "expiry": "2026-11-27",
-          "strike": 99.0,
+          "expiry": "2026-12-04",
+          "strike": 98.0,
           "ref": "prev_close"
         },
         {
-          "id": "fin535-demo-pfe-call-2026-11-23",
-          "for": "2026-11-23",
+          "id": "fin535-demo-pfe-call-2026-11-24",
+          "for": "2026-11-24",
           "order_type": "mkt",
           "action": "SHT",
           "qty": 1,
           "underlying": 11031,
           "contract": "call",
-          "expiry": "2026-11-27",
+          "expiry": "2026-12-04",
           "strike": 28.5,
           "ref": "prev_close"
         },
         {
-          "id": "fin535-demo-bac-call-2026-11-23",
-          "for": "2026-11-23",
-          "order_type": "mkt",
-          "action": "SHT",
-          "qty": 1,
-          "underlying": 10098,
-          "contract": "call",
-          "expiry": "2026-11-27",
-          "strike": 48.0,
-          "ref": "prev_close"
-        },
-        {
-          "id": "fin535-demo-f-call-2026-11-23",
-          "for": "2026-11-23",
+          "id": "fin535-demo-f-call-2026-11-24",
+          "for": "2026-11-24",
           "order_type": "mkt",
           "action": "SHT",
           "qty": 1,
           "underlying": 9599491,
           "contract": "call",
-          "expiry": "2026-11-27",
-          "strike": 12.0,
+          "expiry": "2026-12-04",
+          "strike": 12.5,
           "ref": "prev_close"
         }
       ],
-      "order_count": 4
+      "order_count": 3
     }
   ],
   "production_orders_changed": false,
