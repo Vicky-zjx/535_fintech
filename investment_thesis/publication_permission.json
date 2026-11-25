@@ -1,0 +1,22 @@
+{
+  "status": "pending",
+  "safe_hosting_plan_verified": false,
+  "verified_by": null,
+  "evidence_reference": null,
+  "course_publication": {
+    "owner_authorized": true,
+    "authorized_on": "2026-11-24",
+    "audience": "FIN 535 coursework on GitHub Pages",
+    "aggregate_only": true,
+    "raw_downloads": false,
+    "institutional_terms_reference": "https://library.fuqua.duke.edu/databases/dbterms.htm",
+    "basis": "Owner reports that the professor requires LSEG research on GitHub Pages and authorizes this limited academic work product. Institutional terms permit appropriately cited insubstantial excerpts in academic work product; they do not provide blanket redistribution rights.",
+    "separate_vendor_confirmation": "pending",
+    "scope": "Existing summarized research findings and aggregate chart inputs only; no new raw market records, individual observation paths, private state or downloadable provider snapshots. Any broader use requires separate review."
+  },
+  "scopes": {
+    "historical_aggregate_statistics": false,
+    "daily_aggregate_charts": false,
+    "prospective_aggregate_charts": false
+  }
+}

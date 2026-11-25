@@ -37,7 +37,9 @@ jobs:
       - name: Install existing pinned research dependencies
         run: python -m pip install -r final_project/requirements.txt
       - name: Test research without credentials or order writes
-        run: python -W ignore::DeprecationWarning -m unittest investment_thesis.test_research -q
+        # Full frozen-reference/download tests remain local. Hosted smoke tests
+        # must not require publishing the private original price reference.
+        run: python -W ignore::DeprecationWarning -m unittest investment_thesis.test_research investment_thesis.test_reliability investment_thesis.test_workflow_isolation -q
       - name: Rebuild and validate, or retain evidence with an explicit failure status
         id: refresh
         continue-on-error: true
@@ -45,11 +47,18 @@ jobs:
           UPSTREAM: ${{ github.event_name == 'workflow_dispatch' && 'manual' || github.event.workflow_run.conclusion }}
         # Internally runs python -m investment_thesis.research's build and validation.
         run: python -m investment_thesis.refresh --upstream "$UPSTREAM" --verify-page
-      - name: Commit only thesis outputs
+      - name: Check release isolation without a private historical reference
+        if: steps.refresh.outcome == 'success'
+        run: python -W ignore::DeprecationWarning -m unittest investment_thesis.test_release -q
+      # A narrowly scoped owner-authorized course release is not a claim of
+      # separate vendor approval. Raw runtime outputs are never staged.
+      - name: Verify recorded course scope before any publication
+        run: python -m investment_thesis.publication --require-approval
+      - name: Commit only approved aggregate thesis outputs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- investment-thesis/data/thesis_tracker.json investment-thesis/data/thesis_observations.csv investment-thesis/data/refresh_status.json
+          git add -- investment-thesis/data/public_tracker.json investment-thesis/data/refresh_status.json
           if ! git diff --cached --quiet; then
             git commit -m 'Update independent investment thesis evidence'
             git pull --rebase origin main

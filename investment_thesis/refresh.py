@@ -13,7 +13,7 @@ from .research import build
 from .validate import check
 from final_project.sanji_orders import atomic_json
 
-OUTPUTS = ('thesis_tracker.json', 'thesis_observations.csv')
+OUTPUTS = ('thesis_tracker.json', 'thesis_observations.csv', 'public_tracker.json')
 
 
 def refresh(root, now, upstream='manual', verify_page=False):
@@ -21,7 +21,18 @@ def refresh(root, now, upstream='manual', verify_page=False):
     data = root/'investment-thesis/data'
     data.mkdir(parents=True, exist_ok=True)
     saved = {name:(data/name).read_bytes() if (data/name).exists() else None for name in OUTPUTS}
-    retained = json.loads(saved['thesis_tracker.json']) if saved['thesis_tracker.json'] else {}
+    from .forward_store import path as state_path
+    private_state=None;state_saved=None;state_backup_available=False
+    storage_warning=None
+    try:
+        private_state=state_path(root)
+        state_saved=private_state.read_bytes() if private_state.exists() else None
+        state_backup_available=True
+    except (OSError,ValueError):
+        storage_warning='Experimental forward storage is unavailable; Daily Tracker can update independently.'
+    # Clean hosted checkouts intentionally contain only the aggregate projection.
+    retained_bytes = saved['thesis_tracker.json'] or saved['public_tracker.json']
+    retained = json.loads(retained_bytes) if retained_bytes else {}
     status = dict(schema_version=1, attempted_at=now.isoformat(),
                   context='GitHub Actions' if os.environ.get('GITHUB_ACTIONS')=='true' else 'local verification',
                   upstream_conclusion=upstream, status='running', reason=None,
@@ -32,12 +43,18 @@ def refresh(root, now, upstream='manual', verify_page=False):
         if upstream not in ('manual','success'):
             status['reason']='Upstream nightly workflow did not succeed; previous validated evidence retained.'
             raise RuntimeError('upstream_failure')
+        from .fixed_store import load as load_fixed
+        if (retained.get('lecture_extension',{}).get('historical',{}).get('expanded')
+                and not load_fixed(root) and not os.environ.get('THESIS_PRIVATE_HISTORY')):
+            status['reason']='Fixed research summary is missing; initialize it once before daily refresh. Previous results retained.'
+            raise RuntimeError('fixed_summary_missing')
         result = build(root, now)
         check(root)
         if verify_page:
-            subprocess.run(['node','--test','investment_thesis/test_page.cjs'], cwd=root, check=True)
+            subprocess.run(['node','--test','investment_thesis/test_page.cjs','investment_thesis/test_reliability.cjs','investment_thesis/test_lecture.cjs','investment_thesis/test_payoff.cjs'], cwd=root, check=True)
         status.update(status='success', evidence_generated_at=result['generated_at'],
-                      market_snapshot_sha256=result['market_snapshot_sha256'])
+                      market_snapshot_sha256=result['market_snapshot_sha256'],
+                      forward_storage_warning=result.get('forward_storage_warning') or storage_warning)
     except Exception:
         for name, content in saved.items():
             p=data/name
@@ -45,8 +62,15 @@ def refresh(root, now, upstream='manual', verify_page=False):
                 p.write_bytes(content)
             elif p.exists():
                 p.unlink()  # Only a failed, newly generated output, never an input.
+        if state_backup_available:
+            try:
+                if state_saved is not None:private_state.write_bytes(state_saved)
+                elif private_state.exists():private_state.unlink()  # This failed refresh's new private state only.
+            except OSError:
+                storage_warning='Experimental forward state could not be restored; reconcile private state before relying on monitoring.'
         status.update(status='failed', reason=status['reason'] or
-                      'Tracker build or validation failed; previous validated evidence retained.')
+                      'Tracker build or validation failed; previous validated evidence retained.',
+                      forward_storage_warning=storage_warning)
     atomic_json(data/'refresh_status.json',status)
     return status
 

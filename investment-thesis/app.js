@@ -7,6 +7,11 @@
   const money=v=>(v<0?'−$':'$')+Math.abs(v).toFixed(2);
   const datePattern=/^\d{4}-\d{2}-\d{2}$/;
   function check(d,h,retained=false) {
+    const projected=d.projection?.version===1;
+    if(projected){
+      if('rows' in d||d.projection.raw_price_paths_included!==false)throw Error('Private paths in browser payload');
+      h={...d.projection.source_proof,generated_at:d.projection.source_proof.historical_generated_at};
+    }
     if(d.kind!=='forward_stock_risk_research'||d.source!=='LSEG Data Platform')throw Error('Invalid research source');
     if (!retained&&(!h || h.source!==d.source ||
         d.strategy_revision!==h.strategy_revision || d.market_snapshot_sha256!==h.market_snapshot_sha256 ||
@@ -16,7 +21,8 @@
     if (d.design.version!=='forward-stock-risk-v1.1' || d.design.minimum_per_cohort_per_ticker!==20 ||
         d.design.rolling_entry_sessions!==126 || d.design.holding_sessions!==5 || d.design.reference_lag_sessions!==1 ||
         d.design.adverse_move_threshold!==.03) throw Error('Unexpected research definition');
-    if ((!retained&&d.rolling.length!==h.tickers.BAC.daily_rows.length)||d.rolling.length!==d.rows.BAC.length) throw Error('Missing research dates');
+    if(projected?names.some(t=>d.projection.row_counts[t]!==d.rolling.length):
+      ((!retained&&d.rolling.length!==h.tickers.BAC.daily_rows.length)||d.rolling.length!==d.rows.BAC.length)) throw Error('Missing research dates');
     let previous='';
     for(const point of d.rolling) {
       if(!datePattern.test(point.as_of)||point.as_of<=previous||point.as_of>d.window.analysis_end) throw Error('Invalid tracker dates');
@@ -46,7 +52,7 @@
         } else if(actual!==null) throw Error('Insufficient aggregate must remain missing');
       }
     }
-    const matured=Object.values(d.rows).flat().filter(x=>x.status==='observed').map(x=>x.outcome_date).sort().at(-1)||null;
+    const matured=projected?d.latest_matured_outcome_date:Object.values(d.rows).flat().filter(x=>x.status==='observed').map(x=>x.outcome_date).sort().at(-1)||null;
     if(d.latest_matured_outcome_date!==matured||matured>d.window.analysis_end)throw Error('Invalid maturity timestamp');
     for(const e of d.cost_budget.examples){
       if(Math.abs(e.assumed_cost-3.3)>1e-12||e.scenarios.map(s=>s.gross_bps).join(',')!=='5,10,20,30,50')throw Error('Invalid cost assumption');
@@ -175,7 +181,7 @@
       `${label(ticker)}: ${loss&&tail?`mean closing loss is ${pct(s.pass.mean_adverse)} after pass signals versus ${pct(s.all.mean_adverse)} unfiltered; 3% event frequencies are ${pct(s.pass.tail_rate)} and ${pct(s.all.tail_rate)}. ${loss.reduction>0&&tail.reduction>0?'Both full-sample risk comparisons favor H1, descriptively.':loss.reduction<=0&&tail.reduction<=0?'Neither full-sample risk comparison supports H1.':'The evidence is mixed: one measure favors H1, while the other does not.'}`:'The full sample does not meet the minimum counts, so I cannot infer a risk advantage.'} I do not treat this as evidence of option profitability.`,
       `The four stocks do not have to tell the same story. Both full-sample measures favor the premise for ${favorable.join(', ')||'none of the stocks'}; neither favors it for ${contrary.join(', ')||'none of the stocks'}. The remaining evaluable stocks have mixed signs. This is why the aggregate is not enough. Differences in sectors or market regimes are possible explanations, not findings established by this comparison.`,
       `${stabilityText(d,ticker,'mean_adverse')} ${view(d.rolling.at(-1),ticker).sufficient?'The latest selected view meets the count rule, but a single window cannot establish persistence.':'The latest selected view is insufficient; I do not carry an older valid value forward.'} The unchanged four-stock review below is separate from these selected-stock diagnostics.`,
-      `Signals before ${d.design.registered_on} are retrospective. Since registration, this view has ${p.pass.n} matured pass and ${p.fail.n} matured fail paths. ${p.sufficient?'The prospective counts now meet the minimum, but still require a separate performance comparison.':'Prospective validation is still accumulating; no earlier result is relabeled as a live test.'} H2 needs matched historical option quotes, payoffs and costs, including forgone trades and idle cash. Until then I cannot conclude that the risk changes improve net returns.`
+      `Signals through ${d.design.retrospective_cutoff||d.design.registered_on} are retrospective. Only later signals with completed outcomes count as prospective; this view has ${p.pass.n} matured pass and ${p.fail.n} matured fail paths. ${p.sufficient?'The prospective counts now meet the minimum, but still require a separate performance comparison.':'Prospective validation is still accumulating; no earlier result is relabeled as a live test.'} H2 needs matched historical option quotes, payoffs and costs, including forgone trades and idle cash. Until then I cannot conclude that the risk changes improve net returns.`
     ];
   }
   function conditions(d) {
@@ -200,7 +206,7 @@
     const lag=d.next_market_close_at&&now.getTime()>=new Date(d.next_market_close_at).getTime();
     const failed=r.status==='failed'||(s.status&&s.status!=='success');
     return `Latest market data: ${d.window.analysis_end}. Latest matured outcome: ${d.latest_matured_outcome_date||'none'}. LSEG retrieval: ${d.market_retrieved_at}. Tracker generation: ${d.generated_at}. Sample: ${d.window.analysis_start} to ${d.window.analysis_end}. `+
-      (failed?'STALE / FAILED UPDATE: last validated evidence is retained; no fresh observation is substituted. ':lag?`STALE MARKET SNAPSHOT: session ${d.next_market_session} has already closed, but is not reflected here. A newer build timestamp is not newer market data. `:'The next scheduled market close has not yet passed. ')+
+      (failed?`STALE / FAILED UPDATE: last validated evidence is retained; no fresh observation is substituted. Reason: ${r.reason||'No validated refresh is available; check the research workflow.'} `:lag?`STALE MARKET SNAPSHOT: session ${d.next_market_session} has already closed, but is not reflected here. A newer build timestamp is not newer market data. `:'The next scheduled market close has not yet passed. ')+
       (aligned?'The retained source matches the successful order evaluation. ':'The source is not verified against the latest successful order evaluation. ')+
       (r.attempted_at?`Last recorded thesis refresh: ${r.status} at ${r.attempted_at} (${r.context||'unspecified context'}). `:'Refresh status unavailable; latest workflow success is not verified. ')+
       'Only fully matured paths contribute; recent signal dates remain pending.';
@@ -229,21 +235,28 @@
     for(const t of names){const z=d.full_sample.tickers[t];const tr=document.createElement('tr');
       [t,`${z.pass.n} / ${z.fail.n} / ${z.all.n}`,...['mean_return','return_sd','mean_adverse','tail_rate'].map(k=>`${pct(z.pass[k])} / ${pct(z.all[k])} / ${pct(z.fail[k])}`)].forEach((v,i)=>{const c=document.createElement(i?'td':'th');c.textContent=v;tr.append(c);});body.append(tr);}
     el('thesis-coverage').textContent=names.map(t=>{const c=d.coverage[t];return `${t}: ${c.observed||0} observed paths, ${c.unmatured||0} pending, ${c.missing_path||0} missing-price paths and ${c.signal_unavailable||0} unavailable signals`;}).join('; ')+'. Exclusions are not zero returns.';
-    el('thesis-prospective').textContent=`Since design registration (${d.design.registered_on}): ${d.prospective.aggregate.pass_n} mature pass paths / ${d.prospective.aggregate.fail_n} mature fail paths. ${d.prospective.aggregate.sufficient?'The separately recorded prospective sample meets the minimum cohort sizes.':'Prospective validation is still accumulating; the retrospective sample is not relabeled as a live test.'}`;
+    el('thesis-prospective').textContent=d.prospective_unavailable_reason||`Prospective evidence uses signals strictly after ${d.design.retrospective_cutoff||d.design.registered_on}, with outcomes completed by the current market date: ${d.prospective.aggregate.pass_n} mature pass paths / ${d.prospective.aggregate.fail_n} mature fail paths. The same cutoff applies to the frozen-baseline monitor. Historical outcomes that had not matured at the cutoff do not enter the frozen baseline.`;
     const draw=()=>{const ticker=el('thesis-ticker').value;
       paragraphs('thesis-loss-analysis',chartAnalysis(d,ticker,'mean_adverse'));
       paragraphs('thesis-tail-analysis',chartAnalysis(d,ticker,'tail_rate'));
       paragraphs('thesis-reading',overall(d,ticker));
       charts(d,ticker).forEach(c=>{
       const target=el(c.id);
-      if(!root.Plotly){target.textContent='Chart library unavailable. Validated results remain in the table and downloads.';return;}
-      try{Promise.resolve(root.Plotly.react(target,c.traces,c.layout,{responsive:true,displayModeBar:false})).catch(()=>{target.textContent='Chart unavailable; see the data table and downloads.';});}
-      catch(_){target.textContent='Chart unavailable; see the data table and downloads.';}
+      if(!root.Plotly){target.textContent='Chart library unavailable. Validated results remain in the tables.';return;}
+      try{Promise.resolve(root.Plotly.react(target,c.traces,c.layout,{responsive:true,displayModeBar:false})).catch(()=>{target.textContent='Chart unavailable; see the data tables.';});}
+      catch(_){target.textContent='Chart unavailable; see the data tables.';}
     });};
     el('thesis-ticker').addEventListener('change',draw);draw();
+    if(root.WheelReliability)root.WheelReliability.show(d);
+    if(root.WheelLecture)root.WheelLecture.show(d);
+    if(r.forward_storage_warning){
+      const warning=document.createElement('p');warning.textContent=r.forward_storage_warning;
+      el('monitor-status').append(warning);
+    }
+    if(root.WheelPayoff)root.WheelPayoff.show(d);
   }
-  Promise.all([get('data/thesis_tracker.json'),get('../docs/data/historical_signals.json').catch(()=>null),get('../docs/data/strategy_status.json').catch(()=>({})),get('data/refresh_status.json').catch(()=>({}))])
-    .then(([d,h,s,r])=>show(d,h,s,r)).catch(()=>{
+  Promise.all([get('data/public_tracker.json'),get('data/refresh_status.json').catch(()=>({}))])
+    .then(([d,r])=>show(d,null,{},r)).catch(()=>{
       el('thesis-status').textContent='Research data unavailable or inconsistent with the historical source. No result is substituted; reload after the nightly publication completes.';
     });
 })(typeof window!=='undefined'?window:globalThis);

@@ -17,3 +17,10 @@ pmcc_backtest/__pycache__/
 # Wheel: separate licensed snapshots; never publish provider raw responses.
 wheel_backtest/local_data/
 wheel_backtest/__pycache__/
+
+# Thesis: runtime paths and private evidence are never publication inputs.
+investment-thesis/data/thesis_tracker.json
+investment-thesis/data/thesis_observations.csv
+investment-thesis/data/reference_*.json
+investment-thesis/data/fixed_research.json
+.thesis-state/

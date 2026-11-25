@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wheel Strategy Investment Thesis · FIN 535</title>
   <meta name="description" content="Testing whether the Wheel filters identify lower stock downside risk, using real LSEG evidence and an explicit option-data audit.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=lecture-1">
   <script defer src="../course-nav.js?v=thesis-1"></script>
   <script defer src="../covered-call/assets/plotly.min.js"></script>
-  <script defer src="app.js?v=3"></script>
+  <script defer src="reliability.js?v=2"></script>
+  <script defer src="lecture.js?v=4"></script>
+  <script defer src="payoff.js?v=2"></script>
+  <script defer src="app.js?v=9"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -21,7 +24,26 @@
       <p class="deck">Do market filters help me take less downside risk when selling puts?</p>
       <p class="context">An independent research study. My existing trading rules, account assumptions and proposed orders are unchanged.</p>
     </header>
-    <nav class="section-nav" aria-label="On this page"><a href="#thesis">Thesis</a><a href="#strategy">Strategy &amp; horizon</a><a href="#tracker">Daily tracker</a><a href="#results">Results</a><a href="#wrong-if">Wrong-if conditions</a><a href="#costs">Alpha &amp; costs</a><a href="#macro">Macro</a><a href="#method">Methodology</a></nav>
+    <nav class="section-nav" aria-label="On this page"><a href="#findings">Key findings</a><a href="#thesis">Thesis</a><a href="#strategy">Strategy &amp; horizon</a><a href="#tracker">Daily tracker</a><a href="#ablation">Filter evidence</a><a href="#put-payoff">Put economics</a><a href="#conclusion">Conclusion</a><a href="#macro">Macro</a><a href="#wrong-if">Wrong-if conditions</a><a href="#reliability">Reliability</a><a href="#monitoring">Forward monitoring</a><a href="#method">Appendix</a></nav>
+
+    <section id="findings" aria-labelledby="findings-title">
+      <h2 id="findings-title">Key Findings</h2>
+      <ul class="criteria prose" id="key-findings-list">
+        <li>Five years of historical stock data do not provide strong evidence that the filters consistently reduce downside risk.</li>
+        <li>The trend filter accounts for most of the excluded opportunities.</li>
+        <li>The volatility and recent-return filters provide additional screening for PFE and F over the extended sample.</li>
+        <li>BAC has some favorable point estimates, but its results are sensitive to the sampling method.</li>
+        <li>The hypothetical put payoff analysis does not show consistent improvements across the four stocks.</li>
+        <li>Actual option alpha remains unestablished because complete historical option-chain and pricing data are unavailable.</li>
+      </ul>
+      <p class="prose">My original thesis is not yet sufficiently supported. That is different from proving that the strategy cannot work. The findings below retain adverse and inconclusive results, without changing the study window or trading rules.</p>
+      <details><summary>Five-year estimates, confidence intervals and current review status</summary>
+      <p class="prose">Positive differences mean lower stock risk after filtering, not investment returns. All four primary intervals include zero for both risk measures.</p>
+      <div class="table-wrap" tabindex="0" aria-label="Fixed five-year risk differences"><table><thead><tr><th>Stock</th><th>Eligible / mature paths</th><th>Mean downside reduction, pp<br>95% interval</th><th>3% decline-frequency reduction, pp<br>95% interval</th></tr></thead><tbody id="fixed-findings-table"></tbody></table></div>
+      <div id="fixed-findings-text" class="prose" aria-live="polite"><p>Loading validated findings.</p></div>
+      </details>
+      <p class="prose"><a href="#put-payoff">Hypothetical put liability and break-even premiums</a> connect this risk evidence to an economic hurdle without inventing market premiums. <a href="#wrong-if">Registered wrong-if conditions</a> remain visible below.</p>
+    </section>
 
     <section id="thesis" class="prose" aria-labelledby="thesis-title">
       <h2 id="thesis-title">Investment Thesis</h2>
@@ -65,37 +87,94 @@
 
     <section id="results" class="prose" aria-labelledby="results-title">
       <h2 id="results-title">Results and Analysis</h2>
+      <p>The daily tracker retains the original three-year comparison. The fixed five-year findings above and the filter comparisons below extend that evidence without replacing it. Both samples remain available; neither establishes an option-return advantage.</p>
+      <details><summary>Three-year overall interpretation</summary>
       <div id="thesis-reading" aria-live="polite">Interpretation appears only after source validation.</div>
-      <h3>Results by stock</h3>
+      </details>
+      <details><summary>Three-year results by stock</summary>
       <div id="thesis-stock-analysis"></div>
+      </details>
       <details><summary>Full-sample figures and sample counts</summary>
         <div class="table-wrap" tabindex="0" aria-label="Full-sample stock-risk evidence"><table><thead><tr><th>Stock</th><th>Paths<br>Pass / fail / all</th><th>Mean return<br>Pass / all / fail</th><th>Return SD<br>Pass / all / fail</th><th>Mean maximum loss<br>Pass / all / fail</th><th>3% decline frequency<br>Pass / all / fail</th></tr></thead><tbody id="thesis-summary"><tr><td colspan="6">Loading validated observations.</td></tr></tbody></table></div>
         <p>Five-session stock-price changes are not annualized investment returns. These overlapping paths are not independent trades, and the unfiltered group includes pass signals.</p>
       </details>
       <p id="thesis-prospective" class="source"></p>
       <h3>What the option data can support</h3>
+      <details><summary>Existing discovery snapshots: scope and missing fields</summary>
       <p id="thesis-option-audit">Checking retained real option evidence.</p>
+      </details>
+      <div id="fresh-option-economics" class="prose"></div>
+      <details><summary>Retained historical option illustrations and comparison requirements</summary>
+      <div class="table-wrap" tabindex="0" aria-label="Historical quote-based payoff illustrations, not strategy returns"><table><thead><tr><th>Stock</th><th>Usable / probed contracts</th><th>Midpoint premium / collateral</th><th>Net payoff / collateral<br>midpoint scenario</th><th>Net payoff / collateral<br>bid scenario</th><th>ITM at expiry</th></tr></thead><tbody id="option-probe-results"></tbody></table></div>
       <p>I cannot calculate an option-level return advantage from contract names or stock closes alone. A fair comparison would keep the same stocks, capital, 3–10 DTE selection, target delta or established fallback, entry timing and fill rules. It must include weeks with idle cash, binding capital limits and valid no-trade decisions in both groups. A missing quote is a data gap, not a zero-return week. Historical candidate availability must be established before the order, rather than using later prices to choose a winning contract.</p>
       <p>That comparison would measure entry premium, expiry payoff, net option profit after costs, collateral returns, trade frequency and modeled assignment exposure. A cash-secured-put comparison would still not be a complete Wheel backtest. <a href="https://developers.lseg.com/en/article-catalog/article/functions-to-find-option-rics-traded-on-different-exchanges">LSEG's RIC construction and validation example</a> provides a possible acquisition route; it does not verify complete historical coverage or my account's entitlement.</p>
+      </details>
     </section>
 
-    <section id="wrong-if" class="prose" aria-labelledby="wrong-title">
-      <h2 id="wrong-title">Wrong-if Conditions</h2>
-      <p>My two registered conditions are unchanged: reconsider H1 if pass signals have equal or greater mean downside, or an equal or greater 3% decline frequency, than the unfiltered baseline. I use the latest 126 matured reference sessions and require at least 20 pass and 20 fail paths in every stock. These are research review conditions, not new order-engine switches.</p>
-      <p id="thesis-review" class="review" aria-live="polite"></p>
-      <div class="table-wrap" tabindex="0" aria-label="Registered conditions and new economic extension"><table><thead><tr><th>Condition</th><th>Observed / benchmark</th><th>Sample</th><th>Status and meaning</th></tr></thead><tbody id="thesis-conditions"></tbody></table></div>
-      <p>Condition 3 is a new research extension, not an original preregistered test: the reduction in downside fails to compensate for forgone premium and opportunities after costs. It remains Not Yet Testable without the option comparison. A condition being Not Triggered would not prove the thesis; sample composition and overlapping outcomes still matter. The registered review always uses all four stocks, regardless of the chart selection.</p>
+    <section id="ablation" aria-labelledby="ablation-title">
+      <h2 id="ablation-title">Filter Contributions Across the Historical Sample</h2>
+      <p class="prose">I compare five fixed versions of the technical screen on the same mature, valid stock-price paths. This is an exploratory study, not a search for new trading parameters. No filters is the benchmark; trend means both Close ≥ SMA50 and SMA20 ≥ SMA50. HV20 and the five-day-return rule retain their 45% and −8% thresholds.</p>
+      <p id="extension-status" class="source" aria-live="polite">Checking the frozen original sample and the separate historical-download plan.</p>
+      <div class="controls">
+        <label for="ablation-window">Historical sample<select id="ablation-window"><option value="original">Original three-year sample</option><option value="expanded" disabled>Fixed five-year extension · Pending</option></select></label>
+        <label for="ablation-sampling">Observation design<select id="ablation-sampling"><option value="daily">Daily · overlapping</option><option value="nonoverlap">Fixed non-overlapping</option></select></label>
+        <label for="ablation-block">Bootstrap block length<select id="ablation-block"><option value="7">7 dates</option><option value="14" selected>14 dates · primary</option><option value="28">28 dates</option></select></label>
+      </div>
+      <p class="prose">Pass and exclusion rates use only complete, mature paths with valid indicators, not every calendar day or executable trade. A positive difference (unfiltered minus selected) favors lower risk. Both outcomes are measured in percentage points. Every arm uses the same 5,000 joint date-block draws across stocks; filtered remains a subset of unfiltered. These are pointwise intervals across several exploratory comparisons, not multiplicity-adjusted discoveries or marginal causal effects.</p>
+      <details><summary>Detailed filter comparisons for the selected sample</summary>
+      <div class="table-wrap" tabindex="0" aria-label="Filter ablation results and paired block uncertainty"><table><thead><tr><th>Stock / screen</th><th>Paths / events</th><th>Pass / excluded</th><th>Mean downside</th><th>3% decline frequency</th><th>Downside reduction<br>estimate / 95% CI (pp)</th><th>Frequency reduction<br>estimate / 95% CI (pp)</th></tr></thead><tbody id="ablation-results"></tbody></table></div>
+      <p class="source">A benchmark compared with itself has a structural zero difference, not an estimated confidence interval. Intervals for other comparisons are withheld with fewer than 20 pass or fail observations or inadequate outcome variation. Sparse-event cautions flag fewer than five events or non-events in either cohort; coverage can be unreliable even when an interval is displayed. An inactive screen is not evidence that the screen can never help.</p>
+      <div id="ablation-analysis" class="prose" aria-live="polite"></div>
+      </details>
+      <details><summary>Original versus extended full-sample results and price audit</summary>
+        <div class="table-wrap" tabindex="0" aria-label="Frozen and extended historical results"><table><thead><tr><th>Stock</th><th>Original: selected / all paths</th><th>Original frequency reduction / 95% CI (pp)</th><th>Extended: selected / all paths</th><th>Extended frequency reduction / 95% CI (pp)</th></tr></thead><tbody id="extension-comparison"></tbody></table></div>
+        <p id="extension-audit"></p>
+        <p>Fixed calendar-year partitions provide a descriptive check of differing price and volatility conditions. Every year is retained, including partial endpoint years; no favorable period is selected. These are price-only returns within each displayed interval, not annual total returns or causal macro regimes.</p>
+        <div class="table-wrap" tabindex="0" aria-label="Fixed calendar partitions of historical coverage"><table><thead><tr><th>Stock / interval</th><th>Valid signals</th><th>Endpoint price return</th><th>Median / maximum HV20</th><th>Trend exclusions</th><th>3% event frequency</th></tr></thead><tbody id="calendar-partitions"></tbody></table></div>
+        <p>The five-year window was fixed on November 24, 2026 at November 24, 2021–November 23, 2026, with 55 additional warm-up sessions. Its endpoint matches the original study. The original prices and results are frozen separately; overlapping prices must reconcile before a length comparison is reported. The existing 126-session tracker is unchanged. Missing closes remain missing, and only prices known by signal time enter each indicator. Modern back-adjusted history is not a verified point-in-time vintage. The chosen four stocks also introduce selection and survivorship limitations.</p>
+        <p>LSEG documents <a href="https://community.developers.lseg.com/discussion/121346/query-prices-adjustes-and-unadjusted-for-time-series">TR.PriceClose as adjusted and without an Adjusted parameter</a>. The separate download audits <a href="https://community.developers.lseg.com/discussion/77129/download-prices-adjusted-for-split-but-unadjusted-for-dividends/p1">TR.CLOSEPRICE adjusted/unadjusted series</a> and corporate-action records without adjusting the original prices again. Capital-change adjustments do not turn this into a dividend-total-return study. Ex-dividend price declines may count as downside events even when total investor wealth falls by less.</p>
+      </details>
+    </section>
+
+    <section id="put-payoff" aria-labelledby="payoff-title">
+      <h2 id="payoff-title">Hypothetical Put Payoff and Break-even Premium</h2>
+      <p class="prose">This is a standardized economic scenario, not a historical option backtest. The strike is 100%, 98%, 95% or 90% of the previous completed signal close. These are not necessarily listed strikes, entry-time ATM strikes or 25-delta contracts. Real stock closes determine terminal intrinsic loss; no market option premium is assumed.</p>
+      <h3>Why fewer stock declines need not mean smaller put losses</h3>
+      <div id="payoff-interpretation" class="prose" aria-live="polite"><p>Loading the fixed five-year comparison.</p></div>
+      <p class="prose">Expected liability depends on both the chance of a loss and its size when it happens. A smaller number of larger losses can outweigh many avoided small losses. A stock can also fall during the observation window and recover before expiry. The daily path event and the terminal put liability therefore answer different questions.</p>
+      <p class="prose">The weekly study uses the prior completed close and a fixed, approximately seven-day holding period, including holiday shifts. It is not a reconstruction of actual trades. <a href="#payoff-method">Full timing, payoff and cost definitions</a> are in the appendix. The fixed F comparison above stays at 95%; the chart and tables below follow your selected scenario.</p>
+      <div class="controls"><label>Hypothetical strike / signal spot<select id="payoff-ratio"><option value="1.0">100%</option><option value="0.98">98%</option><option value="0.95" selected>95%</option><option value="0.9">90%</option></select></label><label>Joint bootstrap block<select id="payoff-block"><option value="2">2 weeks</option><option value="4" selected>4 weeks · primary</option><option value="8">8 weeks</option></select></label></div>
+      <figure><h3>Expected terminal liability per selected opportunity</h3><div id="payoff-chart" class="plot" role="img" aria-label="Hypothetical put liability by stock"></div><figcaption>Basis points of strike collateral. Separate filtered and unfiltered opportunities; no premium or realized portfolio return. Difference intervals use 5,000 joint weekly-date block resamples.</figcaption><div id="payoff-analysis" class="chart-analysis" aria-live="polite"></div></figure>
+      <h3>Conditional results: what each selected opportunity requires</h3>
+      <div class="table-wrap" tabindex="0" aria-label="Conditional hypothetical put results"><table><thead><tr><th>Stock / group</th><th>Opportunities</th><th>Positive loss frequency</th><th>Mean loss<br>bp</th><th>Mean positive / maximum loss<br>bp</th><th>Break-even before / after costs<br>bp</th></tr></thead><tbody id="payoff-conditional"></tbody></table></div>
+      <h3>All weekly opportunities: include weeks spent waiting</h3>
+      <div class="table-wrap" tabindex="0" aria-label="Opportunity-level hypothetical put results"><table><thead><tr><th>Stock</th><th>Eligible / skipped weeks</th><th>Filtered / unfiltered weekly loss<br>bp</th><th>Filtered / unfiltered weekly break-even<br>bp</th><th>Allowable weekly forgone premium<br>bp / 95% interval</th></tr></thead><tbody id="payoff-weekly"></tbody></table></div>
+      <details><summary>Premium opportunity cost by stock</summary>
+      <div id="payoff-budget" class="prose"></div>
+      </details>
+      <p class="prose">A skipped opportunity contributes zero incremental option liability and cost, not a measured zero return on cash. Weekly averages are normalized opportunity budgets, not a funded four-stock portfolio or equity curve. The same date blocks resample all four stocks, strikes and nested groups; no cross-stock independence is assumed. Intervals are exploratory and pointwise, not simultaneous guarantees. Few tail losses can make bootstrap uncertainty unreliable.</p>
     </section>
 
     <section id="costs" class="prose" aria-labelledby="cost-title">
-      <h2 id="cost-title">Expected Alpha and Trading Costs</h2>
+      <h2 id="cost-title">Premium Hurdle and Trading Costs</h2>
       <p id="thesis-alpha"></p>
       <p>I cannot yet give a data-based estimate of positive option alpha. Premium is a cash receipt; gross option profit subtracts the payoff owed, and net profit also subtracts trading costs. A benchmark-relative advantage needs matched strategy and cash returns. Risk-adjusted alpha needs a defensible risk model as well. None can be inferred by annualizing these overlapping stock-price observations.</p>
+      <details><summary>Existing cost sensitivity: hypothetical surplus, not estimated alpha</summary>
       <p>Instead, I show a planning sensitivity—not an estimate from these data—of 5, 10, 20, 30 and 50 basis points of gross surplus per cycle on collateral, after expected option losses and the cash-return hurdle but before trading costs. My research budget is $0.65 per contract per side plus $0.02 per share in total round-trip slippage, or $3.30 for one standard contract. It is an assumption, not an observed broker charge or a change to the trading engine. Budgeting two sides does not add a buy-to-close rule.</p>
       <p id="thesis-cost"></p>
       <div class="table-wrap" tabindex="0" aria-label="Hypothetical cost sensitivity, not estimated alpha"><table><thead><tr><th>Gross scenario<br>bp of collateral</th><th>KO net edge<br>bp / dollars</th><th>PFE net edge<br>bp / dollars</th></tr></thead><tbody id="thesis-cost-table"></tbody></table></div>
       <p>The same fixed commission consumes more of the collateral return for the lower-priced contract. The table isolates that arithmetic; it does not imply that either option earns the assumed surplus. Assignment, failed filters and pending proposals reduce entries below roughly 52 per ticker per year. Stock transactions, assignment charges and taxes can add costs. I do not compound the scenarios into an annual return or claim an observed cash yield.</p>
+      </details>
     </section>
+
+    <section id="conclusion" class="prose" aria-labelledby="conclusion-title">
+      <h2 id="conclusion-title">Final Thesis Conclusion</h2>
+      <p>The historical downside-risk evidence does not yet sufficiently support my original thesis. The five-year estimates are uncertain and do not show a consistent benefit across BAC, KO, PFE and F. BAC's sensitivity to the sampling method further limits confidence. These results do not prove that filtering can never help; they do show why a favorable average alone is not enough.</p>
+      <p>The hypothetical put payoff analysis brings the question closer to its economic purpose: how much premium would cover the liability I take on? It does not show consistent reductions in that liability. Fewer eligible weeks also mean less time collecting premium. A lower weekly liability caused by taking less exposure is not, by itself, evidence of better capital use.</p>
+      <p>Actual option returns remain a separate, unresolved question. Break-even premium is a cost-and-liability hurdle, not estimated alpha. Without comparable historical candidate sets, dated quotes and premiums for selected and rejected opportunities, I cannot tell whether avoided losses exceed forgone premium, costs and the return on idle cash. The small set of real option illustrations does not establish strategy performance.</p>
+      <p>Future monitoring will compare new, matured observations with the frozen historical baseline rather than tune the filters to these results. Stock-risk monitoring is not a substitute for filled-trade and portfolio records. The existing rules remain unchanged; any claim about future strategy performance must wait for that evidence.</p>
+    </section>
+
 
     <section id="macro" class="prose" aria-labelledby="macro-title">
       <h2 id="macro-title">Macro Environment</h2>
@@ -105,14 +184,131 @@
       <p>A technology selloff could spread through general risk aversion even though these four stocks are not a technology portfolio. Correlations can rise during stress, so different industries do not guarantee diversification. The 30% per-name and 70% total limits bound the amount committed; they do not establish that the risks are independent. I would review the thesis under these scenarios, rather than assume its past average remains valid.</p>
     </section>
 
+    <section id="wrong-if" class="prose" aria-labelledby="wrong-title">
+      <h2 id="wrong-title">Wrong-if Conditions</h2>
+      <p>My two registered conditions are unchanged: reconsider H1 if pass signals have equal or greater mean downside, or an equal or greater 3% decline frequency, than the unfiltered baseline. I use the latest 126 matured reference sessions and require at least 20 pass and 20 fail paths in every stock. These are research review conditions, not new order-engine switches. Insufficient Evidence means that this sample floor is not met; an interval containing zero does not cause that label. Once counts are sufficient, the original point-estimate comparison determines Triggered or Not Triggered, independently of statistical significance.</p>
+      <p id="thesis-review" class="review" aria-live="polite"></p>
+      <div class="table-wrap" tabindex="0" aria-label="Registered conditions and new economic extension"><table><thead><tr><th>Condition</th><th>Observed / benchmark</th><th>Sample</th><th>Status and meaning</th></tr></thead><tbody id="thesis-conditions"></tbody></table></div>
+      <p>Condition 3 is a new research extension, not an original preregistered test: the reduction in downside fails to compensate for forgone premium and opportunities after costs. It remains Not Yet Testable without the option comparison. A condition being Not Triggered would not prove the thesis; sample composition and overlapping outcomes still matter. The registered review always uses all four stocks, regardless of the chart selection.</p>
+    </section>
+
+    <section id="reliability" aria-labelledby="reliability-title">
+      <h2 id="reliability-title">Statistical Reliability of the Thesis</h2>
+      <p class="prose">A lower observed decline frequency is not automatically a lower true risk. I use the classroom concentration-bound idea to ask how much independent evidence a claim would need, and a joint block bootstrap to assess uncertainty in the actual, dependent data. Neither calculation establishes an option-return advantage.</p>
+      <p class="prose">Here X = 1 for a completed 3% closing-price decline, and 0 otherwise. The unknown true decline probability is μ; the observed frequency is not a known μ. Theoretical curves assume bounded, independent observations. Our daily paths overlap, so the curves are not statistical guarantees. <a href="#theorem-details">Theorem 1.1, its assumptions and both tails</a> are retained in the appendix.</p>
+      <div class="controls reliability-controls">
+        <label for="reliability-window">Historical sample<select id="reliability-window"><option value="original">Original three-year sample</option><option id="reliability-expanded-option" value="expanded" disabled>Fixed five-year sample</option></select></label>
+        <label for="reliability-ticker">Stock<select id="reliability-ticker"><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select></label>
+        <label for="reliability-group">Group<select id="reliability-group"><option value="filtered">Filtered</option><option value="unfiltered">Unfiltered</option></select></label>
+        <label for="reliability-sampling">Observation design<select id="reliability-sampling"><option value="daily">Daily · overlapping</option><option value="nonoverlap">Fixed non-overlapping</option></select></label>
+        <label for="reliability-tail">Theoretical tail<select id="reliability-tail"><option value="lower">Lower tail · low observed risk</option><option value="upper">Upper tail</option></select></label>
+        <label for="reliability-mu">Hypothesized μ (probability)<input id="reliability-mu" type="number" min="0.001" max="0.999" step="0.01" value="0.20"></label>
+        <label for="reliability-tolerance">Error tolerance t (probability)<input id="reliability-tolerance" type="number" min="0" max="0.999" step="0.01" value="0.05"></label>
+      </div>
+      <p id="reliability-status" class="source" aria-live="polite">Loading the statistical extension from the same dated tracker.</p>
+      <p id="reliability-error" class="review" role="status" hidden></p>
+      <div class="chart-grid">
+        <figure><h3>Chart 3: Sample Size vs. Probability Bound</h3><div id="reliability-n-chart" class="plot" role="img" aria-label="Theoretical one-sided probability bound as independent sample size increases"></div>
+          <figcaption>Theory only. μ and t are held fixed; the marker uses the selected group's actual count, not an effective independent sample size. The vertical scale is logarithmic.</figcaption>
+          <div id="reliability-n-analysis" class="chart-analysis" aria-live="polite"></div></figure>
+        <figure><h3>Chart 4: Error Tolerance vs. Probability Bound</h3><div id="reliability-t-chart" class="plot" role="img" aria-label="Theoretical one-sided probability bound as tolerance changes"></div>
+          <figcaption>Theory only. μ and n are held fixed. A larger tolerance describes a more extreme deviation, not a more precise estimate. Values below 10⁻³⁰⁰ are displayed at that floor, never as a true zero.</figcaption>
+          <div id="reliability-t-analysis" class="chart-analysis" aria-live="polite"></div></figure>
+      </div>
+      <h3>Actual samples and statistical uncertainty</h3>
+      <details><summary>All stocks: observed frequencies and confidence intervals</summary>
+      <p class="prose">The table follows the observation-design selection above, showing all four stocks separately. Empirical intervals are approximate 95% joint block-bootstrap intervals, not the theoretical curves. Each frequency's uncertainty is in percentage points. The last column is an explicitly conditional, independent-Bernoulli calculation: invert n D(X̄ ∥ p) ≤ ln(2/0.05) for p, combining two one-sided bounds. The unknown probability is varied in the inversion; it is not replaced by the sample mean. These hypothetical KL intervals have no asserted coverage for these dependent financial observations.</p>
+      <div class="table-wrap" tabindex="0" aria-label="Observed frequencies, bootstrap uncertainty and conditional theoretical intervals"><table><thead><tr><th>Ticker</th><th>Group</th><th>Events / n</th><th>Observed frequency</th><th>Bootstrap 95% interval</th><th>Interval width<br>percentage points</th><th>Independent-only<br>KL 95% scenario</th></tr></thead><tbody id="reliability-samples"></tbody></table></div>
+      </details>
+      <h3>Dependence, non-overlapping observations and block sensitivity</h3>
+      <p class="prose">The fixed non-overlapping schedule removes shared outcome prices, not all dependence. Joint date-block resampling keeps the four stocks and nested groups together. Positive differences below favor lower risk after filtering. <a href="#bootstrap-details">Sampling rules, reporting floors and block lengths</a> are in the appendix.</p>
+      <details><summary>All block-length sensitivity estimates</summary>
+      <div class="table-wrap" tabindex="0" aria-label="Joint block bootstrap sensitivity by stock"><table><thead><tr><th>Ticker</th><th>Block length</th><th>Mean downside reduction<br>estimate / 95% CI (pp)</th><th>Decline-frequency reduction<br>estimate / 95% CI (pp)</th><th>Valid draws<br>downside / frequency</th></tr></thead><tbody id="reliability-sensitivity"></tbody></table></div>
+      </details>
+      <details><summary>Stock-by-stock interpretation and non-overlapping robustness</summary>
+      <div id="reliability-findings" class="prose" aria-live="polite"></div>
+      </details>
+      <p class="prose">The bootstrap assumes sufficiently weak dependence and a reasonably stable process. It cannot remove regime changes, selection bias, survivor selection or missing-data bias. Non-circular blocks also give edge dates less resampling weight. These are exploratory, pointwise percentile intervals: they are not adjusted for many stocks, endpoints or repeated daily looks, and are not an anytime-valid test. A 95% interval is not a 95% probability that my thesis is true. I need future evidence and actual option economics before drawing an investment-return conclusion.</p>
+    </section>
+
+    <section id="monitoring" aria-labelledby="monitoring-title">
+      <h2 id="monitoring-title">Forward Thesis Monitoring</h2>
+      <p id="monitor-storage-notice" class="prose">Experimental feature. Persistent storage across nightly runs is not yet configured. Monitoring is withheld when complete forward history cannot be reconstructed; the Daily Tracker and fixed historical research remain available. The professor's unified performance-monitoring system is a future integration, not a prerequisite for this thesis assignment.</p>
+      <p class="prose">Historical reliability asks whether the apparent improvement might be sampling variation. Forward monitoring asks whether newly observed risk is still compatible with a fixed historical expectation. I use the same X = 1 for a five-session closing decline of at least 3%, not a trade-win indicator. Higher frequency is worse, so deterioration uses the upper tail.</p>
+      <h3>November 24 classroom example</h3>
+      <p id="lecture-example" class="prose">Loading the independently calculated classroom example.</p>
+      <p class="prose source">The inputs and advisory thresholds were supplied from the classroom discussion. I have not verified the complete original lecture notes. This numerical example is not my strategy's trading record.</p>
+      <h3>Fixed expectation, separate acceptable-risk threshold</h3>
+      <p class="prose">I freeze the original November 23, 2023–November 23, 2026 estimate separately for each stock, group and sampling design. It is a hypothesized baseline, not a known true μ. I do not re-estimate it after bad outcomes. A minimum acceptable performance level would be a maximum acceptable decline probability; that limit remains Pending until chosen in advance. It is not silently equated with the historical mean.</p>
+      <p id="monitor-status" class="source" aria-live="polite"></p>
+      <div class="controls">
+        <label for="monitor-ticker">Stock<select id="monitor-ticker"><option>BAC</option><option>KO</option><option>PFE</option><option>F</option></select></label>
+        <label for="monitor-group">Group<select id="monitor-group"><option value="filtered">Filtered</option><option value="unfiltered">Unfiltered</option></select></label>
+        <label for="monitor-sampling">Observation design<select id="monitor-sampling"><option value="daily">Daily · overlapping</option><option value="nonoverlap">Fixed non-overlapping</option></select></label>
+      </div>
+      <div class="chart-grid">
+        <figure><h3>Chart 5: Expected vs. Observed Downside Risk</h3><div id="monitor-risk-chart" class="plot monitor-plot" role="img" aria-label="Frozen expected decline probability versus matured prospective observed frequency"></div>
+          <figcaption>Cumulative prospective frequency, indexed by outcome date, not order or signal date. Only signals strictly after the frozen reference end qualify. Missing paths remain gaps.</figcaption>
+          <div id="monitor-risk-analysis" class="chart-analysis" aria-live="polite"></div></figure>
+        <figure><h3>Chart 6: Hoeffding Probability Upper Bound Over Time</h3><div id="monitor-bound-chart" class="plot monitor-plot" role="img" aria-label="Conditional upper-tail bound for prospective downside deterioration"></div>
+          <figcaption>Conditional theory, not a probability that the strategy has failed. When observed frequency is no higher than the baseline, the deterioration bound is 1. Log scale; values below 10⁻³⁰⁰ are displayed at that floor, not as exact zero.</figcaption>
+          <div id="monitor-bound-analysis" class="chart-analysis" aria-live="polite"></div></figure>
+      </div>
+      <details><summary>All monitored stocks and frozen group baselines</summary>
+      <div class="table-wrap" tabindex="0" aria-label="Prospective observations versus frozen expected performance"><table><thead><tr><th>Stock / group</th><th>Reference events / n</th><th>Expected frequency</th><th>Maximum acceptable</th><th>New events / n</th><th>Observed / deviation</th><th>Unmatured / missing</th><th>Status</th></tr></thead><tbody id="monitor-results"></tbody></table></div>
+      </details>
+      <p class="prose">The reporting floor is 20 mature observations, not a power calculation. Before it is reached, the page reports actual counts without drawing a monitoring curve. Daily outcomes overlap; the fixed seven-session design removes shared outcome prices but not serial dependence or shared indicator histories. The baseline is estimated, the process may change, and repeated monitoring creates multiple-testing concerns. These bounds therefore provide conditional theoretical monitoring indicators, not confidence sequences or statistical guarantees.</p>
+      <details><summary>Advisory thresholds and practical regime-change interpretation</summary>
+        <div class="table-wrap" tabindex="0" aria-label="Classroom advisory thresholds"><table><thead><tr><th>Probability upper bound</th><th>Research advisory only</th></tr></thead><tbody><tr><td>Above 50%</td><td>Continue monitoring</td></tr><tr><td>Above 25%, at or below 50%</td><td>Review</td></tr><tr><td>Above 10%, at or below 25%</td><td>Warning</td></tr><tr><td>At or below 10%</td><td>Pause and investigate</td></tr></tbody></table></div>
+        <p>A high bound does not prove that the strategy is working. A low bound does not directly measure the probability that it has failed. No advisory pauses trading, changes an order or cancels a proposal.</p>
+        <p>In the monitoring sense, a regime change means that observed performance becomes inconsistent with historical performance assumptions, subject to the tolerance and statistical method. My categories are consistent, better, worse or insufficient evidence. After the reporting floor and a prechosen acceptable-risk limit exist, an observed frequency above the baseline with a conditional bound at most 10% is labeled worse than expected, even if it remains inside the acceptable limit. A separate joint deterioration alert also requires breaching that limit. A lower frequency is descriptively better; other cases are not flagged as inconsistent, which does not prove consistency. Without the acceptable-risk limit, the regime assessment stays Insufficient evidence. These labels are not formal regime estimates or proof of improvement.</p>
+      </details>
+      <h3>What I would monitor after fills become available</h3>
+      <p class="prose">CUSUM accumulates persistent deviations from a fixed expected result, so several small misses can matter even without one large loss. It would need an agreed target, allowance and alarm level. Portfolio drawdown rules compare account NAV with its running peak and can flag a loss budget breach. Rolling historical percentile bands compare recent performance with a dated historical distribution; their lookback and tail cutoffs must be set before evaluation. A moving baseline can normalize deterioration, so I would report it alongside the frozen reference rather than replace it.</p>
+      <p id="monitor-inventory" class="prose source"></p>
+      <details><summary>Candidate acceptable-risk limits — none selected</summary>
+        <div id="risk-candidate-analysis" class="prose"></div>
+        <div class="table-wrap" tabindex="0" aria-label="Hypothetical risk-budget candidates awaiting approval"><table><thead><tr><th>Stock</th><th>Frozen mean severity<br>given a 3% event</th><th>Probability candidate<br>25 bp budget</th><th>50 bp budget</th><th>75 bp budget</th></tr></thead><tbody id="risk-candidate-results"></tbody></table></div>
+      </details>
+      <p class="prose">For option economics, an individual short-put leg is not a completed Wheel cycle: assignment can leave an open stock position, and a later covered call can still be outstanding. A matched study needs dated candidate availability, entry bid/ask, applicable strike selection, expiry/assignment outcomes and portfolio accounting for both arms. Only then can I compare entry premium, premium yield on collateral, net option P&amp;L, trading frequency, transaction costs, capital utilization, loss frequency and magnitude, and benchmark-relative net return. A successful small historical-quote probe would establish capability for those records, not complete this study. I do not infer option alpha from stock downside or invent fills for the proposed orders.</p>
+    </section>
+
     <section id="method" class="prose" aria-labelledby="method-title">
-      <h2 id="method-title">Methodology and Limitations</h2>
-      <p>The design was registered on November 23, 2026. Version 1.1 aligns the two original review conditions with the stated unfiltered benchmark; this revision does not change those conditions, the sample window or any filters. Earlier signals are retrospective. Signals on or after registration are reported separately as prospective evidence, not treated as proof of a historical trading edge.</p>
+      <h2 id="method-title">Methodology and Appendix</h2>
+      <p>The research design and calculations below are retained for review. None changes the trading strategy or turns proposed orders into executions.</p>
+      <details id="theorem-details"><summary>Theorem 1.1: formula, assumptions and application</summary>
+      <h3>Theorem 1.1: classroom connection</h3>
+      <p class="prose source">Source qualification: the original classroom slide has not been located. The formula below is the standard KL Chernoff–Hoeffding form, using the requested n, X̄, μ, t, a and b; the normalized symbols μ̃ and t̃ are defined here. It is not claimed to reproduce the professor's exact notation. See <a href="https://www.cs.rpi.edu/academics/courses/spring06/random/hoefding.pdf">Hoeffding (1963), Theorem 1 and the rescaling discussion</a>.</p>
+      <p class="prose">Let X₁, …, Xₙ be independent random variables bounded by a ≤ Xᵢ ≤ b, with a &lt; b. Here n is the number of observations, X̄ = (X₁ + … + Xₙ)/n is their sample mean, and μ = E[X̄] is the unknown true mean (the average mean if they differ). The error tolerance is t. Define normalized μ̃ = (μ − a)/(b − a) and t̃ = t/(b − a). For a &lt; μ &lt; b and 0 ≤ t &lt; b − μ:</p>
+      <div class="formula" role="math" aria-label="Upper-tail probability is at most exp minus n times Bernoulli KL divergence of normalized mean plus normalized tolerance from normalized mean">
+        <p>Pr(X̄ − μ ≥ t) ≤ exp[−n D(μ̃ + t̃ ∥ μ̃)]</p>
+        <p>= [(μ̃ / (μ̃ + t̃))<sup>μ̃ + t̃</sup> ((1 − μ̃) / (1 − μ̃ − t̃))<sup>1 − μ̃ − t̃</sup>]<sup>n</sup></p>
+        <p>D(q ∥ p) = q ln(q/p) + (1 − q) ln((1 − q)/(1 − p)).</p>
+      </div>
+      <p class="prose">Endpoint terms use continuous limits; ln is the natural logarithm. My X is 1 when a completed path reaches a closing-price decline of at least 3%, and 0 otherwise. Thus a = 0, b = 1, X̄ is the observed decline frequency and μ is the unknown decline probability for the selected stock and group. A filtered observation passes the existing technical rules; unfiltered includes all valid signals, including those that pass.</p>
+      <p class="prose">The displayed theorem is an upper-tail statement. Evidence of a surprisingly <em>low</em> decline frequency requires the other tail: applying it to 1 − X gives Pr(X̄ ≤ μ − t) ≤ exp[−n D(μ − t ∥ μ)], for 0 ≤ t &lt; μ. I never substitute X̄ for a known μ. The controls below use a hypothetical μ, not an estimate declared to be true.</p>
+      </details>
+      <details id="bootstrap-details"><summary>Non-overlapping observations and joint block bootstrap</summary>
+      <p class="prose">I leave the daily tracker unchanged. For this extension, specified on November 24, 2026, I fix one signal every seven XNYS sessions, anchored to November 24, 2023. Signal t through outcome t+6 cannot share a price date with the next selected path. Missing paths are excluded without shifting this schedule. Earlier prices still enter overlapping technical-indicator lookbacks, and market regimes can persist: non-overlapping outcomes do not establish independence.</p>
+      <p class="prose">I jointly resample contiguous date blocks for BAC, KO, PFE and F, carrying each signal's eligibility and already-observed outcome together. The same dates are used for every stock and both groups, so filtered remains a subset of unfiltered. I do not construct artificial price paths or pool four stocks into independent trials. This follows the blockwise approach for dependent observations discussed in <a href="https://people.math.ethz.ch/~hkuensch/papers/">Künsch's bootstrap research</a>.</p>
+      <p class="prose">There are 5,000 draws per design and block length, with fixed PCG64 seeds. Daily blocks span 7, 14 or 28 trading dates; non-overlapping blocks contain 1, 2 or 4 selected slots, spaced seven sessions apart. Primary lengths are 14 dates and 2 slots, chosen before these calculations; the 1-slot case is an independence sensitivity, not the preferred dependence model. Blocks do not wrap from the end of history to its beginning. Every matured calendar slot is retained, including missing observations with zero weight, not zero loss. Recent unfinished paths are not resampled.</p>
+      <p class="prose">Differences below are <strong>unfiltered minus filtered</strong>; positive values favor lower risk after filtering. A frequency difference is not the same as a difference in mean maximum closing loss. Intervals require at least 20 pass and 20 fail paths for a difference, at least 20 observations for a group's frequency, and at least 95% finite bootstrap draws. Frequency-difference intervals are withheld if either pass or fail has no observed variation; degenerate resampling intervals are also withheld. Fewer than five events or non-events in either cohort triggers a sparse-event caution. The threshold of 20 is a reporting floor, not proof of adequate power.</p>
+      </details>
+      <details id="payoff-method"><summary>Hypothetical put timing, expiry loss and assumed costs</summary>
+      <p class="prose">I fix one opportunity on the last trading session of each week, usually Friday, using only the previous session's close and filter decision. Hypothetical expiry is the last trading session on or before the next Friday. Holiday shifts give 6–8 calendar days here, within the strategy's 3–10 DTE range. This avoids selecting a favorable weekday, but is not a replay of the live any-eligible-day, once-per-week order engine. The previous close sets a known hypothetical strike; it is not an assumed execution price.</p>
+      <p class="prose">Loss is max(strike − expiry stock close, 0), divided by strike collateral. Break-even adds the existing research budget of $3.30 per 100-share scenario; it does not change trading-engine fees. Early exercise, dividends, assignment-stock holding, cash yield, real spreads and market premiums are excluded.</p>
+      </details>
+      <details><summary>Dates, data limitations, refresh architecture and reproduction</summary>
+      <p>The design was registered on November 23, 2026. Signals through that frozen cutoff are retrospective; prospective signals must be strictly later, and their outcomes must have matured by the current market date. The frozen historical baseline uses only outcomes completed by November 23. This date convention is shared by the results and forward monitor. It changes no prices, trading filters or historical full-sample estimates.</p>
       <p>I use the XNYS calendar, signal t, reference t+1 and outcome t+6. All six path closes must exist, and an outcome only enters a rolling point after it has matured. Missing prices are not interpolated, carried forward or set to zero. Invalid signals are excluded, not called filter failures. These are as-retrieved LSEG closes, not vintage data or dividend-inclusive total returns. Within-sample forward outcomes are used for evaluation, never to set the original signal.</p>
       <p>Aggregate lines give each stock's cohort mean equal weight and require all four to meet the minimum counts. This avoids changing ticker weights, but not differences in regimes or sector risk. The unfiltered sample contains the pass and fail groups; they are not independent experiments. Five-session paths overlap, and the rolling windows overlap further. Stability counts are descriptive dates, not independent trials or confidence levels. Selecting four surviving stocks also introduces survivorship and universe-selection limitations.</p>
       <p>The separate thesis workflow reads the retained real history after the nightly LSEG run; it does not query prices or write orders. A failed refresh preserves the last validated tracker and records its status where the downstream job can run. The page separates the market date, matured outcome date, retrieval time, build time and refresh status. A newly built page does not mean new market data. No historical option profit, Sharpe ratio or portfolio drawdown is filled in to make the study look complete.</p>
       <p class="command"><code>python -m investment_thesis.refresh --verify-page<br>python -m investment_thesis.validate</code></p>
-      <p class="downloads"><a href="data/thesis_tracker.json">Tracker &amp; option audit JSON</a><a href="data/thesis_observations.csv">Observation CSV</a><a href="data/refresh_status.json">Refresh status</a><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/investment_thesis">Source &amp; tests</a><a href="https://github.com/Vicky-zjx/535_fintech/actions/workflows/investment-thesis.yaml">Update workflow</a></p>
+      <p class="prose">Fixed historical evidence, the daily tracker and cumulative prospective monitoring are separate. Daily refreshes do not recompute or discard the fixed five-year study. Prospective history is retained locally, but durable storage across hosted runs is not configured. Complete current inputs may reconstruct it; otherwise monitoring is withheld rather than reset. Missing or unwritable monitoring storage does not stop the Daily Tracker.</p>
+      <p class="prose">Daily updates depend on the temporary course LSEG account and the existing nightly data run. If access expires or a refresh fails, the page retains its last validated results and displays their market date, last successful build and the recorded failure reason. An expired account is reported only when confirmed; stale data are never relabeled as current.</p>
+      </details>
+      <p class="source">Source: LSEG historical data, analyzed for FIN 535 coursework. This course publication contains summarized research findings and aggregate chart inputs, not raw prices, quotes, Delta or individual observation paths. Separate confirmation of the precise display scope remains pending; API access is not a blanket redistribution license. See the <a href="https://library.fuqua.duke.edu/databases/dbterms.htm">Duke/Ford Library academic-use terms</a> and <a href="https://www.lseg.com/en/data-analytics/market-data/data-redistribution">LSEG redistribution guidance</a>. No raw-data downloads are offered. If access ends, the last validated results and the update status remain visible, subject to the institution's data-retention terms.</p>
+      <p class="downloads"><a href="data/refresh_status.json">Refresh status</a><a href="https://github.com/Vicky-zjx/535_fintech/tree/main/investment_thesis">Source &amp; tests</a><a href="https://github.com/Vicky-zjx/535_fintech/actions/workflows/investment-thesis.yaml">Update workflow</a></p>
       <p class="source">Assignment: <a href="https://peachyhabanero.com/designing-a-thesis.html">Professor Vestal's thesis framework</a>. The question and evidence on this page are my four-stock Wheel study, not a replication of another student's thesis.</p>
     </section>
     <footer><span>FIN 535 · Vicky · Investment Thesis</span><a href="../docs/">Return to the Wheel order-generation project</a></footer>

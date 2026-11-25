@@ -6,6 +6,7 @@ const vm=require('node:vm');
 const base=path.join(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(base,p),'utf8');
 const d=JSON.parse(read('investment-thesis/data/thesis_tracker.json'));
+const publicData=JSON.parse(read('investment-thesis/data/public_tracker.json'));
 const h=JSON.parse(read('docs/data/historical_signals.json'));
 const s=JSON.parse(read('docs/data/strategy_status.json'));
 const refresh=JSON.parse(read('investment-thesis/data/refresh_status.json'));
@@ -53,21 +54,22 @@ class Element{
   replaceChildren(...c){this.children=c;this.content='';}
   addEventListener(name,fn){this.listeners[name]=fn;}
 }
-async function render({fail=false,plotly=true,mismatch=false,retained=false}={}){
+async function render({fail=false,plotly=true,mismatch=false,retained=false,storageWarning=null}={}){
   const nodes=new Map([...html.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],new Element()]));
   const plotted=[],requested=[];
   const document={getElementById:id=>{assert.ok(nodes.has(id));return nodes.get(id);},createElement:()=>new Element()};
   const window=plotly?{Plotly:{react:(target,traces,layout)=>plotted.push({target,traces,layout})}}:{};
-  const historical=structuredClone(h);if(mismatch)historical.market_snapshot_sha256='different';
+  const projected=structuredClone(publicData);if(mismatch)projected.projection.source_proof.market_snapshot_sha256='different';
   const recorded={...refresh,...retained?{status:'failed',evidence_generated_at:d.generated_at,market_snapshot_sha256:d.market_snapshot_sha256}:{}};
-  const context=vm.createContext({document,window,fetch:async url=>{requested.push(url);return {ok:!fail,json:async()=>url.includes('thesis_tracker')?d:url.includes('historical_signals')?historical:url.includes('refresh_status')?recorded:s};}});
+  if(storageWarning)recorded.forward_storage_warning=storageWarning;
+  const context=vm.createContext({document,window,fetch:async url=>{requested.push(url);return {ok:!fail,json:async()=>url.includes('public_tracker')?projected:recorded};}});
   vm.runInContext(script,context);await new Promise(resolve=>setImmediate(resolve));
   return {nodes,plotted,requested};
 }
 test('Real JSON loads into both charts, table and summary without writing orders',async()=>{
   const before=JSON.stringify(d);const r=await render();
   assert.equal(r.plotted.length,2);assert.equal(r.nodes.get('thesis-summary').children.length,4);
-  assert.deepEqual(r.requested,['data/thesis_tracker.json','../docs/data/historical_signals.json','../docs/data/strategy_status.json','data/refresh_status.json']);
+  assert.deepEqual(r.requested,['data/public_tracker.json','data/refresh_status.json']);
   assert.equal(r.nodes.get('thesis-reading').textContent,overall(d).join(' '));
   assert.equal(r.nodes.get('thesis-review').textContent,review(d));
   assert.equal(r.nodes.get('thesis-cost').textContent,cost(d));
@@ -100,7 +102,9 @@ test('Every local anchor exists, English text and nightly integration preserved'
   const workflow=read('.github/workflows/investment-thesis.yaml');
   assert.match(workflow,/python -m investment_thesis.research/);
   assert.match(workflow,/Nightly risk-managed Wheel/);
-  assert.match(workflow,/investment-thesis\/data\/thesis_tracker.json investment-thesis\/data\/thesis_observations.csv/);
+  assert.match(workflow,/git add -- investment-thesis\/data\/public_tracker.json investment-thesis\/data\/refresh_status.json/);
+  assert.match(workflow,/investment_thesis.publication --require-approval/);
+  assert.doesNotMatch(html,/href="data\/(thesis_tracker.json|thesis_observations.csv)"/);
   assert.match(workflow,/investment_thesis.refresh --upstream/);
   assert.match(workflow,/refresh_status.json/);
 });
@@ -149,6 +153,19 @@ test('A recorded failure can show intact retained evidence beside a newer source
   assert.equal(r.plotted.length,2);
   assert.match(r.nodes.get('thesis-status').textContent,/STALE \/ FAILED UPDATE/);
   assert.equal(r.nodes.get('thesis-reading').textContent,overall(d).join(' '));
+});
+test('Forward storage warning leaves daily charts working and is visible',async()=>{
+  const warning='Experimental forward history could not be saved; Daily Tracker updated.';
+  const r=await render({storageWarning:warning});
+  assert.equal(r.plotted.length,2);
+  assert.match(r.nodes.get('monitor-status').textContent,/could not be saved/);
+  assert.match(html,/Persistent storage across nightly runs is not yet configured/);
+});
+test('Stopped refresh displays its reason beside original data and build dates',()=>{
+  const reason='Upstream nightly workflow did not succeed; previous validated evidence retained.';
+  const text=freshness(d,{}, {...refresh,status:'failed',reason});
+  assert.ok(text.includes(reason));assert.ok(text.includes(d.window.analysis_end));
+  assert.ok(text.includes(d.generated_at));assert.doesNotMatch(text,/account expired/i);
 });
 test('Option audit, economic extension and cost calculations do not claim alpha',()=>{
   assert.match(optionAudit(d),/not yet estimable/);

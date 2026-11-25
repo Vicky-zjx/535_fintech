@@ -8,6 +8,7 @@ from final_project.historical import analyze as historical_analysis
 from final_project.validate_publication import equivalent_observations
 from .research import analyze, csv_text
 from .option_audit import audit as option_audit
+from .reliability import analyze as reliability_analysis
 
 
 class Document(HTMLParser):
@@ -30,10 +31,16 @@ def check(root):
         raise ValueError('Historical signals do not reproduce from real closes')
     expected=analyze(h)
     expected['option_audit']=option_audit(root)
+    expected['reliability']=reliability_analysis(expected)
+    from .architecture import assemble
+    expected['lecture_extension'],_=assemble(root,h,expected)
     if any(not equivalent_observations(d.get(k),v) for k,v in expected.items()):
         raise ValueError('Thesis statistics do not reproduce from retained history')
     if (page/'data/thesis_observations.csv').read_text()!=csv_text(expected):
         raise ValueError('CSV differs from JSON path observations')
+    from .publication import preview_payload
+    if json.loads((page/'data/public_tracker.json').read_text())!=preview_payload(d):
+        raise ValueError('Redacted browser payload differs from validated research')
     history=json.loads((root/'course/proposal_history.json').read_text())
     for e in d['cost_budget']['examples']:
         if not any(p['order']['id']==f"fin535-course-{e['ticker'].lower()}-put-2026-11-17"

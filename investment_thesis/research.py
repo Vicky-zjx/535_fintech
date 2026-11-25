@@ -21,9 +21,12 @@ from final_project.indicators import valid_close
 from final_project.sanji_orders import atomic_json
 from final_project.strategy_config import UNIVERSE, STRATEGY_REVISION
 from .option_audit import audit as option_audit
+from .extension_plan import PLAN
 
 DESIGN = {
     'version': 'forward-stock-risk-v1.1', 'registered_on': '2026-11-23',
+    'retrospective_cutoff': PLAN['reference_end'],
+    'prospective_rule': 'Signal strictly after the frozen cutoff; outcome matured by current as-of date',
     'reference_lag_sessions': 1, 'holding_sessions': 5,
     'rolling_entry_sessions': 126, 'minimum_per_cohort_per_ticker': 20,
     'adverse_move_threshold': .03,
@@ -65,7 +68,7 @@ def outcomes(h):
                        cohort=('pass' if r['eligible'] else 'fail') if r['valid'] else None,
                        status=None, reason=None, reference_close=None, end_close=None,
                        stock_return=None, adverse_move=None, tail_event=None,
-                       missing_dates=[], prospective=r['signal_date'] >= DESIGN['registered_on'])
+                       missing_dates=[], prospective=r['signal_date'] > DESIGN['retrospective_cutoff'])
             if not r['valid']:
                 row.update(status='signal_unavailable', reason=r.get('exclusion'))
             elif last >= len(source):
@@ -192,11 +195,30 @@ def build(root, now):
         raise ValueError('History does not match retained real market snapshot')
     result = analyze(h)
     result['option_audit'] = option_audit(root)
+    from .reliability import analyze as reliability_analysis
+    result['reliability'] = reliability_analysis(result)
+    from .architecture import assemble
+    result['lecture_extension'],forward_state = assemble(root, h, result)
     result['generated_at'] = now.isoformat()
+    from .publication import preview_payload
+    preview=preview_payload(result)  # Validate redaction before any writes.
     atomic_json(data/'thesis_tracker.json', result)
     (data/'thesis_observations.csv').write_text(csv_text(result))
-    print(json.dumps({'window': result['window'], 'full_sample': result['full_sample']['aggregate'],
-                      'latest_review': result['rolling'][-1]['wrong_if'], 'coverage': result['coverage']}, indent=2))
+    storage_warning = None
+    if forward_state is not None:
+        from .forward_store import write
+        try:
+            write(root,forward_state)
+        except (OSError, ValueError):
+            # Complete input coverage can reconstruct this run's monitor. A
+            # failed private save must not discard validated daily statistics.
+            storage_warning = 'Experimental forward history could not be saved; durable monitoring is not available. Daily Tracker updated from validated source data.'
+    atomic_json(data/'public_tracker.json',preview)
+    # Return operational diagnostics, not an additional research statistic.
+    # Do not print licensed findings into a public Actions log.
+    if storage_warning:
+        result['forward_storage_warning'] = storage_warning
+    print('Research build completed locally; publication requires recorded display permission.')
     return result
 
 

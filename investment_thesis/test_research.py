@@ -79,6 +79,19 @@ class ThesisTests(unittest.TestCase):
         ready = analyze(fixture())['rolling'][-1]
         self.assertEqual(ready['wrong_if']['no_downside_benefit'], 'triggered') # both loss means exactly zero
 
+    def test_wrong_if_uses_registered_sample_floor_not_confidence_intervals(self):
+        stats = analyze(fixture())['rolling'][-1]
+        stats['aggregate'].update(baseline_downside_benefit=.001, baseline_tail_benefit=.01)
+        expected = {'no_downside_benefit': 'not_triggered', 'no_tail_benefit': 'not_triggered'}
+        # Test-only interval metadata must never alter the registered point-estimate rule.
+        for interval in ([-.1, .1], [.01, .02], [-.02, -.01], None):
+            stats['aggregate']['ci95'] = interval
+            self.assertEqual(wrong_if(stats), expected)
+        stats['aggregate']['sufficient'] = False
+        self.assertEqual(set(wrong_if(stats).values()), {'insufficient'})
+        stats['aggregate'].update(sufficient=True, baseline_downside_benefit=-.001)
+        self.assertEqual(wrong_if(stats)['no_downside_benefit'], 'triggered')
+
     def test_calendar_holidays_not_weekdays_and_all_session_rows_required(self):
         h = fixture(); dates, rows = outcomes(h)
         r = next(r for r in rows['BAC'] if r['signal_date'] == '2025-01-17')
