@@ -116710,7 +116710,7 @@
       "premium_budget": "Let q be the selected-week share, B_U and B_F be all/selected conditional break-even rates after cost. Equal expected weekly net cashflow requires q*p_F - p_U = q*B_F - B_U. The allowable weekly forgone premium is B_U - q*B_F. At equal constant premium p in both groups, filtering helps only if p < (B_U - q*B_F)/(1-q), ignoring cash yield. No actual premium or alpha is inferred."
     }
   },
-  "generated_at": "2026-11-25T00:37:52.821679+00:00",
+  "generated_at": "2026-11-25T00:41:54.142982+00:00",
   "projection": {
     "version": 1,
     "kind": "aggregate_course_research",
@@ -116737,6 +116737,6 @@
     "historical_signals_sha256": "ba2205b73f64ef6af99ec900ea08c07dde89be6db60182a6eaaf6ce2c897be73",
     "permission": "Owner-authorized course research summaries only. Separate LSEG confirmation of this display scope remains pending; this is not a blanket redistribution license.",
     "raw_price_paths_included": false,
-    "summary_sha256": "e7e942edaebbf94b0d794e8a939f8a2c23ad4f568d539a76f03e2710438d17c6"
+    "summary_sha256": "e1e3882d1f7ac728fd7331c62c3e8834311422a04ddc9790601cee7803dd1a78"
   }
 }
