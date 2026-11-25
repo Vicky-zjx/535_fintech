@@ -254,6 +254,7 @@
       el('monitor-status').append(warning);
     }
     if(root.WheelPayoff)root.WheelPayoff.show(d);
+    if(root.WheelRoughAlpha)root.WheelRoughAlpha.show(d);
   }
   Promise.all([get('data/public_tracker.json'),get('data/refresh_status.json').catch(()=>({}))])
     .then(([d,r])=>show(d,null,{},r)).catch(()=>{
