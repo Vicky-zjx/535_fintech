@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "attempted_at": "2026-11-25T00:41:54.142982+00:00",
+  "attempted_at": "2026-11-25T12:00:03.711079+00:00",
   "context": "GitHub Actions",
-  "upstream_conclusion": "manual",
+  "upstream_conclusion": "success",
   "status": "success",
   "reason": null,
-  "evidence_generated_at": "2026-11-25T00:41:54.142982+00:00",
-  "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
+  "evidence_generated_at": "2026-11-25T12:00:03.711079+00:00",
+  "market_snapshot_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
   "forward_storage_warning": null
 }

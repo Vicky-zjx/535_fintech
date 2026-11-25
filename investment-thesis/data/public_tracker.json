@@ -18,37 +18,37 @@
     "purpose": "Test a necessary downside-risk premise, not option pricing, realized alpha or Wheel returns."
   },
   "window": {
-    "analysis_start": "2023-11-23",
-    "analysis_end": "2026-11-23",
+    "analysis_start": "2023-11-24",
+    "analysis_end": "2026-11-24",
     "query_start": "2023-09-07",
     "warmup_sessions_requested": 55,
-    "expected_sample_sessions": 752
+    "expected_sample_sessions": 753
   },
-  "market_retrieved_at": "2026-11-24T13:10:46.868328+00:00",
-  "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
-  "historical_signals_sha256": "ba2205b73f64ef6af99ec900ea08c07dde89be6db60182a6eaaf6ce2c897be73",
-  "historical_generated_at": "2026-11-24T13:11:07.178285+00:00",
+  "market_retrieved_at": "2026-11-25T11:58:44.697915+00:00",
+  "market_snapshot_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
+  "historical_signals_sha256": "35caae7fd469704de378325f83fa3d03ad1497b680fb43610406374c61cd22ac",
+  "historical_generated_at": "2026-11-25T11:59:01.239011+00:00",
   "coverage": {
     "BAC": {
-      "observed": 746,
+      "observed": 747,
       "unmatured": 6
     },
     "KO": {
-      "observed": 746,
+      "observed": 747,
       "unmatured": 6
     },
     "PFE": {
-      "observed": 746,
+      "observed": 747,
       "unmatured": 6
     },
     "F": {
-      "observed": 746,
+      "observed": 747,
       "unmatured": 6
     }
   },
-  "latest_matured_outcome_date": "2026-11-23",
-  "next_market_session": "2026-11-24",
-  "next_market_close_at": "2026-11-24T21:00:00+00:00",
+  "latest_matured_outcome_date": "2026-11-24",
+  "next_market_session": "2026-11-25",
+  "next_market_close_at": "2026-11-25T21:00:00+00:00",
   "full_sample": {
     "tickers": {
       "BAC": {
@@ -60,28 +60,28 @@
           "tail_rate": 0.17118997912317327
         },
         "fail": {
-          "n": 267,
-          "mean_return": 0.0040489241732341195,
-          "return_sd": 0.040583799266195146,
-          "mean_adverse": 0.019170665784763962,
-          "tail_rate": 0.23595505617977527
+          "n": 268,
+          "mean_return": 0.003967400751875749,
+          "return_sd": 0.04052970764991256,
+          "mean_adverse": 0.019280266618852113,
+          "tail_rate": 0.23880597014925373
         },
         "all": {
-          "n": 746,
-          "mean_return": 0.0038093054312544534,
-          "return_sd": 0.03539481961476099,
-          "mean_adverse": 0.016815213710461345,
-          "tail_rate": 0.19436997319034852
+          "n": 747,
+          "mean_return": 0.003780378177998679,
+          "return_sd": 0.035379923504180406,
+          "mean_adverse": 0.016857688242737017,
+          "tail_rate": 0.19544846050870146
         },
         "sufficient": true
       },
       "KO": {
         "pass": {
-          "n": 440,
-          "mean_return": 0.001981252986223286,
-          "return_sd": 0.021939820035507467,
-          "mean_adverse": 0.011248053379914547,
-          "tail_rate": 0.08863636363636364
+          "n": 441,
+          "mean_return": 0.0019499047844900462,
+          "return_sd": 0.02192475970122643,
+          "mean_adverse": 0.011289342199268141,
+          "tail_rate": 0.08843537414965986
         },
         "fail": {
           "n": 306,
@@ -91,21 +91,21 @@
           "tail_rate": 0.06535947712418301
         },
         "all": {
-          "n": 746,
-          "mean_return": 0.003680550876218109,
-          "return_sd": 0.023420504772417344,
-          "mean_adverse": 0.010772246934771561,
-          "tail_rate": 0.07908847184986595
+          "n": 747,
+          "mean_return": 0.0036597692766808213,
+          "return_sd": 0.023411693077811248,
+          "mean_adverse": 0.010797259218279029,
+          "tail_rate": 0.07898259705488621
         },
         "sufficient": true
       },
       "PFE": {
         "pass": {
-          "n": 276,
-          "mean_return": -0.0019856001703600352,
-          "return_sd": 0.02921351504136098,
-          "mean_adverse": 0.018232383562075627,
-          "tail_rate": 0.2391304347826087
+          "n": 277,
+          "mean_return": -0.0019796999781442563,
+          "return_sd": 0.029160709325076264,
+          "mean_adverse": 0.018302242903530462,
+          "tail_rate": 0.24187725631768953
         },
         "fail": {
           "n": 470,
@@ -115,11 +115,11 @@
           "tail_rate": 0.20851063829787234
         },
         "all": {
-          "n": 746,
-          "mean_return": 6.042153755195048e-05,
-          "return_sd": 0.03308407415844697,
-          "mean_adverse": 0.018257819924875133,
-          "tail_rate": 0.21983914209115282
+          "n": 747,
+          "mean_return": 5.987044188375607e-05,
+          "return_sd": 0.0330618958409233,
+          "mean_adverse": 0.018283690876977128,
+          "tail_rate": 0.22088353413654618
         },
         "sufficient": true
       },
@@ -132,18 +132,18 @@
           "tail_rate": 0.30491803278688523
         },
         "fail": {
-          "n": 441,
-          "mean_return": 0.004864653303196784,
-          "return_sd": 0.049497413511296724,
-          "mean_adverse": 0.02377902978802716,
-          "tail_rate": 0.3469387755102041
+          "n": 442,
+          "mean_return": 0.004975348402341633,
+          "return_sd": 0.049496003954696006,
+          "mean_adverse": 0.023759147778682866,
+          "tail_rate": 0.34615384615384615
         },
         "all": {
-          "n": 746,
-          "mean_return": 0.0018197639107808284,
-          "return_sd": 0.050108159189545295,
-          "mean_adverse": 0.024761214559548297,
-          "tail_rate": 0.3297587131367292
+          "n": 747,
+          "mean_return": 0.0018893383729152854,
+          "return_sd": 0.050110655845007,
+          "mean_adverse": 0.02474813553290613,
+          "tail_rate": 0.3293172690763052
         },
         "sufficient": true
       }
@@ -151,23 +151,23 @@
     "aggregate": {
       "sufficient": true,
       "insufficient_tickers": [],
-      "pass_n": 1500,
-      "fail_n": 1484,
-      "pass_mean_return": 0.0002721363514160615,
-      "fail_mean_return": 0.0040748695908480155,
-      "all_mean_return": 0.0023425104389513353,
-      "pass_mean_adverse": 0.01779101306072698,
-      "fail_mean_adverse": 0.017827633350080363,
-      "all_mean_adverse": 0.017651623782414083,
-      "pass_tail_rate": 0.2009687025822577,
-      "fail_tail_rate": 0.21419098677800869,
-      "all_tail_rate": 0.20576407506702413,
-      "downside_benefit": 3.662028935338263e-05,
-      "return_spread": -0.0038027332394319543,
-      "tail_benefit": 0.013222284195750972,
-      "baseline_downside_benefit": -0.0001393892783128972,
-      "baseline_return_spread": -0.002070374087535274,
-      "baseline_tail_benefit": 0.004795372484766414
+      "pass_n": 1502,
+      "fail_n": 1486,
+      "pass_mean_return": 0.0002657743490366963,
+      "fail_mean_return": 0.004082162510294635,
+      "all_mean_return": 0.0023473390673696354,
+      "pass_mean_adverse": 0.017818800100929087,
+      "fail_mean_adverse": 0.017850063056266328,
+      "all_mean_adverse": 0.017671693467724826,
+      "pass_tail_rate": 0.20160516059435196,
+      "fail_tail_rate": 0.2147074829312888,
+      "all_tail_rate": 0.20615796519410975,
+      "downside_benefit": 3.126295533724052e-05,
+      "return_spread": -0.003816388161257939,
+      "tail_benefit": 0.013102322336936839,
+      "baseline_downside_benefit": -0.00014710663320426087,
+      "baseline_return_spread": -0.0020815647183329393,
+      "baseline_tail_benefit": 0.004552804599757793
     }
   },
   "rolling": [
@@ -97490,6 +97490,137 @@
         "no_downside_benefit": "insufficient",
         "no_tail_benefit": "insufficient"
       }
+    },
+    {
+      "as_of": "2026-11-24",
+      "first_reference_date": "2026-05-20",
+      "last_reference_date": "2026-11-17",
+      "tickers": {
+        "BAC": {
+          "pass": {
+            "n": 71,
+            "mean_return": 0.004727001786593777,
+            "return_sd": 0.028041291150791393,
+            "mean_adverse": 0.01440182510509762,
+            "tail_rate": 0.1267605633802817
+          },
+          "fail": {
+            "n": 55,
+            "mean_return": -0.01109714010853273,
+            "return_sd": 0.030885755960798882,
+            "mean_adverse": 0.023459859611909127,
+            "tail_rate": 0.34545454545454546
+          },
+          "all": {
+            "n": 126,
+            "mean_return": -0.002180361739056683,
+            "return_sd": 0.03024099423576573,
+            "mean_adverse": 0.018355729056483597,
+            "tail_rate": 0.2222222222222222
+          },
+          "sufficient": true
+        },
+        "KO": {
+          "pass": {
+            "n": 107,
+            "mean_return": 0.0043983836395078205,
+            "return_sd": 0.02842225767544779,
+            "mean_adverse": 0.01336719869394019,
+            "tail_rate": 0.12149532710280374
+          },
+          "fail": {
+            "n": 19,
+            "mean_return": 0.024621873485362798,
+            "return_sd": 0.030056012512979735,
+            "mean_adverse": 0.0053452815692489435,
+            "tail_rate": 0
+          },
+          "all": {
+            "n": 126,
+            "mean_return": 0.007447957505152618,
+            "return_sd": 0.029460344235024423,
+            "mean_adverse": 0.012157544524343892,
+            "tail_rate": 0.10317460317460317
+          },
+          "sufficient": false
+        },
+        "PFE": {
+          "pass": {
+            "n": 71,
+            "mean_return": 0.0032271991250050467,
+            "return_sd": 0.03167026108524429,
+            "mean_adverse": 0.015821984235100953,
+            "tail_rate": 0.23943661971830985
+          },
+          "fail": {
+            "n": 55,
+            "mean_return": 0.0031424371760163865,
+            "return_sd": 0.030791134915773805,
+            "mean_adverse": 0.01595061842275577,
+            "tail_rate": 0.2
+          },
+          "all": {
+            "n": 126,
+            "mean_return": 0.0031901998615576155,
+            "return_sd": 0.031165067456677815,
+            "mean_adverse": 0.015878134078918534,
+            "tail_rate": 0.2222222222222222
+          },
+          "sufficient": true
+        },
+        "F": {
+          "pass": {
+            "n": 9,
+            "mean_return": -0.015416201016791753,
+            "return_sd": 0.02009492118198665,
+            "mean_adverse": 0.025851514412014498,
+            "tail_rate": 0.4444444444444444
+          },
+          "fail": {
+            "n": 117,
+            "mean_return": -0.007558642644687581,
+            "return_sd": 0.05591694594191533,
+            "mean_adverse": 0.02995654630102655,
+            "tail_rate": 0.4358974358974359
+          },
+          "all": {
+            "n": 126,
+            "mean_return": -0.008119896814123593,
+            "return_sd": 0.05414382246769693,
+            "mean_adverse": 0.029663329737525692,
+            "tail_rate": 0.4365079365079365
+          },
+          "sufficient": false
+        }
+      },
+      "aggregate": {
+        "sufficient": false,
+        "insufficient_tickers": [
+          "KO",
+          "F"
+        ],
+        "pass_n": 258,
+        "fail_n": 246,
+        "pass_mean_return": null,
+        "fail_mean_return": null,
+        "all_mean_return": null,
+        "pass_mean_adverse": null,
+        "fail_mean_adverse": null,
+        "all_mean_adverse": null,
+        "pass_tail_rate": null,
+        "fail_tail_rate": null,
+        "all_tail_rate": null,
+        "downside_benefit": null,
+        "return_spread": null,
+        "tail_benefit": null,
+        "baseline_downside_benefit": null,
+        "baseline_return_spread": null,
+        "baseline_tail_benefit": null
+      },
+      "wrong_if": {
+        "no_downside_benefit": "insufficient",
+        "no_tail_benefit": "insufficient"
+      }
     }
   ],
   "prospective": {
@@ -97722,47 +97853,43 @@
       {
         "path": "docs/data/market_snapshot.json",
         "status": "inventoried",
-        "sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
-        "retrieved_at": "2026-11-24T13:10:46.868328+00:00",
-        "market_date": "2026-11-23",
+        "sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
+        "retrieved_at": "2026-11-25T11:58:44.697915+00:00",
+        "market_date": "2026-11-24",
         "tickers": {
           "BAC": {
-            "contracts": 156,
-            "puts": 78,
+            "contracts": 78,
+            "puts": 39,
             "bid_ask_pairs": 0,
             "dated_deltas": 0,
             "expiries": [
-              "2026-11-27",
               "2026-12-04"
             ]
           },
           "KO": {
-            "contracts": 170,
-            "puts": 85,
+            "contracts": 84,
+            "puts": 42,
             "bid_ask_pairs": 0,
             "dated_deltas": 0,
             "expiries": [
-              "2026-11-27",
               "2026-12-04"
             ]
           },
           "PFE": {
-            "contracts": 144,
-            "puts": 72,
+            "contracts": 72,
+            "puts": 36,
             "bid_ask_pairs": 0,
             "dated_deltas": 0,
             "expiries": [
-              "2026-11-27",
               "2026-12-04"
             ]
           },
           "F": {
-            "contracts": 118,
-            "puts": 59,
+            "contracts": 58,
+            "puts": 29,
             "bid_ask_pairs": 0,
             "dated_deltas": 0,
             "expiries": [
-              "2026-11-27",
               "2026-12-04"
             ]
           }
@@ -97856,8 +97983,8 @@
       "inference": "approximate pointwise intervals, not simultaneous or sequential guarantees",
       "theorem_source_status": "standard KL form; original classroom Theorem 1.1 not yet verified"
     },
-    "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
-    "as_of": "2026-11-23",
+    "market_snapshot_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
+    "as_of": "2026-11-24",
     "samples": {
       "daily": {
         "scheduled_dates": [
@@ -98612,7 +98739,8 @@
           "2026-11-18",
           "2026-11-19",
           "2026-11-20",
-          "2026-11-23"
+          "2026-11-23",
+          "2026-11-24"
         ],
         "matured_dates": [
           "2023-11-24",
@@ -99360,7 +99488,8 @@
           "2026-11-10",
           "2026-11-11",
           "2026-11-12",
-          "2026-11-13"
+          "2026-11-13",
+          "2026-11-16"
         ],
         "tickers": {
           "BAC": {
@@ -99376,81 +99505,81 @@
                 ]
               },
               "unfiltered": {
-                "n": 746,
-                "events": 145,
-                "frequency": 0.19436997319034852,
-                "mean_adverse": 0.01681521371046134,
+                "n": 747,
+                "events": 146,
+                "frequency": 0.19544846050870146,
+                "mean_adverse": 0.016857688242737014,
                 "iid_kl95_scenario": [
-                  0.15709712168848688,
-                  0.23565997723095217
+                  0.15810995256373833,
+                  0.23678461578162585
                 ]
               }
             },
             "excluded": {
               "unmatured": 6
             },
-            "frequency_difference": 0.023179994067175247,
-            "downside_difference": 0.0013129555403732524,
+            "frequency_difference": 0.02425848138552819,
+            "downside_difference": 0.0013554300726489246,
             "sparse_event_warning": false
           },
           "KO": {
             "groups": {
               "filtered": {
-                "n": 440,
+                "n": 441,
                 "events": 39,
-                "frequency": 0.08863636363636364,
-                "mean_adverse": 0.011248053379914554,
+                "frequency": 0.08843537414965986,
+                "mean_adverse": 0.011289342199268148,
                 "iid_kl95_scenario": [
-                  0.05641148990189343,
-                  0.12999764742935882
+                  0.05628134262505888,
+                  0.12970964532132329
                 ]
               },
               "unfiltered": {
-                "n": 746,
+                "n": 747,
                 "events": 59,
-                "frequency": 0.07908847184986595,
-                "mean_adverse": 0.01077224693477157,
+                "frequency": 0.07898259705488621,
+                "mean_adverse": 0.010797259218279037,
                 "iid_kl95_scenario": [
-                  0.05500846429215095,
-                  0.10869641599290164
+                  0.05493387195682768,
+                  0.10855326680932276
                 ]
               }
             },
             "excluded": {
               "unmatured": 6
             },
-            "frequency_difference": -0.00954789178649769,
-            "downside_difference": -0.00047580644514298373,
+            "frequency_difference": -0.009452777094773657,
+            "downside_difference": -0.0004920829809891107,
             "sparse_event_warning": false
           },
           "PFE": {
             "groups": {
               "filtered": {
-                "n": 276,
-                "events": 66,
-                "frequency": 0.2391304347826087,
-                "mean_adverse": 0.01823238356207564,
+                "n": 277,
+                "events": 67,
+                "frequency": 0.24187725631768953,
+                "mean_adverse": 0.018302242903530476,
                 "iid_kl95_scenario": [
-                  0.174386706955246,
-                  0.3130935936651075
+                  0.1769241562377511,
+                  0.31592017118223337
                 ]
               },
               "unfiltered": {
-                "n": 746,
-                "events": 164,
-                "frequency": 0.21983914209115282,
-                "mean_adverse": 0.018257819924875164,
+                "n": 747,
+                "events": 165,
+                "frequency": 0.22088353413654618,
+                "mean_adverse": 0.01828369087697716,
                 "iid_kl95_scenario": [
-                  0.18057654124714867,
-                  0.26278435749058493
+                  0.18156937573159687,
+                  0.2638616909286
                 ]
               }
             },
             "excluded": {
               "unmatured": 6
             },
-            "frequency_difference": -0.01929129269145588,
-            "downside_difference": 2.543636279952327e-05,
+            "frequency_difference": -0.020993722181143343,
+            "downside_difference": -1.8552026553316642e-05,
             "sparse_event_warning": false
           },
           "F": {
@@ -99466,21 +99595,21 @@
                 ]
               },
               "unfiltered": {
-                "n": 746,
+                "n": 747,
                 "events": 246,
-                "frequency": 0.3297587131367292,
-                "mean_adverse": 0.024761214559548283,
+                "frequency": 0.3293172690763052,
+                "mean_adverse": 0.024748135532906113,
                 "iid_kl95_scenario": [
-                  0.28423369893278994,
-                  0.3775218094821077
+                  0.2838405786439786,
+                  0.3770348495553789
                 ]
               }
             },
             "excluded": {
               "unmatured": 6
             },
-            "frequency_difference": 0.02484068034984399,
-            "downside_difference": -0.0014201425712814034,
+            "frequency_difference": 0.02439923628941998,
+            "downside_difference": -0.0014332215979235736,
             "sparse_event_warning": false
           }
         },
@@ -99493,16 +99622,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.11484526271481123,
-                      0.23541257964453385
+                      0.11440375302663439,
+                      0.23514879741398795
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.14343163538873996,
-                      0.2453083109919571
+                      0.14323962516733602,
+                      0.24497991967871485
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99510,16 +99639,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.017135260752427686,
-                    0.05983504142566327
+                    -0.016225939565332373,
+                    0.06095287131580244
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.001160051555641795,
-                    0.004046845759432724
+                    -0.0011356048665221894,
+                    0.004070773285796067
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99529,16 +99658,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.052103686539746154,
-                      0.125
+                      0.05273707584299543,
+                      0.12581418021399499
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.05093833780160858,
-                      0.10593163538873945
+                      0.05220883534136546,
+                      0.107095046854083
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99546,16 +99675,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.030610534197581783,
-                    0.013174670634351982
+                    -0.030978872332146214,
+                    0.0130632541288625
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.00165646150988988,
-                    0.0007222771506802324
+                    -0.0016970698916248775,
+                    0.0007197895027560253
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99565,16 +99694,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.15810240351081145,
-                      0.3102463776675328
+                      0.16,
+                      0.312903774412991
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.16621983914209115,
-                      0.2667560321715818
+                      0.16733601070950468,
+                      0.26907630522088355
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99582,16 +99711,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.07767369819443244,
-                    0.04286394025287136
+                    -0.07896641663071015,
+                    0.04291091934307098
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.002814233155672898,
-                    0.003283162945869119
+                    -0.0028377044379334707,
+                    0.003220598248954011
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99601,16 +99730,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.22132884615384615,
-                      0.39550357051269397
+                      0.22105167810831425,
+                      0.3945644277128326
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.2707774798927614,
-                      0.38605898123324395
+                      0.27041499330655955,
+                      0.38821954484605087
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99618,16 +99747,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.04433606251734782,
-                    0.09057626336879124
+                    -0.04261230639568708,
+                    0.09104764656664303
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.0066932670116836065,
-                    0.002900255138648025
+                    -0.00665697516243962,
+                    0.002942529402533865
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99643,16 +99772,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.10999896265560166,
-                      0.24243159752868482
+                      0.10986741600597687,
+                      0.24183270082226435
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.1380697050938338,
-                      0.25067024128686327
+                      0.13788487282463185,
+                      0.250334672021419
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99660,16 +99789,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.02130294909834052,
-                    0.060924836433384776
+                    -0.021419442136361527,
+                    0.06152003498415275
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.0014728574934185766,
-                    0.004043829460442705
+                    -0.0014442361658279959,
+                    0.0041042154711663
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99679,16 +99808,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.052757530239544624,
-                      0.12669683257918551
+                      0.05301125029921008,
+                      0.12631578947368421
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.05093833780160858,
-                      0.10991957104557641
+                      0.050870147255689425,
+                      0.10843373493975904
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99696,16 +99825,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.03178366533380588,
-                    0.013513983231689744
+                    -0.031050491404499534,
+                    0.01400549946698581
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.0017821285370042115,
-                    0.0007739218628253533
+                    -0.0017630259821099954,
+                    0.0007909210060315232
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99715,16 +99844,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.15343915343915343,
-                      0.3053446542030443
+                      0.15352651597874356,
+                      0.30872871913140365
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.16085790884718498,
-                      0.2640750670241287
+                      0.16194779116465863,
+                      0.2637550200803208
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99732,16 +99861,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.07840124247598754,
-                    0.04838944239605888
+                    -0.08011872586611866,
+                    0.04713126492394085
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.002896836133654834,
-                    0.0031993276057414016
+                    -0.002957475445907673,
+                    0.0031510169660416074
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99751,16 +99880,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.21621621621621623,
-                      0.4
+                      0.21574420442571127,
+                      0.40191940949105204
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.2667560321715818,
-                      0.3873994638069705
+                      0.2677041499330656,
+                      0.3868808567603748
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99768,16 +99897,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.04836421956060024,
-                    0.08964695829632391
+                    -0.0477277729611817,
+                    0.08927839649290521
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.007129983114039603,
-                    0.002811572665441525
+                    -0.006947927896893335,
+                    0.0028307261527121294
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99793,16 +99922,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.11699560342324655,
-                      0.24468147684605757
+                      0.11702027298273786,
+                      0.2440170940170939
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.1380697050938338,
-                      0.25603217158176944
+                      0.13788487282463185,
+                      0.2556894243641232
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99810,16 +99939,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.02360581486353721,
-                    0.06353630055030791
+                    -0.02318742398270715,
+                    0.06290314047608427
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.0015652794865605008,
-                    0.004105479670666723
+                    -0.0015454648567046034,
+                    0.004111212670187079
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99829,16 +99958,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.0498732422056891,
-                      0.12975434192325425
+                      0.050111047835990886,
+                      0.12990989128072844
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.04825737265415549,
-                      0.11129356568364562
+                      0.049531459170013385,
+                      0.11114457831325252
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99846,16 +99975,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.03574379942802576,
-                    0.014870403633416974
+                    -0.035148567861665765,
+                    0.014967778485108064
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.001860991728529029,
-                    0.0007128537095685971
+                    -0.0018684481604682717,
+                    0.0007120475678321505
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99865,16 +99994,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.14854982780886783,
-                      0.3041114120527111
+                      0.15013069705093832,
+                      0.304029304029304
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.16085790884718498,
-                      0.26005361930294907
+                      0.16194779116465863,
+                      0.26104417670682734
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99882,16 +100011,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.07798710246047985,
-                    0.05100650333025589
+                    -0.07801979448896064,
+                    0.05030756560662479
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.0029763870414182296,
-                    0.0031758070184250303
+                    -0.0029466148645858653,
+                    0.003101443004354752
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -99901,16 +100030,16 @@
                 "groups": {
                   "filtered": {
                     "ci95": [
-                      0.21497635215959074,
-                      0.4107183318946913
+                      0.2153311788335498,
+                      0.4105263157894737
                     ],
                     "valid_replicates": 5000,
                     "reason": null
                   },
                   "unfiltered": {
                     "ci95": [
-                      0.2761394101876676,
-                      0.37935656836461124
+                      0.2757697456492637,
+                      0.38018741633199465
                     ],
                     "valid_replicates": 5000,
                     "reason": null
@@ -99918,16 +100047,16 @@
                 },
                 "frequency_difference": {
                   "ci95": [
-                    -0.05318774963068338,
-                    0.08994532018393193
+                    -0.05332612316984598,
+                    0.09122242870015977
                   ],
                   "valid_replicates": 5000,
                   "reason": null
                 },
                 "downside_difference": {
                   "ci95": [
-                    -0.007978023598863742,
-                    0.0029864773657611032
+                    -0.007910722174248288,
+                    0.00295313531919175
                   ],
                   "valid_replicates": 5000,
                   "reason": null
@@ -100738,12 +100867,12 @@
   "lecture_extension": {
     "schema_version": 1,
     "kind": "lecture_research_extension",
-    "as_of": "2026-11-23",
-    "source_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
+    "as_of": "2026-11-24",
+    "source_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
     "fixed_research_sha256": "82b3624f480344956ac2cf69606d8259dc227786a4b53c6f3895088adfc5fcfd",
     "monitoring": {
       "kind": "conditional_thesis_monitoring_not_trade_performance",
-      "as_of": "2026-11-23",
+      "as_of": "2026-11-24",
       "frozen_reference_end": "2026-11-23",
       "reference_sha256": "953722f6bbca8aede6013501f859ee9f64ca6f94bd22eccf81fc1d796db90387",
       "first_prospective_session": "2026-11-24",
@@ -100827,7 +100956,9 @@
                 "comparison": "Pending"
               },
               "curve": [],
-              "pending_signal_dates": [],
+              "pending_signal_dates": [
+                "2026-11-24"
+              ],
               "missing_path_signal_dates": [],
               "excluded_invalid_signals": 0
             }
@@ -100853,7 +100984,9 @@
                 "comparison": "Pending"
               },
               "curve": [],
-              "pending_signal_dates": [],
+              "pending_signal_dates": [
+                "2026-11-24"
+              ],
               "missing_path_signal_dates": [],
               "excluded_invalid_signals": 0
             },
@@ -100877,7 +101010,9 @@
                 "comparison": "Pending"
               },
               "curve": [],
-              "pending_signal_dates": [],
+              "pending_signal_dates": [
+                "2026-11-24"
+              ],
               "missing_path_signal_dates": [],
               "excluded_invalid_signals": 0
             }
@@ -100927,7 +101062,9 @@
                 "comparison": "Pending"
               },
               "curve": [],
-              "pending_signal_dates": [],
+              "pending_signal_dates": [
+                "2026-11-24"
+              ],
               "missing_path_signal_dates": [],
               "excluded_invalid_signals": 0
             }
@@ -100977,7 +101114,9 @@
                 "comparison": "Pending"
               },
               "curve": [],
-              "pending_signal_dates": [],
+              "pending_signal_dates": [
+                "2026-11-24"
+              ],
               "missing_path_signal_dates": [],
               "excluded_invalid_signals": 0
             }
@@ -101189,8 +101328,8 @@
       "persistence": {
         "status": "complete",
         "reason": null,
-        "retained_signal_dates": 0,
-        "state_sha256": "762e8bbd844397febf69b7f1ff6aaacca7f23e8babcbe9a50d749f9778b2f10b",
+        "retained_signal_dates": 1,
+        "state_sha256": "4e4e93cdbd08fcc1b3b73e7b888f58a7f0b04a0f8eb9c355414d57c533b35f85",
         "policy": "Append-only private evidence; complete source coverage may reconstruct it. No rolling reset or automatic historical rebase."
       }
     },
@@ -116710,33 +116849,33 @@
       "premium_budget": "Let q be the selected-week share, B_U and B_F be all/selected conditional break-even rates after cost. Equal expected weekly net cashflow requires q*p_F - p_U = q*B_F - B_U. The allowable weekly forgone premium is B_U - q*B_F. At equal constant premium p in both groups, filtering helps only if p < (B_U - q*B_F)/(1-q), ignoring cash yield. No actual premium or alpha is inferred."
     }
   },
-  "generated_at": "2026-11-25T00:41:54.142982+00:00",
+  "generated_at": "2026-11-25T12:00:03.711079+00:00",
   "projection": {
     "version": 1,
     "kind": "aggregate_course_research",
     "row_counts": {
-      "BAC": 752,
-      "KO": 752,
-      "PFE": 752,
-      "F": 752
+      "BAC": 753,
+      "KO": 753,
+      "PFE": 753,
+      "F": 753
     },
     "source_proof": {
       "source": "LSEG Data Platform",
       "strategy_revision": "gap-aware-flexible-weekly-v2",
-      "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
-      "market_retrieved_at": "2026-11-24T13:10:46.868328+00:00",
-      "historical_generated_at": "2026-11-24T13:11:07.178285+00:00",
+      "market_snapshot_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
+      "market_retrieved_at": "2026-11-25T11:58:44.697915+00:00",
+      "historical_generated_at": "2026-11-25T11:59:01.239011+00:00",
       "window": {
-        "analysis_start": "2023-11-23",
-        "analysis_end": "2026-11-23",
+        "analysis_start": "2023-11-24",
+        "analysis_end": "2026-11-24",
         "query_start": "2023-09-07",
         "warmup_sessions_requested": 55,
-        "expected_sample_sessions": 752
+        "expected_sample_sessions": 753
       }
     },
-    "historical_signals_sha256": "ba2205b73f64ef6af99ec900ea08c07dde89be6db60182a6eaaf6ce2c897be73",
+    "historical_signals_sha256": "35caae7fd469704de378325f83fa3d03ad1497b680fb43610406374c61cd22ac",
     "permission": "Owner-authorized course research summaries only. Separate LSEG confirmation of this display scope remains pending; this is not a blanket redistribution license.",
     "raw_price_paths_included": false,
-    "summary_sha256": "e1e3882d1f7ac728fd7331c62c3e8834311422a04ddc9790601cee7803dd1a78"
+    "summary_sha256": "eac2014b350563fd296198dab0f3dea401fe4d086d241af4a500b7935ecc6f8c"
   }
 }
