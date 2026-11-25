@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
   "scope": "proposal_lifecycle_not_execution_history",
-  "as_of": "2026-11-23",
-  "target_session": "2026-11-24",
-  "evaluation_attempted_at": "2026-11-24T13:10:46.868328+00:00",
-  "market_retrieved_at": "2026-11-24T13:10:46.868328+00:00",
+  "as_of": "2026-11-24",
+  "target_session": "2026-11-25",
+  "evaluation_attempted_at": "2026-11-25T11:58:44.697915+00:00",
+  "market_retrieved_at": "2026-11-25T11:58:44.697915+00:00",
   "history_sha256": "7806db59c385799836edae828c3ffce430d84588db0b83e1f4223391c888d6c5",
   "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-  "status_sha256": "6ecdcdd7e75ccacd0c19f760245a099dc78245da4e2633801bef6958eb3bacb2",
+  "status_sha256": "bdf9bebf75d5848ee46d7c18b7abd2ad0c79a86ab4d5175a18e121698a9ab7e2",
   "records": [
     {
       "order": {
@@ -65,25 +65,25 @@
     "weekly_cap_preserved": true,
     "status": "success",
     "calendar": {
-      "as_of": "2026-11-23",
-      "target_session": "2026-11-24",
+      "as_of": "2026-11-24",
+      "target_session": "2026-11-25",
       "first_session_of_week": false,
       "exchange": "XNYS",
-      "close_time": "2026-11-23T21:00:00+00:00"
+      "close_time": "2026-11-24T21:00:00+00:00"
     },
-    "market_retrieved_at": "2026-11-24T13:10:46.868328+00:00",
-    "market_snapshot_sha256": "98654a6ff3138055cfe210df15a657c68e2933c176ad30e383cda20bcfa6c428",
+    "market_retrieved_at": "2026-11-25T11:58:44.697915+00:00",
+    "market_snapshot_sha256": "104bed0d45c89ea32f30257279365f9ac17786409bba1b6f417fdcfe2ad0651b",
     "capital": {
       "passed": true,
       "reasons": [],
       "equity": 40000.0,
       "cash": 40000.0,
-      "exposure": 9300.0,
-      "put_collateral": 9300.0,
-      "uncommitted_cash": 30700.0,
+      "exposure": 9500.0,
+      "put_collateral": 9500.0,
+      "uncommitted_cash": 30500.0,
       "by_ticker": {
         "BAC": 0.0,
-        "KO": 9300.0,
+        "KO": 9500.0,
         "PFE": 0.0,
         "F": 0.0
       }
@@ -125,7 +125,7 @@
     "candidates": [
       {
         "ticker": "KO",
-        "strike": 93.0,
+        "strike": 95.0,
         "expiry": "2026-12-04",
         "contract": "put",
         "qty": 1
