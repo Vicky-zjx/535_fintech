@@ -3,7 +3,7 @@
   "kind": "historical_technical_signal_analysis",
   "strategy_revision": "gap-aware-flexible-weekly-v2",
   "source": "LSEG Data Platform",
-  "market_retrieved_at": "2026-11-26T11:47:03.524758+00:00",
+  "market_retrieved_at": "2026-11-27T11:40:17.994827+00:00",
   "window": {
     "analysis_start": "2023-11-25",
     "analysis_end": "2026-11-25",
@@ -134186,7 +134186,7 @@
   },
   "entry_sampling": "Every eligible next XNYS session; legacy weekly keys now contain daily entry opportunities, not orders or independent weekly trades. The live planner applies the durable once-per-ticker/week cap.",
   "scope": "Technical eligibility only; no historical option selection, cash allocation, fills, NAV or returns. Current fixed universe; closes as retrieved, not vintage unrevised data. SMA uses latest valid observations within 55 sessions; HV uses only adjacent-session returns.",
-  "generated_at": "2026-11-26T11:47:21.166277+00:00",
-  "market_snapshot_sha256": "1c415f3536ee511d6fafea2410e67c592de69cf72f29a4faabbe7f93d24a8b33",
+  "generated_at": "2026-11-27T11:40:34.286144+00:00",
+  "market_snapshot_sha256": "b44384ab6c9cc5cf0461854a7c516161a1d23dc9ac883166cd76e2976be988ce",
   "matches_latest_market_attempt": true
 }

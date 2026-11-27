@@ -3,11 +3,11 @@
   "scope": "proposal_lifecycle_not_execution_history",
   "as_of": "2026-11-25",
   "target_session": "2026-11-27",
-  "evaluation_attempted_at": "2026-11-26T11:47:03.524758+00:00",
-  "market_retrieved_at": "2026-11-26T11:47:03.524758+00:00",
+  "evaluation_attempted_at": "2026-11-27T11:40:17.994827+00:00",
+  "market_retrieved_at": "2026-11-27T11:40:17.994827+00:00",
   "history_sha256": "7806db59c385799836edae828c3ffce430d84588db0b83e1f4223391c888d6c5",
   "orders_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
-  "status_sha256": "817363a7fc1622f96a9d967eb9db91c4e9b94909dc54adb41a93a6feb0488080",
+  "status_sha256": "20f444183215352f4c4e0d47e2d2cd3d5607839d40d1a9dc9791455886ed1b0f",
   "records": [
     {
       "order": {
@@ -71,8 +71,8 @@
       "exchange": "XNYS",
       "close_time": "2026-11-25T21:00:00+00:00"
     },
-    "market_retrieved_at": "2026-11-26T11:47:03.524758+00:00",
-    "market_snapshot_sha256": "1c415f3536ee511d6fafea2410e67c592de69cf72f29a4faabbe7f93d24a8b33",
+    "market_retrieved_at": "2026-11-27T11:40:17.994827+00:00",
+    "market_snapshot_sha256": "b44384ab6c9cc5cf0461854a7c516161a1d23dc9ac883166cd76e2976be988ce",
     "capital": {
       "passed": true,
       "reasons": [],
